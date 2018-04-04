@@ -22,7 +22,7 @@ class NavBar extends Component {
     render() {
         return (
             <nav className="navbar fixed-top navbar-expand-lg">
-                <a className="navbar-brand" href="/#/">Games 4 Good Debate</a>
+                <a className="navbar-brand" href="/">Games 4 Good Debate</a>
 
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="nav-content" aria-expanded="false" aria-label="Toggle navigation">
                     <div className={this.state.iconCollapsed ? 'nav-icon' : 'nav-icon open'} onClick={this.toggleIcon}>

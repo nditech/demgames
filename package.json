@@ -17,7 +17,7 @@
   },
   "description": "",
   "main": "index.js",
-  "home": "https://github.io/vnndi/g4g-debate.git",
+  "home": "https://github.io/vnndi/g4g-debate",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vnndi/g4g-debate.git"
