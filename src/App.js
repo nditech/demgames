@@ -13,10 +13,10 @@ const App = () =>
         <div>
         <NavBar />
         <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/saved" component={Saved} />
-            <Route path="/topic" component={Topic} />
-            <Route path="/result" component={Result} />
+            <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
+            <Route exact path={process.env.PUBLIC_URL + '/saved'} component={Saved} />
+            <Route exact path={process.env.PUBLIC_URL + '/topic'} component={Topic} />
+            <Route exact path={process.env.PUBLIC_URL + '/result'} component={Result} />
             <Route component={NoMatch} />
         </Switch>
         </div>
