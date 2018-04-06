@@ -1,5 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+// import { HashRouter } from 'react-router-dom';
 import Home from './pages/Home';
 import Saved from './pages/Saved';
 import Topic from './pages/Topic';
@@ -13,10 +14,10 @@ const App = () =>
         <div>
         <NavBar />
         <Switch>
-            <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
-            <Route exact path={process.env.PUBLIC_URL + '/saved'} component={Saved} />
-            <Route exact path={process.env.PUBLIC_URL + '/topic'} component={Topic} />
-            <Route exact path={process.env.PUBLIC_URL + '/result'} component={Result} />
+            <Route exact path={process.env.PUBLIC_URL + '/g4g-debate/'} component={Home} />
+            <Route exact path={process.env.PUBLIC_URL + '/g4g-debate/saved'} component={Saved} />
+            <Route exact path={process.env.PUBLIC_URL + '/g4g-debate//topic'} component={Topic} />
+            <Route exact path={process.env.PUBLIC_URL + '/g4g-debate/result'} component={Result} />
             <Route component={NoMatch} />
         </Switch>
         </div>
