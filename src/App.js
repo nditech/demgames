@@ -16,7 +16,7 @@ const App = () =>
         <Switch>
             <Route exact path={process.env.PUBLIC_URL + '/g4g-debate/'} component={Home} />
             <Route exact path={process.env.PUBLIC_URL + '/g4g-debate/saved'} component={Saved} />
-            <Route exact path={process.env.PUBLIC_URL + '/g4g-debate//topic'} component={Topic} />
+            <Route exact path={process.env.PUBLIC_URL + '/g4g-debate/topic'} component={Topic} />
             <Route exact path={process.env.PUBLIC_URL + '/g4g-debate/result'} component={Result} />
             <Route component={NoMatch} />
         </Switch>
