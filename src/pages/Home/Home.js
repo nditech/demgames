@@ -21,9 +21,9 @@ class Home extends Component {
         });
     };
 
-    formCheck = () => {
-        this.props.history.push('/saved');
-    }
+    // formCheck = () => {
+    //     this.props.history.push('/saved');
+    // }
 
     render() {
         return (
@@ -40,7 +40,7 @@ class Home extends Component {
                             <Form
                                 keyword={this.state.keyword}
                                 handleInputChange={this.handleInputChange}
-                                handleClick={this.formCheck}
+                                // handleClick={this.formCheck}
                             />
                         </Card>
                     </Col>

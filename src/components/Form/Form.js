@@ -16,7 +16,7 @@ class Form extends Component {
                     <input type="text" className="form-control" placeholder="0123456789" name="keyword" value={this.props.keyword} onChange={this.props.handleInputChange}/>
                 </div>
                 <div className="text-center">
-                    <Link to="/saved"><button className="btn btn-lg btn-primary" onClick={this.props.handleClick}>Login</button>
+                    <Link to="/saved"><button className="btn btn-lg btn-primary">Login</button>
                     </Link>
                 </div>
             </form>
