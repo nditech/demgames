@@ -1,33 +1,24 @@
 {
-  "name": "gua-game",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "axios": "^0.17.1",
-    "gh-pages": "^1.1.0",
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "^1.0.17"
-  },
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  },
+  "name": "g4g-debate",
+  "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vnndi/g4g-debate.git"
+  "main": "server.js",
+  "scripts": {
+    "server": "node server.js",
+    "client": "node scripts/start-client.js",
+    "start": "concurrently \"nodemon server.js\" \"npm run client\"",
+    "build": "node scripts/build.js"
   },
   "author": "Viet Nguyen",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/vnndi/g4g-debate/issues"
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.17.5"
   },
-  "homepage": "https://vnndi.github.io/g4g-debate/"
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongoose": "^5.1.4"
+  }
 }
