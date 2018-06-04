@@ -24,9 +24,9 @@ class NavBar extends Component {
         return (
             <div>
                 <nav className="navbar justify-content-between">
-                    <a><i className="fas fa-gamepad fa-2x"></i></a>
-                    <a><img src={flag}/></a>
-                    <a><i className="fas fa-user-cog fa-2x"></i></a>
+                    <a href=""><i className="fas fa-gamepad fa-2x"></i></a>
+                    <a href=""><img src={flag}/></a>
+                    <a href=""><i className="fas fa-user-cog fa-2x"></i></a>
                 </nav>
             </div>
         );

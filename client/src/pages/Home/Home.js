@@ -13,16 +13,19 @@ class Home extends Component {
         return (
             <CardGroup>
                 <Card
+                    href="/level1"
                     img={level1}
                     alt="level 1"
                     title="LEVEL 1"
                 />
                 <Card
+                    href="/level2"
                     img={level2}
                     alt="level 2"
                     title="LEVEL 2"
                 />
                 <Card
+                    href="/level3"
                     img={level3}
                     alt="level 3"
                     title="LEVEL 3"

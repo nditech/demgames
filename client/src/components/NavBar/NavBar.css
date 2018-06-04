@@ -3,6 +3,15 @@ nav {
     color: #FFFFFF;
 }
 
+nav > a {
+    text-decoration: none;
+    color: #FFF;
+}
+
+nav > a:hover {
+    color: #FFF;
+}
+
 .navbar > a > img {
     max-height: 30px;
     border: 1px solid #FFF;
