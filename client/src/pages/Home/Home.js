@@ -1,9 +1,6 @@
 import React, {Component} from 'react'
-import {Card, CardGroup} from '../../components/Card'
+import {Container, Row, Col} from '../../components/Grid'
 import './Home.css'
-import level1 from './level1.png'
-import level2 from './level2.png'
-import level3 from './level3.png'
 
 class Home extends Component {
     state = {
@@ -11,28 +8,21 @@ class Home extends Component {
 
     render() {
         return (
-            <CardGroup>
-                <Card
-                    href="/level1"
-                    img={level1}
-                    alt="level 1"
-                    title="LEVEL 1"
-                />
-                <Card
-                    href="/level2"
-                    img={level2}
-                    alt="level 2"
-                    title="LEVEL 2"
-                />
-                <Card
-                    href="/level3"
-                    img={level3}
-                    alt="level 3"
-                    title="LEVEL 3"
-                />
-            </CardGroup>
+            <Row custom="align-items-center justify-content-center mx-0 px-0">
+                <Col size="sm-12 md-8 lg-6" custom="text-center m-0 p-0">
+                    <div className="login-box p-2">
+                        <i className="material-icons my-3">phonelink_setup</i>
+                        <div className="input-group mb-3">
+                            <input type="text" className="form-control" placeholder="Your phone number" aria-label="Your phone number" aria-describedby="basic-addon2"/>
+                            <div className="input-group-append">
+                                <a href="/game"><button className="btn" type="button">Sign in</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </Col>
+            </Row>
         )
     }
 }
 
-export default Home;
+export default Home

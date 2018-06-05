@@ -1,3 +1,7 @@
 footer {
-    font-family: 'Josefin Sans', sans-serif;
+    color: #4997D0;
+}
+
+.footer-text > a {
+    color: #4997D0;
 }

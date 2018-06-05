@@ -23,10 +23,10 @@ class NavBar extends Component {
     render() {
         return (
             <div>
-                <nav className="navbar justify-content-between">
-                    <a href=""><i className="fas fa-gamepad fa-2x"></i></a>
-                    <a href=""><img src={flag}/></a>
-                    <a href=""><i className="fas fa-user-cog fa-2x"></i></a>
+                <nav className="navbar justify-content-between py-0">
+                    <a href="/"><i className="material-icons">phonelink_setup</i></a>
+                    <img src={flag}/>
+                    <a href="/user"><i className="material-icons">settings</i></a>
                 </nav>
             </div>
         );

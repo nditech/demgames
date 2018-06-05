@@ -1,3 +1,18 @@
-.level > img {
-    width: 100%;
+.input-group > input:focus {
+    background-color: #ccffcc;
+}
+
+.input-group-append > a > .btn {
+    background-color: #4997D0;
+    color: #FFF;
+}
+
+.login-box {
+    background-color: #FFF;
+    border-radius: .5em;
+}
+
+.login-box > .material-icons {
+    color: #808080;
+    font-size: 100px;
 }

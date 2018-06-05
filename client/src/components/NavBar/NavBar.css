@@ -4,7 +4,6 @@ nav {
 }
 
 nav > a {
-    text-decoration: none;
     color: #FFF;
 }
 
@@ -12,7 +11,18 @@ nav > a:hover {
     color: #FFF;
 }
 
-.navbar > a > img {
+.navbar > img {
     max-height: 30px;
     border: 1px solid #FFF;
+}
+
+.navbar > a > .material-icons {
+    font-size: 2em;
+    line-height: 2em;
+}
+
+@media screen and (min-width: 1023px) {
+    .navbar {
+        padding: 0 8em;
+    }
 }
