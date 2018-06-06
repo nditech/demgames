@@ -1,0 +1,31 @@
+.btn {
+    border-radius: 1em;
+    background-color: #4997D0;
+    color: white;
+}
+
+.imgbg-level1 {
+    background: linear-gradient(rgba(0, 0, 0,0.5), rgba(0, 0, 0, 0.1)), url("../../img/level1.png");
+    color: #fff;
+    background-size: cover;
+    min-height: 130px;
+}
+
+.imgbg-level2 {
+    background-image: url("../../img/level2.png");
+}
+
+.imgbg-level3 {
+    background-image: url("../../img/level3.png");
+}
+
+.level-top, .level-top > .col {
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (min-width: 1023px) {
+    .level-top {
+        padding: 0 8em;
+    }
+}

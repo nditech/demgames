@@ -2,9 +2,9 @@ import React, {Component} from 'react'
 import {Card, CardGroup} from '../../components/Card'
 import {Row, Col} from '../../components/Grid'
 import './Game.css'
-import level1 from './level1.png'
-import level2 from './level2.png'
-import level3 from './level3.png'
+import level1 from '../../img/level1.png'
+import level2 from '../../img/level2.png'
+import level3 from '../../img/level3.png'
 
 class Game extends Component {
     state = {

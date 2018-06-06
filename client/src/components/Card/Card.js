@@ -1,5 +1,5 @@
-import React from 'react';
-import './Card.css';
+import React from 'react'
+import './Card.css'
 
 export const Card = ({href, img, alt, title, text}) => (
     <div className="card m-0">

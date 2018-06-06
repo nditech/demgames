@@ -28,5 +28,5 @@ mongoose.connect(
 
 // Start the API server
 app.listen(PORT, () =>
-  console.log(`🌎  ==> Health News Server now listening on PORT ${PORT}!`)
+  console.log(`🌎  ==> Game 4 Good - Debate Server now listening on PORT ${PORT}!`)
 );
