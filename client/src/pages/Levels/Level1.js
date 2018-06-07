@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import {Progress} from '../../components/Game'
-import {MatchCard} from '../../components/Card'
+import {Progress, MatchItem} from '../../components/Game'
+import {Card} from '../../components/Card'
+import {List, ListItem} from '../../components/List'
 
 export class Level1 extends Component {
     render() {
@@ -14,14 +15,34 @@ export class Level1 extends Component {
                 />
                 <div className="row my-3 mx-1">
                     <div className="col-6">
-                        <MatchCard
-                            text="This is a term"
-                        />
+                        <Card>
+                            <List>
+                                <ListItem>
+                                    <MatchItem id="1" type="term" text="This is 1st term"/>
+                                </ListItem>
+                                <ListItem>
+                                    <MatchItem id="2" type="term" text="This is 2nd term"/>
+                                </ListItem>
+                                <ListItem>
+                                    <MatchItem id="3" type="term" text="This is 3rd term"/>
+                                </ListItem>
+                            </List>
+                        </Card>
                     </div>
                     <div className="col-6">
-                        <MatchCard
-                            text="This is a definition"
-                        />
+                        <Card>
+                            <List>
+                                <ListItem>
+                                    <MatchItem id="2" type="definition" text="This is 2nd definition"/>
+                                </ListItem>
+                                <ListItem>
+                                    <MatchItem id="3" type="definition" text="This is 3rd definition"/>
+                                </ListItem>
+                                <ListItem>
+                                    <MatchItem id="1" type="definition" text="This is 1st definition"/>
+                                </ListItem>
+                            </List>
+                        </Card>
                     </div>
                 </div>
             </div>
