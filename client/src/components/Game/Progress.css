@@ -1,21 +1,33 @@
-.btn {
-    border-radius: 1em;
-    background-color: #4997D0;
+/* .btn {
+    background-color: #005DAB;
     color: white;
 }
 
-.imgbg-level1 {
-    background: linear-gradient(rgba(0, 0, 0,0.5), rgba(0, 0, 0, 0.1)), url("../../img/level1.png");
+.btn:hover {
+    color: #F38051;
+} */
+
+.bg-level1 {
+    background: linear-gradient(rgba(0, 93, 171, 0.75), rgba(0, 93, 171, 0.75)), url("../../img/level1.png") no-repeat center;
     color: #fff;
     background-size: cover;
     min-height: 130px;
 }
 
-.imgbg-level2 {
+.bg-level1 > div > .btn {
+    background-color: #349B52;
+    color: white;
+}
+
+.bg-level1 > div > .btn:hover {
+    color: #F38051;
+}
+
+.bg-level2 {
     background-image: url("../../img/level2.png");
 }
 
-.imgbg-level3 {
+.bg-level3 {
     background-image: url("../../img/level3.png");
 }
 

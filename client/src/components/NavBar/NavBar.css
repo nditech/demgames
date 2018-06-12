@@ -1,19 +1,13 @@
-nav {
-    background-color: #4997D0;
-    color: #FFFFFF;
-}
-
 nav > a {
-    color: #FFF;
+    color: #005DAB;
 }
 
 nav > a:hover {
-    color: #FFF;
+    color: #F38051;
 }
 
 .navbar > img {
     max-height: 30px;
-    border: 1px solid #FFF;
 }
 
 .navbar > a > .material-icons {

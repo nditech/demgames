@@ -2,19 +2,20 @@ import React, { Component } from 'react'
 import {Progress, MatchItem} from '../../components/Game'
 import {Card} from '../../components/Card'
 import {List, ListItem} from '../../components/List'
+import {Row, Col, Wrap} from '../../components/Grid'
 
 export class Level1 extends Component {
     render() {
         return (
-            <div>
+            <Wrap>
                 <Progress
                     level="level1"
                     title="Aliquam erat volutpat"
                     text="Curabitur cursus nisi a magna semper lobortis."
                     num="15"
                 />
-                <div className="row my-3 mx-1">
-                    <div className="col-6">
+                <Row custom="my-3 mx-1">
+                    <Col size="6" custom="p-0">
                         <Card>
                             <List>
                                 <ListItem>
@@ -28,8 +29,8 @@ export class Level1 extends Component {
                                 </ListItem>
                             </List>
                         </Card>
-                    </div>
-                    <div className="col-6">
+                    </Col>
+                    <Col size="6" custom="p-0">
                         <Card>
                             <List>
                                 <ListItem>
@@ -43,9 +44,9 @@ export class Level1 extends Component {
                                 </ListItem>
                             </List>
                         </Card>
-                    </div>
-                </div>
-            </div>
+                    </Col>
+                </Row>
+            </Wrap>
         )
     }
 }

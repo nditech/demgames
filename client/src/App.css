@@ -1,5 +1,5 @@
 body {
-    background-color: rgba(0,0,0,.03);
+    font-family: 'Raleway', sans-serif;
 }
 
 a, a:hover {
@@ -15,3 +15,9 @@ a > img:hover {
     opacity: 1.0;
     filter: alpha(opacity=100); /* For IE8 and earlier */
 }
+
+/*
+Peach: #F38051
+Blue: #005DAB
+Green: #349B52
+*/

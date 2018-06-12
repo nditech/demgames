@@ -1,19 +1,64 @@
 .card {
     position: relative;
+    border: none;
+    height: 33%;
 }
 
 .card > a:hover {
     color: #FFF;
 }
 
+.card-group {
+    height: 100%;
+}
+
 .card-text {
     position: absolute;
     width: 100%;
-    bottom: 1em;
+    height: 100%;
     color: #FFF;
-    background: rgba(73, 151, 208, 0.75);
 }
 
-.card-text > p {
+.card-text > div {
+    margin: 40% auto;
+}
+
+.card-text > div > p {
     margin: 0;
+}
+
+.level1 {
+    background: url(../../img/level1.png) no-repeat center; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.level2 {
+    background: url(../../img/level2.png) no-repeat center; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.level3 {
+    background: url(../../img/level3.png) no-repeat center; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.bg-blue {
+    background: rgba(0, 93, 171, 0.75);
+}
+
+.bg-green {
+    background: rgba(52, 155, 5, 0.75);
+}
+
+.bg-peach {
+    background: rgb(243, 128, 81, 0.75);
 }
