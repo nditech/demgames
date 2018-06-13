@@ -1,18 +1,14 @@
 const 
 database = {
 /*
-
 this is the structure of the database
-
 this way it's easy to query for: 
 - event hosted by a specific NDI team, at a specific location (country, city...), in a specific year
 - user
 - users' scores at a specific event (each event contains data: host, country, city...)
-
 also, it's easier to add more data points to a user:
 gender: "female",
 age_group: "20-25",
-
 */
     users: [
         {
@@ -28,12 +24,10 @@ age_group: "20-25",
                         {level3: "80%"}
                     ]
                 }
-                // other events
-                // ...
+                // ... more events
             ]
         }
-        // other users
-        // ...
+        // ... more users
     ],
     events: [
         {
@@ -44,7 +38,14 @@ age_group: "20-25",
             city: "City 1",
             year: "2018"
         }
-        // other events
-        // ...
+        // ... more events
+    ],
+    admin: [
+        {
+            id: "1",
+            name: "NDI-CEE",
+            pin: "1234" // short and easy to login
+        }
+        // ... more admins
     ]
 }
