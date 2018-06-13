@@ -42,7 +42,7 @@ A full stack (MERN) app that helps users learn how to debate effectively.
 
 Make sure you have [Node.js](https://nodejs.org/en/download/package-manager/) and [Yarn](https://yarnpkg.com/en/docs/install#mac-stable) on your machine.
 * Clone this repository to your local machine (using SSH):
-`$ git clone git@github.com:nditech/g4g-debate.git`
+`$ git clone git@github.com:vnndi/g4g-debate.git`
 * `$ cd g4g-debate`
 * `$ yarn install`
 * `$ cd client`
