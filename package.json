@@ -1,7 +1,7 @@
 {
   "name": "g4g-debate",
   "version": "1.0.0",
-  "description": "",
+  "description": "A debate game",
   "main": "server.js",
   "scripts": {
     "server": "node server.js",
