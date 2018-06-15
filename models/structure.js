@@ -1,8 +1,8 @@
-const 
+const
 database = {
 /*
 this is the structure of the database
-this way it's easy to query for: 
+this way it's easy to query for:
 - event hosted by a specific NDI team, at a specific location (country, city...), in a specific year
 - user
 - users' scores at a specific event (each event contains data: host, country, city...)
@@ -18,12 +18,13 @@ age_group: "20-25",
             events: [
                 {
                     eventID: "1", // linked to events collection
+                    game: 1,
                     scores: [
                         {level1: "100%"},
                         {level2: "90%"},
                         {level3: "80%"}
                     ]
-                }
+                },
                 // ... more events
             ]
         }
@@ -33,7 +34,7 @@ age_group: "20-25",
         {
             // each event is hosted by an NDI team, at one country, one city, one year
             id: "1",
-            host: "LAC", 
+            host: "LAC",
             country: "Guatemala",
             city: "City 1",
             year: "2018"
@@ -47,5 +48,26 @@ age_group: "20-25",
             pin: "1234" // short and easy to login
         }
         // ... more admins
+    ],
+    questions: [
+        {
+            id: "1",
+            type:"mutliplechoice",
+            question:"what are fruitloops",
+            answers: ["cereal", "mile"],
+            answer:"cereal",
+            language: "spanish",
+            tags: ["latinamerica", "caribbean", "guatemala"]
+        }
+    ],
+    games: [
+        {
+            id: "1",
+            questions: [1, 5, 10, 20, 50]
+        }
     ]
 }
+
+
+
+

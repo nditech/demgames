@@ -1,9 +1,6 @@
 import React, {Component} from 'react'
 import {LevelCard, CardGroup} from '../../components/Card'
 import {Row, Col, Wrap} from '../../components/Grid'
-import level1 from '../../img/level1.png'
-import level2 from '../../img/level2.png'
-import level3 from '../../img/level3.png'
 
 class Game extends Component {
     state = {
