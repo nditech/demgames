@@ -10,7 +10,7 @@ export class Level1 extends Component {
         super(props)
         // this.handleChange = this.handleChange.bind(this)
         this.handleQAClick = this.handleQAClick.bind(this)
-        this.toggleColour = this.toggleColour.bind(this)
+        // this.toggleColour = this.toggleColour.bind(this)
         this.checkQA = this.checkQA.bind(this)
 
         // TODO:
@@ -20,7 +20,6 @@ export class Level1 extends Component {
         this.state = {
             questions: [],
             answered: [],
-            active: true,
             selectedQ: '',
             selectedA: ''
         }
@@ -41,17 +40,21 @@ export class Level1 extends Component {
 
     handleQAClick = (type, id) => {
         if (type === 'question') {
-            this.setState({selectedQ: id})
+            const selectedQ = `q-${id}`
+            this.setState({selectedQ})
         }
-        else this.setState({selectedA: id})
+        else {
+            const selectedA = `a-${id}`
+            this.setState({selectedA})
+        }
     }
 
-    toggleColour = id => {
-        this.setState({clicked: !this.state.active})
-    }
+    // toggleColour = id => {
+    //     this.setState({clicked: !this.state.active})
+    // }
 
     checkQA() {
-        if ((this.state.selectedQ !== '') && (this.state.selectedA !== '') && (this.state.selectedQ === this.state.selectedA)) {
+        if ((this.state.selectedQ !== '') && (this.state.selectedA !== '') && (this.state.selectedQ.substr(2) === this.state.selectedA.substr(2))) {
             console.log('Correct!!!')
             this.state.answered.push(this.state.selectedQ)
         }
@@ -77,9 +80,11 @@ export class Level1 extends Component {
                                                 <MatchItem
                                                     id={question._id}
                                                     type="question"
-                                                    active={this.state.active}
+                                                    name={`q-${question._id}`}
                                                     text={question.question}
                                                     handleClick={this.handleQAClick}
+                                                    selectedQ={this.state.selectedQ}
+                                                    selectedA={this.state.selectedA}
                                                 />
                                             </ListItem>
                                         ))}
@@ -99,8 +104,11 @@ export class Level1 extends Component {
                                                 <MatchItem
                                                     id={question._id}
                                                     type="answer"
+                                                    name={`a-${question._id}`}
                                                     text={question.option1}
                                                     handleClick={this.handleQAClick}
+                                                    selectedQ={this.state.selectedQ}
+                                                    selectedA={this.state.selectedA}
                                                 />
                                             </ListItem>
                                         ))}

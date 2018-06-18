@@ -1,0 +1,4 @@
+.match-item-active, .selected-question, .selected-answer {
+    color: #fff;
+    background-color: #005DAB;
+}
