@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Container, Row, Col, Wrap} from '../../components/Grid'
 import './Home.css'
+import API from '../../utils/API'
 
 class Home extends Component {
     state = {

@@ -3,8 +3,26 @@ import {Progress, MatchItem} from '../../components/Game'
 import {Card} from '../../components/Card'
 import {List, ListItem} from '../../components/List'
 import {Row, Col, Wrap} from '../../components/Grid'
+import API from '../../utils/API'
 
 export class Level1 extends Component {
+    constructor(props) {
+        super(props)
+        // this.handleChange = this.handleChange.bind(this)
+        this.state = {
+            questions: []
+        }
+    }
+
+    componentDidMount() {
+        API.getQuesitons()
+        .then(res => {
+            const questions = res.data
+            this.setState({questions})
+            console.log(this.state.questions)
+        })
+    }
+
     render() {
         return (
             <Wrap>

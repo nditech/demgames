@@ -27,9 +27,20 @@ app.listen(PORT, () =>
   console.log(`🌎  ==> Game 4 Good - Debate Server now listening on PORT ${PORT}!`)
 )
 
-const data = // JSON file
+// ========================= REMOVE THE BELOW CODE IN PRODUCTION
+const fs = require('fs')
 
+let data = fs.readFileSync('./test/g4g.json', 'utf8')
+data = JSON.parse(data)
+
+// remove all current records
+db.Question.deleteMany((err, delOK) => {
+    if (err) throw err
+    else console.log(delOK)
+})
+
+// add records from json file
 db.Question.insertMany(data, (err, doc) => {
     if (err) throw err
-    console.log(doc)
+    else console.log('Questions added!')
 })

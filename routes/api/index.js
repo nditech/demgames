@@ -1,10 +1,6 @@
-const router = require('express').Router();
-const articleRoutes = require('./articles');
-const mntRoutes = require('./mnt');
+const router = require('express').Router()
+const questionRoutes = require('./questions')
 
-// Medical News Today routes
-router.use('/articles', articleRoutes);
+router.use('/questions', questionRoutes)
 
-router.use('/mnt', mntRoutes);
-
-module.exports = router;
+module.exports = router
