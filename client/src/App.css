@@ -16,6 +16,14 @@ a > img:hover {
     filter: alpha(opacity=100); /* For IE8 and earlier */
 }
 
+.list-group {
+    overflow-y: scroll;
+}
+
+.row {
+    max-height: calc(100vh - 300px);
+}
+
 /*
 Peach: #F38051
 Blue: #005DAB

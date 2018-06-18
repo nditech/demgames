@@ -9,8 +9,20 @@ export class Level1 extends Component {
     constructor(props) {
         super(props)
         // this.handleChange = this.handleChange.bind(this)
+        this.handleQAClick = this.handleQAClick.bind(this)
+        this.toggleColour = this.toggleColour.bind(this)
+        this.checkQA = this.checkQA.bind(this)
+
+        // TODO:
+        // handle colour change for questions and answers click
+        // handle logic to recognise correct question-answer
+        // handle logic to recognise answered questions
         this.state = {
-            questions: []
+            questions: [],
+            answered: [],
+            active: true,
+            selectedQ: '',
+            selectedA: ''
         }
     }
 
@@ -19,8 +31,30 @@ export class Level1 extends Component {
         .then(res => {
             const questions = res.data
             this.setState({questions})
-            console.log(this.state.questions)
         })
+    }
+
+    componentDidUpdate() {
+        this.checkQA()
+        if (this.state.questions.length === this.state.answered.length) console.log('All done!')
+    }
+
+    handleQAClick = (type, id) => {
+        if (type === 'question') {
+            this.setState({selectedQ: id})
+        }
+        else this.setState({selectedA: id})
+    }
+
+    toggleColour = id => {
+        this.setState({clicked: !this.state.active})
+    }
+
+    checkQA() {
+        if ((this.state.selectedQ !== '') && (this.state.selectedA !== '') && (this.state.selectedQ === this.state.selectedA)) {
+            console.log('Correct!!!')
+            this.state.answered.push(this.state.selectedQ)
+        }
     }
 
     render() {
@@ -35,32 +69,45 @@ export class Level1 extends Component {
                 <Row custom="my-3 mx-1">
                     <Col size="6" custom="p-0">
                         <Card>
-                            <List>
-                                <ListItem>
-                                    <MatchItem id="1" type="term" text="This is 1st term"/>
-                                </ListItem>
-                                <ListItem>
-                                    <MatchItem id="2" type="term" text="This is 2nd term"/>
-                                </ListItem>
-                                <ListItem>
-                                    <MatchItem id="3" type="term" text="This is 3rd term"/>
-                                </ListItem>
-                            </List>
+                            {this.state.questions.length 
+                                ? (
+                                    <List>
+                                        {this.state.questions.map(question => (
+                                            <ListItem key={question._id}>
+                                                <MatchItem
+                                                    id={question._id}
+                                                    type="question"
+                                                    active={this.state.active}
+                                                    text={question.question}
+                                                    handleClick={this.handleQAClick}
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                )
+                                : ('No questions found')                        
+                            }
                         </Card>
                     </Col>
                     <Col size="6" custom="p-0">
                         <Card>
-                            <List>
-                                <ListItem>
-                                    <MatchItem id="2" type="definition" text="This is 2nd definition"/>
-                                </ListItem>
-                                <ListItem>
-                                    <MatchItem id="3" type="definition" text="This is 3rd definition"/>
-                                </ListItem>
-                                <ListItem>
-                                    <MatchItem id="1" type="definition" text="This is 1st definition"/>
-                                </ListItem>
-                            </List>
+                            {this.state.questions.length 
+                                ? (
+                                    <List>
+                                        {this.state.questions.map(question => (
+                                            <ListItem key={question._id}>
+                                                <MatchItem
+                                                    id={question._id}
+                                                    type="answer"
+                                                    text={question.option1}
+                                                    handleClick={this.handleQAClick}
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                )
+                                : ('No questions found')                        
+                            }
                         </Card>
                     </Col>
                 </Row>
