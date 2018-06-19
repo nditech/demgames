@@ -18,30 +18,34 @@ export class Level1 extends Component {
             answerId: '',
             selectedQ: '',
             selectedA: '',
-            full: 0,
-            complete: ''
+            total: 0,
+            progress: '',
+            complete: false
         }
     }
 
-    // NOTE: works but questions and answers are in the same row
-    shuffleData = data => {
-        let i = data.length - 1
-        while (i > 0) {
-            const   j = Math.floor(Math.random() * (i + 1)),
-                    temp = data[i]
-            data[i] = data[j]
-            data[j] = temp
-            i--
+    // best performance Fisher–Yates shuffle:
+    shuffleData = array => {
+        let m = array.length, t, i
+        // While there remain elements to shuffle
+        while (m) {
+            // Pick a remaining element
+            i = Math.floor(Math.random() * m--)
+            // And swap it with the current element
+            t = array[m]
+            array[m] = array[i]
+            array[i] = t
         }
-        return data
+        return array
     }
 
     componentDidMount() {
         API.getQuesitons()
         .then(res => {
             const   questions = res.data,
-                    full = questions.length
-            this.setState({questions, full})
+                    answers = this.shuffleData([...questions]),
+                    total = questions.length
+            this.setState({questions, answers,total})
         })
     }
 
@@ -64,9 +68,13 @@ export class Level1 extends Component {
     checkQA = (a, b) => {
         if ((a !== '') && (a === b)) {
             const   questions = this.state.questions.filter(q => q._id !== b),
-                    full = this.state.full,
-                    complete = ((full - questions.length) * 100 / full).toString()
-            this.setState({questions, complete})
+                    answers = this.shuffleData([...questions]),
+                    total = this.state.total,
+                    progress = ((total - questions.length) * 100 / total).toString()
+            this.setState({questions, answers, progress})
+            if (progress === '100') {
+                this.setState({complete: true})
+            }
         }
     }
 
@@ -77,7 +85,8 @@ export class Level1 extends Component {
                     level="level1"
                     title="Aliquam erat volutpat"
                     text="Curabitur cursus nisi a magna semper lobortis."
-                    num={this.state.complete}
+                    num={this.state.progress}
+                    complete={this.state.complete}
                 />
                 <Row custom="my-3 mx-1">
                     <Col size="6" custom="p-0">
@@ -106,16 +115,16 @@ export class Level1 extends Component {
                     </Col>
                     <Col size="6" custom="p-0">
                         <Card>
-                            {this.state.questions.length 
+                            {this.state.answers.length 
                                 ? (
                                     <List>
-                                        {this.state.questions.map(question => (
-                                            <ListItem key={`a-${question._id}`}>
+                                        {this.state.answers.map(answer => (
+                                            <ListItem key={`a-${answer._id}`}>
                                                 <MatchItem
-                                                    id={question._id}
-                                                    name={`a-${question._id}`}
+                                                    id={answer._id}
+                                                    name={`a-${answer._id}`}
                                                     type="answer"
-                                                    text={question.option1}
+                                                    text={answer.option1}
                                                     handleClick={this.handleQAClick}
                                                     selectedQ={this.state.selectedQ}
                                                     selectedA={this.state.selectedA}
