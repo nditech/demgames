@@ -1,7 +1,7 @@
 import React from 'react'
 import './Progress.css'
 
-export const Progress = ({level, title, text, num, notice}) => (
+export const Progress = ({level, title, text, num}) => (
     <div>
         <div className={`row level-top bg-${level}`}>
             <div className="align-self-center col-sm-12 col-md-10 col-lg-10 pr-0">
@@ -15,6 +15,5 @@ export const Progress = ({level, title, text, num, notice}) => (
         <div className="progress">
             <div className="progress-bar progress-bar-striped bg-success" role="progressbar" style={{width: `${num}%`}} aria-valuenow={num} aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-        {notice}
     </div>
 )

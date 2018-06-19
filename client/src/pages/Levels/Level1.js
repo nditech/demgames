@@ -20,26 +20,27 @@ export class Level1 extends Component {
         this.state = {
             questions: [],
             answered: [],
-            // answeredId: [],
-            notice: '',
             questionId: '',
             answerId: '',
             selectedQ: '',
-            selectedA: ''
+            selectedA: '',
+            full: 0,
+            complete: ''
         }
     }
 
     componentDidMount() {
         API.getQuesitons()
         .then(res => {
-            const questions = res.data
-            this.setState({questions})
+            const   questions = res.data,
+                    full = questions.length
+            this.setState({questions, full})
         })
     }
 
     componentDidUpdate() {
         // check remaining questions
-        if (this.state.questions.length === this.state.answered.length) console.log('All done!') // ERR: wrong if half way through
+        if (this.state.questions.length === 0) console.log('All done!') // ERR: wrong if half way through
     }
 
     handleQAClick = (type, id) => {
@@ -60,24 +61,11 @@ export class Level1 extends Component {
     checkQA = (a, b) => {
         if ((a !== '') && (a === b)) {
             const   questions = this.state.questions.filter(q => q._id !== b),
-                    notice = 'Well done! That is correct!'
-                    
-            this.setState({questions, notice})
+                    full = this.state.full,
+                    complete = ((full - questions.length) * 100 / full).toString()
+            this.setState({questions, complete})
         }
     }
-
-    // checkQA() {
-    //     if ((this.state.selectedQ !== '') && (this.state.selectedA !== '') && (this.state.questionId === this.state.answerId)) {
-    //         console.log('Correct!!!')
-    //         // push answered id to array
-    //         this.state.answeredId.push(this.state.questionId)
-    //         // push answered question to array
-    //         const answered = this.state.questions.find(q => {return q._id === this.state.questionId})
-    //         this.state.answered.push(answered)
-    //         const questions = this.state.questions.filter(q => !this.state.answeredId.includes(q._id))
-    //         this.setState({questions})
-    //     }
-    // }
 
     render() {
         return (
@@ -86,8 +74,7 @@ export class Level1 extends Component {
                     level="level1"
                     title="Aliquam erat volutpat"
                     text="Curabitur cursus nisi a magna semper lobortis."
-                    num="15"
-                    notice={this.state.notice}
+                    num={this.state.complete}
                 />
                 <Row custom="my-3 mx-1">
                     <Col size="6" custom="p-0">
