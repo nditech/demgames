@@ -8,18 +8,12 @@ import API from '../../utils/API'
 export class Level1 extends Component {
     constructor(props) {
         super(props)
-        // this.handleChange = this.handleChange.bind(this)
         this.handleQAClick = this.handleQAClick.bind(this)
-        // this.toggleColour = this.toggleColour.bind(this)
         this.checkQA = this.checkQA.bind(this)
-
-        // TODO:
-        // handle colour change for questions and answers click
-        // handle logic to recognise correct question-answer
-        // handle logic to recognise answered questions
+        this.shuffleData = this.shuffleData.bind(this)
         this.state = {
             questions: [],
-            answered: [],
+            answers: [],
             questionId: '',
             answerId: '',
             selectedQ: '',
@@ -29,6 +23,19 @@ export class Level1 extends Component {
         }
     }
 
+    // NOTE: works but questions and answers are in the same row
+    shuffleData = data => {
+        let i = data.length - 1
+        while (i > 0) {
+            const   j = Math.floor(Math.random() * (i + 1)),
+                    temp = data[i]
+            data[i] = data[j]
+            data[j] = temp
+            i--
+        }
+        return data
+    }
+
     componentDidMount() {
         API.getQuesitons()
         .then(res => {
@@ -36,11 +43,6 @@ export class Level1 extends Component {
                     full = questions.length
             this.setState({questions, full})
         })
-    }
-
-    componentDidUpdate() {
-        // check remaining questions
-        if (this.state.questions.length === 0) console.log('All done!') // ERR: wrong if half way through
     }
 
     handleQAClick = (type, id) => {
@@ -58,6 +60,7 @@ export class Level1 extends Component {
         }
     }
 
+    // check if a match
     checkQA = (a, b) => {
         if ((a !== '') && (a === b)) {
             const   questions = this.state.questions.filter(q => q._id !== b),
@@ -97,7 +100,7 @@ export class Level1 extends Component {
                                         ))}
                                     </List>
                                 )
-                                : ('No questions found')                        
+                                : ('No questions to display')                        
                             }
                         </Card>
                     </Col>
@@ -121,7 +124,7 @@ export class Level1 extends Component {
                                         ))}
                                     </List>
                                 )
-                                : ('No questions found')                        
+                                : ('No answers to display')                        
                             }
                         </Card>
                     </Col>

@@ -1,4 +1,9 @@
-.selected {
+.answer-selected {
+    color: #fff;
+    background-color: #F38051;
+}
+
+.question-selected {
     color: #fff;
     background-color: #005DAB;
 }
