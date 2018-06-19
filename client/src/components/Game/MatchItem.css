@@ -1,9 +1,9 @@
-.selected-question, .selected-answer {
+.selected {
     color: #fff;
     background-color: #005DAB;
 }
 
-li > .done {
+.correct {
     color: #fff;
     background-color: #349B52;
 }

@@ -20,7 +20,8 @@ export class Level1 extends Component {
         this.state = {
             questions: [],
             answered: [],
-            answeredId: [],
+            // answeredId: [],
+            notice: '',
             questionId: '',
             answerId: '',
             selectedQ: '',
@@ -37,36 +38,46 @@ export class Level1 extends Component {
     }
 
     componentDidUpdate() {
-        this.checkQA()
         // check remaining questions
-        if (this.state.questions.length === this.state.answered.length) console.log('All done!')
+        if (this.state.questions.length === this.state.answered.length) console.log('All done!') // ERR: wrong if half way through
     }
 
     handleQAClick = (type, id) => {
         if (type === 'question') {
             const   questionId = id,
                     selectedQ = `q-${id}`
+            this.checkQA(this.state.answerId, id)
             this.setState({questionId, selectedQ})
         }
         else {
             const   answerId = id,
                     selectedA = `a-${id}`
+            this.checkQA(this.state.questionId, id)
             this.setState({answerId, selectedA})
         }
-        const questions = this.state.questions.filter(q => !this.state.answeredId.includes(q._id))
-        this.setState({questions})
     }
 
-    checkQA() {
-        if ((this.state.selectedQ !== '') && (this.state.selectedA !== '') && (this.state.questionId === this.state.answerId)) {
-            console.log('Correct!!!')
-            // push answered id to array
-            this.state.answeredId.push(this.state.questionId)
-            // push answered question to array
-            const answered = this.state.questions.find(q => {return q._id === this.state.questionId})
-            this.state.answered.push(answered)
+    checkQA = (a, b) => {
+        if ((a !== '') && (a === b)) {
+            const   questions = this.state.questions.filter(q => q._id !== b),
+                    notice = 'Well done! That is correct!'
+                    
+            this.setState({questions, notice})
         }
     }
+
+    // checkQA() {
+    //     if ((this.state.selectedQ !== '') && (this.state.selectedA !== '') && (this.state.questionId === this.state.answerId)) {
+    //         console.log('Correct!!!')
+    //         // push answered id to array
+    //         this.state.answeredId.push(this.state.questionId)
+    //         // push answered question to array
+    //         const answered = this.state.questions.find(q => {return q._id === this.state.questionId})
+    //         this.state.answered.push(answered)
+    //         const questions = this.state.questions.filter(q => !this.state.answeredId.includes(q._id))
+    //         this.setState({questions})
+    //     }
+    // }
 
     render() {
         return (
@@ -76,6 +87,7 @@ export class Level1 extends Component {
                     title="Aliquam erat volutpat"
                     text="Curabitur cursus nisi a magna semper lobortis."
                     num="15"
+                    notice={this.state.notice}
                 />
                 <Row custom="my-3 mx-1">
                     <Col size="6" custom="p-0">
@@ -87,8 +99,8 @@ export class Level1 extends Component {
                                             <ListItem key={`q-${question._id}`}>
                                                 <MatchItem
                                                     id={question._id}
-                                                    type="question"
                                                     name={`q-${question._id}`}
+                                                    type="question"
                                                     text={question.question}
                                                     handleClick={this.handleQAClick}
                                                     selectedQ={this.state.selectedQ}
@@ -99,23 +111,6 @@ export class Level1 extends Component {
                                     </List>
                                 )
                                 : ('No questions found')                        
-                            }
-                            {this.state.answered.length 
-                                ? (
-                                    <List>
-                                        {this.state.answered.map(question => (
-                                            <ListItem key={`done-q-${question._id}`}>
-                                                <MatchItem
-                                                    id={question._id}
-                                                    type="question"
-                                                    name="done"
-                                                    text={question.question}
-                                                />
-                                            </ListItem>
-                                        ))}
-                                    </List>
-                                )
-                                : ('')                        
                             }
                         </Card>
                     </Col>
@@ -128,8 +123,8 @@ export class Level1 extends Component {
                                             <ListItem key={`a-${question._id}`}>
                                                 <MatchItem
                                                     id={question._id}
-                                                    type="answer"
                                                     name={`a-${question._id}`}
+                                                    type="answer"
                                                     text={question.option1}
                                                     handleClick={this.handleQAClick}
                                                     selectedQ={this.state.selectedQ}
@@ -140,23 +135,6 @@ export class Level1 extends Component {
                                     </List>
                                 )
                                 : ('No questions found')                        
-                            }
-                            {this.state.answered.length 
-                                ? (
-                                    <List>
-                                        {this.state.answered.map(question => (
-                                            <ListItem key={`done-a-${question._id}`}>
-                                                <MatchItem
-                                                    id={question._id}
-                                                    type="answer"
-                                                    name="done"
-                                                    text={question.option1}
-                                                />
-                                            </ListItem>
-                                        ))}
-                                    </List>
-                                )
-                                : ('')                        
                             }
                         </Card>
                     </Col>
