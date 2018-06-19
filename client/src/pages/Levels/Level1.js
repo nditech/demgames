@@ -38,6 +38,7 @@ export class Level1 extends Component {
 
     componentDidUpdate() {
         this.checkQA()
+        // check remaining questions
         if (this.state.questions.length === this.state.answered.length) console.log('All done!')
     }
 
