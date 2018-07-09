@@ -36,19 +36,20 @@ A full stack (MERN) app that helps users learn how to debate effectively.
 
 ## Documentation
 
-> Under construction: Need back-end and database
+> :construction: Under construction
 
 ## Installation
 
-Make sure you have [Node.js](https://nodejs.org/en/download/package-manager/) and [Yarn](https://yarnpkg.com/en/docs/install#mac-stable) on your machine.
-* Clone this repository to your local machine (using SSH):
-`$ git clone git@github.com:vnndi/g4g-debate.git`
-* `$ cd g4g-debate`
-* `$ yarn install`
-* `$ cd client`
-* `$ yarn install`
-* `$ cd ..`
-* `$ yarn start`
+Make sure you have [Node.js](https://nodejs.org/en/download/package-manager/) and [Yarn](https://yarnpkg.com/en/docs/install#mac-stable) on your machine. Clone this repository to your local machine (using SSH):
+```
+$ git clone git@github.com:vnndi/g4g-debate.git
+$ cd g4g-debate
+$ yarn install
+$ cd client
+$ yarn install
+$ cd ..
+$ yarn start
+```
 
 ## Testing
 
@@ -61,8 +62,6 @@ Make sure you have [Node.js](https://nodejs.org/en/download/package-manager/) an
 ## License
 
 [MIT](./LICENSE)
-
-<hr />
 
 ## Author(s)
 
