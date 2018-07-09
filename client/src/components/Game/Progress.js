@@ -1,12 +1,16 @@
 import React from 'react'
 import './Progress.css'
 
-export const Progress = ({level, title, text, num, complete}) => (
+export const Progress = ({level, title, text, togo, num, complete}) => (
     <div>
         <div className={`row level-top bg-${level}`}>
             <div className="align-self-center col-sm-12 col-md-10 col-lg-10 pr-0">
                 <p><b>{title}</b></p>
                 <p><small>{text}</small></p>
+                {togo !== 0
+                    ? (<p className="text-center"><span className="display-4">{togo}</span>{togo > 1 ? ` questions remaining` : ` left!`}</p>)
+                    : (<p className="text-center"><span className="display-4">Yay! All done!</span></p>)
+                }
             </div>
             {complete
                 ? (

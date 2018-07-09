@@ -46,7 +46,7 @@ export class Level1 extends Component {
             const   questions = res.data,
                     answers = this.shuffleData([...questions]),
                     total = questions.length
-            this.setState({questions, answers,total})
+            this.setState({questions, answers, total})
         })
     }
 
@@ -86,6 +86,7 @@ export class Level1 extends Component {
                     level="level1"
                     title="Aliquam erat volutpat"
                     text="Curabitur cursus nisi a magna semper lobortis."
+                    togo={this.state.questions.length}
                     num={this.state.progress}
                     complete={this.state.complete}
                 />
