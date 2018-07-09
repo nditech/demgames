@@ -1,10 +1,10 @@
-.card {
+.level-card {
     position: relative;
     border: none;
     height: 33%;
 }
 
-.card > a:hover {
+.level-card > a:hover {
     color: #FFF;
 }
 

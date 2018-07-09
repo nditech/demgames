@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import {Progress, MatchItem} from '../../components/Game'
 import {Card} from '../../components/Card'
-// import {List, ListItem} from '../../components/List'
+import {List, ListItem} from '../../components/List'
 import {Row, Col, Wrap} from '../../components/Grid'
-import {List, ListItem} from '../../components/HorizontalList'
 import API from '../../utils/API'
 
 export class Level1 extends Component {
@@ -89,44 +88,56 @@ export class Level1 extends Component {
                     num={this.state.progress}
                     complete={this.state.complete}
                 />
-                {this.state.questions.length 
-                    ? (
-                        <List>
-                            {this.state.questions.map(question => (
-                                <MatchItem
-                                    key={question._id}
-                                    id={question._id}
-                                    name={`q-${question._id}`}
-                                    type="question"
-                                    text={question.question}
-                                    handleClick={this.handleQAClick}
-                                    selectedQ={this.state.selectedQ}
-                                    selectedA={this.state.selectedA}
-                                />
-                            ))}
-                        </List>
-                    )
-                    : ('No questions to display')                        
-                }
-                {this.state.answers.length 
-                    ? (
-                        <List>
-                            {this.state.answers.map(answer => (
-                                <MatchItem
-                                    key={answer._id}
-                                    id={answer._id}
-                                    name={`a-${answer._id}`}
-                                    type="answer"
-                                    text={answer.option1}
-                                    handleClick={this.handleQAClick}
-                                    selectedQ={this.state.selectedQ}
-                                    selectedA={this.state.selectedA}
-                                />
-                            ))}
-                        </List>
-                    )
-                    : ('No answers to display')                        
-                }
+                <Row custom="my-3 mx-1">
+                    <Col size="6" custom="p-0">
+                        <Card>
+                            {this.state.questions.length 
+                                ? (
+                                    <List>
+                                        {this.state.questions.map(question => (
+                                            <ListItem key={`q-${question._id}`}>
+                                                <MatchItem
+                                                    id={question._id}
+                                                    name={`q-${question._id}`}
+                                                    type="question"
+                                                    text={question.question}
+                                                    handleClick={this.handleQAClick}
+                                                    selectedQ={this.state.selectedQ}
+                                                    selectedA={this.state.selectedA}
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                )
+                                : ('No questions to display')                        
+                            }
+                        </Card>
+                    </Col>
+                    <Col size="6" custom="p-0">
+                        <Card>
+                            {this.state.answers.length 
+                                ? (
+                                    <List>
+                                        {this.state.answers.map(answer => (
+                                            <ListItem key={`a-${answer._id}`}>
+                                                <MatchItem
+                                                    id={answer._id}
+                                                    name={`a-${answer._id}`}
+                                                    type="answer"
+                                                    text={answer.option1}
+                                                    handleClick={this.handleQAClick}
+                                                    selectedQ={this.state.selectedQ}
+                                                    selectedA={this.state.selectedA}
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                )
+                                : ('No answers to display')                        
+                            }
+                        </Card>
+                    </Col>
+                </Row>
             </Wrap>
         )
     }
