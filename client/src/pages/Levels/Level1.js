@@ -84,7 +84,7 @@ export class Level1 extends Component {
             <Wrap>
                 <Progress
                     level="level1"
-                    title="Aliquam erat volutpat"
+                    title="LEVEL 1"
                     text="Curabitur cursus nisi a magna semper lobortis."
                     togo={this.state.questions.length}
                     num={this.state.progress}

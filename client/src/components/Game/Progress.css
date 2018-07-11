@@ -1,12 +1,3 @@
-/* .btn {
-    background-color: #005DAB;
-    color: white;
-}
-
-.btn:hover {
-    color: #F38051;
-} */
-
 .bg-level1 {
     background: linear-gradient(rgba(0, 93, 171, 0.75), rgba(0, 93, 171, 0.75)), url("../../img/level1.png") no-repeat center;
     color: #fff;
