@@ -4,6 +4,7 @@ import {Card} from '../../components/Card'
 // import {List, ListItem} from '../../components/List'
 import {Row, Col, Wrap} from '../../components/Grid'
 import {List, ListItem} from '../../components/HorizontalList'
+import {BackBtn} from '../../components/Button'
 import API from '../../utils/API'
 
 export class Level1 extends Component {
@@ -81,7 +82,7 @@ export class Level1 extends Component {
 
     render() {
         return (
-            <Wrap>
+            <div>
                 <Progress
                     level="level1"
                     title="LEVEL 1"
@@ -128,7 +129,10 @@ export class Level1 extends Component {
                     )
                     : ('No answers to display')                        
                 }
-            </Wrap>
+                <div className="ml-2">
+                <BackBtn/>
+                </div>
+            </div>
         )
     }
 }
