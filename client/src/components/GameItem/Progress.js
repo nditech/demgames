@@ -1,5 +1,5 @@
 import React from 'react'
-import './Game.css'
+import './GameItem.css'
 
 export const Progress = ({level, title, togo, num, complete, next}) => (
     <div>

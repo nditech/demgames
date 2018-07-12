@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {LevelCard, CardGroup} from '../../components/Card'
-import {GameWrap, Progress, MatchItem} from '../../components/Game'
+import {GameWrap, Progress, MatchItem} from '../../components/GameItem'
 import {Row, Col, Wrap} from '../../components/Grid'
 
 export class Module3 extends Component {

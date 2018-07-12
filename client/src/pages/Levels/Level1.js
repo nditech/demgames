@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {GameWrap, Progress, MatchItem} from '../../components/Game'
+import {GameWrap, Progress, MatchItem} from '../../components/GameItem'
 import {Card} from '../../components/Card'
 // import {List, ListItem} from '../../components/List'
 import {Row, Col, Wrap} from '../../components/Grid'
