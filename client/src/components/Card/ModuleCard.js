@@ -1,10 +1,11 @@
 import React from 'react'
+import './Card.css'
 
 export const ModuleCard = ({href, title}) => (
-    <div className={`card m-0`}>
+    <div className={`card module-card`}>
         <a href={href}>
-            <div>
-                <p><b>{title}</b></p>
+            <div className="card-text text-center">
+                <b>{title}</b>
             </div>
         </a>
     </div>

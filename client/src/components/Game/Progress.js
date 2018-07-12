@@ -1,21 +1,20 @@
 import React from 'react'
-import './Progress.css'
+import './Game.css'
 
-export const Progress = ({level, title, text, togo, num, complete}) => (
+export const Progress = ({level, title, togo, num, complete, next}) => (
     <div>
         <div className={`row level-top bg-${level}`}>
-            <div className="align-self-center col-sm-12 col-md-10 col-lg-10 pr-0">
-                <p><b>{title}</b></p>
-                <p><small>{text}</small></p>
+            <div className="col-sm-12 col-md-10 col-lg-10 px-2 mt-2 score-board">
+                <div><b>{title}</b></div>
                 {togo !== 0
-                    ? (<p className="text-center"><span className="display-4">{togo}</span>{togo > 1 ? ` questions remaining` : ` left!`}</p>)
-                    : (<p className="text-center"><span className="display-4">Yay! All done!</span></p>)
+                    ? (<div className="text-center"><span className="display-4">{togo}</span>{togo > 1 ? ` questions remaining` : ` left!`}</div>)
+                    : (<div className="text-center"><span className="display-4">Yay! All done!</span></div>)
                 }
             </div>
             {complete
                 ? (
-                    <div className="col align-self-center text-center">
-                        <button type="button" className="btn btn-sm">Next</button>
+                    <div className="col text-center mb-1">
+                        <a href={next} className="btn btn-sm" role="button" aria-disabled="true">Next</a>
                     </div>
                 )
                 : ('')
@@ -24,5 +23,6 @@ export const Progress = ({level, title, text, togo, num, complete}) => (
         <div className="progress">
             <div className="progress-bar progress-bar-striped bg-success" role="progressbar" style={{width: `${num}%`}} aria-valuenow={num} aria-valuemin="0" aria-valuemax="100"></div>
         </div>
+        
     </div>
 )

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Progress, MatchItem} from '../../components/Game'
+import {GameWrap, Progress, MatchItem} from '../../components/Game'
 import {Card} from '../../components/Card'
 // import {List, ListItem} from '../../components/List'
 import {Row, Col, Wrap} from '../../components/Grid'
@@ -82,14 +82,15 @@ export class Level1 extends Component {
 
     render() {
         return (
-            <div>
+            <Wrap>
+            <GameWrap backURL="/module1">
                 <Progress
                     level="level1"
                     title="LEVEL 1"
-                    text="Curabitur cursus nisi a magna semper lobortis."
                     togo={this.state.questions.length}
                     num={this.state.progress}
                     complete={this.state.complete}
+                    next='/level2'
                 />
                 {this.state.questions.length 
                     ? (
@@ -129,10 +130,8 @@ export class Level1 extends Component {
                     )
                     : ('No answers to display')                        
                 }
-                <div className="ml-2">
-                <BackBtn/>
-                </div>
-            </div>
+            </GameWrap>
+            </Wrap>
         )
     }
 }

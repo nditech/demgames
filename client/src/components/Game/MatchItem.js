@@ -1,5 +1,5 @@
 import React from 'react'
-import './MatchItem.css'
+import './Game.css'
 
 export const MatchItem = ({id, type, name, text, handleClick, selectedQ, selectedA}) => (
     <div className={`mb-2 ${type === 'answer'? ('col-10 col-md-6 p-0') : ('col p-0')}`}>

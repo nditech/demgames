@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Jumbotron from '../../components/Jumbotron';
+import React, { Component } from 'react'
+import {GameWrap, Progress, MatchItem} from '../../components/Game'
 import {Card} from '../../components/Card';
 import Footer from '../../components/Footer';
 import API from '../../utils/API';
@@ -9,9 +9,14 @@ import {List} from '../../components/List';
 export class Level3 extends Component {
     render() {
         return (
-            <div>
-                <p>This is level 3</p>
-            </div>
+            <GameWrap backURL="/module1">
+                <div className="text-center">
+                    <h1>This is level 3</h1>
+                    <h1>🚧</h1>
+                    <h1>Under construction</h1>
+                    <h1>👷</h1>
+                </div>
+            </GameWrap>
         )
     }
 }

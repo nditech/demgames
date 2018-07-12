@@ -3,6 +3,8 @@ import './Wrap.css'
 
 export const Wrap = ({children}) => (
     <div className="wrap">
-        {children}
+        <div className="phone-wrap">
+            {children}
+        </div>
     </div>
 )

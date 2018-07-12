@@ -10,6 +10,7 @@ class Home extends Component {
 
     render() {
         return (
+            <Wrap>
             <div className="home-page text-center">
                 <div className="pt-3">
                     <img src={NDIlogo} className="ndi-logo"/>
@@ -26,6 +27,7 @@ class Home extends Component {
                     </div>
                 </div>
             </div>
+            </Wrap>
         )
     }
 }
