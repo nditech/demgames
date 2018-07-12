@@ -11,7 +11,7 @@ export class GameWrap extends Component {
         return (
             <div className="game-wrap">
                 <div className="game-push">
-                {this.props.children}
+                    {this.props.children}
                 </div>
                 <div className="game-footer">
                     <div className="game-footer-content">

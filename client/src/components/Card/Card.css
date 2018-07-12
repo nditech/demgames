@@ -14,25 +14,37 @@
     height: 100%;
 }
 
-.level-card {
+/* .level-card {
     width: 100%;
     font-size: 1.5em;
     border: none;
     flex: 1;
+} */
+
+.level-card {
+    font-size: 1.5em;
+    background: #F38051;
+    margin-bottom: 2em;
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, .2);
 }
 
-.level-card > a:hover {
+.level-card > a {
+    color: #fff;
+    padding: 3em 0;
+}
+
+/* .level-card > a:hover {
     color: #FFF;
-}
+} */
 
-.level-card > .card-text {
+/* .level-card > .card-text {
     position: absolute;
     width: 100%;
     height: 100%;
     color: #fff;
-}
+} */
 
-.level1 {
+.module1 {
     background: url(../../img/level1.png) no-repeat center; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -40,7 +52,7 @@
     background-size: cover;
 }
 
-.level2 {
+.module2 {
     background: url(../../img/level2.png) no-repeat center; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -48,7 +60,7 @@
     background-size: cover;
 }
 
-.level3 {
+.module3 {
     background: url(../../img/level3.png) no-repeat center; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -56,17 +68,30 @@
     background-size: cover;
 }
 
-.module-card {
+/* .module-card {
     font-size: 1.5em;
     background: #F38051;
     margin-bottom: 20px;
     box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, .2);
+} */
+
+.module-card {
+    width: 100%;
+    font-size: 1.5em;
+    border: none;
+    flex: 1;
 }
 
 .module-card > a {
+    color: #fff;
+    height: 100%;
+    padding-top: 30%;
+}
+
+/* .module-card > a {
     padding: 2em 0;
 }
 
 .module-card > a > .card-text {
     color: #fff;
-}
+} */

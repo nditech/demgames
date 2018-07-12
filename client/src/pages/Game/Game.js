@@ -14,15 +14,21 @@ class Game extends Component {
                 <div className="game-page">
                     <ModuleCard
                         href="/module1"
+                        module="module1"
                         title="Designing an Argument"
+                        textBg="blue"
                     />
                     <ModuleCard
                         href="/module2"
+                        module="module2"
                         title="Finding Evidence"
+                        textBg="green"
                     />
                     <ModuleCard
                         href="/module3"
+                        module="module3"
                         title="Finding Flaws in Arguments"
+                        textBg="peach"
                     />
                 </div>
             </GameWrap>
