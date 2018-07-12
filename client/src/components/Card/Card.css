@@ -10,6 +10,10 @@
     background: rgb(243, 128, 81, 0.75);
 }
 
+.card {
+    height: 100%;
+}
+
 .level-card {
     width: 100%;
     font-size: 1.5em;
