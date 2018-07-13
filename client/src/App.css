@@ -34,12 +34,14 @@ a > img:hover {
 }
 
 .item-group {
+    margin: 2vh 0;
     width: 100%;
     overflow: scroll;
 }
 
 .module-page {
-    padding-top: 20%;
+    z-index: -1;
+    padding-top: 2vh;
 }
 
 /*

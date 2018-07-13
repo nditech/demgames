@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const List = ({children}) => (
-    <div className="row flex-row flex-nowrap item-group my-5 mx-0 p-0">
+    <div className="row flex-row flex-nowrap item-group mx-0 p-0">
         {children}
     </div>
 )

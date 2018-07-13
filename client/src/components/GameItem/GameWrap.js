@@ -10,16 +10,20 @@ export class GameWrap extends Component {
     render = () => {
         return (
             <div className="game-wrap">
-                <div className="game-push">
+                <div className="game-wrap-child">
                     {this.props.children}
                 </div>
                 <div className="game-footer">
-                    <div className="game-footer-content">
-                        <div className="ml-4 float-left">
+                    <div className="row m-0 p-0 game-footer-content">
+                        <div className="col-6">
+                            <div className="row justify-content-center">
                             <BackBtn backURL={this.props.backURL}/>
+                            </div>
                         </div>
-                        <div className="mr-4 float-right">
+                        <div className="col-6">
+                            <div className="row justify-content-center">
                             <InfoBtn/>
+                            </div>
                         </div>    
                     </div>
                 </div>
