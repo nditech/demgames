@@ -30,8 +30,8 @@ app.listen(PORT, () =>
 // ========================= REMOVE THE BELOW CODE IN PRODUCTION
 const fs = require('fs')
 
-// let data = fs.readFileSync('./test/g4g.json', 'utf8')
-let data = fs.readFileSync('./test/g4g-spanish.json', 'utf8')
+let data = fs.readFileSync('./test/g4g.json', 'utf8')
+// let data = fs.readFileSync('./test/g4g-spanish.json', 'utf8')
 data = JSON.parse(data)
 
 // remove all current records
