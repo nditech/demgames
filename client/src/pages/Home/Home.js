@@ -20,9 +20,9 @@ class Home extends Component {
                         <h2><b>DemGame - Debate</b></h2>
                     </div>
                     <div className="input-group">
-                        <input type="text" className="form-control" placeholder="Phone number" aria-label="Phone number" aria-describedby="basic-addon2"/>
+                        <input type="text" className="form-control" placeholder="Número de telefono" aria-label="Phone number"/>
                         <div className="input-group-append">
-                            <a href="/game"><button className="btn" type="button">SIGN IN</button></a>
+                            <a href="/game"><button className="btn" type="button">Iniciar sesión</button></a>
                         </div>
                     </div>
                 </div>

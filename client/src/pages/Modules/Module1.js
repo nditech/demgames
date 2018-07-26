@@ -15,19 +15,19 @@ export class Module1 extends Component {
                     <LevelCard
                         level="level1"
                         href="/level1"
-                        title="LEVEL 1"
+                        title="Nivel 1"
                         textBg="blue"
                     />
                     <LevelCard
                         level="level2"
                         href="/module1"
-                        title="LEVEL 2"
+                        title="Nivel 2"
                         textBg="green"
                     />
                     <LevelCard
                         level="level3"
                         href="/module1"
-                        title="LEVEL 3"
+                        title="Nivel 3"
                         textBg="peach"
                     />
                 </div>

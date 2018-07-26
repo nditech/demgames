@@ -86,7 +86,7 @@ export class Level1 extends Component {
             <GameWrap backURL="/module1">
                 <Progress
                     level="level1"
-                    title="LEVEL 1"
+                    title="Nivel 1"
                     togo={this.state.questions.length}
                     num={this.state.progress}
                     complete={this.state.complete}

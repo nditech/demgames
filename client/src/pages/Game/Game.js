@@ -16,19 +16,19 @@ class Game extends Component {
                     <ModuleCard
                         href="/module1"
                         module="module1"
-                        title="Designing an Argument"
+                        title="Diseñando un argumento"
                         colour="blue"
                     />
                     <ModuleCard
                         href="/game"
                         module="module2"
-                        title="Finding Evidence"
+                        title="Encontrando evidencia"
                         colour="green"
                     />
                     <ModuleCard
                         href="/game"
                         module="module3"
-                        title="Finding Flaws in Arguments"
+                        title="Encontrando defectos en los argumentos"
                         colour="peach"
                     />
                 </div>
