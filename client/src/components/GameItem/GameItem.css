@@ -86,9 +86,3 @@
     border-radius: 0.5em;
     box-shadow: 5px 5px 5px 0px rgba(0, 93, 171, .5);
 }
-
-@media screen and (min-width: 1023px) {
-    .level-top {
-        padding: 0 8em;
-    }
-}
