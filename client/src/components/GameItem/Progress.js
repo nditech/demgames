@@ -4,7 +4,7 @@ import './GameItem.css'
 const displayNum = n => {
     if (n !== 0) {
         if (n > 1) return (<div className="text-center">Quedan <span className="display-4">{n}</span> preguntas</div>)
-        else return (<div className="text-center">Quedan <span className="display-4">{n}</span> left</div>)
+        else return (<div className="text-center"><span className="display-4">{n}</span> pregunta más</div>)
     }
     else return ''
 }

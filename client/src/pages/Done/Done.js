@@ -14,8 +14,8 @@ class Done extends Component {
                 <GameWrap backURL="/game">
                     <div className="row p-0 m-0 align-items-center done-page text-center">
                         <div className="col m-0 p-0">
-                            <h3 className="m-0">CONGRATULATIONS!</h3>
-                            <p><small>YOU'VE FINISHED THE GAME!</small></p>
+                            <h3 className="m-0">¡FELICIDADES!</h3>
+                            <p><small>¡Has terminado el juego!</small></p>
                         </div>
                     </div>
                 </GameWrap>
