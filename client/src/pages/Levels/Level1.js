@@ -109,7 +109,7 @@ export class Level1 extends Component {
                             ))}
                         </List>
                     )
-                    : ('No questions to display')                        
+                    : ('')                        
                 }
                 {this.state.answers.length 
                     ? (
@@ -128,7 +128,7 @@ export class Level1 extends Component {
                             ))}
                         </List>
                     )
-                    : ('No answers to display')                        
+                    : ('')                        
                 }
             </GameWrap>
             </Wrap>
