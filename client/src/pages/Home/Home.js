@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
-import {Container, Row, Col, Wrap} from '../../components/Grid'
+import {Wrap} from '../../components/Grid'
 import NDIlogo from '../../img/ndi-logo.png'
 import './Home.css'
-import API from '../../utils/API'
+// import API from '../../utils/API'
 
 class Home extends Component {
     state = {
@@ -13,7 +13,7 @@ class Home extends Component {
             <Wrap>
             <div className="home-page text-center">
                 <div className="pt-3">
-                    <img src={NDIlogo} className="ndi-logo"/>
+                    <img src={NDIlogo} alt="ndi logo" className="ndi-logo"/>
                 </div>
                 <div className="login-box">
                     <div className="my-5">

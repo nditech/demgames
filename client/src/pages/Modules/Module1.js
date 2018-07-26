@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {LevelCard, CardGroup} from '../../components/Card'
+import {LevelCard} from '../../components/Card'
 import {GameWrap} from '../../components/GameItem'
-import {Row, Col, Wrap} from '../../components/Grid'
+import {Wrap} from '../../components/Grid'
 
 export class Module1 extends Component {
     state = {
@@ -20,13 +20,13 @@ export class Module1 extends Component {
                     />
                     <LevelCard
                         level="level2"
-                        href="/level2"
+                        href="/module1"
                         title="LEVEL 2"
                         textBg="green"
                     />
                     <LevelCard
                         level="level3"
-                        href="/level3"
+                        href="/module1"
                         title="LEVEL 3"
                         textBg="peach"
                     />

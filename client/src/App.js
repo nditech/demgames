@@ -7,6 +7,7 @@ import {Level1, Level2, Level3} from './pages/Levels'
 import User from './pages/User'
 import Game from './pages/Game'
 import NoMatch from './pages/NoMatch'
+import Done from './pages/Done'
 import './App.css'
 
 const App = () =>
@@ -21,6 +22,7 @@ const App = () =>
             <Route exact path="/level2" component={Level2} />
             <Route exact path="/level3" component={Level3} />
             <Route exact path="/user" component={User} />
+            <Route exact path="/done" component={Done} />
             <Route component={NoMatch} />
         </Switch>
     </Router>

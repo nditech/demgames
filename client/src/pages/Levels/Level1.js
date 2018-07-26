@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import {GameWrap, Progress, MatchItem} from '../../components/GameItem'
-import {Card} from '../../components/Card'
+// import {Card} from '../../components/Card'
 // import {List, ListItem} from '../../components/List'
-import {Row, Col, Wrap} from '../../components/Grid'
-import {List, ListItem} from '../../components/HorizontalList'
-import {BackBtn} from '../../components/Button'
+import {Wrap} from '../../components/Grid'
+import {List} from '../../components/HorizontalList'
+// import {BackBtn} from '../../components/Button'
 import API from '../../utils/API'
 
 export class Level1 extends Component {
@@ -90,7 +90,7 @@ export class Level1 extends Component {
                     togo={this.state.questions.length}
                     num={this.state.progress}
                     complete={this.state.complete}
-                    next='/level2'
+                    next='/done'
                 />
                 {this.state.questions.length 
                     ? (

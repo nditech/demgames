@@ -3,10 +3,6 @@ import {BackBtn, InfoBtn} from '../Button'
 import './GameItem.css'
 
 export class GameWrap extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render = () => {
         return (
             <div className="game-wrap">

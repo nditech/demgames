@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
-import {ModuleCard, CardGroup} from '../../components/Card'
+import {ModuleCard} from '../../components/Card'
 import {GameWrap} from '../../components/GameItem'
-import {Row, Col, Wrap} from '../../components/Grid'
-import {BackBtn, InfoBtn} from '../../components/Button'
+import {Wrap} from '../../components/Grid'
+// import {BackBtn, InfoBtn} from '../../components/Button'
 
 class Game extends Component {
     state = {
@@ -20,13 +20,13 @@ class Game extends Component {
                         colour="blue"
                     />
                     <ModuleCard
-                        href="/module2"
+                        href="/game"
                         module="module2"
                         title="Finding Evidence"
                         colour="green"
                     />
                     <ModuleCard
-                        href="/module3"
+                        href="/game"
                         module="module3"
                         title="Finding Flaws in Arguments"
                         colour="peach"
