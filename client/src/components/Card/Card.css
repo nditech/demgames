@@ -61,7 +61,7 @@
     flex: 1;
 }
 
-.module-card > a {
+.module-card > .module-card-title {
     color: #fff;
     top: 40%;
     width: 100%;
