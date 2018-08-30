@@ -21,4 +21,5 @@ export const GameInfo = () => (
 <p>Match the right term with the right definition.</p>
 <p>Enjoy the game.</p>
 <p className="small">Click on Info Button again to close</p>
+
  */
