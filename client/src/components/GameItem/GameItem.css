@@ -28,7 +28,30 @@
     bottom: 3vh;
     width: 100%;
     max-width: 425px;
-    /* height: 50px; */
+}
+
+.game-info {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    position: absolute;
+    z-index: 97;
+    max-width: 425px;
+}
+
+.game-info-content {
+    top: 25vh;
+    position: absolute;
+    z-index: 99;
+    width: 100%;
+}
+
+.game-info-bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 98;
+    background: rgba(255, 255, 255, .95);
 }
 
 .game-push {
@@ -44,10 +67,6 @@
     z-index: -1;
     height: 100%;
     width: 100%;
-}
-
-.level-top {
-    /* min-height: 160px; */
 }
 
 .level-top, .level-top > .col {
@@ -67,7 +86,6 @@
 .qna {
     width: 100%;
     height: 100%;
-    /* padding: 1em; */
     display: flex;
     justify-content: center;
     flex-direction: column;
