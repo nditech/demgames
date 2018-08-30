@@ -3,11 +3,11 @@
 </h1>
 
 <h1 align="center">
-  Game 4 Good - Debate
+  DemGames - Debate
 </h1>
 
 <p align="center">
-  <a href="https://github.com/nditech/Politifilter2/blob/master/LICENSE">
+  <a href="https://github.com/nditech/demgames-debate/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-red.svg" alt="License"/>
   </a>
   <a href="https://docs.mongodb.com/">
@@ -42,8 +42,8 @@ A full stack (MERN) app that helps users learn how to debate effectively.
 
 Make sure you have [Node.js](https://nodejs.org/en/download/package-manager/) and [Yarn](https://yarnpkg.com/en/docs/install#mac-stable) on your machine. Clone this repository to your local machine (using SSH):
 ```
-$ git clone git@github.com:nditech/g4g-debate.git
-$ cd g4g-debate
+$ git clone git@github.com:nditech/demgames-debate.git
+$ cd demgames-debate
 $ yarn install
 $ cd client
 $ yarn install
