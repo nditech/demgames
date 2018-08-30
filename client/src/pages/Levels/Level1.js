@@ -5,7 +5,13 @@ import {GameWrap, Progress, MatchItem} from '../../components/GameItem'
 import {Wrap} from '../../components/Grid'
 import {List} from '../../components/HorizontalList'
 // import {BackBtn} from '../../components/Button'
-import API from '../../utils/API'
+// import API from '../../utils/API'
+
+/**
+ * Temporary data for AWS S3
+ * Return to question._id when full stack
+ */
+import data from '../../g4g-spanish.json';
 
 export class Level1 extends Component {
     constructor(props) {
@@ -42,13 +48,19 @@ export class Level1 extends Component {
     }
 
     componentDidMount() {
-        API.getQuesitons()
-        .then(res => {
-            const   questions = res.data,
-                    answers = this.shuffleData([...questions]),
-                    total = questions.length
-            this.setState({questions, answers, total})
-        })
+        const questions = data;
+        const answers = this.shuffleData([...questions]);
+        const total = questions.length;
+        this.setState({questions, answers, total});
+
+
+        // API.getQuesitons()
+        // .then(res => {
+        //     const   questions = res.data,
+        //             answers = this.shuffleData([...questions]),
+        //             total = questions.length
+        //     this.setState({questions, answers, total})
+        // })
     }
 
     handleQAClick = (type, id) => {
@@ -69,7 +81,7 @@ export class Level1 extends Component {
     // check if a match
     checkQA = (a, b) => {
         if ((a !== '') && (a === b)) {
-            const   questions = this.state.questions.filter(q => q._id !== b),
+            const   questions = this.state.questions.filter(q => q.question !== b),
                     answers = this.shuffleData([...questions]),
                     total = this.state.total,
                     progress = ((total - questions.length) * 100 / total).toString()
@@ -97,9 +109,9 @@ export class Level1 extends Component {
                         <List>
                             {this.state.questions.map(question => (
                                 <MatchItem
-                                    key={question._id}
-                                    id={question._id}
-                                    name={`q-${question._id}`}
+                                    key={question.question}
+                                    id={question.question}
+                                    name={`q-${question.question}`}
                                     type="question"
                                     text={question.question}
                                     handleClick={this.handleQAClick}
@@ -116,9 +128,9 @@ export class Level1 extends Component {
                         <List>
                             {this.state.answers.map(answer => (
                                 <MatchItem
-                                    key={answer._id}
-                                    id={answer._id}
-                                    name={`a-${answer._id}`}
+                                    key={answer.question}
+                                    id={answer.question}
+                                    name={`a-${answer.question}`}
                                     type="answer"
                                     text={answer.option1}
                                     handleClick={this.handleQAClick}
