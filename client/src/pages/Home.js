@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import {Wrap} from '../../components/Grid'
-import NDIlogo from '../../img/ndi-logo.png'
+import {Wrap} from '../components/Grid'
+import NDIlogo from '../img/ndi-logo.png'
 // import API from '../../utils/API'
 
-class Home extends Component {
+export class Home extends Component {
     state = {
     }
 
@@ -30,5 +30,3 @@ class Home extends Component {
         )
     }
 }
-
-export default Home

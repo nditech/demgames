@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
-import {Wrap} from '../../components/Grid'
-import {GameWrap} from '../../components/GameItem'
-import cup from '../../img/cup.png'
+import {Wrap} from '../components/Grid'
+import {GameWrap} from '../components/GameItem'
+import cup from '../img/cup.png'
 // import photo from '../../img/done.png'
 // import API from '../../utils/API'
 
-class Done extends Component {
+export class Done extends Component {
     state = {
     }
 
@@ -25,5 +25,3 @@ class Done extends Component {
         )
     }
 }
-
-export default Done

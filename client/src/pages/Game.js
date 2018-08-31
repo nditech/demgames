@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import {ModuleCard} from '../../components/Card'
-import {GameWrap} from '../../components/GameItem'
-import {Wrap} from '../../components/Grid'
+import {ModuleCard} from '../components/Card'
+import {GameWrap} from '../components/GameItem'
+import {Wrap} from '../components/Grid'
 // import {BackBtn, InfoBtn} from '../../components/Button'
 
-class Game extends Component {
+export class Game extends Component {
     state = {
     }
 
@@ -52,5 +52,3 @@ class Game extends Component {
         )
     }
 }
-
-export default Game
