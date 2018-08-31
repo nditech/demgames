@@ -1,5 +1,4 @@
-import React from 'react'
-import './Wrap.css'
+import React from 'react';
 
 export const Wrap = ({children}) => (
     <div className="wrap">
@@ -7,4 +6,4 @@ export const Wrap = ({children}) => (
             {children}
         </div>
     </div>
-)
+);

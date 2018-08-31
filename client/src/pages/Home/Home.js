@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Wrap} from '../../components/Grid'
 import NDIlogo from '../../img/ndi-logo.png'
-import './Home.css'
 // import API from '../../utils/API'
 
 class Home extends Component {

@@ -1,5 +1,4 @@
 import React from 'react'
-import './GameItem.css'
 
 const displayNum = n => {
     if (n !== 0) {

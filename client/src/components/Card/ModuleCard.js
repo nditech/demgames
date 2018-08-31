@@ -1,5 +1,4 @@
-import React from 'react'
-import './Card.css'
+import React from 'react';
 
 export const ModuleCard = ({href, module, colour, title}) => (
     <a href={href} className={`card module-card`}>
@@ -7,4 +6,4 @@ export const ModuleCard = ({href, module, colour, title}) => (
         <div className={`module-glass glass-${colour}`}></div>
         <div className={`module-bg ${module}`}></div>
     </a>
-)
+);

@@ -1,5 +1,4 @@
-import React from 'react'
-import './Card.css'
+import React from 'react';
 
 export const LevelCard = ({level, href, textBg, title}) => (
     <div className={`card level-card text-center ${level}`}>
@@ -7,4 +6,4 @@ export const LevelCard = ({level, href, textBg, title}) => (
             <b>{title}</b>
         </a>
     </div>
-)
+);

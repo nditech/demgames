@@ -1,5 +1,4 @@
 import React from 'react'
-import './Button.css'
 
 export const BackBtn = ({backURL}) => (
     <a href={`${backURL}`}>

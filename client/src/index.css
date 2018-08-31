@@ -1,0 +1,315 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css?family=Raleway:400');
+
+@import url('./components/Button/Button.css');
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+#root {
+    height: 100%;
+}
+
+a, a:hover {
+    text-decoration: none
+}
+
+a > img {
+    opacity: 0.7;
+    filter: alpha(opacity=70); /* For IE8 and earlier */
+}
+
+a > img:hover {
+    opacity: 1.0;
+    filter: alpha(opacity=100); /* For IE8 and earlier */
+}
+
+.done-cup > img {
+    max-width: 200px;
+}
+
+.done-page {
+    height: 100%;
+    background-color: #3498db;
+    color: #fff;
+}
+
+.game-page {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: -1;
+}
+
+.item-group {
+    margin: 2vh 0;
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.level-card {
+    font-size: 1.5em;
+    background: #F38051;
+    margin-bottom: 2vh;
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, .2);
+}
+
+.level-card > a {
+    color: #fff;
+}
+
+.module-page {
+    z-index: -1;
+    padding-top: 2vh;
+}
+
+.card {
+    height: 100%;
+}
+
+.glass-blue {
+    background: rgba(0, 93, 171, 0.75);
+}
+
+.glass-green {
+    background: rgba(52, 155, 5, 0.75);
+}
+
+.glass-peach {
+    background: rgb(243, 128, 81, 0.75);
+}
+
+.module1 {
+    background: url('./img/level1.png') no-repeat center; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.module2 {
+    background: url('./img/level2.png') no-repeat center; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.module3 {
+    background: url('./img/level3.png') no-repeat center; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.module-bg {
+    width: 100%;
+    height: 100%;
+}
+
+.module-card {
+    width: 100%;
+    font-size: 1.5em;
+    border: none;
+    flex: 1;
+}
+
+.module-card > .module-card-title {
+    color: #fff;
+    top: 40%;
+    width: 100%;
+    position: absolute;
+    z-index: 3;
+}
+
+.module-glass {
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    position: absolute;
+}
+
+.wrap {
+    width: 100%;
+    height: 100%; 
+}
+
+.phone-wrap {
+    height: 100%;
+    width: 100%;
+    max-width: 425px;
+    margin: 0 auto;
+    background: #fff;
+}
+
+.bg-level1 {
+    background: linear-gradient(rgba(0, 93, 171, 0.75), rgba(0, 93, 171, 0.75)), url("./img/level1.png") no-repeat center;
+    color: #fff;
+    background-size: cover;
+    min-height: 130px;
+}
+
+.bg-level1 > div > .btn {
+    background-color: #349B52;
+    color: white;
+}
+
+.bg-level1 > div > .btn:hover {
+    color: #F38051;
+}
+
+.bg-level2 {
+    background-image: url("./img/level2.png");
+}
+
+.bg-level3 {
+    background-image: url("./img/level3.png");
+}
+
+.game-footer {
+    z-index: 100;
+    position: absolute;
+    bottom: 3vh;
+    width: 100%;
+    max-width: 425px;
+}
+
+.game-info {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    position: absolute;
+    z-index: 97;
+    max-width: 425px;
+}
+
+.game-info-content {
+    top: 25vh;
+    position: absolute;
+    z-index: 99;
+    width: 100%;
+}
+
+.game-info-bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 98;
+    background: rgba(255, 255, 255, .95);
+}
+
+.game-push {
+    z-index: 1;
+}
+
+.game-wrap {
+    width: 100%;
+    height: 100%;
+}
+
+.game-wrap-child {
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+}
+
+.level-top, .level-top > .col {
+    margin: 0;
+    padding: 0;
+}
+
+.match-item {
+    border-radius: 0.5em;
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, .2);
+}
+
+.notification {
+    width: 100%;
+}
+
+.qna {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.selected-answer {
+    color: #fff;
+    background-color: #F38051;
+    border-radius: 0.5em;
+    box-shadow: 5px 5px 5px 0px rgba(243, 128, 81, .5);
+}
+
+.selected-question {
+    color: #fff;
+    background-color: #005DAB;
+    border-radius: 0.5em;
+    box-shadow: 5px 5px 5px 0px rgba(0, 93, 171, .5);
+}
+
+.input-group {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.input-group > input:focus {
+    background-color: #349B52;
+    color: #fff;
+}
+
+.input-group-append > a > .btn {
+    background-color: #005DAB;
+    color: #fff;
+}
+
+.input-group-append > a > .btn:hover {
+    color: #F38051;
+}
+
+/* .login-box {
+    background: linear-gradient(rgba(243, 128, 81, 0.75), rgba(243, 128, 81, 0.75)), url("../../img/g4g.png") no-repeat center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
+} */
+
+.home-page {
+    background-color: #124C89;
+    background-image: -webkit-repeating-linear-gradient(-35deg,rgba(255,255,255,0),rgba(255,255,255,0) 3px,rgba(255,255,255,0.05) 3px,rgba(255,255,255,0.05) 4px);
+    height: 100%;
+    color: #fff;
+}
+
+.login-box {
+    max-width: 425px;
+    margin: 0 auto;
+    top: 50%;
+}
+
+.material-icons.my-3 {
+    color: #005DAB;
+    font-size: 100px;
+}
+
+.ndi-logo {
+    width: 200px;
+}
+
+/*
+Peach: #F38051
+Blue: #005DAB
+Green: #349B52
+*/

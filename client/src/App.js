@@ -8,7 +8,7 @@ import User from './pages/User'
 import Game from './pages/Game'
 import NoMatch from './pages/NoMatch'
 import Done from './pages/Done'
-import './App.css'
+
 
 const App = () =>
     <Router>

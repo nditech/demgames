@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {BackBtn, InfoBtn} from '../Button';
 import {GameInfo} from '../GameItem';
-import './GameItem.css';
 
 export class GameWrap extends Component {
     constructor(props) {
