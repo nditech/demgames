@@ -3,7 +3,7 @@ const questionController = require('../../controllers/questionController');
 
 // Matches with "/api/questions"
 router.route('/')
-.get(questionController.findAll)
+.get(questionController.findAll);
 // .post(questionController.createMultiple)
 
 // Matches with "/api/articles/:id"
@@ -13,4 +13,4 @@ router.route('/')
 // .put(articleController.update)
 // .delete(articleController.remove);
 
-module.exports = router
+module.exports = router;

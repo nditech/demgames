@@ -1,12 +1,11 @@
-const db = require('../models')
-const fs = require('fs')
+const db = require('../models');
+const fs = require('fs');
 
-// Defining methods for the articleController
+// Defining methods for the questionController
 module.exports = {
     findAll: (req, res) => {
         db.Question
-        .find(req.query)
-        .sort({ date: -1 })
+        .find()
         .then(dbQuestion => res.json(dbQuestion))
         .catch(err => res.status(422).json(err));
     }

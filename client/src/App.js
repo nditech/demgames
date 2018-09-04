@@ -7,12 +7,13 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 // import Game from './pages/Game';
 // import NoMatch from './pages/NoMatch';
 // import Done from './pages/Done';
-import {Home, Game, Module1, Module2, Module3, Level1, Level2, Level3, User, Done, NoMatch} from './pages';
+import {Admin, Home, Game, Module1, Module2, Module3, Level1, Level2, Level3, User, Done, NoMatch} from './pages';
 
 const App = () =>
     <Router>
         <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/admin" component={Admin} />
             <Route exact path="/game" component={Game} />
             <Route exact path="/module1" component={Module1} />
             <Route exact path="/module2" component={Module2} />

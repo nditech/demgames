@@ -1,3 +1,4 @@
+export * from './Admin';
 export * from './Done';
 export * from './Game';
 export * from './Home';

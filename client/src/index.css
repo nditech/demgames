@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:400');
 
 @import url('./components/Button/Button.css');
+@import url('./css/Admin.css');
 
 html {
     height: 100%;

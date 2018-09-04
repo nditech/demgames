@@ -1,0 +1,14 @@
+/* CSS for Admin Page */
+
+.ReactTags__tagInput {
+    margin-top: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    padding: .3rem .3rem;
+}
+
+.ReactTags__tag {
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    padding: .3rem .3rem;
+}
