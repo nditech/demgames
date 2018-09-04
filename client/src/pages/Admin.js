@@ -4,11 +4,19 @@ import {Button, FormGroup, Label, Input} from 'reactstrap';
 import ReactDOM from 'react-dom';
 import { WithContext as ReactTags } from 'react-tag-input';
 import API from '../utils/API';
+import Select from 'react-select';
+import makeAnimated from 'react-select/lib/animated';
 
 const KeyCodes = {
     comma: 188,
     enter: 13,
 };
+
+const colourOptions = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+]
    
 const delimiters = [KeyCodes.comma, KeyCodes.enter];  
 
@@ -18,30 +26,30 @@ export class Admin extends Component {
         this.state = {
             questions: [],
             tags: [
-                { id: "Thailand", text: "Thailand" },
-                { id: "India", text: "India" }
+                { id: "English", text: "English" }
             ],
             suggestions: [
-                { id: 'USA', text: 'USA' },
-                { id: 'Germany', text: 'Germany' },
-                { id: 'Austria', text: 'Austria' },
-                { id: 'Costa Rica', text: 'Costa Rica' },
-                { id: 'Sri Lanka', text: 'Sri Lanka' },
-                { id: 'Thailand', text: 'Thailand' }
-            ]
+                { id: 'Guatemala', text: 'Guatemala' },
+                { id: 'debate', text: 'debate' },
+                { id: 'Spanish', text: 'Spanish' },
+                { id: 'English', text: 'English' }
+            ],
+            selectedOption: null
         };
         this.handleDelete = this.handleDelete.bind(this);
         this.handleAddition = this.handleAddition.bind(this);
         this.handleDrag = this.handleDrag.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
-        API.getQuesitons()
-        .then(res => {
-            const questions = res.data;
-            this.setState({questions});
-            console.log(this.state);
-        });
+        // API.getQuesitons()
+        // .then(res => {
+        //     const questions = res.data;
+        //     this.setState({questions});
+        //     console.log(this.state);
+        // });
     }
 
     handleDelete(i) {
@@ -53,6 +61,7 @@ export class Admin extends Component {
  
     handleAddition(tag) {
         this.setState(state => ({ tags: [...state.tags, tag] }));
+        this.handleSearch();
     }
  
     handleDrag(tag, currPos, newPos) {
@@ -65,7 +74,23 @@ export class Admin extends Component {
         // re-render
         this.setState({ tags: newTags });
     }
-    
+
+    handleSearch() {
+        const tags = this.state.tags;
+        const params = tags.map(t => t.text.toLowerCase());
+        console.log(params);
+        // console.log(values);
+        API.getQuesitons(params)
+        .then(res => {
+            console.log(res.data);
+        })
+    }
+
+    handleChange = (selectedOption) => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
+    }
+
     render() {
         const { tags, suggestions } = this.state;
         return (
@@ -81,6 +106,14 @@ export class Admin extends Component {
                     handleAddition={this.handleAddition}
                     handleDrag={this.handleDrag}
                     delimiters={delimiters} />
+                <Select
+                closeMenuOnSelect={false}
+                components={makeAnimated()}
+                defaultValue={[colourOptions[4], colourOptions[5]]}
+                isMulti
+                options={colourOptions}
+                onChange={this.handleChange}
+                />
             </Wrap>
         )
     }
