@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {Wrap} from '../components/Grid';
-import {Button, FormGroup, Label, Input} from 'reactstrap';
+// import {Button, FormGroup, Label, Input} from 'reactstrap';
 import ReactDOM from 'react-dom';
 import { WithContext as ReactTags } from 'react-tag-input';
 import API from '../utils/API';
 import Select from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 export class Admin extends Component {
     constructor(props) {
@@ -21,13 +22,15 @@ export class Admin extends Component {
                 { id: 'Spanish', text: 'Language: Spanish' },
                 { id: 'English', text: 'Language: English' }
             ],
-            selectedOption: null
+            selectedOption: null,
+            openHelp: false
         };
         this.handleDelete = this.handleDelete.bind(this);
         this.handleAddition = this.handleAddition.bind(this);
         this.handleDrag = this.handleDrag.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.openHelp = this.openHelp.bind(this);
     }
 
     handleDelete(i) {
@@ -53,6 +56,10 @@ export class Admin extends Component {
         this.setState({ tags: newTags });
     }
 
+    handleTagClick(index) {
+        console.log('The tag at index ' + index + ' was clicked');
+    }
+
     handleSearch() {
         const tags = this.state.tags;
         const params = tags.map(t => t.text.toLowerCase());
@@ -69,16 +76,19 @@ export class Admin extends Component {
         console.log(`Option selected:`, selectedOption);
     }
 
+    openHelp() {
+        this.setState({
+            openHelp: !this.state.openHelp
+        });
+    }
+
     render() {
         const { tags, suggestions } = this.state;
         return (
             <Wrap>
                 This is Admin Page
-                <FormGroup>
-                    <Input type="search" name="search" placeholder="Search" />
-                    <Button outline color="success">Search</Button>
-                </FormGroup>
                 <ReactTags
+                    placeholder={'Type to search, e.g. language'}
                     tags={tags}
                     suggestions={suggestions}
                     handleDelete={this.handleDelete}
@@ -86,6 +96,16 @@ export class Admin extends Component {
                     handleDrag={this.handleDrag}
                     handleTagClick={this.handleTagClick}
                 />
+                <i className="material-icons" onClick={this.openHelp}>help</i>
+                <Modal isOpen={this.state.openHelp} toggle={this.openHelp} className={this.props.className}>
+                <ModalHeader toggle={this.openHelp}>Admin Help</ModalHeader>
+                <ModalBody>
+                    <p>Type in 'location', 'language' and or 'game' to search for questions.</p>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="secondary" onClick={this.openHelp}>Close</Button>
+                </ModalFooter>
+                </Modal>
             </Wrap>
         )
     }
