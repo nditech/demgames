@@ -6,7 +6,7 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import API from '../utils/API';
 import Select from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, ListGroup, ListGroupItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 export class Admin extends Component {
     constructor(props) {
@@ -31,6 +31,20 @@ export class Admin extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.openHelp = this.openHelp.bind(this);
+    }
+
+    componentDidMount = () => {
+        const params = this.state.tags.map(t => t.text);
+
+        API.getQuesitons()
+        .then(res => {
+            const questions = res.data;
+            this.setState({questions});
+        })
+    }
+
+    componentDidUpdate() {
+        console.log(this.state.tags);
     }
 
     handleDelete(i) {
@@ -63,7 +77,7 @@ export class Admin extends Component {
     handleSearch() {
         const tags = this.state.tags;
         const params = tags.map(t => t.text.toLowerCase());
-        console.log(params);
+        // console.log(params);
         // console.log(values);
         API.getQuesitons(params)
         .then(res => {
@@ -106,6 +120,20 @@ export class Admin extends Component {
                     <Button color="secondary" onClick={this.openHelp}>Close</Button>
                 </ModalFooter>
                 </Modal>
+                {
+                    this.state.questions.length > 0
+                    ? (
+                        <ListGroup>
+                            {this.state.questions.map(q => (
+                                <ListGroupItem key={q._id} id={q._id}>
+                                    <p>Question: {q.question}</p>
+                                    <p>Answer: {q.option1}</p>
+                                </ListGroupItem>
+                            ))}
+                        </ListGroup>
+                    )
+                    : ('No question found.')
+                }
             </Wrap>
         )
     }

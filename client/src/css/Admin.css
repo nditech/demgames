@@ -59,6 +59,7 @@
 
 /* Styles for suggestions */
 .ReactTags__suggestions {
+    z-index: 99;
     position: absolute;
 }
 .ReactTags__suggestions ul {
