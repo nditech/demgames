@@ -7,32 +7,19 @@ import API from '../utils/API';
 import Select from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
 
-const KeyCodes = {
-    comma: 188,
-    enter: 13,
-};
-
-const colourOptions = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-]
-   
-const delimiters = [KeyCodes.comma, KeyCodes.enter];  
-
 export class Admin extends Component {
     constructor(props) {
         super(props);
         this.state = {
             questions: [],
             tags: [
-                { id: "English", text: "English" }
+                { id: "English", text: "Language: English" }
             ],
             suggestions: [
-                { id: 'Guatemala', text: 'Guatemala' },
-                { id: 'debate', text: 'debate' },
-                { id: 'Spanish', text: 'Spanish' },
-                { id: 'English', text: 'English' }
+                { id: 'Guatemala', text: 'Location: Guatemala' },
+                { id: 'debate', text: 'Game: Debate' },
+                { id: 'Spanish', text: 'Language: Spanish' },
+                { id: 'English', text: 'Language: English' }
             ],
             selectedOption: null
         };
@@ -41,15 +28,6 @@ export class Admin extends Component {
         this.handleDrag = this.handleDrag.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleChange = this.handleChange.bind(this);
-    }
-
-    componentDidMount() {
-        // API.getQuesitons()
-        // .then(res => {
-        //     const questions = res.data;
-        //     this.setState({questions});
-        //     console.log(this.state);
-        // });
     }
 
     handleDelete(i) {
@@ -100,19 +78,13 @@ export class Admin extends Component {
                     <Input type="search" name="search" placeholder="Search" />
                     <Button outline color="success">Search</Button>
                 </FormGroup>
-                <ReactTags tags={tags}
+                <ReactTags
+                    tags={tags}
                     suggestions={suggestions}
                     handleDelete={this.handleDelete}
                     handleAddition={this.handleAddition}
                     handleDrag={this.handleDrag}
-                    delimiters={delimiters} />
-                <Select
-                closeMenuOnSelect={false}
-                components={makeAnimated()}
-                defaultValue={[colourOptions[4], colourOptions[5]]}
-                isMulti
-                options={colourOptions}
-                onChange={this.handleChange}
+                    handleTagClick={this.handleTagClick}
                 />
             </Wrap>
         )

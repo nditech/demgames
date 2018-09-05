@@ -1,6 +1,6 @@
 /* CSS for Admin Page */
 
-.ReactTags__tagInput {
+/* .ReactTags__tagInput {
     margin-top: 1rem;
     border: 1px solid #ced4da;
     border-radius: .25rem;
@@ -11,4 +11,73 @@
     border: 1px solid #ced4da;
     border-radius: .25rem;
     padding: .3rem .3rem;
+} */
+
+/* .ReactTags__tags {
+    position: relative;
+} */
+
+/* Styles for the input */
+.ReactTags__tags {
+    border: 1px solid #eee;
+    border-radius: .25rem;
+}
+
+.ReactTags__tagInput {
+    width: 100%;
+    border-radius: 2px;
+    display: inline-block;
+}
+.ReactTags__tagInput input.ReactTags__tagInputField,
+.ReactTags__tagInput input.ReactTags__tagInputField:focus {
+    height: 31px;
+    margin: 0;
+    font-size: 12px;
+    width: 100%;
+    /* border: 1px solid #eee; */
+    border: none;
+    padding: 0 4px;
+}
+
+/* Styles for selected tags */
+.ReactTags__selected span.ReactTags__tag {
+    border: 1px solid #ddd;
+    background: #eee;
+    font-size: 12px;
+    display: inline-block;
+    padding: 5px;
+    margin: 5px;
+    cursor: move;
+    border-radius: 2px;
+}
+
+.ReactTags__selected a.ReactTags__remove {
+    color: #aaa;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+/* Styles for suggestions */
+.ReactTags__suggestions {
+    position: absolute;
+}
+.ReactTags__suggestions ul {
+    list-style-type: none;
+    box-shadow: .05em .01em .5em rgba(0,0,0,.2);
+    background: white;
+    width: 200px;
+}
+.ReactTags__suggestions li {
+    border-bottom: 1px solid #ddd;
+    padding: 5px 10px;
+    margin: 0;
+}
+.ReactTags__suggestions li mark {
+    /* text-decoration: underline; */
+    background: none;
+    font-weight: 600;
+}
+.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
+    background: #b7cfe0;
+    cursor: pointer;
 }
