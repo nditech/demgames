@@ -14,7 +14,7 @@ export class Admin extends Component {
         this.state = {
             questions: [],
             tags: [
-                { id: "English", text: "Language: English", type: "language"  }
+                // { id: "English", text: "Language: English", type: "language"  }
             ],
             suggestions: [
                 { id: 'Guatemala', text: 'Location: Guatemala', type: "location" },
@@ -23,7 +23,8 @@ export class Admin extends Component {
                 { id: 'English', text: 'Language: English', type: "language" }
             ],
             selectedOption: null,
-            openHelp: false
+            openHelp: false,
+            searchDone: false
         };
         this.handleDelete = this.handleDelete.bind(this);
         this.handleAddition = this.handleAddition.bind(this);
@@ -34,39 +35,45 @@ export class Admin extends Component {
     }
 
     componentDidMount = () => {
-        // const params = this.state.tags.map(t => t.text);
+        const tags = [{ id: "English", text: "Language: English", type: "language"  }];
+        this.setState({tags});
+        this.handleSearch(this.state.tags);
+    }
 
-        // API.getQuesitons()
-        // .then(res => {
-        //     const questions = res.data;
-        //     this.setState({questions});
-        // })
-        const tags = this.state.tags;
+    componentDidUpdate() {
+        console.log('com did update activated');
+        if (!this.state.searchDone) this.handleSearch(this.state.tags);
+    }
+
+    handleSearch = (tags) => {
+        console.log('handle search activated');
         let params = {}
+        
         tags.map((t) => {
             const key = t.type;
             const value = t.id.toLocaleLowerCase();
             params[key] = value;
-        })
-        this.handleSearch(params);
-    }
+        });
 
-    componentDidUpdate() {
-        // console.log(this.state.tags);
-        const tags = this.state.tags;
-        // console.log(tags)
-        // this.handleSearch(tags);
+        API.getQuesitons(params)
+        .then((res) => {
+            const questions = res.data;
+            const searchDone = true;
+            this.setState({questions, searchDone});
+        })
     }
 
     handleDelete(i) {
-        const { tags } = this.state;
-        this.setState({
-            tags: tags.filter((tag, index) => index !== i)
-        });
+        const tags = this.state.tags.filter((tag, index) => index !== i);
+        const searchDone = false;
+        this.setState({tags, searchDone});
     }
  
     handleAddition(tag) {
-        this.setState(state => ({ tags: [...state.tags, tag] }));
+        const tags = [...this.state.tags, tag];
+        const searchDone = false;
+        // this.setState(state => ({ tags: [...state.tags, tag] }));
+        this.setState({tags, searchDone});
     }
  
     handleDrag(tag, currPos, newPos) {
@@ -82,18 +89,6 @@ export class Admin extends Component {
 
     handleTagClick(index) {
         console.log('The tag at index ' + index + ' was clicked');
-    }
-
-    handleSearch = (params) => {
-        console.log('params in handle search');
-        console.log(params);
-        API.getQuesitons(params)
-        .then((res) => {
-            console.log('questions returned');
-            const questions = res.data;
-            console.log(questions);
-            this.setState({questions});
-        })
     }
 
     handleChange = (selectedOption) => {

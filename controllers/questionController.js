@@ -4,10 +4,9 @@ const fs = require('fs');
 // Defining methods for the questionController
 module.exports = {
     findAll: (req, res) => {
-        console.log('this is the req');
         console.log(req.query);
         db.Question
-        .find(req.query)
+        .find({$and: [req.query]})
         .then(dbQuestion => res.json(dbQuestion))
         .catch(err => res.status(422).json(err));
     }
