@@ -2,6 +2,6 @@ import axios from 'axios';
 
 export default {
     getQuesitons: (params) => {
-        return axios.get('/api/questions');
+        return axios.get('/api/questions', {params: params});
     }
 }

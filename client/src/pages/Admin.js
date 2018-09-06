@@ -14,13 +14,13 @@ export class Admin extends Component {
         this.state = {
             questions: [],
             tags: [
-                { id: "English", text: "Language: English" }
+                { id: "English", text: "Language: English", type: "language"  }
             ],
             suggestions: [
-                { id: 'Guatemala', text: 'Location: Guatemala' },
-                { id: 'debate', text: 'Game: Debate' },
-                { id: 'Spanish', text: 'Language: Spanish' },
-                { id: 'English', text: 'Language: English' }
+                { id: 'Guatemala', text: 'Location: Guatemala', type: "location" },
+                { id: 'debate', text: 'Game: Debate', type: "game" },
+                { id: 'Spanish', text: 'Language: Spanish', type: "language" },
+                { id: 'English', text: 'Language: English', type: "language" }
             ],
             selectedOption: null,
             openHelp: false
@@ -34,17 +34,28 @@ export class Admin extends Component {
     }
 
     componentDidMount = () => {
-        const params = this.state.tags.map(t => t.text);
+        // const params = this.state.tags.map(t => t.text);
 
-        API.getQuesitons()
-        .then(res => {
-            const questions = res.data;
-            this.setState({questions});
+        // API.getQuesitons()
+        // .then(res => {
+        //     const questions = res.data;
+        //     this.setState({questions});
+        // })
+        const tags = this.state.tags;
+        let params = {}
+        tags.map((t) => {
+            const key = t.type;
+            const value = t.id.toLocaleLowerCase();
+            params[key] = value;
         })
+        this.handleSearch(params);
     }
 
     componentDidUpdate() {
-        console.log(this.state.tags);
+        // console.log(this.state.tags);
+        const tags = this.state.tags;
+        // console.log(tags)
+        // this.handleSearch(tags);
     }
 
     handleDelete(i) {
@@ -56,7 +67,6 @@ export class Admin extends Component {
  
     handleAddition(tag) {
         this.setState(state => ({ tags: [...state.tags, tag] }));
-        this.handleSearch();
     }
  
     handleDrag(tag, currPos, newPos) {
@@ -74,14 +84,15 @@ export class Admin extends Component {
         console.log('The tag at index ' + index + ' was clicked');
     }
 
-    handleSearch() {
-        const tags = this.state.tags;
-        const params = tags.map(t => t.text.toLowerCase());
-        // console.log(params);
-        // console.log(values);
+    handleSearch = (params) => {
+        console.log('params in handle search');
+        console.log(params);
         API.getQuesitons(params)
-        .then(res => {
-            console.log(res.data);
+        .then((res) => {
+            console.log('questions returned');
+            const questions = res.data;
+            console.log(questions);
+            this.setState({questions});
         })
     }
 
@@ -99,7 +110,7 @@ export class Admin extends Component {
     render() {
         const { tags, suggestions } = this.state;
         return (
-            <Wrap>
+            <div>
                 This is Admin Page
                 <ReactTags
                     placeholder={'Type to search, e.g. language'}
@@ -134,7 +145,7 @@ export class Admin extends Component {
                     )
                     : ('No question found.')
                 }
-            </Wrap>
+            </div>
         )
     }
 }
