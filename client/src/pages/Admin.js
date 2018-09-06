@@ -6,7 +6,8 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import API from '../utils/API';
 import Select from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
-import { Button, ListGroup, ListGroupItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Card, CardText, CardBody,
+    CardTitle, CardSubtitle, ListGroup, ListGroupItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 export class Admin extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ export class Admin extends Component {
         this.state = {
             questions: [],
             tags: [
-                // { id: "English", text: "Language: English", type: "language"  }
+                { id: "English", text: "Language: English", type: "language"  }
             ],
             suggestions: [
                 { id: 'Guatemala', text: 'Location: Guatemala', type: "location" },
@@ -24,7 +25,7 @@ export class Admin extends Component {
             ],
             selectedOption: null,
             openHelp: false,
-            searchDone: false
+            searchDone: false /**searchDone prevents componentDidUpdate infinitive loops */
         };
         this.handleDelete = this.handleDelete.bind(this);
         this.handleAddition = this.handleAddition.bind(this);
@@ -32,21 +33,18 @@ export class Admin extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.openHelp = this.openHelp.bind(this);
+        this.clickEdit = this.clickEdit.bind(this);
     }
 
     componentDidMount = () => {
-        const tags = [{ id: "English", text: "Language: English", type: "language"  }];
-        this.setState({tags});
         this.handleSearch(this.state.tags);
     }
 
-    componentDidUpdate() {
-        console.log('com did update activated');
+    componentDidUpdate = () => {
         if (!this.state.searchDone) this.handleSearch(this.state.tags);
     }
 
     handleSearch = (tags) => {
-        console.log('handle search activated');
         let params = {}
         
         tags.map((t) => {
@@ -60,23 +58,22 @@ export class Admin extends Component {
             const questions = res.data;
             const searchDone = true;
             this.setState({questions, searchDone});
-        })
+        });
     }
 
-    handleDelete(i) {
+    handleDelete = (i) => {
         const tags = this.state.tags.filter((tag, index) => index !== i);
         const searchDone = false;
         this.setState({tags, searchDone});
     }
  
-    handleAddition(tag) {
+    handleAddition = (tag) => {
         const tags = [...this.state.tags, tag];
         const searchDone = false;
-        // this.setState(state => ({ tags: [...state.tags, tag] }));
         this.setState({tags, searchDone});
     }
  
-    handleDrag(tag, currPos, newPos) {
+    handleDrag = (tag, currPos, newPos) => {
         const tags = [...this.state.tags];
         const newTags = tags.slice();
  
@@ -87,7 +84,7 @@ export class Admin extends Component {
         this.setState({ tags: newTags });
     }
 
-    handleTagClick(index) {
+    handleTagClick = (index) => {
         console.log('The tag at index ' + index + ' was clicked');
     }
 
@@ -96,13 +93,18 @@ export class Admin extends Component {
         console.log(`Option selected:`, selectedOption);
     }
 
-    openHelp() {
+    openHelp = () => {
         this.setState({
             openHelp: !this.state.openHelp
         });
     }
 
-    render() {
+    clickEdit = (id) => {
+        console.log(`clicked question id: ${id}`);
+        // TODO: send to page: id to edit OR expand div to edit
+    }
+
+    render = () => {
         const { tags, suggestions } = this.state;
         return (
             <div>
@@ -133,12 +135,16 @@ export class Admin extends Component {
                             {this.state.questions.map(q => (
                                 <ListGroupItem key={q._id} id={q._id}>
                                     <p>Question: {q.question}</p>
-                                    <p>Answer: {q.option1}</p>
+                                    <p>Answer position: {q.answer}</p>
+                                    <p>Option(s): {q.option1}</p>
+                                    <div onClick={() => this.clickEdit(q._id)}>
+                                    <i className="material-icons">edit</i>
+                                    </div>
                                 </ListGroupItem>
                             ))}
                         </ListGroup>
                     )
-                    : ('No question found.')
+                    : (<div>No question found.</div>)
                 }
             </div>
         )

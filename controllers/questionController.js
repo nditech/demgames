@@ -4,7 +4,6 @@ const fs = require('fs');
 // Defining methods for the questionController
 module.exports = {
     findAll: (req, res) => {
-        console.log(req.query);
         db.Question
         .find({$and: [req.query]})
         .then(dbQuestion => res.json(dbQuestion))
