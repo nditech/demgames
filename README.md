@@ -65,6 +65,6 @@ $ yarn start
 
 ## Author(s)
 
-<b>Viet Nguyen</b>
-> vnguyen@ndi.org &nbsp;&middot;&nbsp;
-> [LinkedIn](https://www.linkedin.com/in/nguyendviet)
+* <b>Viet Nguyen</b>
+    > vnguyen@ndi.org &nbsp;&middot;&nbsp;
+    > [LinkedIn](https://www.linkedin.com/in/nguyendviet)
