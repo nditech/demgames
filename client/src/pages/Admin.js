@@ -4,7 +4,8 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import API from '../utils/API';
 import Select from 'react-select'; // uninstall later
 import makeAnimated from 'react-select/lib/animated'; // uninstall later
-import { Button, 
+import { Alert, 
+    Button, 
     Card, CardText, CardBody, CardTitle, CardSubtitle, 
     Form, FormGroup, FormText, 
     Input, 
@@ -16,6 +17,8 @@ export class Admin extends Component {
         super(props);
         this.state = {
             addQuestion: false,
+            addQuestionNotice: '',
+            addQuestionNoticeColour: '',
             questions: [],
             tags: [
                 { id: "English", text: "Language: English", type: "language"  }
@@ -144,7 +147,28 @@ export class Admin extends Component {
 
         API.create(question)
         .then((res) => {
-            console.log(res.data);
+            if (res.status !== 200) {
+                const message = 'Error: Question was not saved. Please try again later.';
+                const colour = 'danger';
+                this.setState({
+                    addQuestionNotice: message,
+                    addQuestionNoticeColour: colour
+                });
+            }
+            else {
+                const message = 'Your question has been saved successfully.';
+                const colour = 'success';
+                this.setState({
+                    addQuestionNotice: message,
+                    addQuestionNoticeColour: colour
+                });
+            }
+            setTimeout((() => {
+                this.setState({
+                    addQuestionNotice: '',
+                })
+            }), 1000)
+            console.log(res);
         });
     }
     // END: questions functions. =================================
@@ -155,6 +179,12 @@ export class Admin extends Component {
             <Modal isOpen={this.state.addQuestion} toggle={this.addQuestion} className={this.props.className}>
                 <ModalHeader toggle={this.addQuestion}>Add Question</ModalHeader>
                 <ModalBody>
+                    {
+                        this.state.addQuestionNotice !== ''
+                        ? (<Alert color={this.state.addQuestionNoticeColour}>{this.state.addQuestionNotice}</Alert>)
+                        : (null)
+                    }
+                
                     <Form>
                         <FormGroup>
                             <Label for="language">Language:</Label>
