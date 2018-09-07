@@ -3,5 +3,8 @@ import axios from 'axios';
 export default {
     getQuesitons: (params) => {
         return axios.get('/api/questions', {params: params});
+    },
+    create: (params) => {
+        return axios.post('/api/questions', {params: params});
     }
 }
