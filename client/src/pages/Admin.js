@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import {Wrap} from '../components/Grid';
-// import {Button, FormGroup, Label, Input} from 'reactstrap';
-import ReactDOM from 'react-dom';
 import { WithContext as ReactTags } from 'react-tag-input';
 import API from '../utils/API';
-import Select from 'react-select';
-import makeAnimated from 'react-select/lib/animated';
+import Select from 'react-select'; // uninstall later
+import makeAnimated from 'react-select/lib/animated'; // uninstall later
 import { Button, 
     Card, CardText, CardBody, CardTitle, CardSubtitle, 
     Form, FormGroup, FormText, 
@@ -31,20 +29,19 @@ export class Admin extends Component {
             selectedOption: null,
             openHelp: false,
             searchDone: false, /**searchDone prevents componentDidUpdate infinitive loops */
-            language: '',
-            type: '',
+            language: 'English',
+            type: 'Matching',
             question: '',
             option1: '',
             option2: '',
             option3: '',
             option4: '',
-            answer: ''
+            answer: '1'
         };
         this.handleDelete = this.handleDelete.bind(this);
         this.handleAddition = this.handleAddition.bind(this);
         this.handleDrag = this.handleDrag.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
-        this.handleChange = this.handleChange.bind(this);
         this.openHelp = this.openHelp.bind(this);
         this.addQuestion = this.addQuestion.bind(this);
         this.editQuestion = this.editQuestion.bind(this);
@@ -59,10 +56,6 @@ export class Admin extends Component {
     componentDidUpdate = () => {
         if (!this.state.searchDone) this.handleSearch(this.state.tags);
     }
-
-    /**
-     * =========================== HANDLERS:
-     */
 
     handleSearch = (tags) => {
         let params = {};
@@ -80,6 +73,7 @@ export class Admin extends Component {
         });
     }
 
+    // BEGIN: react-tag-input functions: =================================
     handleDelete = (i) => {
         const tags = this.state.tags.filter((tag, index) => index !== i);
         const searchDone = false;
@@ -103,26 +97,19 @@ export class Admin extends Component {
         this.setState({ tags: newTags });
     }
 
+    handleTagClick = (index) => {
+        console.log('The tag at index ' + index + ' was clicked');
+    }
+    // END: react-tag-input functions. =================================
+
     handleInputChange = (event) => {
         const target = event.target;
         const value = target.type === 'select' ? target.selected : target.value;
         const name = target.name;
 
-        // console.log(name);
-        // console.log(value);
-    
         this.setState({
             [name]: value
         });
-    }
-
-    handleTagClick = (index) => {
-        console.log('The tag at index ' + index + ' was clicked');
-    }
-
-    handleChange = (selectedOption) => {
-        this.setState({ selectedOption });
-        console.log(`Option selected:`, selectedOption);
     }
 
     openHelp = () => {
@@ -131,10 +118,7 @@ export class Admin extends Component {
         });
     }
 
-    /**
-     * =========================== QUESTIONS FUNCTIONS:
-     */
-
+    // BEGIN: questions functions. =================================
     addQuestion = () => {
         this.setState({
             addQuestion: !this.state.addQuestion
@@ -154,21 +138,18 @@ export class Admin extends Component {
             option3: this.state.option3,
             option4: this.state.option4,
             answer: this.state.answer,
-            type: this.state.type,
-            language: this.state.language
-        }
+            type: this.state.type.toLowerCase(),
+            language: this.state.language.toLowerCase()
+        };
 
         API.create(question)
         .then((res) => {
-            console.log('this is the res');
-            console.log(res);
-        })
+            console.log(res.data);
+        });
     }
+    // END: questions functions. =================================
 
-    /**
-     * =========================== RENDER FUNCTIONS
-     */
-
+    // BEGIN: render functions:  =================================
     renderAddQuestion = () => {
         return (
             <Modal isOpen={this.state.addQuestion} toggle={this.addQuestion} className={this.props.className}>
@@ -206,28 +187,52 @@ export class Admin extends Component {
                             <Input type="text" name="option1" id="option1" placeholder="Option 1" 
                                 onChange={this.handleInputChange}
                             />
-                            <Input type="text" name="option2" id="option2" placeholder="Option 2" 
-                                onChange={this.handleInputChange}
-                            />
-                            <Input type="text" name="option3" id="option3" placeholder="Option 3" 
-                                onChange={this.handleInputChange}
-                            />
-                            <Input type="text" name="option4" id="option4" placeholder="Option 4" 
-                                onChange={this.handleInputChange}
-                            />
+                            {
+                                this.state.type === 'Matching'
+                                ? (null)
+                                : (
+                                    <div>
+                                        <Input type="text" name="option2" id="option2" placeholder="Option 2" 
+                                        onChange={this.handleInputChange}
+                                        />
+                                        <Input type="text" name="option3" id="option3" placeholder="Option 3" 
+                                            onChange={this.handleInputChange}
+                                        />
+                                        <Input type="text" name="option4" id="option4" placeholder="Option 4" 
+                                            onChange={this.handleInputChange}
+                                        />
+                                    </div>   
+                                )
+                            }
                         </FormGroup>
-                        <FormGroup>
-                            <Label for="rightAnswer">Right Answer:</Label>
-                            <Input type="select" name="answer" id="rightAnswer"
-                                value={this.state.answer}
-                                onChange={this.handleInputChange}
-                            >
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                            </Input>
-                        </FormGroup>
+                        {
+                            this.state.type === 'Matching'
+                            ? (
+                                <FormGroup>
+                                    <Label for="rightAnswer">Right Answer:</Label>
+                                    <Input type="select" name="answer" id="rightAnswer"
+                                        value={this.state.answer}
+                                        onChange={this.handleInputChange}
+                                    >
+                                        <option>1</option>
+                                    </Input>
+                                </FormGroup>
+                            )
+                            : (
+                                <FormGroup>
+                                    <Label for="rightAnswer">Right Answer:</Label>
+                                    <Input type="select" name="answer" id="rightAnswer"
+                                        value={this.state.answer}
+                                        onChange={this.handleInputChange}
+                                    >
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </Input>
+                                </FormGroup>
+                            )
+                        }
                         <Button color="success" onClick={this.saveQuestion}>Save</Button>
                     </Form>
                 </ModalBody>
@@ -271,6 +276,7 @@ export class Admin extends Component {
             );
         }
     }
+    // END: render functions.  =================================
 
     render = () => {
         const { tags, suggestions } = this.state;
