@@ -16,6 +16,12 @@ export class Admin extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            show: {
+                addEvent: false,
+                addQuestion: false,
+                help: false
+            },
+            addQuestion: false,
             addQuestionNotice: '',
             addQuestionNoticeColour: '',
             questions: [],
@@ -29,8 +35,6 @@ export class Admin extends Component {
                 { id: 'English', text: 'Language: English', type: "language" }
             ],
             selectedOption: null,
-            openAddQuestion: false,
-            openHelp: false,
             searchDone: false, /* searchDone prevents componentDidUpdate infinitive loops */
             language: 'English',
             type: 'Matching',
@@ -45,7 +49,7 @@ export class Admin extends Component {
         this.handleAddition = this.handleAddition.bind(this);
         this.handleDrag = this.handleDrag.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
-        this.openHelp = this.openHelp.bind(this);
+        this.toggleHelp = this.toggleHelp.bind(this);
         this.toggleAddQuestion = this.toggleAddQuestion.bind(this);
         this.editQuestion = this.editQuestion.bind(this);
         this.renderQuestionAnswer = this.renderQuestionAnswer.bind(this);
@@ -126,19 +130,16 @@ export class Admin extends Component {
         });
     }
 
-    openHelp = () => {
+    toggleAddEvent = () => {
         this.setState({
-            openHelp: !this.state.openHelp
+            show: {addEvent: !this.state.show.addEvent}
         });
     }
 
-    /**
-     * 
-     * EVENTS associated with the questions, not the HTML events
-     * 
-     */
-    toggleAddEvent = () => {
-
+    toggleHelp = () => {
+        this.setState({
+            show: {help: !this.state.show.help}
+        });
     }
 
     /**
@@ -199,7 +200,7 @@ export class Admin extends Component {
 
     toggleAddQuestion = () => {
         this.setState({
-            openAddQuestion: !this.state.openAddQuestion
+            show: {addQuestion: !this.state.show.addQuestion}
         });
     }
     
@@ -210,7 +211,7 @@ export class Admin extends Component {
      */
     renderAddQuestion = () => {
         return (
-            <Modal isOpen={this.state.openAddQuestion} toggle={this.toggleAddQuestion} className={this.props.className}>
+            <Modal isOpen={this.state.show.addQuestion} toggle={this.toggleAddQuestion} className={this.props.className}>
                 <ModalHeader toggle={this.toggleAddQuestion}>Add Question</ModalHeader>
                 <ModalBody>
                     {
@@ -307,15 +308,15 @@ export class Admin extends Component {
         );
     }
 
-    renderModalHelp = () => {
+    renderHelp = () => {
         return (
-            <Modal isOpen={this.state.openHelp} toggle={this.openHelp} className={this.props.className}>
-                <ModalHeader toggle={this.openHelp}>Admin Help</ModalHeader>
+            <Modal isOpen={this.state.show.help} toggle={this.toggleHelp} className={this.props.className}>
+                <ModalHeader toggle={this.toggleHelp}>Admin Help</ModalHeader>
                 <ModalBody>
                     <p>Type in 'location', 'language' and or 'game' to search for questions.</p>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="secondary" onClick={this.openHelp}>Close</Button>
+                    <Button color="secondary" onClick={this.toggleHelp}>Close</Button>
                 </ModalFooter>
             </Modal>
         );
@@ -355,7 +356,7 @@ export class Admin extends Component {
                     handleDrag={this.handleDrag}
                     handleTagClick={this.handleTagClick}
                 />
-                <i className="material-icons" onClick={this.openHelp}>help</i>
+                <i className="material-icons" onClick={this.toggleHelp}>help</i>
 
                 <div>
                     <i className="material-icons" onClick={this.toggleAddQuestion}>add_circle</i>
@@ -366,8 +367,8 @@ export class Admin extends Component {
                     Add Event
                 </div>
 
-                {this.state.openHelp? this.renderModalHelp() : null}
-                {this.state.openAddQuestion? this.renderAddQuestion() : null}
+                {this.state.show.help? this.renderHelp() : null}
+                {this.state.show.addQuestion? this.renderAddQuestion() : null}
                 
                 {
                     this.state.questions.length > 0
