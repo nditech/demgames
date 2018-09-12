@@ -16,7 +16,6 @@ export class Admin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            addQuestion: false,
             addQuestionNotice: '',
             addQuestionNoticeColour: '',
             questions: [],
@@ -30,8 +29,9 @@ export class Admin extends Component {
                 { id: 'English', text: 'Language: English', type: "language" }
             ],
             selectedOption: null,
+            openAddQuestion: false,
             openHelp: false,
-            searchDone: false, /**searchDone prevents componentDidUpdate infinitive loops */
+            searchDone: false, /* searchDone prevents componentDidUpdate infinitive loops */
             language: 'English',
             type: 'Matching',
             question: '',
@@ -46,20 +46,23 @@ export class Admin extends Component {
         this.handleDrag = this.handleDrag.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.openHelp = this.openHelp.bind(this);
-        this.addQuestion = this.addQuestion.bind(this);
+        this.toggleAddQuestion = this.toggleAddQuestion.bind(this);
         this.editQuestion = this.editQuestion.bind(this);
         this.renderQuestionAnswer = this.renderQuestionAnswer.bind(this);
         this.saveQuestion = this.saveQuestion.bind(this);
     }
 
+    // Show questions when page loaded
     componentDidMount = () => {
         this.handleSearch(this.state.tags);
     }
 
+    // Update questions whenever the tags are changed
     componentDidUpdate = () => {
         if (!this.state.searchDone) this.handleSearch(this.state.tags);
     }
 
+    // Search database for questions based on current tags
     handleSearch = (tags) => {
         let params = {};
         tags.map((t) => {
@@ -76,7 +79,11 @@ export class Admin extends Component {
         });
     }
 
-    // BEGIN: react-tag-input functions: =================================
+    /**
+     * 
+     * react-tag-input
+     * 
+     */
     handleDelete = (i) => {
         const tags = this.state.tags.filter((tag, index) => index !== i);
         const searchDone = false;
@@ -103,8 +110,12 @@ export class Admin extends Component {
     handleTagClick = (index) => {
         console.log('The tag at index ' + index + ' was clicked');
     }
-    // END: react-tag-input functions. =================================
 
+    /**
+     * 
+     * INPUT
+     * 
+     */
     handleInputChange = (event) => {
         const target = event.target;
         const value = target.type === 'select' ? target.selected : target.value;
@@ -121,16 +132,28 @@ export class Admin extends Component {
         });
     }
 
-    // BEGIN: questions functions. =================================
-    addQuestion = () => {
-        this.setState({
-            addQuestion: !this.state.addQuestion
-        });
+    /**
+     * 
+     * EVENTS associated with the questions, not the HTML events
+     * 
+     */
+    toggleAddEvent = () => {
+
     }
 
+    /**
+     * 
+     * QUESTIONS
+     * 
+     */
     editQuestion = (id) => {
         console.log(`clicked question id: ${id}`);
         // TODO: send to page: id to edit OR expand div to edit
+    }
+
+    // TODO: Delete question
+    deleteQuestion = (id) => {
+        console.log(`clicked question id: ${id}`);
     }
 
     saveQuestion = () => {
@@ -147,7 +170,16 @@ export class Admin extends Component {
 
         API.create(question)
         .then((res) => {
-            if (res.status !== 200) {
+            if (res && (res.status === 200)) {
+                const message = 'Your question has been saved successfully.';
+                const colour = 'success';
+                this.setState({
+                    addQuestionNotice: message,
+                    addQuestionNoticeColour: colour
+                });
+                this.handleSearch(this.state.tags);
+            }
+            else {
                 const message = 'Error: Question was not saved. Please try again later.';
                 const colour = 'danger';
                 this.setState({
@@ -155,29 +187,31 @@ export class Admin extends Component {
                     addQuestionNoticeColour: colour
                 });
             }
-            else {
-                const message = 'Your question has been saved successfully.';
-                const colour = 'success';
-                this.setState({
-                    addQuestionNotice: message,
-                    addQuestionNoticeColour: colour
-                });
-            }
+            
+            // Hide the message after 2 second(s)
             setTimeout((() => {
                 this.setState({
                     addQuestionNotice: '',
                 })
-            }), 1000)
-            console.log(res);
+            }), 2000);
         });
     }
-    // END: questions functions. =================================
 
-    // BEGIN: render functions:  =================================
+    toggleAddQuestion = () => {
+        this.setState({
+            openAddQuestion: !this.state.openAddQuestion
+        });
+    }
+    
+    /**
+     * 
+     * RENDER
+     * 
+     */
     renderAddQuestion = () => {
         return (
-            <Modal isOpen={this.state.addQuestion} toggle={this.addQuestion} className={this.props.className}>
-                <ModalHeader toggle={this.addQuestion}>Add Question</ModalHeader>
+            <Modal isOpen={this.state.openAddQuestion} toggle={this.toggleAddQuestion} className={this.props.className}>
+                <ModalHeader toggle={this.toggleAddQuestion}>Add Question</ModalHeader>
                 <ModalBody>
                     {
                         this.state.addQuestionNotice !== ''
@@ -267,7 +301,7 @@ export class Admin extends Component {
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="secondary" onClick={this.addQuestion}>Close</Button>
+                    <Button color="secondary" onClick={this.toggleAddQuestion}>Close</Button>
                 </ModalFooter>
             </Modal>
         );
@@ -306,7 +340,6 @@ export class Admin extends Component {
             );
         }
     }
-    // END: render functions.  =================================
 
     render = () => {
         const { tags, suggestions } = this.state;
@@ -325,12 +358,16 @@ export class Admin extends Component {
                 <i className="material-icons" onClick={this.openHelp}>help</i>
 
                 <div>
-                    <i className="material-icons" onClick={this.addQuestion}>add_circle</i>
+                    <i className="material-icons" onClick={this.toggleAddQuestion}>add_circle</i>
                     Add Question
+                </div>
+                <div>
+                    <i className="material-icons" onClick={this.toggleAddEvent}>add_circle</i>
+                    Add Event
                 </div>
 
                 {this.state.openHelp? this.renderModalHelp() : null}
-                {this.state.addQuestion? this.renderAddQuestion() : null}
+                {this.state.openAddQuestion? this.renderAddQuestion() : null}
                 
                 {
                     this.state.questions.length > 0

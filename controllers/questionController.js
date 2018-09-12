@@ -7,7 +7,7 @@ const ObjectId = mongoose.Types.ObjectId;
 module.exports = {
     findAll: (req, res) => {
         db.Question
-        .find({$and: [req.query]})
+        .find({$and: [req.query]}).sort({'question': 1})
         .then(dbQuestion => res.json(dbQuestion))
         .catch(err => res.status(422).json(err));
     },
