@@ -5,4 +5,5 @@ export * from './Home';
 export * from './Levels';
 export * from './Modules';
 export * from './NoMatch';
+export * from './Question';
 export * from './User';

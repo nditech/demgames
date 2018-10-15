@@ -19,6 +19,7 @@ export class Admin extends Component {
             show: {
                 addEvent: false,
                 addQuestion: false,
+                editQuestion: false,
                 help: false
             },
             addQuestion: false,
@@ -51,9 +52,16 @@ export class Admin extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.toggleHelp = this.toggleHelp.bind(this);
         this.toggleAddQuestion = this.toggleAddQuestion.bind(this);
-        this.editQuestion = this.editQuestion.bind(this);
+        // this.toggleEditQuestion = this.toggleEditQuestion.bind(this);
+        // this.editQuestion = this.editQuestion.bind(this);
         this.renderQuestionAnswer = this.renderQuestionAnswer.bind(this);
         this.saveQuestion = this.saveQuestion.bind(this);
+        this.gotoQuestionPage = this.gotoQuestionPage.bind(this);
+    }
+
+    gotoQuestionPage = (id) => {
+        let path = `/question/${id}`;
+        this.props.history.push(path);
     }
 
     // Show questions when page loaded
@@ -148,8 +156,9 @@ export class Admin extends Component {
      * 
      */
     editQuestion = (id) => {
-        console.log(`clicked question id: ${id}`);
-        // TODO: send to page: id to edit OR expand div to edit
+        console.log(id);
+        this.gotoQuestionPage(id);
+
     }
 
     // TODO: Delete question
