@@ -355,7 +355,7 @@ export class Admin extends Component {
         const { tags, suggestions } = this.state;
         return (
             <div>
-                This is Admin Page
+                This is Admin Page for {this.props.match.params.name}
                 <ReactTags
                     placeholder={'Type to search, e.g. language'}
                     tags={tags}

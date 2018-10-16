@@ -14,19 +14,19 @@ export class Game extends Component {
             <GameWrap backURL="/">
                 <div className="game-page">
                     <ModuleCard
-                        href="/module1"
+                        href="/module/disenando-un-argumento"
                         module="module1"
                         title="Diseñando un argumento"
                         colour="blue"
                     />
                     <ModuleCard
-                        href="/game"
+                        href="/module/encontrando-evidencia"
                         module="module2"
                         title="Encontrando evidencia"
                         colour="green"
                     />
                     <ModuleCard
-                        href="/game"
+                        href="/module/encontrando-defectos"
                         module="module3"
                         title="Encontrando defectos en los argumentos"
                         colour="peach"
