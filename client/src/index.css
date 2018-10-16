@@ -88,24 +88,24 @@ a > img:hover {
     background: rgb(243, 128, 81, 0.75);
 }
 
-.module1 {
-    background: url('./img/level1.png') no-repeat center; 
+.style1 {
+    background: url('./img/style1.png') no-repeat center; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
 }
 
-.module2 {
-    background: url('./img/level2.png') no-repeat center; 
+.style2 {
+    background: url('./img/style2.png') no-repeat center; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
 }
 
-.module3 {
-    background: url('./img/level3.png') no-repeat center; 
+.style3 {
+    background: url('./img/style3.png') no-repeat center; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -152,28 +152,28 @@ a > img:hover {
     background: #fff;
 }
 
-.bg-level1 {
-    background: linear-gradient(rgba(0, 93, 171, 0.75), rgba(0, 93, 171, 0.75)), url("./img/level1.png") no-repeat center;
+.bg-style1 {
+    background: linear-gradient(rgba(0, 93, 171, 0.75), rgba(0, 93, 171, 0.75)), url("./img/style1.png") no-repeat center;
     color: #fff;
     background-size: cover;
     min-height: 130px;
 }
 
-.bg-level1 > div > .btn {
+.bg-style1 > div > .btn {
     background-color: #349B52;
     color: white;
 }
 
-.bg-level1 > div > .btn:hover {
+.bg-style1 > div > .btn:hover {
     color: #F38051;
 }
 
-.bg-level2 {
-    background-image: url("./img/level2.png");
+.bg-style2 {
+    background-image: url("./img/style2.png");
 }
 
-.bg-level3 {
-    background-image: url("./img/level3.png");
+.bg-style3 {
+    background-image: url("./img/style3.png");
 }
 
 .game-footer {

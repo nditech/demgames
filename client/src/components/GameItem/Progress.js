@@ -8,9 +8,9 @@ const displayNum = n => {
     else return ''
 }
 
-export const Progress = ({level, title, togo, num, complete, next}) => (
+export const Progress = ({style, title, togo, num, complete, next}) => (
     <div>
-        <div className={`row justify-content-center level-top bg-${level}`}>
+        <div className={`row justify-content-center level-top bg-${style}`}>
             <div className="col-sm-12 col-md-10 col-lg-10 px-2 mt-2 score-board">
                 <div><b>{title}</b></div>
                 {displayNum(togo)}

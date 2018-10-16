@@ -102,7 +102,7 @@ export class Level extends Component {
                     ? (
                         <GameWrap backURL={trimUrl(this.props.match.url, 'level')}>
                             <Progress
-                                level="level1"
+                                style="style1"
                                 title="Nivel 1"
                                 togo={this.state.questions.length}
                                 num={this.state.progress}
