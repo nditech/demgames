@@ -3,6 +3,7 @@
 
 @import url('./components/Button/Button.css');
 @import url('./css/Admin.css');
+@import url('./css/Question.css');
 
 html {
     height: 100%;

@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
-import {LevelCard} from '../components/Card'
-import {GameWrap} from '../components/GameItem'
-import {Wrap} from '../components/Grid'
+import React, {Component} from 'react';
+import {LevelCard} from '../components/Card';
+import {GameWrap} from '../components/GameItem';
+import {Wrap} from '../components/Grid';
 
 export class Module extends Component {
     state = {
