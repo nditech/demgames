@@ -8,7 +8,7 @@ const fs = require('fs');
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/demgames');
 
 // English questions
-let data = fs.readFileSync('./g4g.json', 'utf8')
+let data = fs.readFileSync('./g4g-spanish.json', 'utf8')
 // Spanish questions
 // let data = fs.readFileSync('./g4g-spanish.json', 'utf8');
 data = JSON.parse(data);

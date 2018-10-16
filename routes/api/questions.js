@@ -6,11 +6,11 @@ router.route('/')
 .get(questionController.findAll)
 .post(questionController.create);
 
-// Matches with "/api/articles/:id"
-// router
-// .route('/:id')
-// .get(articleController.findById)
-// .put(articleController.update)
-// .delete(articleController.remove);
+// Matches with "/api/questions/:id"
+router
+.route('/:id')
+.get(questionController.findById)
+.put(questionController.update)
+.delete(questionController.remove);
 
 module.exports = router;

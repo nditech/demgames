@@ -1,16 +1,16 @@
-import React, {Component} from 'react'
-import {ModuleCard} from '../components/Card'
-import {GameWrap} from '../components/GameItem'
-import {Wrap} from '../components/Grid'
-// import {BackBtn, InfoBtn} from '../../components/Button'
+import React, {Component} from 'react';
+import {ModuleCard} from '../components/Card';
+import {GameWrap} from '../components/GameItem';
+import {Wrap} from '../components/Grid';
+// import {BackBtn, InfoBtn} from '../../components/Button';
 import data from '../data/game-data-es.json';
 
 export class Game extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             data: data
-        }
+        };
     }
 
     render() {
