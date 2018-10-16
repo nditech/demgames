@@ -7,7 +7,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 // import Game from './pages/Game';
 // import NoMatch from './pages/NoMatch';
 // import Done from './pages/Done';
-import {Admin, Home, Game, Module, Module2, Module3, Level, Level2, Level3, User, Done, NoMatch, Question} from './pages';
+import {Admin, Home, Game, Module, Level, User, Done, NoMatch, Question} from './pages';
 
 const App = () =>
     <Router>

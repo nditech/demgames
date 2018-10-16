@@ -94,56 +94,69 @@ export class Level extends Component {
     }
 
     render() {
+        let curUrl = this.props.match.url;
+        // Only show level 1 for module 1 (for now)
         return (
             <Wrap>
-            <GameWrap backURL={trimUrl(this.props.match.url, 'level')}>
-                <Progress
-                    level="level1"
-                    title="Nivel 1"
-                    togo={this.state.questions.length}
-                    num={this.state.progress}
-                    complete={this.state.complete}
-                    next='/done'
-                />
-                {this.state.questions.length 
+                { (curUrl.split('/')[2] === 'disenando-un-argumento') && (curUrl.slice(-1) === '1') 
                     ? (
-                        <List>
-                            {this.state.questions.map(question => (
-                                <MatchItem
-                                    key={question.question}
-                                    id={question.question}
-                                    name={`q-${question.question}`}
-                                    type="question"
-                                    text={question.question}
-                                    handleClick={this.handleQAClick}
-                                    selectedQ={this.state.selectedQ}
-                                    selectedA={this.state.selectedA}
-                                />
-                            ))}
-                        </List>
+                        <GameWrap backURL={trimUrl(this.props.match.url, 'level')}>
+                            <Progress
+                                level="level1"
+                                title="Nivel 1"
+                                togo={this.state.questions.length}
+                                num={this.state.progress}
+                                complete={this.state.complete}
+                                next='/done'
+                            />
+                            {this.state.questions.length 
+                                ? (
+                                    <List>
+                                        {this.state.questions.map(question => (
+                                            <MatchItem
+                                                key={question.question}
+                                                id={question.question}
+                                                name={`q-${question.question}`}
+                                                type="question"
+                                                text={question.question}
+                                                handleClick={this.handleQAClick}
+                                                selectedQ={this.state.selectedQ}
+                                                selectedA={this.state.selectedA}
+                                            />
+                                        ))}
+                                    </List>
+                                )
+                                : ('')                        
+                            }
+                            {this.state.answers.length 
+                                ? (
+                                    <List>
+                                        {this.state.answers.map(answer => (
+                                            <MatchItem
+                                                key={answer.question}
+                                                id={answer.question}
+                                                name={`a-${answer.question}`}
+                                                type="answer"
+                                                text={answer.option1}
+                                                handleClick={this.handleQAClick}
+                                                selectedQ={this.state.selectedQ}
+                                                selectedA={this.state.selectedA}
+                                            />
+                                        ))}
+                                    </List>
+                                )
+                                : ('')                        
+                            }
+                        </GameWrap>
                     )
-                    : ('')                        
-                }
-                {this.state.answers.length 
-                    ? (
-                        <List>
-                            {this.state.answers.map(answer => (
-                                <MatchItem
-                                    key={answer.question}
-                                    id={answer.question}
-                                    name={`a-${answer.question}`}
-                                    type="answer"
-                                    text={answer.option1}
-                                    handleClick={this.handleQAClick}
-                                    selectedQ={this.state.selectedQ}
-                                    selectedA={this.state.selectedA}
-                                />
-                            ))}
-                        </List>
+                    : (
+                        <GameWrap backURL={trimUrl(this.props.match.url, 'level')}>
+                            <div className="text-center">
+                                <h1>Coming Soon</h1>
+                            </div>
+                        </GameWrap>
                     )
-                    : ('')                        
                 }
-            </GameWrap>
             </Wrap>
         )
     }
