@@ -5,7 +5,7 @@ export class Question extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+            question: {}
         };
         this.getInfo = this.getInfo.bind(this);
     }
@@ -15,16 +15,28 @@ export class Question extends Component {
     }
 
     getInfo = (id) => {
-        // let params = {_id: id};
         API.getOneQuestion(id)
         .then((res) => {
-            console.log(res);
+            const question = res.data;
+            this.setState({question});
         });
     }
 
     render() {
+        const q = this.state.question;
         return (
-            <div> This is the question page for question Id: {this.props.match.params.id} </div>
+            <div>
+                <p> This is the question page for question Id: {this.props.match.params.id}</p>
+                <p>Question ID: {q._id}</p>
+                <p>Type: {q.type}</p>
+                <p>Language: {q.language}</p>
+                <p>Question: {q.question}</p>
+                <p>Right answer option: {parseInt(q.answer) + 1}</p>
+                <p>Option 1: {q.option1}</p>
+                <p>Option 2: {q.option2}</p>
+                <p>Option 3: {q.option3}</p>
+                <p>Option 4: {q.option4}</p>
+            </div>
         )
     }
 }
