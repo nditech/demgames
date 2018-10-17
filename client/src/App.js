@@ -13,10 +13,10 @@ const App = () =>
     <Router>
         <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/admin/:admin" component={Admin} />
+            <Route exact path="/admin/:name" component={Admin} />
             <Route exact path="/game" component={Game} />
-            <Route exact path="/module/:module" component={Module} />
-            <Route exact path="/module/:module/level/:level" component={Level} />
+            <Route exact path="/module/:name" component={Module} />
+            <Route exact path="/module/:name/level/:number" component={Level} />
             <Route exact path="/user" component={User} />
             <Route exact path="/done" component={Done} />
             <Route exact path="/question/:id" component={Question} />
