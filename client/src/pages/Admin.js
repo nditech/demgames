@@ -158,9 +158,7 @@ export class Admin extends Component {
      * 
      */
     editQuestion = (id) => {
-        console.log(id);
         this.gotoQuestionPage(id);
-
     }
 
     // TODO: Delete question
