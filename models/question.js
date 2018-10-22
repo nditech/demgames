@@ -11,7 +11,7 @@ const questionSchema = new Schema({
     type: {type: String, required: true},
     language: {type: String, require: true},
     tags: {type: Array}
-}, {_id: false});
+}, {_id: true});
 
 const Question = mongoose.model('Question', questionSchema);
 

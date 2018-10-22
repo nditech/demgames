@@ -79,9 +79,11 @@ export class Admin extends Component {
         let params = {};
         tags.map((t) => {
             const key = t.type;
-            const value = t.id.toLocaleLowerCase();
+            const value = t.id;
             params[key] = value;
         });
+
+        console.log(params);
 
         API.getQuesitons(params)
         .then((res) => {
@@ -174,8 +176,8 @@ export class Admin extends Component {
             option3: this.state.option3,
             option4: this.state.option4,
             answer: this.state.answer,
-            type: this.state.type.toLowerCase(),
-            language: this.state.language.toLowerCase()
+            type: this.state.type,
+            language: this.state.language
         };
 
         API.create(question)

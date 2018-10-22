@@ -246,6 +246,12 @@ a > img:hover {
     flex-direction: column;
 }
 
+textarea {
+    border: 1px solid #ced4da;
+    width: 100%;
+    /* word-wrap: break-word; */
+}
+
 .selected-answer {
     color: #fff;
     background-color: #F38051;

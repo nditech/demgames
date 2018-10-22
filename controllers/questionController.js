@@ -11,6 +11,12 @@ module.exports = {
         .then(dbQuestion => res.json(dbQuestion))
         .catch(err => res.status(422).json(err));
     },
+    findAllSpanishQuestions: (req, res) => {
+        db.Question
+        .find({$and: [{"language": "Spanish"}]})
+        .then(dbQuestion => res.json(dbQuestion))
+        .catch(err => res.status(422).json(err));
+    },
     findById: (req, res) => {
         db.Question
         .findById(ObjectId(req.params.id))
@@ -18,9 +24,7 @@ module.exports = {
         .catch(err => res.status(422).json(err));
     },
     create: (req, res) => {
-        const id = new ObjectId;
         let question = req.body.params;
-        question._id = id;
         db.Question
         .create(question)
         .then(dbQuestion => res.json(dbQuestion))

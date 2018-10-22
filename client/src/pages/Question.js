@@ -62,22 +62,32 @@ export class Question extends Component {
         });
     }
 
+    toUpper = (str) => {
+        return str.charAt(0).toUpperCase() + str.substr(1);
+    }
+
+    /**
+     * TODO: Render default values for options. Issue: render() runs before getInfo() -> no data
+     */
     render() {
         return (
             <div className="question-page">
                 <Form>
                     <FormGroup>
                         <Label for="language">Language:</Label>
-                        <Input type="select" name="language" id="language"
-                            value={this.state.language}
-                            onChange={this.handleInputChange}
-                        >
-                            <option>English</option>
-                            <option>Spanish</option>
-                        </Input>
+                        <p>{this.state.language}</p>
+                                <Input type="select" name="language" id="language"
+                                    value={this.state.language}
+                                    onChange={this.handleInputChange}
+                                >
+                                    <option>English</option>
+                                    <option>Spanish</option>
+                                </Input>
+                           
                     </FormGroup>
                     <FormGroup>
                         <Label for="questionType">Type:</Label>
+                        <p>{this.state.type}</p>
                         <Input type="select" name="type" id="questionType"
                             value={this.state.type}
                             onChange={this.handleInputChange}
@@ -96,24 +106,24 @@ export class Question extends Component {
                     <FormGroup>
                         <Label for="option1">Option 1:</Label>
                         <div>
-                            <textarea name="option1" id="option1" value={this.state.option1} onChange={this.handleInputChange} />
+                            <textarea rows="5" name="option1" id="option1" value={this.state.option1} onChange={this.handleInputChange} />
                         </div>
                         {
-                            this.state.type === 'matching'
+                            this.state.type === 'Matching'
                             ? (null)
                             : (
                                 <div>
                                     <Label for="option2">Option 2:</Label>
                                     <div>
-                                        <textarea name="option2" id="option2" value={this.state.option2} onChange={this.handleInputChange} />
+                                        <textarea rows="5" name="option2" id="option2" value={this.state.option2} onChange={this.handleInputChange} />
                                     </div>
                                     <Label for="option3">Option 3:</Label>
                                     <div>
-                                        <textarea name="option3" id="option3" value={this.state.option3} onChange={this.handleInputChange} />
+                                        <textarea rows="5" name="option3" id="option3" value={this.state.option3} onChange={this.handleInputChange} />
                                     </div>
                                     <Label for="option4">Option 4:</Label>
                                     <div>
-                                        <textarea name="option4" id="option4" value={this.state.option4} onChange={this.handleInputChange} />
+                                        <textarea rows="5" name="option4" id="option4" value={this.state.option4} onChange={this.handleInputChange} />
                                     </div>
                                 </div>   
                             )

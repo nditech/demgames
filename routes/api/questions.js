@@ -6,6 +6,10 @@ router.route('/')
 .get(questionController.findAll)
 .post(questionController.create);
 
+// Matches /api/questions/es
+router.route('/es')
+.get(questionController.findAllSpanishQuestions);
+
 // Matches with "/api/questions/:id"
 router
 .route('/:id')

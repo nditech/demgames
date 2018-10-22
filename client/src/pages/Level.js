@@ -5,14 +5,14 @@ import {GameWrap, Progress, MatchItem} from '../components/GameItem'
 import {Wrap} from '../components/Grid'
 import {List} from '../components/HorizontalList'
 // import {BackBtn} from '../../components/Button'
-// import API from '../../utils/API'
+import API from '../utils/API'
 import trimUrl from '../utils/trimUrl';
 
 /**
  * Temporary data for AWS S3
  * Return to question._id when full stack
  */
-import data from '../g4g-spanish.json';
+// import data from '../g4g-spanish.json';
 
 export class Level extends Component {
     constructor(props) {
@@ -49,19 +49,19 @@ export class Level extends Component {
     }
 
     componentDidMount() {
-        const questions = data;
-        const answers = this.shuffleData([...questions]);
-        const total = questions.length;
-        this.setState({questions, answers, total});
+        // const questions = data;
+        // const answers = this.shuffleData([...questions]);
+        // const total = questions.length;
+        // this.setState({questions, answers, total});
 
 
-        // API.getQuesitons()
-        // .then(res => {
-        //     const   questions = res.data,
-        //             answers = this.shuffleData([...questions]),
-        //             total = questions.length
-        //     this.setState({questions, answers, total})
-        // })
+        API.getQuesitons()
+        .then(res => {
+            const   questions = res.data,
+                    answers = this.shuffleData([...questions]),
+                    total = questions.length
+            this.setState({questions, answers, total})
+        })
     }
 
     handleQAClick = (type, id) => {
