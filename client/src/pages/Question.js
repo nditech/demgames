@@ -67,11 +67,12 @@ export class Question extends Component {
     }
 
     /**
-     * TODO: Render default values for options. Issue: render() runs before getInfo() -> no data
+     * TODO: Save Changes or Cancel
      */
     render() {
         return (
             <div className="question-page">
+                <h5>Edit Question ID: {this.state.data._id}</h5>
                 <Form>
                     <FormGroup>
                         <Label for="language">Language:</Label>
@@ -129,6 +130,8 @@ export class Question extends Component {
                             )
                         }
                     </FormGroup>
+                    <Button color="success">Save Changes</Button>
+                    <Button color="danger">Cancel</Button>
                 </Form>
             </div>
         )
