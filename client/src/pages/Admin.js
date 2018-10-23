@@ -83,8 +83,6 @@ export class Admin extends Component {
             params[key] = value;
         });
 
-        console.log(params);
-
         API.getQuesitons(params)
         .then((res) => {
             const questions = res.data;
@@ -355,7 +353,7 @@ export class Admin extends Component {
         const { tags, suggestions } = this.state;
         return (
             <div>
-                This is Admin Page for {this.props.match.params.name}
+                <h3>Admin Page</h3>
                 <ReactTags
                     placeholder={'Type to search, e.g. language'}
                     tags={tags}

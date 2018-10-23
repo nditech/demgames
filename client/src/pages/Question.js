@@ -12,6 +12,8 @@ export class Question extends Component {
         super(props);
         this.state = {
             data: {},
+            noticeMessage: '',
+            noticeColour: '',
             language: '',
             type: '',
             question: '',
@@ -38,6 +40,47 @@ export class Question extends Component {
             [name]: value
         });
     }
+
+    handleSaveQuestion = () => {
+        const question = {
+            _id: this.state.data._id,
+            question: this.state.question,
+            option1: this.state.option1,
+            option2: this.state.option2,
+            option3: this.state.option3,
+            option4: this.state.option4,
+            answer: this.state.answer,
+            type: this.state.type,
+            language: this.state.language
+        };
+
+        API.update(question)
+        .then((res) => {
+            if (res && (res.status === 200)) {
+                const message = 'Your question has been saved successfully.';
+                const colour = 'success';
+                this.setState({
+                    noticeMessage: message,
+                    noticeColour: colour
+                });
+            }
+            else {
+                const message = 'Error: Question was not saved. Please try again later.';
+                const colour = 'danger';
+                this.setState({
+                    noticeMessage: message,
+                    noticeColour: colour
+                });
+            }
+            
+            // Hide the message after 2 second(s)
+            setTimeout((() => {
+                this.setState({
+                    addQuestionNotice: '',
+                })
+            }), 2000);
+        });
+    }
     
     handleSubmit = (event) => {
         alert('An essay was submitted: ' + this.state.value);
@@ -58,7 +101,6 @@ export class Question extends Component {
             this.setState({
                 data, language, type, question, option1, option2, option3, option4
             });
-            console.log(this.state.data);
         });
     }
 
@@ -130,9 +172,9 @@ export class Question extends Component {
                             )
                         }
                     </FormGroup>
-                    <Button color="success">Save Changes</Button>
-                    <Button color="danger">Cancel</Button>
                 </Form>
+                <Button color="success" onClick={this.handleSaveQuestion}>Save</Button>
+                <a href="/admin"><Button color="danger">Cancel</Button></a>
             </div>
         )
     }

@@ -24,13 +24,16 @@ module.exports = {
         .catch(err => res.status(422).json(err));
     },
     create: (req, res) => {
-        let question = req.body.params;
+        let question = req.body;
         db.Question
         .create(question)
         .then(dbQuestion => res.json(dbQuestion))
         .catch(err => res.status(422).json(err));
     },
     update: (req, res) => {
+        console.log('this is the params');
+        console.log(req.params);
+        console.log(req.body);
         db.Question
         .findOneAndUpdate({ _id: req.params.id }, req.body)
         .then(dbQuestion => res.json(dbQuestion))
