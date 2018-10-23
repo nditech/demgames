@@ -19,7 +19,7 @@ module.exports = {
     },
     findById: (req, res) => {
         db.Question
-        .findById(ObjectId(req.params.id))
+        .findById({_id: req.params.id})
         .then((dbQuestion) => res.json(dbQuestion))
         .catch(err => res.status(422).json(err));
     },
@@ -31,9 +31,6 @@ module.exports = {
         .catch(err => res.status(422).json(err));
     },
     update: (req, res) => {
-        console.log('this is the params');
-        console.log(req.params);
-        console.log(req.body);
         db.Question
         .findOneAndUpdate({ _id: req.params.id }, req.body)
         .then(dbQuestion => res.json(dbQuestion))

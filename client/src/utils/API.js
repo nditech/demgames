@@ -13,10 +13,11 @@ export default {
     create: (params) => {
         return axios.post('/api/questions', params);
     },
+    delete: (id) => {
+        return axios.delete('/api/questions/' + id);
+    },
     update: (params) => {
         const id = params._id;
-        console.log(params);
-        console.log(id);
         return axios.put('/api/questions/' + id, params);
     }
 }

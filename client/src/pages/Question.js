@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import API from '../utils/API';
-import { Card, Button, CardHeader, CardFooter, CardBody,
+import { Alert, Card, Button, CardHeader, CardFooter, CardBody,
     CardTitle, CardText, 
     ListGroup, ListGroupItem,
     Form, FormGroup, Label, Input, FormText 
@@ -41,6 +41,37 @@ export class Question extends Component {
         });
     }
 
+    handleDeleteQuestion = () => {
+        const id = this.state.data._id;
+        API.delete(id)
+        .then((res) => {
+            if (res && (res.status === 200)) {
+                const message = 'Your question has been deleted successfully.';
+                const colour = 'warning';
+                this.setState({
+                    noticeMessage: message,
+                    noticeColour: colour
+                });
+            }
+            else {
+                const message = 'Error: Question was not deleted. Please try again later.';
+                const colour = 'danger';
+                this.setState({
+                    noticeMessage: message,
+                    noticeColour: colour
+                });
+            }
+            
+            // Hide the message after 2 second(s)
+            setTimeout((() => {
+                this.setState({
+                    noticeMessage: '',
+                });
+                this.props.history.push('/admin');
+            }), 2000);
+        });
+    }
+
     handleSaveQuestion = () => {
         const question = {
             _id: this.state.data._id,
@@ -76,7 +107,7 @@ export class Question extends Component {
             // Hide the message after 2 second(s)
             setTimeout((() => {
                 this.setState({
-                    addQuestionNotice: '',
+                    noticeMessage: '',
                 })
             }), 2000);
         });
@@ -115,6 +146,11 @@ export class Question extends Component {
         return (
             <div className="question-page">
                 <h5>Edit Question ID: {this.state.data._id}</h5>
+                {
+                    this.state.noticeMessage !== ''
+                    ? (<Alert color={this.state.noticeColour}>{this.state.noticeMessage}</Alert>)
+                    : (null)
+                }
                 <Form>
                     <FormGroup>
                         <Label for="language">Language:</Label>
@@ -174,7 +210,8 @@ export class Question extends Component {
                     </FormGroup>
                 </Form>
                 <Button color="success" onClick={this.handleSaveQuestion}>Save</Button>
-                <a href="/admin"><Button color="danger">Cancel</Button></a>
+                <a href="/admin"><Button color="warning">Cancel</Button></a>
+                <Button color="danger" onClick={this.handleDeleteQuestion}>Delete</Button>
             </div>
         )
     }
