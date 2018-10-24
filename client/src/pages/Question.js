@@ -7,6 +7,11 @@ import { Alert, Card, Button, CardHeader, CardFooter, CardBody,
     } from 'reactstrap';
 import '../css/Question.css';
 
+/**
+ * TODO:
+ * Group changing notice message and colour.
+ * Style
+ */
 export class Question extends Component {
     constructor(props) {
         super(props);

@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import {Wrap} from '../components/Grid';
+import {HelpModal} from '../components/Modal';
 import { WithContext as ReactTags } from 'react-tag-input';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+
 import API from '../utils/API';
 import Select from 'react-select'; // uninstall later
 import makeAnimated from 'react-select/lib/animated'; // uninstall later
@@ -11,6 +15,8 @@ import { Alert,
     Input, 
     Label, ListGroup, ListGroupItem, 
     Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 export class Admin extends Component {
     constructor(props) {
@@ -23,8 +29,8 @@ export class Admin extends Component {
                 help: false
             },
             addQuestion: false,
-            addQuestionNotice: '',
-            addQuestionNoticeColour: '',
+            notice: '',
+            noticeColour: '',
             questions: [],
             tags: [
                 { id: "English", text: "Language: English", type: "language"  }
@@ -44,24 +50,22 @@ export class Admin extends Component {
             option2: '',
             option3: '',
             option4: '',
-            answer: '1'
+            answer: '1',
+            event: {
+                date: moment()
+            }
         };
+        this.handleChangeDate = this.handleChangeDate.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleAddition = this.handleAddition.bind(this);
         this.handleDrag = this.handleDrag.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.toggleHelp = this.toggleHelp.bind(this);
         this.toggleAddQuestion = this.toggleAddQuestion.bind(this);
-        // this.toggleEditQuestion = this.toggleEditQuestion.bind(this);
-        // this.editQuestion = this.editQuestion.bind(this);
+        this.toggleAddEvent = this.toggleAddEvent.bind(this);
         this.renderQuestionAnswer = this.renderQuestionAnswer.bind(this);
         this.saveQuestion = this.saveQuestion.bind(this);
         this.gotoQuestionPage = this.gotoQuestionPage.bind(this);
-    }
-
-    gotoQuestionPage = (id) => {
-        let path = `/question/${id}`;
-        this.props.history.push(path);
     }
 
     // Show questions when page loaded
@@ -72,6 +76,12 @@ export class Admin extends Component {
     // Update questions whenever the tags are changed
     componentDidUpdate = () => {
         if (!this.state.searchDone) this.handleSearch(this.state.tags);
+    }
+
+    handleChangeDate = (date) => {
+        this.setState({
+            event: {date: date}
+        });
     }
 
     // Search database for questions based on current tags
@@ -91,10 +101,13 @@ export class Admin extends Component {
         });
     }
 
+    // Change notice based on conditions
+    handleNotice = () => {
+
+    }
+
     /**
-     * 
-     * react-tag-input
-     * 
+     * FUNCTIONS FROM react-tag-input
      */
     handleDelete = (i) => {
         const tags = this.state.tags.filter((tag, index) => index !== i);
@@ -119,14 +132,8 @@ export class Admin extends Component {
         this.setState({ tags: newTags });
     }
 
-    handleTagClick = (index) => {
-        console.log('The tag at index ' + index + ' was clicked');
-    }
-
     /**
-     * 
-     * INPUT
-     * 
+     * FUNCTIONS FOR INPUT
      */
     handleInputChange = (event) => {
         const target = event.target;
@@ -138,30 +145,53 @@ export class Admin extends Component {
         });
     }
 
-    toggleAddEvent = () => {
-        this.setState({
-            show: {addEvent: !this.state.show.addEvent}
-        });
-    }
-
     toggleHelp = () => {
         this.setState({
             show: {help: !this.state.show.help}
         });
     }
 
-    /**
-     * 
-     * QUESTIONS
-     * 
-     */
-    editQuestion = (id) => {
-        this.gotoQuestionPage(id);
+    toggleAddEvent = () => {
+        this.setState({
+            show: {addEvent: !this.state.show.addEvent}
+        });
     }
 
-    // TODO: Delete question
-    deleteQuestion = (id) => {
-        console.log(`clicked question id: ${id}`);
+    toggleAddQuestion = () => {
+        this.setState({
+            show: {addQuestion: !this.state.show.addQuestion}
+        });
+    }
+
+    /**
+     * FUNCTIONS FOR EVENTS
+     */
+
+    saveEvent = () => {
+        const event = {
+            name: '',
+            date: '',
+            address: '',
+            city: '',
+            region: '',
+            country: ''
+        }
+
+        /**
+         * TODO: API create event
+         */
+    }
+
+    /**
+     * FUNCTIONS FOR QUESTIONS
+     */
+    gotoQuestionPage = (id) => {
+        let path = `/question/${id}`;
+        this.props.history.push(path);
+    }
+
+    editQuestion = (id) => {
+        this.gotoQuestionPage(id);
     }
 
     saveQuestion = () => {
@@ -182,8 +212,8 @@ export class Admin extends Component {
                 const message = 'Your question has been saved successfully.';
                 const colour = 'success';
                 this.setState({
-                    addQuestionNotice: message,
-                    addQuestionNoticeColour: colour
+                    notice: message,
+                    noticeColour: colour
                 });
                 this.handleSearch(this.state.tags);
             }
@@ -191,39 +221,95 @@ export class Admin extends Component {
                 const message = 'Error: Question was not saved. Please try again later.';
                 const colour = 'danger';
                 this.setState({
-                    addQuestionNotice: message,
-                    addQuestionNoticeColour: colour
+                    notice: message,
+                    noticeColour: colour
                 });
             }
             
             // Hide the message after 2 second(s)
             setTimeout((() => {
                 this.setState({
-                    addQuestionNotice: '',
+                    notice: '',
                 })
             }), 2000);
         });
     }
-
-    toggleAddQuestion = () => {
-        this.setState({
-            show: {addQuestion: !this.state.show.addQuestion}
-        });
-    }
     
     /**
-     * 
-     * RENDER
-     * 
+     * FUNCTIONS FOR RENDERING
      */
+
+    /**
+     * TODO: 
+     * Save event to database.
+     */
+    renderAddEvent = () => {
+        return (
+            <Modal isOpen={this.state.show.addEvent} toggle={this.toggleAddEvent} className={this.props.className}>
+                <ModalHeader toggle={this.toggleAddEvent}>Add Event</ModalHeader>
+                <ModalBody>
+                    {
+                        this.state.notice !== ''
+                        ? (<Alert color={this.state.noticeColour}>{this.state.notice}</Alert>)
+                        : (null)
+                    }
+                
+                    <Form>
+                        <FormGroup>
+                            <Label for="event-name">Name:</Label>
+                            <Input type="text" name="eventName" id="event-name" placeholder="Event Name" 
+                                onChange={this.handleInputChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="event-date">Date:</Label>
+                            <DatePicker
+                                selected={this.state.event.date}
+                                onChange={this.handleChangeDate}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="event-address">Address:</Label>
+                            <Input type="text" name="eventAddress" id="event-address" placeholder="e.g. 123 First St" 
+                                onChange={this.handleInputChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="event-city">City/Town:</Label>
+                            <Input type="text" name="eventCity" id="event-city" placeholder="City Name" 
+                                onChange={this.handleInputChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="event-region">Region/State/Province:</Label>
+                            <Input type="text" name="eventRegion" id="event-region" placeholder="Province Name" 
+                                onChange={this.handleInputChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="event-country">Country:</Label>
+                            <Input type="text" name="eventCountry" id="event-country" placeholder="Country Name" 
+                                onChange={this.handleInputChange}
+                            />
+                        </FormGroup>
+                        <Button color="success" onClick={this.saveEvent}>Save</Button>
+                    </Form>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="secondary" onClick={this.toggleAddEvent}>Close</Button>
+                </ModalFooter>
+            </Modal>
+        );
+    }
+
     renderAddQuestion = () => {
         return (
             <Modal isOpen={this.state.show.addQuestion} toggle={this.toggleAddQuestion} className={this.props.className}>
                 <ModalHeader toggle={this.toggleAddQuestion}>Add Question</ModalHeader>
                 <ModalBody>
                     {
-                        this.state.addQuestionNotice !== ''
-                        ? (<Alert color={this.state.addQuestionNoticeColour}>{this.state.addQuestionNotice}</Alert>)
+                        this.state.notice !== ''
+                        ? (<Alert color={this.state.noticeColour}>{this.state.notice}</Alert>)
                         : (null)
                     }
                 
@@ -249,7 +335,6 @@ export class Admin extends Component {
                                 <option>Scenario</option>
                             </Input>
                         </FormGroup>
-
                         <FormGroup>
                             <Input type="text" name="question" id="question" placeholder="Question" 
                                 onChange={this.handleInputChange}
@@ -315,40 +400,46 @@ export class Admin extends Component {
         );
     }
 
-    renderHelp = () => {
+    renderHelpModal = () => {
         return (
-            <Modal isOpen={this.state.show.help} toggle={this.toggleHelp} className={this.props.className}>
-                <ModalHeader toggle={this.toggleHelp}>Admin Help</ModalHeader>
-                <ModalBody>
-                    <p>Type in 'location', 'language' and or 'game' to search for questions.</p>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="secondary" onClick={this.toggleHelp}>Close</Button>
-                </ModalFooter>
-            </Modal>
+            <HelpModal
+                open={this.state.show.help}
+                toggle={this.toggleHelp}
+                className={this.props.className}
+            />
         );
     }
 
+    /**
+     * If question type is Matching, only render the answer.
+     * If not: 
+     * Render with answer position + 1 to avoid position 0 which can cause confusion.
+     */
     renderQuestionAnswer = (q) => {
-        if (q.type === 'match') {
+        if (q.type === 'Matching') {
             return (<div>Answer: {q.option1}</div>);
         }
         else {
             return (
                 <div>
-                    <div>Answer position: {q.answer}</div>
+                    <div>Answer position: {parseInt(q.answer) + 1}</div>
                     <div>
-                        <div>Option(s):</div>
-                        <div>{q.option1}</div>
-                        <div>{q.option2}</div>
-                        <div>{q.option3}</div>
-                        <div>{q.option4}</div>
+                        <div>Option 1: {q.option1}</div>
+                        <div>Option 2: {q.option2}</div>
+                        <div>Option 3: {q.option3}</div>
+                        <div>Option 4: {q.option4}</div>
                     </div>
                 </div>
             );
         }
     }
 
+    /**
+     * Render page with:
+     * ReactTags for search bar.
+     * Conditions to show help modal, add question modal, add event modal.
+     * All questions found.
+     */
     render = () => {
         const { tags, suggestions } = this.state;
         return (
@@ -374,8 +465,9 @@ export class Admin extends Component {
                     Add Event
                 </div>
 
-                {this.state.show.help? this.renderHelp() : null}
+                {this.state.show.help? this.renderHelpModal() : null}
                 {this.state.show.addQuestion? this.renderAddQuestion() : null}
+                {this.state.show.addEvent? this.renderAddEvent() : null}
                 
                 {
                     this.state.questions.length > 0
