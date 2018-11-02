@@ -55,7 +55,7 @@ export class Level extends Component {
         // this.setState({questions, answers, total});
 
 
-        API.getQuesitons()
+        API.getAllSpanishQuesitons()
         .then(res => {
             const   questions = res.data,
                     answers = this.shuffleData([...questions]),
