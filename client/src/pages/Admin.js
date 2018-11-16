@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Wrap} from '../components/Grid';
 import {HelpModal} from '../components/Modal';
-import { WithContext as ReactTags } from 'react-tag-input';
+// import { WithContext as ReactTags } from 'react-tag-input';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
@@ -444,7 +444,7 @@ export class Admin extends Component {
         return (
             <div>
                 <h3>Admin Page</h3>
-                <ReactTags
+                {/* <ReactTags
                     placeholder={'Type to search, e.g. language'}
                     tags={tags}
                     suggestions={suggestions}
@@ -452,7 +452,7 @@ export class Admin extends Component {
                     handleAddition={this.handleAddition}
                     handleDrag={this.handleDrag}
                     handleTagClick={this.handleTagClick}
-                />
+                /> */}
                 <i className="material-icons" onClick={this.toggleHelp}>help</i>
 
                 <div>
