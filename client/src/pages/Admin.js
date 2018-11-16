@@ -6,8 +6,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
 import API from '../utils/API';
-import Select from 'react-select'; // uninstall later
-import makeAnimated from 'react-select/lib/animated'; // uninstall later
+
 import { Alert, 
     Button, 
     Card, CardText, CardBody, CardTitle, CardSubtitle, 

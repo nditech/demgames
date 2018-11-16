@@ -36,6 +36,15 @@ A full stack (MERN) app that helps users learn how to debate effectively.
 
 ## Documentation
 
+### :warning: Branch `2018nov16` works on local machine but will throw `error` when build:
+```
+Failed to minify the code from this file: 
+
+ 	./node_modules/autobind-decorator/src/index.js:7 
+```
+This is a known issue of `autobind-decorator` without proper fix (as of 16 Nov 2018).
+`autobind-decorator` is used by `react-tag-input` which is used for the search bar. The decision is made to rebuild the search bar without `react-tag-input`.
+
 > :construction: Under construction
 
 ## Installation
