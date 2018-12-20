@@ -1,2 +1,3 @@
-export * from './BackBtn'
-export * from './InfoBtn'
+export * from './AdminBtn';
+export * from './BackBtn';
+export * from './InfoBtn';

@@ -1,27 +1,27 @@
 import React, {Component} from 'react';
-import {Wrap} from '../components/Grid';
-import {HelpModal} from '../components/Modal';
-// import { WithContext as ReactTags } from 'react-tag-input';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-
-import API from '../utils/API';
-
 import { Alert, 
     Button, 
     Card, CardText, CardBody, CardTitle, CardSubtitle, 
     Form, FormGroup, FormText, 
     Input, 
     Label, ListGroup, ListGroupItem, 
-    Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-
-import 'react-datepicker/dist/react-datepicker.css';
+    Modal, ModalHeader, ModalBody, ModalFooter 
+} from 'reactstrap';
+// Custom components
+import API from '../utils/API';
+import {Wrap} from '../components/Grid';
+import {HelpModal, QuestionModal} from '../components/Modal';
+import Dashboard from '../components/Dashboard';
+import {AdminBtn} from '../components/Button';
 
 export class Admin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: {
+            showModal: {
                 addEvent: false,
                 addQuestion: false,
                 editQuestion: false,
@@ -31,17 +31,8 @@ export class Admin extends Component {
             notice: '',
             noticeColour: '',
             questions: [],
-            tags: [
-                { id: "English", text: "Language: English", type: "language"  }
-            ],
-            suggestions: [
-                { id: 'Guatemala', text: 'Location: Guatemala', type: "location" },
-                { id: 'debate', text: 'Game: Debate', type: "game" },
-                { id: 'Spanish', text: 'Language: Spanish', type: "language" },
-                { id: 'English', text: 'Language: English', type: "language" }
-            ],
+            questionShown: [],
             selectedOption: null,
-            searchDone: false, /* searchDone prevents componentDidUpdate infinitive loops */
             language: 'English',
             type: 'Matching',
             question: '',
@@ -54,11 +45,7 @@ export class Admin extends Component {
                 date: moment()
             }
         };
-        this.handleChangeDate = this.handleChangeDate.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-        this.handleAddition = this.handleAddition.bind(this);
-        this.handleDrag = this.handleDrag.bind(this);
-        this.handleSearch = this.handleSearch.bind(this);
+        this.changeDate = this.changeDate.bind(this);
         this.toggleHelp = this.toggleHelp.bind(this);
         this.toggleAddQuestion = this.toggleAddQuestion.bind(this);
         this.toggleAddEvent = this.toggleAddEvent.bind(this);
@@ -67,68 +54,28 @@ export class Admin extends Component {
         this.gotoQuestionPage = this.gotoQuestionPage.bind(this);
     }
 
-    // Show questions when page loaded
+    // Fetch questions from database
     componentDidMount = () => {
-        this.handleSearch(this.state.tags);
+        this.fetchQuestions();
     }
 
-    // Update questions whenever the tags are changed
-    componentDidUpdate = () => {
-        if (!this.state.searchDone) this.handleSearch(this.state.tags);
+    fetchQuestions = () => {
+        API.getQuesitons()
+        .then((res) => {
+            const questions = res.data;
+            const questionShown = res.data;
+            this.setState({questions, questionShown});
+        });
     }
 
-    handleChangeDate = (date) => {
+    filterQuestionsBy = (key, val) => {
+        return this.state.questions.filter((q) => q[key] === val);
+    }
+
+    changeDate = (date) => {
         this.setState({
             event: {date: date}
         });
-    }
-
-    // Search database for questions based on current tags
-    handleSearch = (tags) => {
-        let params = {};
-        tags.map((t) => {
-            const key = t.type;
-            const value = t.id;
-            params[key] = value;
-        });
-
-        API.getQuesitons(params)
-        .then((res) => {
-            const questions = res.data;
-            const searchDone = true;
-            this.setState({questions, searchDone});
-        });
-    }
-
-    // Change notice based on conditions
-    handleNotice = () => {
-
-    }
-
-    /**
-     * FUNCTIONS FROM react-tag-input
-     */
-    handleDelete = (i) => {
-        const tags = this.state.tags.filter((tag, index) => index !== i);
-        const searchDone = false;
-        this.setState({tags, searchDone});
-    }
- 
-    handleAddition = (tag) => {
-        const tags = [...this.state.tags, tag];
-        const searchDone = false;
-        this.setState({tags, searchDone});
-    }
- 
-    handleDrag = (tag, currPos, newPos) => {
-        const tags = [...this.state.tags];
-        const newTags = tags.slice();
- 
-        newTags.splice(currPos, 1);
-        newTags.splice(newPos, 0, tag);
- 
-        // re-render
-        this.setState({ tags: newTags });
     }
 
     /**
@@ -146,25 +93,21 @@ export class Admin extends Component {
 
     toggleHelp = () => {
         this.setState({
-            show: {help: !this.state.show.help}
+            showModal: {help: !this.state.showModal.help}
         });
     }
 
     toggleAddEvent = () => {
         this.setState({
-            show: {addEvent: !this.state.show.addEvent}
+            showModal: {addEvent: !this.state.showModal.addEvent}
         });
     }
 
     toggleAddQuestion = () => {
         this.setState({
-            show: {addQuestion: !this.state.show.addQuestion}
+            showModal: {addQuestion: !this.state.showModal.addQuestion}
         });
     }
-
-    /**
-     * FUNCTIONS FOR EVENTS
-     */
 
     saveEvent = () => {
         const event = {
@@ -181,9 +124,6 @@ export class Admin extends Component {
          */
     }
 
-    /**
-     * FUNCTIONS FOR QUESTIONS
-     */
     gotoQuestionPage = (id) => {
         let path = `/question/${id}`;
         this.props.history.push(path);
@@ -214,7 +154,6 @@ export class Admin extends Component {
                     notice: message,
                     noticeColour: colour
                 });
-                this.handleSearch(this.state.tags);
             }
             else {
                 const message = 'Error: Question was not saved. Please try again later.';
@@ -229,22 +168,25 @@ export class Admin extends Component {
             setTimeout((() => {
                 this.setState({
                     notice: '',
-                })
+                });
+                // Update questions
+                this.fetchQuestions();
             }), 2000);
         });
     }
-    
-    /**
-     * FUNCTIONS FOR RENDERING
-     */
 
-    /**
-     * TODO: 
-     * Save event to database.
-     */
+    showAllQuestions = () => {
+        this.setState({questionShown: this.state.questions});
+    }
+
+    showEnglishQuestions = () => {
+        const questionShown = this.filterQuestionsBy('language', 'English');
+        this.setState({questionShown});
+    }
+    
     renderAddEvent = () => {
         return (
-            <Modal isOpen={this.state.show.addEvent} toggle={this.toggleAddEvent} className={this.props.className}>
+            <Modal isOpen={this.state.showModal.addEvent} toggle={this.toggleAddEvent} className={this.props.className}>
                 <ModalHeader toggle={this.toggleAddEvent}>Add Event</ModalHeader>
                 <ModalBody>
                     {
@@ -264,7 +206,7 @@ export class Admin extends Component {
                             <Label for="event-date">Date:</Label>
                             <DatePicker
                                 selected={this.state.event.date}
-                                onChange={this.handleChangeDate}
+                                onChange={this.changeDate}
                             />
                         </FormGroup>
                         <FormGroup>
@@ -303,106 +245,25 @@ export class Admin extends Component {
 
     renderAddQuestion = () => {
         return (
-            <Modal isOpen={this.state.show.addQuestion} toggle={this.toggleAddQuestion} className={this.props.className}>
-                <ModalHeader toggle={this.toggleAddQuestion}>Add Question</ModalHeader>
-                <ModalBody>
-                    {
-                        this.state.notice !== ''
-                        ? (<Alert color={this.state.noticeColour}>{this.state.notice}</Alert>)
-                        : (null)
-                    }
-                
-                    <Form>
-                        <FormGroup>
-                            <Label for="language">Language:</Label>
-                            <Input type="select" name="language" id="language"
-                                value={this.state.language}
-                                onChange={this.handleInputChange}
-                            >
-                                <option>English</option>
-                                <option>Spanish</option>
-                            </Input>
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="questionType">Type:</Label>
-                            <Input type="select" name="type" id="questionType"
-                                value={this.state.type}
-                                onChange={this.handleInputChange}
-                            >
-                                <option>Matching</option>
-                                <option>Multiple Choice</option>
-                                <option>Scenario</option>
-                            </Input>
-                        </FormGroup>
-                        <FormGroup>
-                            <Input type="text" name="question" id="question" placeholder="Question" 
-                                onChange={this.handleInputChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Input type="text" name="option1" id="option1" placeholder="Option 1" 
-                                onChange={this.handleInputChange}
-                            />
-                            {
-                                this.state.type === 'Matching'
-                                ? (null)
-                                : (
-                                    <div>
-                                        <Input type="text" name="option2" id="option2" placeholder="Option 2" 
-                                        onChange={this.handleInputChange}
-                                        />
-                                        <Input type="text" name="option3" id="option3" placeholder="Option 3" 
-                                            onChange={this.handleInputChange}
-                                        />
-                                        <Input type="text" name="option4" id="option4" placeholder="Option 4" 
-                                            onChange={this.handleInputChange}
-                                        />
-                                    </div>   
-                                )
-                            }
-                        </FormGroup>
-                        {
-                            this.state.type === 'Matching'
-                            ? (
-                                <FormGroup>
-                                    <Label for="rightAnswer">Right Answer:</Label>
-                                    <Input type="select" name="answer" id="rightAnswer"
-                                        value={this.state.answer}
-                                        onChange={this.handleInputChange}
-                                    >
-                                        <option>1</option>
-                                    </Input>
-                                </FormGroup>
-                            )
-                            : (
-                                <FormGroup>
-                                    <Label for="rightAnswer">Right Answer:</Label>
-                                    <Input type="select" name="answer" id="rightAnswer"
-                                        value={this.state.answer}
-                                        onChange={this.handleInputChange}
-                                    >
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </Input>
-                                </FormGroup>
-                            )
-                        }
-                        <Button color="success" onClick={this.saveQuestion}>Save</Button>
-                    </Form>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="secondary" onClick={this.toggleAddQuestion}>Close</Button>
-                </ModalFooter>
-            </Modal>
+            <QuestionModal
+                open={this.state.showModal.addQuestion}
+                toggle={this.toggleAddQuestion}
+                className={this.props.className}
+                noticeColour={this.state.noticeColour}
+                notice={this.state.notice}
+                questionLanguage={this.state.language}
+                questionType={this.state.type}
+                handleInputChange={this.handleInputChange}
+                answer={this.state.answer}
+                saveQuestion={this.saveQuestion}
+            />
         );
     }
 
     renderHelpModal = () => {
         return (
             <HelpModal
-                open={this.state.show.help}
+                open={this.state.showModal.help}
                 toggle={this.toggleHelp}
                 className={this.props.className}
             />
@@ -435,44 +296,71 @@ export class Admin extends Component {
 
     /**
      * Render page with:
-     * ReactTags for search bar.
      * Conditions to show help modal, add question modal, add event modal.
      * All questions found.
      */
     render = () => {
-        const { tags, suggestions } = this.state;
+        const allEn = this.filterQuestionsBy('language', 'English');
+        const allEs = this.filterQuestionsBy('language', 'Spanish');
+        const dashboardObj = [
+            {
+                "id": "total-questions",
+                "text": "Total questions",
+                "num": this.state.questions.length,
+                "action": this.showAllQuestions
+            },
+            {
+                "id": "en-questions",
+                "text": "English questions",
+                "num": allEn.length,
+                "action": this.showEnglishQuestions
+            },
+            {
+                "id": "es-questions",
+                "text": "Spanish questions",
+                "num": allEs.length,
+                "action": this.showEnglishQuestions
+            }
+        ];
+        const buttons = [
+            {
+                "id": "help-btn",
+                "style": "info",
+                "action": this.toggleHelp,
+                "icon": "help",
+                "text": "Help"
+            },
+            {
+                "id": "add-question-btn",
+                "style": "primary",
+                "action": this.toggleAddQuestion,
+                "icon": "add_circle",
+                "text": "Add Question"
+            },
+            {
+                "id": "add-event-btn",
+                "style": "primary",
+                "action": this.toggleAddEvent,
+                "icon": "add_circle",
+                "text": "Add Event"
+            }
+        ]
+
         return (
             <div>
                 <h3>Admin Page</h3>
-                {/* <ReactTags
-                    placeholder={'Type to search, e.g. language'}
-                    tags={tags}
-                    suggestions={suggestions}
-                    handleDelete={this.handleDelete}
-                    handleAddition={this.handleAddition}
-                    handleDrag={this.handleDrag}
-                    handleTagClick={this.handleTagClick}
-                /> */}
-                <i className="material-icons" onClick={this.toggleHelp}>help</i>
+                <AdminBtn buttons={buttons}/>
+                <Dashboard obj={dashboardObj}/>
 
-                <div>
-                    <i className="material-icons" onClick={this.toggleAddQuestion}>add_circle</i>
-                    Add Question
-                </div>
-                <div>
-                    <i className="material-icons" onClick={this.toggleAddEvent}>add_circle</i>
-                    Add Event
-                </div>
-
-                {this.state.show.help? this.renderHelpModal() : null}
-                {this.state.show.addQuestion? this.renderAddQuestion() : null}
-                {this.state.show.addEvent? this.renderAddEvent() : null}
+                {this.state.showModal.help? this.renderHelpModal() : null}
+                {this.state.showModal.addQuestion? this.renderAddQuestion() : null}
+                {this.state.showModal.addEvent? this.renderAddEvent() : null}
                 
                 {
-                    this.state.questions.length > 0
+                    this.state.questionShown.length > 0
                     ? (
                         <ListGroup>
-                            {this.state.questions.map(q => (
+                            {this.state.questionShown.map(q => (
                                 <ListGroupItem key={q._id} id={q._id}>
                                     <p>Question: {q.question}</p>
                                     {this.renderQuestionAnswer(q)}
@@ -488,4 +376,4 @@ export class Admin extends Component {
             </div>
         )
     }
-}
+};
