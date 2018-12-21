@@ -1,19 +1,10 @@
 import React, {Component} from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import { Alert, 
-    Button, 
-    Card, CardText, CardBody, CardTitle, CardSubtitle, 
-    Form, FormGroup, FormText, 
-    Input, 
-    Label, ListGroup, ListGroupItem, 
-    Modal, ModalHeader, ModalBody, ModalFooter 
-} from 'reactstrap';
+import {Input, ListGroup, ListGroupItem} from 'reactstrap';
 // Custom components
 import API from '../utils/API';
 import {Wrap} from '../components/Grid';
-import {HelpModal, QuestionModal} from '../components/Modal';
+import {EventModal, HelpModal, QuestionModal} from '../components/Modal';
 import Dashboard from '../components/Dashboard';
 import {AdminBtn} from '../components/Button';
 
@@ -27,12 +18,10 @@ export class Admin extends Component {
                 editQuestion: false,
                 help: false
             },
-            addQuestion: false,
             notice: '',
             noticeColour: '',
             questions: [],
             questionShown: [],
-            selectedOption: null,
             language: 'English',
             type: 'Matching',
             question: '',
@@ -43,7 +32,8 @@ export class Admin extends Component {
             answer: '1',
             event: {
                 date: moment()
-            }
+            },
+            search: ''
         };
         this.changeDate = this.changeDate.bind(this);
         this.toggleHelp = this.toggleHelp.bind(this);
@@ -59,11 +49,18 @@ export class Admin extends Component {
         this.fetchQuestions();
     }
 
+    changeDate = (date) => {
+        this.setState({
+            event: {date: date}
+        });
+    }
+
     fetchQuestions = () => {
         API.getQuesitons()
         .then((res) => {
+            // By default, all questions are shown
             const questions = res.data;
-            const questionShown = res.data;
+            const questionShown = questions;
             this.setState({questions, questionShown});
         });
     }
@@ -72,15 +69,6 @@ export class Admin extends Component {
         return this.state.questions.filter((q) => q[key] === val);
     }
 
-    changeDate = (date) => {
-        this.setState({
-            event: {date: date}
-        });
-    }
-
-    /**
-     * FUNCTIONS FOR INPUT
-     */
     handleInputChange = (event) => {
         const target = event.target;
         const value = target.type === 'select' ? target.selected : target.value;
@@ -91,6 +79,7 @@ export class Admin extends Component {
         });
     }
 
+    // TODO: group 3 toggle modal functions into 1
     toggleHelp = () => {
         this.setState({
             showModal: {help: !this.state.showModal.help}
@@ -109,6 +98,15 @@ export class Admin extends Component {
         });
     }
 
+    gotoQuestionPage = (id) => {
+        let path = `/question/${id}`;
+        this.props.history.push(path);
+    }
+
+    editQuestion = (id) => {
+        this.gotoQuestionPage(id);
+    }
+
     saveEvent = () => {
         const event = {
             name: '',
@@ -122,15 +120,6 @@ export class Admin extends Component {
         /**
          * TODO: API create event
          */
-    }
-
-    gotoQuestionPage = (id) => {
-        let path = `/question/${id}`;
-        this.props.history.push(path);
-    }
-
-    editQuestion = (id) => {
-        this.gotoQuestionPage(id);
     }
 
     saveQuestion = () => {
@@ -175,75 +164,40 @@ export class Admin extends Component {
         });
     }
 
+    // TODO: group 3 show question functions into 1
     showAllQuestions = () => {
         this.setState({questionShown: this.state.questions});
     }
 
+    // Change the shown questions to English only
     showEnglishQuestions = () => {
         const questionShown = this.filterQuestionsBy('language', 'English');
         this.setState({questionShown});
     }
-    
-    renderAddEvent = () => {
+
+    // Change the shown questions to Spanish only
+    showSpanishQuestions = () => {
+        const questionShown = this.filterQuestionsBy('language', 'Spanish');
+        this.setState({questionShown});
+    }
+
+    renderEventModal = () => {
         return (
-            <Modal isOpen={this.state.showModal.addEvent} toggle={this.toggleAddEvent} className={this.props.className}>
-                <ModalHeader toggle={this.toggleAddEvent}>Add Event</ModalHeader>
-                <ModalBody>
-                    {
-                        this.state.notice !== ''
-                        ? (<Alert color={this.state.noticeColour}>{this.state.notice}</Alert>)
-                        : (null)
-                    }
-                
-                    <Form>
-                        <FormGroup>
-                            <Label for="event-name">Name:</Label>
-                            <Input type="text" name="eventName" id="event-name" placeholder="Event Name" 
-                                onChange={this.handleInputChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="event-date">Date:</Label>
-                            <DatePicker
-                                selected={this.state.event.date}
-                                onChange={this.changeDate}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="event-address">Address:</Label>
-                            <Input type="text" name="eventAddress" id="event-address" placeholder="e.g. 123 First St" 
-                                onChange={this.handleInputChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="event-city">City/Town:</Label>
-                            <Input type="text" name="eventCity" id="event-city" placeholder="City Name" 
-                                onChange={this.handleInputChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="event-region">Region/State/Province:</Label>
-                            <Input type="text" name="eventRegion" id="event-region" placeholder="Province Name" 
-                                onChange={this.handleInputChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="event-country">Country:</Label>
-                            <Input type="text" name="eventCountry" id="event-country" placeholder="Country Name" 
-                                onChange={this.handleInputChange}
-                            />
-                        </FormGroup>
-                        <Button color="success" onClick={this.saveEvent}>Save</Button>
-                    </Form>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="secondary" onClick={this.toggleAddEvent}>Close</Button>
-                </ModalFooter>
-            </Modal>
+            <EventModal
+                open={this.state.showModal.addEvent}
+                toggle={this.toggleAddEvent}
+                className={this.props.className}
+                notice={this.state.notice}
+                noticeColour={this.state.noticeColour}
+                eventDate={this.state.event.date}
+                changeDate={this.changeDate}
+                saveEvent={this.saveEvent}
+                handleInputChange={this.handleInputChange}
+            />
         );
     }
 
-    renderAddQuestion = () => {
+    renderQuestionModal = () => {
         return (
             <QuestionModal
                 open={this.state.showModal.addQuestion}
@@ -257,6 +211,65 @@ export class Admin extends Component {
                 answer={this.state.answer}
                 saveQuestion={this.saveQuestion}
             />
+        );
+    }
+
+    renderAdminButtons = () => {
+        const buttons = [
+            {
+                "id": "help-btn",
+                "style": "info",
+                "action": this.toggleHelp,
+                "icon": "help",
+                "text": "Help"
+            },
+            {
+                "id": "add-question-btn",
+                "style": "primary",
+                "action": this.toggleAddQuestion,
+                "icon": "add_circle",
+                "text": "Add Question"
+            },
+            {
+                "id": "add-event-btn",
+                "style": "primary",
+                "action": this.toggleAddEvent,
+                "icon": "add_circle",
+                "text": "Add Event"
+            }
+        ];
+
+        return (
+            <AdminBtn buttons={buttons}/>
+        );
+    }
+
+    renderDashboard = () => {
+        const allEn = this.filterQuestionsBy('language', 'English');
+        const allEs = this.filterQuestionsBy('language', 'Spanish');
+        const dashboard = [
+            {
+                "id": "total-questions",
+                "text": "Total questions",
+                "num": this.state.questions.length,
+                "action": this.showAllQuestions
+            },
+            {
+                "id": "en-questions",
+                "text": "English questions",
+                "num": allEn.length,
+                "action": this.showEnglishQuestions
+            },
+            {
+                "id": "es-questions",
+                "text": "Spanish questions",
+                "num": allEs.length,
+                "action": this.showSpanishQuestions
+            }
+        ];
+
+        return (
+            <Dashboard obj={dashboard}/>
         );
     }
 
@@ -297,70 +310,24 @@ export class Admin extends Component {
     /**
      * Render page with:
      * Conditions to show help modal, add question modal, add event modal.
-     * All questions found.
+     * Filters for questions' text (question.question) and language (questionShown)
      */
     render = () => {
-        const allEn = this.filterQuestionsBy('language', 'English');
-        const allEs = this.filterQuestionsBy('language', 'Spanish');
-        const dashboardObj = [
-            {
-                "id": "total-questions",
-                "text": "Total questions",
-                "num": this.state.questions.length,
-                "action": this.showAllQuestions
-            },
-            {
-                "id": "en-questions",
-                "text": "English questions",
-                "num": allEn.length,
-                "action": this.showEnglishQuestions
-            },
-            {
-                "id": "es-questions",
-                "text": "Spanish questions",
-                "num": allEs.length,
-                "action": this.showEnglishQuestions
-            }
-        ];
-        const buttons = [
-            {
-                "id": "help-btn",
-                "style": "info",
-                "action": this.toggleHelp,
-                "icon": "help",
-                "text": "Help"
-            },
-            {
-                "id": "add-question-btn",
-                "style": "primary",
-                "action": this.toggleAddQuestion,
-                "icon": "add_circle",
-                "text": "Add Question"
-            },
-            {
-                "id": "add-event-btn",
-                "style": "primary",
-                "action": this.toggleAddEvent,
-                "icon": "add_circle",
-                "text": "Add Event"
-            }
-        ]
-
         return (
             <div>
                 <h3>Admin Page</h3>
-                <AdminBtn buttons={buttons}/>
-                <Dashboard obj={dashboardObj}/>
-
+                {this.renderAdminButtons()}
+                {this.renderDashboard()}
+                <Input placeholder="Search" name="search" value={this.state.search} onChange={this.handleInputChange}/>
                 {this.state.showModal.help? this.renderHelpModal() : null}
-                {this.state.showModal.addQuestion? this.renderAddQuestion() : null}
-                {this.state.showModal.addEvent? this.renderAddEvent() : null}
-                
-                {
-                    this.state.questionShown.length > 0
+                {this.state.showModal.addQuestion? this.renderQuestionModal() : null}
+                {this.state.showModal.addEvent? this.renderEventModal() : null}
+                {this.state.questionShown.length > 0
                     ? (
                         <ListGroup>
-                            {this.state.questionShown.map(q => (
+                            {this.state.questionShown
+                            .filter((question) => question.question.toLowerCase().includes(this.state.search))
+                            .map(q => (
                                 <ListGroupItem key={q._id} id={q._id}>
                                     <p>Question: {q.question}</p>
                                     {this.renderQuestionAnswer(q)}
