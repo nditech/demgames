@@ -7,6 +7,7 @@ import {Wrap} from '../components/Grid';
 import {EventModal, HelpModal, QuestionModal} from '../components/Modal';
 import Dashboard from '../components/Dashboard';
 import {AdminBtn} from '../components/Button';
+import {QuestionItem} from '../components/AdminItem';
 
 export class Admin extends Component {
     constructor(props) {
@@ -290,7 +291,7 @@ export class Admin extends Component {
      */
     renderQuestionAnswer = (q) => {
         if (q.type === 'Matching') {
-            return (<div>Answer: {q.option1}</div>);
+            return (<div><b>Answer:</b> {q.option1}</div>);
         }
         else {
             return (
@@ -329,11 +330,13 @@ export class Admin extends Component {
                             .filter((question) => question.question.toLowerCase().includes(this.state.search))
                             .map(q => (
                                 <ListGroupItem key={q._id} id={q._id}>
-                                    <p>Question: {q.question}</p>
-                                    {this.renderQuestionAnswer(q)}
-                                    <div onClick={() => this.editQuestion(q._id)}>
-                                    <i className="material-icons">edit</i>
-                                    </div>
+                                    <QuestionItem
+                                        key={q._id} id={q._id}
+                                        question={q}
+                                        onClick={this.editQuestion}
+                                    >
+                                        {this.renderQuestionAnswer(q)}
+                                    </QuestionItem>
                                 </ListGroupItem>
                             ))}
                         </ListGroup>
