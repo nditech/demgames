@@ -16,7 +16,7 @@ database = {
         {
             // another question
         }
-    ]
+    ],
 /*
 this is the structure of the database
 this way it's easy to query for:
