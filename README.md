@@ -53,6 +53,8 @@ The app connects to a collection (table) and gets the questions, by default, in 
 
 ### Demo
 
+* [Working demo on Heroku](https://demgames-debate.herokuapp.com/)
+
 ### Installation
 
 Make sure you have [MongoDB](https://docs.mongodb.com/manual/installation/), [Node.js](https://nodejs.org/en/download/package-manager/) and [Yarn](https://yarnpkg.com/en/docs/install#mac-stable) on your machine. 
