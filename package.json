@@ -7,7 +7,8 @@
     "server": "node server.js",
     "client": "node scripts/start-client.js",
     "start": "concurrently \"nodemon server.js\" \"npm run client\"",
-    "build": "node scripts/build.js"
+    "build": "node scripts/build.js",
+    "test": "mocha ./test"
   },
   "author": "Viet Nguyen",
   "license": "gpl-3.0",

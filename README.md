@@ -75,6 +75,10 @@ $ cd ..
 $ yarn start
 ```
 
+If the app is run for the first time, there won't be any question. Use `http://localhost:3000/admin` to add questions.
+
+You can also use `./test/createdb.js` to add batches of questions to the database from `.json` files.
+
 ### Diagnosis
 
 ```
@@ -93,9 +97,18 @@ Uncaught (in promise) Error: Network Error
 
 ### Test
 
+* Install `mocha` globally
+    ```
+    $ npm install -g mocha
+    ```
+* Quickly test all functions
+    ```
+    $ npm test
+    ```
 * Currently, all tests passed. No errors.
-
-*There is no test guide at the moment.*
+* Inside `./test`, use:
+    * `text2json.js` to convert an `.xlsx` file to a `.json` file.
+    * `createdb.js` to add questions in batches from `.json` files.
 
 ### Contribution
 
