@@ -1,0 +1,30 @@
+[
+  {
+    "level": 1,
+    "par_score": 85,
+    "description": "Description1",
+    "linked_level": 0,
+    "": ""
+  },
+  {
+    "level": 2,
+    "par_score": 80,
+    "description": "Description2",
+    "linked_level": 1,
+    "": ""
+  },
+  {
+    "level": 3,
+    "par_score": 75,
+    "description": "Description3",
+    "linked_level": 2,
+    "": ""
+  },
+  {
+    "level": 4,
+    "par_score": 70,
+    "description": "Description4",
+    "linked_level": 3,
+    "": ""
+  }
+]
