@@ -1,5 +1,22 @@
 const
 database = {
+    // In use:
+    questions: [
+        {
+            question: "the actual question. e.g: what is the right answer?",
+            option1: "option 1 or answer 1",
+            option2: "answer 2",
+            option3: "answer 3",
+            option4: "answer 4",
+            answer: "1", // string, the right option for the question 
+            type: "matching",
+            language: "Spanish",
+            tags: [] // not in use
+        },
+        {
+            // another question
+        }
+    ]
 /*
 this is the structure of the database
 this way it's easy to query for:
