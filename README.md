@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/nditech/demgames-debate/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-red.svg" alt="License"/>
+    <img src="https://img.shields.io/badge/license-GPL-red.svg" alt="License"/>
   </a>
   <a href="https://docs.mongodb.com/">
     <img src="https://img.shields.io/badge/mongodb-v3.6.5-blue.svg" alt="mongodb"/>
@@ -26,8 +26,6 @@
 
 <p align="center">
   <a href="#documentation">Documentation</a> - 
-  <a href="#installation">Installation</a> - 
-  <a href="#contributing">Contributing</a> - 
   <a href="#license">License</a> - 
   <a href="#authors">Author(s)</a>
 </p>
@@ -36,20 +34,35 @@ A full stack (MERN) app that helps users learn how to debate effectively.
 
 ## Documentation
 
-### :warning: Branch `2018nov16` works on local machine but will throw `error` when build:
+### :warning: IN DEV. Only the first module and its first level of the game are available.
+
+### Table of Contents
+
+1. [Intro](#intro)
+1. [Demo](#demo)
+1. [Installation](#installation)
+1. [Diagnosis](#diagnosis)
+1. [Test](#test)
+1. [Contribution](#contribution)
+
+### Intro
+
+This app is built with React (frontend), Express.js (backend), MongoDB (database) and Node.js.
+
+The app connects to a collection (table) and gets the questions, by default, in Spanish and renders the questions.
+
+### Demo
+
+### Installation
+
+Make sure you have [MongoDB](https://docs.mongodb.com/manual/installation/), [Node.js](https://nodejs.org/en/download/package-manager/) and [Yarn](https://yarnpkg.com/en/docs/install#mac-stable) on your machine. 
+
+Start MongoDB (using terminal):
 ```
-Failed to minify the code from this file: 
-
- 	./node_modules/autobind-decorator/src/index.js:7 
+$ mongod
 ```
-This is a known issue of `autobind-decorator` without proper fix (as of 16 Nov 2018).
-`autobind-decorator` is used by `react-tag-input` which is used for the search bar. The decision is made to rebuild the search bar without `react-tag-input`.
 
-> :construction: Under construction
-
-## Installation
-
-Make sure you have [Node.js](https://nodejs.org/en/download/package-manager/) and [Yarn](https://yarnpkg.com/en/docs/install#mac-stable) on your machine. Clone this repository to your local machine (using SSH):
+Clone this repository to your local machine (using SSH):
 ```
 $ git clone git@github.com:nditech/demgames-debate.git
 $ cd demgames-debate
@@ -60,20 +73,42 @@ $ cd ..
 $ yarn start
 ```
 
-## Testing
+### Diagnosis
 
-*There is no testing guide at the moment.*
+```
+// Backend error:
+(node:67023) UnhandledPromiseRejectionWarning: MongoNetworkError: failed to connect to server...
 
-## Contributing
+// OR Frontend error:
+GET http://localhost:3000/api/questions/es net::ERR_EMPTY_RESPONSE
+Uncaught (in promise) Error: Network Error
+```
+* Cause: MongoDB is not running.
+* Fix: Start mongoDB before starting the app:
+    ```
+    $ mongod
+    ```
 
-*There is no contributing guide at the moment.*
+### Test
+
+* Currently, all tests passed. No errors.
+
+*There is no test guide at the moment.*
+
+### Contribution
+
+* Please read our [Code Commits Guide](https://github.com/nditech/git-styleguide) and [Documentation Guide](https://github.com/nditech/standardized-README).
+* We also follow Google's [Javascript Style Guide](https://google.github.io/styleguide/jsguide.html) and Airbnb's [React Style Guide](https://github.com/airbnb/javascript/tree/master/react).
+* Do your own unit test before committing code.
 
 ## License
 
-[MIT](./LICENSE)
+[GNU General Public License v3.0](./LICENSE)
 
 ## Author(s)
 
 * <b>Viet Nguyen</b>
     > vnguyen@ndi.org &nbsp;&middot;&nbsp;
     > [LinkedIn](https://www.linkedin.com/in/nguyendviet)
+
+**[⬆ back to top](#documentation)**
