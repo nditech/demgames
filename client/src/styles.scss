@@ -1,0 +1,132 @@
+.landing-page-wrapper {
+	height: 100vh;
+	background-color: #f2f2f2;
+
+	.next-button {
+		width: 100%;
+		height: 2.5em;
+		background-color: #62c44f;
+		font-size: 1.4em;
+		color: white;
+	}
+	.landing-page-container {
+		padding: 5%;
+		height: 90%;
+
+		.game-title {
+			margin-bottom: 0;
+			font-family: Georgia;
+			font-size: 1.8em;
+			font-weight: bold;
+			line-height: 1.2;
+			text-align: left;
+			color: #082a4e;
+		}
+
+		.game-type-card-container {
+			width: 100%;
+			height: 87%;
+			.levels-link {
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				text-decoration: none;
+			}
+		}
+
+		.header-icon {
+			display: flex;
+			justify-content: space-between;
+		}
+	}
+
+	.top-section {
+		display: flex;
+		justify-content: space-between;
+
+		.back-ndi-logo {
+			height: 5%;
+			display: flex;
+			align-items: center;
+		}
+		.info-profile-icon-container {
+			display: flex;
+			align-items: center;
+		}
+	}
+}
+
+.company-logo {
+	width: 7em;
+	height: 2.4em;
+}
+
+.info-icon {
+	margin-right: 1em;
+}
+
+.profile-icon {
+	width: 3em;
+	height: 3em;
+}
+
+.back-icon {
+	width: 2.5em;
+	height: 1.8em;
+	margin-right: 1em;
+}
+.back-button {
+	background: none;
+	border: none;
+	outline: none;
+}
+
+.questions-ans-page-container {
+	.game-type-help {
+		display: flex;
+		p {
+			margin-left: 1.5em;
+			font-size: 1.2em;
+		}
+	}
+
+	.level-question-detail {
+		padding-left: 1.5em;
+
+		span {
+			font-size: 1.2em;
+		}
+	}
+
+	.question {
+		width: 100%;
+		height: 8em;
+		background-color: #253f8e;
+		p {
+			font-size: 2em;
+			padding: 1.3em;
+			color: white;
+		}
+	}
+
+	.progress-bar {
+		margin: .5em 0;
+		background-color: grey;
+		height: .2em;
+		width: 20%;
+	}
+
+	.help-label {
+		position: absolute;
+		right: 1.5em;
+	}
+
+	.select-label {
+		padding-left: 1.5em;
+	}
+
+	.question-container {
+		padding-bottom: 1em;
+		background-color: #f3f3f3;
+	}
+}
