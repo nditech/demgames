@@ -1,0 +1,66 @@
+.link-lock-true {
+	pointer-events: none;
+}
+.card-lock-true {
+	background-color: #7166bc;
+}
+
+.card-lock-false {
+	background-color: #253f8e;
+}
+
+.level-card {
+	height: 30%;
+	width: 100%;
+	margin: .5em 0;
+	cursor: pointer;
+	p {
+		font-size: 1.2em;
+		font-weight: bold;
+		color: white;
+	}
+
+	.level-label-score {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		height: 3em;
+
+		.level-label {
+			font-family: OpenSans;
+			font-size: 30px;
+			font-weight: bold;
+			color: #ffffff;
+		}
+
+		.level-label {
+			font-family: Georgia;
+			font-size: 24px;
+			color: #ffffff;
+		}
+	}
+
+	.level-description {
+		opacity: 0.8;
+		font-family: OpenSans;
+		font-size: 20px;
+		font-weight: normal;
+		color: #ffffff;
+	}
+
+	.level-unlock-rule {
+		font-family: Georgia;
+		font-size: 24px;
+		color: #ffffff;
+	}
+
+	.lock-icon-container {
+		display: flex;
+		justify-content: flex-end;
+		.lock-icon {
+			width: 1.4em;
+			height: 1.8em;
+			object-fit: contain;
+		}
+	}
+}

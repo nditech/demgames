@@ -1,0 +1,14 @@
+.card-button {
+	background-color: #7166bc;
+	color: white;
+	height: 12em;
+	width: 100%;
+	margin: .2em 0;
+	cursor: pointer;
+	border: none;
+	outline: none;
+
+	:active {
+		background-color: #253f8e;
+	}
+}
