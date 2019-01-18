@@ -5,8 +5,8 @@ module.exports = {
 	entry: './client/src/index.js',
 	output: {
 		path: path.join(__dirname, 'dist'),
-		filename: 'app.bundle.js'
-		//publicPath: 'static/js/',
+		filename: 'app.bundle.js',
+		publicPath: '/'
 	},
 	devServer: {
 		historyApiFallback: true,

@@ -5,7 +5,10 @@ import '../styles.scss';
 class QuestionsAnsPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			options: [ 1, 2, 3, 4, 5 ],
+			answers: [ 1, 2 ]
+		};
 	}
 	render() {
 		const { options, answers } = this.state;
