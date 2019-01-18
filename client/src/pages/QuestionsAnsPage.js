@@ -1,40 +1,66 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Card } from '../components/Card';
+import arrowBackUrl from '../images/back.png';
+
 import '../styles.scss';
 
 class QuestionsAnsPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			options: [ 1, 2, 3, 4, 5 ],
-			answers: [ 1, 2 ]
+			answerClick: false
 		};
+		this.handleClick = this.handleClick.bind(this);
 	}
+
+	handleClick() {
+		this.setState({ answerClick: true });
+	}
+
 	render() {
-		const { options, answers } = this.state;
+		const { answerClick } = this.state;
+		const { questions, level, moduleName } = this.props.location.state;
+		const questionId = this.props.match.params.questionId;
 		return (
-			<div className="questions-ans-page-container">
+			<Fragment>
 				<div className="question-container">
 					<div className="game-type-help">
-						<p>Designing an Argument</p>
+						<div className="back-module-container">
+							<button className="back-button">
+								<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
+							</button>
+
+							<p>{moduleName}</p>
+						</div>
 						<p className="help-label">Help</p>
 					</div>
 					<div className="level-question-detail">
-						<span>Level 1 :</span>
-						<span>Question 1 out of 10</span>
+						<span>Level {level} :</span>
+						<span>
+							Question {questionId} out of {questions.length}
+						</span>
 					</div>
 					<div style={{ backgroundColor: ' gainsboro' }}>
 						<div className="progress-bar" />
 					</div>
 					<div className="question">
-						<p>Resolution</p>
+						<p>{questions[questionId - 1].question}</p>
 					</div>
 				</div>
 				<div>
 					<p className="select-label">Select the right answer</p>
-					{options.map((option, key) => <Card key={key} option={option} answers={answers} />)}
+					{questions[questionId].options.map((option, key) => (
+						<Card
+							key={key}
+							option={option}
+							correct_answer={questions.correct_answer}
+							answerClick={answerClick}
+							handleClick={this.handleClick}
+						/>
+					))}
 				</div>
-			</div>
+				{answerClick && <button className="next-page-button">Next Page</button>}
+			</Fragment>
 		);
 	}
 }

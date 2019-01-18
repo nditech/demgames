@@ -6,8 +6,6 @@ import infoUrl from '../images/info.png';
 import { LevelCard } from '../components/LevelCard';
 import '../styles.scss';
 
-var Router = require('react-router');
-
 class LevelsPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -21,7 +19,7 @@ class LevelsPage extends React.Component {
 				<div className="landing-page-container">
 					<div className="top-section">
 						<div className="back-ndi-logo">
-							<button className="back-button" onClick={this.handleBack}>
+							<button className="back-button">
 								<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
 							</button>
 							<a href="/">
@@ -39,10 +37,13 @@ class LevelsPage extends React.Component {
 							<LevelCard
 								key={key}
 								level={data.id}
+								currentScore={data.current_score}
 								parScore={data.par_score}
 								linkedLevel={data.linked_level}
 								description={data.desc}
 								totalScore={data.total_score}
+								questions={data.questions}
+								moduleName={moduleName}
 							/>
 						))}
 					</div>

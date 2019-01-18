@@ -12,7 +12,7 @@ const Routes = () => (
 	<Router>
 		<div>
 			<Route path="/" exact component={App} />
-			<Route path="/questions" exact component={QuestionsAnsPage} />
+			<Route path="/modules/:moduleId/level/:levelId/questions/:questionId" exact component={QuestionsAnsPage} />
 			<Route path="/modules/:id/levels" exact component={LevelsPage} />
 		</div>
 	</Router>

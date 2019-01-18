@@ -7,8 +7,13 @@
 	cursor: pointer;
 	border: none;
 	outline: none;
+	font-family: Georgia;
+	font-weight: bold;
+	padding: 6%;
+	font-size: 19px;
+	color: #f2f2f2;
+}
 
-	:active {
-		background-color: #253f8e;
-	}
+.card-button-true {
+	pointer-events: none;
 }
