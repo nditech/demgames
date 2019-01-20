@@ -1,26 +1,45 @@
 import React, { Fragment } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Card } from '../components/Card';
 import arrowBackUrl from '../images/back.png';
-
+import infoUrl from '../images/info.png';
 import '../styles.scss';
 
 class QuestionsAnsPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			answerClick: false
+			answerClick: false,
+			questionId: 1
 		};
+		this.handleAnswerClick = this.handleAnswerClick.bind(this);
 		this.handleClick = this.handleClick.bind(this);
+		this.nextQuestion = this.nextQuestion.bind(this);
+		this.handleNextClick = this.handleNextClick.bind(this);
 	}
-
-	handleClick() {
+	handleAnswerClick() {
 		this.setState({ answerClick: true });
 	}
 
+	nextQuestion() {
+		this.setState((prevState) => ({
+			questionId: prevState.questionId + 1
+		}));
+	}
+
+	handleNextClick() {
+		this.setState({ answerClick: false });
+	}
+
+	handleClick() {
+		this.nextQuestion();
+		this.handleNextClick();
+	}
+
 	render() {
-		const { answerClick } = this.state;
+		const { answerClick, questionId } = this.state;
 		const { questions, level, moduleName } = this.props.location.state;
-		const questionId = this.props.match.params.questionId;
+		const totalQuestion = questions.length;
 		return (
 			<Fragment>
 				<div className="question-container">
@@ -32,34 +51,49 @@ class QuestionsAnsPage extends React.Component {
 
 							<p>{moduleName}</p>
 						</div>
-						<p className="help-label">Help</p>
+						<img className="info-icon" src={infoUrl} alt="info-icon" />
 					</div>
-					<div className="level-question-detail">
-						<span>Level {level} :</span>
-						<span>
-							Question {questionId} out of {questions.length}
-						</span>
-					</div>
-					<div style={{ backgroundColor: ' gainsboro' }}>
-						<div className="progress-bar" />
-					</div>
-					<div className="question">
-						<p>{questions[questionId - 1].question}</p>
-					</div>
+					<Fragment>
+						{questionId <= totalQuestion ? (
+							<div>
+								<div className="level-question-detail">
+									<span>Level {level} :</span>
+									<span className="question-number-status">
+										Question {questionId} out of {totalQuestion}
+									</span>
+								</div>
+								<div style={{ backgroundColor: ' gainsboro' }}>
+									<div className="progress-bar" />
+								</div>
+								<div className="question">
+									<p>{questions[questionId - 1].question}</p>
+								</div>
+								<div>
+									<p className="select-label">Select the right answer</p>
+									{questions[questionId - 1].options.map((option, key) => (
+										<Card
+											key={key}
+											option={option}
+											correct_answer={questions[questionId - 1].correctAns}
+											answerClick={answerClick}
+											handleClick={this.handleAnswerClick}
+										/>
+									))}
+								</div>
+								{answerClick && (
+									<button
+										className={`next-page-button next-page-button-${answerClick}`}
+										onClick={this.handleClick}
+									>
+										Proceed Next
+									</button>
+								)}
+							</div>
+						) : (
+							<Redirect to={{ pathname: '/results', state: { moduleName: moduleName } }} />
+						)}
+					</Fragment>
 				</div>
-				<div>
-					<p className="select-label">Select the right answer</p>
-					{questions[questionId].options.map((option, key) => (
-						<Card
-							key={key}
-							option={option}
-							correct_answer={questions.correct_answer}
-							answerClick={answerClick}
-							handleClick={this.handleClick}
-						/>
-					))}
-				</div>
-				{answerClick && <button className="next-page-button">Next Page</button>}
 			</Fragment>
 		);
 	}

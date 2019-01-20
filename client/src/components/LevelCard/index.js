@@ -4,8 +4,8 @@ import './styles.scss';
 import lockIconUrl from '../../images/lock.png';
 
 export const LevelCard = (props) => {
-	let scores = [ 80, 90, 0, 0 ];
-	const { level, parScore, linkedLevel, description, totalScore, currentScore, questions, moduleName } = props;
+	let scores = [ 80, 0, 0, 0 ];
+	const { level, parScore, linkedLevel, description, totalScore, questions, moduleName } = props;
 	const lock = level > 1 && scores[level - 2] < parScore;
 	// const lock = level > 1 && currentScore < parScore;
 
@@ -13,7 +13,7 @@ export const LevelCard = (props) => {
 		<Link
 			className={`link-lock-${lock}`}
 			to={{
-				pathname: `level/${level}/questions/1`,
+				pathname: `level/${level}/questions`,
 				state: { questions: questions, level: level, moduleName: moduleName }
 			}}
 		>
