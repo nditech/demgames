@@ -2,6 +2,7 @@ import React from 'react';
 
 import arrowBackUrl from '../images/back.png';
 import infoUrl from '../images/info.png';
+import congoUrl from '../images/congratulations.png';
 
 export const ResultPage = (props) => (
 	<div className="result-page-container">
@@ -14,9 +15,19 @@ export const ResultPage = (props) => (
 			</div>
 			<img className="info-icon" src={infoUrl} alt="info-icon" />
 		</div>
-		<p>Congratulations !</p>
-		<p>You have finished level 1</p>
-		<p>Oh you have scored only 30/100</p>
-		<p>You need to earn 70/100 for level2 </p>
+		<div style={{ backgroundColor: '#f3f6f9', padding: '1em' }}>
+			<img src={congoUrl} alt="congratulations-icon" />
+			<p>Congratulations !</p>
+			<p>You have finished level 1</p>
+		</div>
+		<img src={props.location.state.image} alt="icon" />
+		<p>{props.location.state.message}</p>
+
+		<a href="/" style={{ color: 'black', fontWeight: 'bold' }}>
+			Back to Levels
+		</a>
+		<a href="/" style={{ color: 'black', fontWeight: 'bold' }}>
+			<button className={`retry-level`}>Retry Level 1</button>
+		</a>
 	</div>
 );

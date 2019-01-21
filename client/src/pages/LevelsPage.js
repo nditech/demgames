@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Redirect } from 'react';
 import ndiLogoUrl from '../images/ndiLogo.png';
 import arrowBackUrl from '../images/back.png';
 import profileUrl from '../images/profile.png';
@@ -9,8 +9,8 @@ import '../styles.scss';
 class LevelsPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { 
-			scores: [ { module: 1, scores: [ 10, 20, 30, 40 ] }, { module: 2, scores: [ 50, 60, 70, 80 ] } ]
+		this.state = {
+			// scores: [ { module: 1, scores: [ 10, 20, 30, 40 ] }, { module: 2, scores: [ 50, 60, 70, 80 ] } ]
 		};
 	}
 	render() {
@@ -21,7 +21,9 @@ class LevelsPage extends React.Component {
 					<div className="top-section">
 						<div className="back-ndi-logo">
 							<button className="back-button">
-								<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
+								<a href="/">
+									<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
+								</a>
 							</button>
 							<a href="/">
 								<img className="company-logo" src={ndiLogoUrl} alt="ndi-logo" />

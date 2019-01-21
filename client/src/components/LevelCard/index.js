@@ -4,7 +4,7 @@ import './styles.scss';
 import lockIconUrl from '../../images/lock.png';
 
 export const LevelCard = (props) => {
-	let scores = [ 80, 0, 0, 0 ];
+	let scores = [ 0, 0, 0, 0 ];
 	const { level, parScore, linkedLevel, description, totalScore, questions, moduleName } = props;
 	const lock = level > 1 && scores[level - 2] < parScore;
 	// const lock = level > 1 && currentScore < parScore;

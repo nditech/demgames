@@ -30,7 +30,7 @@
 					{
 						"id": 2,
 						"question": "level 1 question2",
-						"options": [ "level1 X", "level1 Y", "level1 Z", "level1 A" ],
+						"options": [ "level1 option1", "level1 option2", "level1 option3", "level1 option4" ],
 						"correct_answer": 2
 					},
 					{
@@ -42,7 +42,7 @@
 					{
 						"id": 4,
 						"question": "level 1 question4",
-						"options": [ "level1 X", "level1 Y", "level1 Z", "level1 A" ],
+						"options": [ "level1 P", "level1 Q", "level1 R", "level1 S" ],
 						"correct_answer": 4
 					}
 				]

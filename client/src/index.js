@@ -7,6 +7,8 @@ import * as serviceWorker from './serviceWorker';
 import LevelsPage from './pages/LevelsPage';
 import QuestionsAnsPage from './pages/QuestionsAnsPage';
 import { ResultPage } from './pages/ResultPage';
+import { CorrectAnswerInfo } from './components/CorrectAnswerInfo';
+import ProgressBar from './components/ProgressBar';
 
 const Routes = () => (
 	<Router>
@@ -15,6 +17,7 @@ const Routes = () => (
 			<Route path="/modules/:moduleId/level/:levelId/questions/" exact component={QuestionsAnsPage} />
 			<Route path="/modules/:id/levels" exact component={LevelsPage} />
 			<Route path="/results" exact component={ResultPage} />
+			<Route path="/info" exact component={CorrectAnswerInfo} />
 		</div>
 	</Router>
 );
