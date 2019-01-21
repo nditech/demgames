@@ -11,13 +11,13 @@ export const LevelCard = (props) => {
 
 	return (
 		<Link
-			className={`link-lock-${lock}`}
+			className={`link-lock link-lock-${lock}`}
 			to={{
 				pathname: `level/${level}/questions`,
 				state: { questions: questions, level: level, moduleName: moduleName }
 			}}
 		>
-			<button className={`level-card card-lock-${lock}`} type="button" disabled={true}>
+			<button className={`level-card card-lock-${lock}`} type="button">
 				{level > 1 &&
 				scores[level - 2] < parScore && (
 					<div className="lock-icon-container">

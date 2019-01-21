@@ -17,6 +17,6 @@ export const ResultPage = (props) => (
 		<p>Congratulations !</p>
 		<p>You have finished level 1</p>
 		<p>Oh you have scored only 30/100</p>
-		<p>You nedd to earn 70/100 for level2 </p>
+		<p>You need to earn 70/100 for level2 </p>
 	</div>
 );

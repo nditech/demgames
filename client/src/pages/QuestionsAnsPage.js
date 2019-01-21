@@ -68,7 +68,7 @@ class QuestionsAnsPage extends React.Component {
 								<div className="question">
 									<p>{questions[questionId - 1].question}</p>
 								</div>
-								<div>
+								<div className="answer-container">
 									<p className="select-label">Select the right answer</p>
 									{questions[questionId - 1].options.map((option, key) => (
 										<Card

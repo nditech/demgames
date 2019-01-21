@@ -23,7 +23,37 @@
 			color: #082a4e;
 		}
 
+		// @keyframes abc {
+		// 	0% {
+		// 		left: -30em;
+		// 	}
+		// 	80% {
+		// 		left: 3em;
+		// 	}
+		// 	100% {
+		// 		left: 0em;
+		// 	}
+		// }
 		.game-type-card-container {
+			// a:first-child {
+			// 	position: relative;
+			// 	animation: abc 1s;
+			// }
+			// a:nth-child(2) {
+			// 	position: relative;
+			// 	animation: abc 1s;
+			// 	animation-delay: .2s;
+			// }
+			// a:nth-child(3) {
+			// 	position: relative;
+			// 	animation: abc 1s;
+			// 	animation-delay: .3s;
+			// }
+			// a:nth-child(4) {
+			// 	position: relative;
+			// 	animation: abc 1s;
+			// 	animation-delay: .4s;
+			// }
 			width: 100%;
 			height: 87%;
 			.levels-link {
@@ -55,6 +85,28 @@
 		}
 	}
 }
+
+// .answer-container {
+// 	button:nth-child(1) {
+// 		position: relative;
+// 		animation: abc 1s;
+// 	}
+// 	button:nth-child(2) {
+// 		position: relative;
+// 		animation: abc 1s;
+// 		animation-delay: .2s;
+// 	}
+// 	button:nth-child(3) {
+// 		position: relative;
+// 		animation: abc 1s;
+// 		animation-delay: .3s;
+// 	}
+// 	button:nth-child(4) {
+// 		position: relative;
+// 		animation: abc 1s;
+// 		animation-delay: .4s;
+// 	}
+// }
 
 .company-logo {
 	width: 7em;
