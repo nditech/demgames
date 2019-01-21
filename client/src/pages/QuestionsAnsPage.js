@@ -10,15 +10,18 @@ class QuestionsAnsPage extends React.Component {
 		super(props);
 		this.state = {
 			answerClick: false,
-			questionId: 1
+			questionId: 1,
+			showAnswer: false,
+			selectedAnswer: ''
 		};
 		this.handleAnswerClick = this.handleAnswerClick.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 		this.nextQuestion = this.nextQuestion.bind(this);
 		this.handleNextClick = this.handleNextClick.bind(this);
+		this.handleInfoPageClick = this.handleInfoPageClick.bind(this);
 	}
-	handleAnswerClick() {
-		this.setState({ answerClick: true });
+	handleAnswerClick(e) {
+		this.setState({ answerClick: true, selectedAnswer: e.target.value });
 	}
 
 	nextQuestion() {
@@ -31,13 +34,19 @@ class QuestionsAnsPage extends React.Component {
 		this.setState({ answerClick: false });
 	}
 
-	handleClick() {
+	handleInfoPageClick() {
+		this.setState((prevState) => ({ showAnswer: !prevState.showAnswer }));
 		this.nextQuestion();
 		this.handleNextClick();
 	}
 
+	handleClick() {
+		this.setState((prevState) => ({ showAnswer: !prevState.showAnswer }));
+		this.handleNextClick();
+	}
+
 	render() {
-		const { answerClick, questionId } = this.state;
+		const { answerClick, questionId, showAnswer, selectedAnswer } = this.state;
 		const { questions, level, moduleName } = this.props.location.state;
 		const totalQuestion = questions.length;
 		return (
@@ -69,17 +78,40 @@ class QuestionsAnsPage extends React.Component {
 									<p>{questions[questionId - 1].question}</p>
 								</div>
 								<div className="answer-container">
-									<p className="select-label">Select the right answer</p>
-									{questions[questionId - 1].options.map((option, key) => (
-										<Card
-											key={key}
-											option={option}
-											correct_answer={questions[questionId - 1].correctAns}
-											answerClick={answerClick}
-											handleClick={this.handleAnswerClick}
-										/>
-									))}
+									{!showAnswer ? <p className="select-label">Select the right answer</p> : null}
+									{!showAnswer ? (
+										questions[questionId - 1].options.map((option, key) => (
+											<Card
+												key={key}
+												option={option}
+												correct_answer={questions[questionId - 1].correctAns}
+												answerClick={answerClick}
+												handleClick={this.handleAnswerClick}
+											/>
+										))
+									) : (
+										<Fragment>
+											<p>Your answer</p>
+											<Card option={selectedAnswer} />
+											<p>Correct answer</p>
+											<Card
+												option={
+													questions[questionId - 1].options[
+														questions[questionId - 1].correct_answer - 1
+													]
+												}
+												color={'green'}
+											/>
+											<button
+												className={`next-page-button result-next-page-button`}
+												onClick={this.handleInfoPageClick}
+											>
+												Proceed Next
+											</button>
+										</Fragment>
+									)}
 								</div>
+
 								{answerClick && (
 									<button
 										className={`next-page-button next-page-button-${answerClick}`}
