@@ -4,14 +4,15 @@ import './styles.scss';
 class Card extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			click: false
-		};
+		this.state = { click: false };
 		this.changeColor = this.changeColor.bind(this);
 	}
 
 	changeColor() {
-		this.setState({ click: true });
+		console.log('change called');
+		this.setState({
+			click: true
+		});
 	}
 
 	render() {
@@ -19,7 +20,7 @@ class Card extends Component {
 		const { click } = this.state;
 		return (
 			<button
-				className={`card-button card-button-${answerClick} color-change-${click}`}
+				className={`card-button card-button-${answerClick} color-change-${click} ${this.props.color}`}
 				type="button"
 				value={option}
 				onClick={this.props.handleClick}

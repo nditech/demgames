@@ -25,10 +25,10 @@ export const CorrectAnswerInfo = () => (
 				Question {1} out of {4}
 			</span>
 		</div>
-		<p>Your answer</p>
+		<p className="answer">Your answer</p>
 		{/* <Card option={selectedAnswer} /> */}
-		<Card option={'Selected Answer'} />
-		<p>Correct answer</p>
+		<Card option={'Selected Answer'} color={'blue'} />
+		<p className="answer">Correct answer</p>
 		{/* <Card
 			// option={questions[questionId - 1].options[questions[questionId - 1].correct_answer - 1]}
 			color={'green'}

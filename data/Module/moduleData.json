@@ -38,13 +38,7 @@
 						"question": "level 1 question3",
 						"options": [ "level1 X", "level1 Y", "level1 Z", "level1 A" ],
 						"correct_answer": 3
-					},
-					{
-						"id": 4,
-						"question": "level 1 question4",
-						"options": [ "level1 P", "level1 Q", "level1 R", "level1 S" ],
-						"correct_answer": 4
-					}
+					}	
 				]
 			},
 			{
