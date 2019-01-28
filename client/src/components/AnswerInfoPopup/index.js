@@ -6,13 +6,19 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-
+import './styles.scss';
 function Transition(props) {
 	return <Slide direction="up" {...props} />;
 }
 
 export const AnswerInfoPopup = (props) => (
-	<Dialog open={props.open} TransitionComponent={Transition} keepMounted onClose={props.handleClose}>
+	<Dialog
+		className="dialog-content"
+		open={props.open}
+		TransitionComponent={Transition}
+		keepMounted
+		onClose={props.handleClose}
+	>
 		<DialogTitle id="dialog-slide-image">
 			{<img className="answer-status-logo" src={props.imageUrl} alt="answer-status" />}
 		</DialogTitle>
@@ -39,6 +45,7 @@ export const AnswerInfoPopup = (props) => (
 					</span>
 				)}{' '}
 				<span>points.</span>
+				{!props.answerStatus && <button className="show-right-answer-button">Show me the answer</button>}
 			</DialogContentText>
 		</DialogContent>
 		<DialogActions>

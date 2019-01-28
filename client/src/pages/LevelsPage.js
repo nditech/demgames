@@ -9,9 +9,7 @@ import '../styles.scss';
 class LevelsPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			// scores: [ { module: 1, scores: [ 10, 20, 30, 40 ] }, { module: 2, scores: [ 50, 60, 70, 80 ] } ]
-		};
+		this.state = {};
 	}
 	render() {
 		const { levels, moduleName } = this.props.location.state;
