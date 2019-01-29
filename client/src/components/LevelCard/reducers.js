@@ -1,5 +1,5 @@
 const initialState = {
-	scores: [ 0, 0, 0, 0 ]
+	scores: []
 };
 
 const myReducer = (state = initialState, action) => {
@@ -18,20 +18,3 @@ const myReducer = (state = initialState, action) => {
 };
 
 export default myReducer;
-
-// const initialState = {
-// 	scores: 0
-// };
-
-// const myReducer = (state = initialState, action) => {
-// 	const newState = { ...state };
-// 	if (action.type === 'CORRECT_ANS') {
-// 		newState.scores += 30;
-// 	}
-// 	if (action.type === 'WRONG_ANS') {
-// 		newState.scores -= 10;
-// 	}
-// 	return newState;
-// };
-
-// export default myReducer;

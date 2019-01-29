@@ -25,7 +25,8 @@ class QuestionsAnsPage extends React.Component {
 			answerCorrect: true,
 			parScoreStatus: false,
 			showCorrectAns: false,
-			currentScore: 0
+			currentScore: 0,
+			click: false
 		};
 		this.handleAnswerClick = this.handleAnswerClick.bind(this);
 		this.handleClick = this.handleClick.bind(this);
@@ -59,16 +60,16 @@ class QuestionsAnsPage extends React.Component {
 		this.setState({ answerClick: true, selectedAnswer: selectedValue });
 
 		if (selectedValue === correctAns) {
-			this.props.onCorrectAns();
+			// this.props.onCorrectAns();
 			this.setState({
-				answerCorrect: true,
-				currentScore: this.props.scores[this.props.location.state.level - 1]
+				answerCorrect: true
+				// currentScore: this.props.scores[this.props.location.state.level - 1]
 			});
 		} else {
-			this.props.onWrongAns();
+			// this.props.onWrongAns();
 			this.setState({
-				answerCorrect: false,
-				currentScore: this.props.scores[this.props.location.state.level - 1]
+				answerCorrect: false
+				// currentScore: this.props.scores[this.props.location.state.level - 1]
 			});
 		}
 	};
@@ -104,7 +105,8 @@ class QuestionsAnsPage extends React.Component {
 			parScoreStatus,
 			showCorrectAns,
 			selectedAnswer,
-			currentScore
+			currentScore,
+			click
 		} = this.state;
 		const { questions, level, moduleName, parScore } = this.props.location.state;
 		const totalQuestion = questions.length;
@@ -216,17 +218,17 @@ class QuestionsAnsPage extends React.Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return { scores: state.scores };
-};
+// const mapStateToProps = (state) => {
+// 	return { scores: state.scores };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		onCorrectAns: () => dispatch({ type: 'CORRECT_ANS' }),
-		onWrongAns: () => dispatch({ type: 'WRONG_ANS' })
-	};
-};
+// const mapDispatchToProps = (dispatch) => {
+// 	return {
+// 		onCorrectAns: () => dispatch({ type: 'CORRECT_ANS' }),
+// 		onWrongAns: () => dispatch({ type: 'WRONG_ANS' })
+// 	};
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionsAnsPage);
+// export default connect(mapStateToProps, mapDispatchToProps)(QuestionsAnsPage);
 
-// export default QuestionsAnsPage;
+export default QuestionsAnsPage;

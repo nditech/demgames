@@ -5,14 +5,19 @@ import profileUrl from '../../images/profile.png';
 import infoUrl from '../../images/info.png';
 import LevelCard from '../../components/LevelCard';
 import '../../commonStyles.scss';
-
+import { connect } from 'react-redux';
 class LevelsPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
 	}
+
+	componentDidMount() {
+		this.setState({ moduleId: this.props.match.params.id });
+	}
 	render() {
 		const { levels, moduleName } = this.props.location.state;
+
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">
@@ -53,5 +58,18 @@ class LevelsPage extends React.Component {
 		);
 	}
 }
+
+// const mapStateToProps = (state) => {
+// 	return { moduleName: state.moduleName, levels: state.levels };
+// };
+
+// const mapDispatchToProps = (dispatch) => {
+// 	return {
+// 		getModuleName: () => dispatch({ type: 'FETCH_MODULE_NAME', val: this.state.moduleId }),
+// 		getModuleLevels: () => dispatch({ type: 'FETCH_MODULE_LEVELS', val: this.state.moduleId })
+// 	};
+// };
+
+// export default connect(mapStateToProps, mapDispatchToProps)(LevelsPage);
 
 export default LevelsPage;

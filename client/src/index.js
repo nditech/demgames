@@ -10,8 +10,7 @@ import { ResultPage } from './pages/ResultPage/ResultPage';
 import { CorrectAnswerInfo } from './components/CorrectAnswerInfo';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import reducer from './components/LevelCard/reducers';
-
+import reducer from './reducers';
 const Routes = () => (
 	<Router>
 		<div>

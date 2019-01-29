@@ -17,10 +17,10 @@ export const ResultPage = (props) => (
 		<img src={props.location.state.image} alt="icon" />
 		<p className="score-message">{props.location.state.message}</p>
 
-		<a className="back-to-all-levels-link" href="/modules/1/levels">
+		<a className="back-to-all-levels-link" href="/">
 			Back to all Levels
 		</a>
-		<a className="back-to-all-levels-link" href="/modules/1/level/1/questions">
+		<a className="back-to-all-levels-link" href="/">
 			<button className={`retry-level`}>Retry Level {props.location.state.level}</button>
 		</a>
 	</div>

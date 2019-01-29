@@ -7,11 +7,12 @@ import { connect } from 'react-redux';
 class LevelCard extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = { scores: [ 0, 0, 0, 0 ] };
 	}
 
 	render() {
-		const { level, parScore, linkedLevel, description, totalScore, questions, moduleName, scores } = this.props;
+		const { scores } = this.state;
+		const { level, parScore, linkedLevel, description, totalScore, questions, moduleName } = this.props;
 		const lock = level > 1 && scores[level - 2] < parScore;
 
 		return (
@@ -56,11 +57,10 @@ class LevelCard extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return { scores: state.scores };
-};
+// const mapStateToProps = (state) => {
+// 	return { scores: state.scores };
+// };
 
+// export default connect(mapStateToProps)(LevelCard);
 
-export default connect(mapStateToProps)(LevelCard);
-
-// export default LevelCard;
+export default LevelCard;
