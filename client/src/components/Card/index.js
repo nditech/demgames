@@ -9,7 +9,6 @@ class Card extends Component {
 	}
 
 	changeColor() {
-		console.log('change called');
 		this.setState({
 			click: true
 		});

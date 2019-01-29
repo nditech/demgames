@@ -12,4 +12,44 @@
 
 .dialog-content {
 	text-align: center;
+	.success-message {
+		font-family: Georgia;
+		font-size: 30px;
+		color: #00a651;
+		margin: 0;
+	}
+	.message {
+		font-family: Georgia;
+		font-size: 20px;
+		color: #3e3d4a;
+		margin: 0;
+	}
+	.points-alert {
+		font-family: Georgia;
+		font-size: 20px;
+		color: #3e3d4a;
+		margin: 0;
+	}
+	.ok-button {
+		border-radius: 2.5px;
+		box-shadow: 0px 1px 10px 0 rgba(10, 33, 60, 0.1);
+		background-color: #2fa44b;
+		font-weight: bold;
+		color: #ffffff;
+		font-family: OpenSans;
+	}
+}
+
+.answer-status-logo {
+	width: 117.7px;
+	height: 101.5px;
+	object-fit: contain;
+}
+
+.correct-points {
+	color: #12008f;
+}
+
+.wrong-points {
+	color: #ed1c24;
 }

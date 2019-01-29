@@ -1,0 +1,51 @@
+.landing-page-wrapper {
+	.next-button {
+		width: 100%;
+		height: 2.5em;
+		background-color: #62c44f;
+		font-size: 1.4em;
+		color: white;
+	}
+	.landing-page-container {
+		.game-title {
+			margin-bottom: 0;
+			font-family: Georgia;
+			font-size: 1.8em;
+			font-weight: bold;
+			line-height: 1.2;
+			text-align: left;
+			color: #082a4e;
+		}
+
+		.game-type-card-container {
+			width: 100%;
+			height: 87%;
+			.levels-link {
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				text-decoration: none;
+			}
+		}
+
+		.header-icon {
+			display: flex;
+			justify-content: space-between;
+		}
+	}
+
+	.top-section {
+		display: flex;
+		justify-content: space-between;
+
+		.back-ndi-logo {
+			height: 5%;
+			display: flex;
+			align-items: center;
+		}
+		.info-profile-icon-container {
+			display: flex;
+			align-items: center;
+		}
+	}
+}

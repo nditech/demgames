@@ -1,10 +1,10 @@
-import React, { Redirect } from 'react';
-import ndiLogoUrl from '../images/ndiLogo.png';
-import arrowBackUrl from '../images/back.png';
-import profileUrl from '../images/profile.png';
-import infoUrl from '../images/info.png';
-import { LevelCard } from '../components/LevelCard';
-import '../styles.scss';
+import React from 'react';
+import ndiLogoUrl from '../../images/ndiLogo.png';
+import arrowBackUrl from '../../images/back.png';
+import profileUrl from '../../images/profile.png';
+import infoUrl from '../../images/info.png';
+import LevelCard from '../../components/LevelCard';
+import '../../commonStyles.scss';
 
 class LevelsPage extends React.Component {
 	constructor(props) {

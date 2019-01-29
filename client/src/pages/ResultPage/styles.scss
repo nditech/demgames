@@ -1,0 +1,29 @@
+.result-page-container {
+	text-align: center;
+	font-size: 1.4em;
+}
+
+.retry-level {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	height: 2.5em;
+	width: 100%;
+	background-color: #12c34d;
+	color: white;
+	font-size: 1.4em;
+	border: none;
+	outline: none;
+}
+.congratulation-message-container {
+	background-color: #f3f6f9;
+	padding: 1em;
+}
+
+.score-message {
+	margin-bottom: 3.5em;
+}
+.back-to-all-levels-link {
+	color: #000000;
+	font-weight: bold;
+}

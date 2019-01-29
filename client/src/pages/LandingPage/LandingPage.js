@@ -1,16 +1,17 @@
 import React from 'react';
-import NdiLogoUrl from '../images/ndiLogo.png';
-import profileUrl from '../images/profile.png';
-import { ModuleCard } from '../components/ModuleCard';
-import '../styles.scss';
-
+import NdiLogoUrl from '../../images/ndiLogo.png';
+import profileUrl from '../../images/profile.png';
+import { ModuleCard } from '../../components/ModuleCard';
+import '../../commonStyles.scss';
+import './styles.scss';
 class LandingPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
 	}
+
 	render() {
-		const moduleData = require('../../../data/Module/moduleData');
+		const moduleData = require('../../../../data/Module/moduleData');
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">

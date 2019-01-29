@@ -1,0 +1,88 @@
+.landing-page-wrapper {
+	height: 100vh;
+	background-color: #f2f2f2;
+	.landing-page-container {
+		padding: 5%;
+		height: 90%;
+	}
+}
+
+.company-logo {
+	width: 7em;
+	height: 2.4em;
+}
+
+.info-icon {
+	margin-right: 1em;
+	width: 1.8em;
+	height: 2em;
+}
+
+.profile-icon {
+	width: 3em;
+	height: 3em;
+}
+
+.back-icon {
+	width: 2.5em;
+	height: 1.8em;
+	margin-right: 1em;
+}
+.back-button {
+	background: none;
+	border: none;
+	outline: none;
+}
+
+.game-type-help {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	.back-module-container {
+		justify-content: center;
+		width: 100%;
+	}
+	p {
+		font-family: Georgia;
+		font-size: 1.2em;
+		line-height: 1.2;
+		color: #050505;
+	}
+}
+
+.level-question-detail {
+	padding-left: 1.5em;
+
+	.question-number-status {
+		margin-left: .2em;
+	}
+
+	span {
+		font-size: 20px;
+		font-family: Arial;
+		line-height: 1.2;
+		color: #050505;
+	}
+}
+
+.next-page-button {
+	position: fixed;
+	bottom: 0;
+	height: 2.5em;
+	width: 100%;
+	background-color: #12c34d;
+	color: white;
+	font-size: 1.4em;
+}
+
+@keyframes slide {
+	0% {
+		left: -30em;
+	}
+	80% {
+		left: 3em;
+	}
+	100% {
+		left: 0em;
+	}
+}
