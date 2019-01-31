@@ -11,7 +11,10 @@ import AnswerInfoPopup from '../../components/AnswerInfoPopup';
 import { CorrectAnswerInfo } from '../../components/CorrectAnswerInfo';
 import ProgressBar from '../../components/ProgressBar';
 import { connect } from 'react-redux';
+import { config } from '../../settings';
 import './styles.scss';
+import GameInfo from '../../components/GameInfo';
+import { FETCH_QUESTIONS } from './constants';
 
 class QuestionsAnsPage extends React.Component {
 	constructor(props) {
@@ -37,7 +40,54 @@ class QuestionsAnsPage extends React.Component {
 		this.handleClickOpen = this.handleClickOpen.bind(this);
 		this.showRightAnswer = this.showRightAnswer.bind(this);
 		this.hideRightAnswer = this.hideRightAnswer.bind(this);
+		this.handleInfoOpen = this.handleInfoOpen.bind(this);
+		this.handleInfoClose = this.handleInfoClose.bind(this);
+		this.getCorrectAnswer = this.getCorrectAnswer.bind(this);
+		this.getProgress = this.getProgress.bind(this);
 	}
+	componentWillMount() {
+		fetch(
+			config.baseUrl +
+				`/api/module/${this.props.match.params.moduleId}/level/${this.props.match.params.levelId}/questions`
+		)
+			.then((response) => {
+				if (response.status >= 200 && response.status < 300) {
+					response.json().then((res) => {
+						const questions = res.filter((modules) => modules !== null);
+						this.props.getQuestions(questions);
+					});
+				} else if (response.status === 404) {
+					console.log('Not Found');
+				}
+			})
+			.catch((err) => console.log(err));
+	}
+
+	handleUpdateScore = (newScore) => {
+		const { currentScore } = this.state;
+		console.log('handleUpdateScore', currentScore);
+		let data = { score: newScore };
+		return fetch(config.baseUrl + '/api/module/1/level/1/update-score', {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				console.log(response);
+				if (response.status >= 200 && response.status < 300) {
+					console.log('success');
+				} else {
+					console.log('fail');
+				}
+			})
+			.catch((status, err) => {
+				console.log(err);
+			});
+		return true;
+	};
 
 	showRightAnswer() {
 		this.setState({ showCorrectAns: true });
@@ -46,6 +96,14 @@ class QuestionsAnsPage extends React.Component {
 		this.setState({ showCorrectAns: false });
 		this.nextQuestion();
 	}
+
+	handleInfoOpen = () => {
+		this.setState({ infoOpen: true });
+	};
+
+	handleInfoClose = () => {
+		this.setState({ infoOpen: false });
+	};
 
 	handleClickOpen = () => {
 		this.setState({ open: true });
@@ -60,17 +118,15 @@ class QuestionsAnsPage extends React.Component {
 		this.setState({ answerClick: true, selectedAnswer: selectedValue });
 
 		if (selectedValue === correctAns) {
-			// this.props.onCorrectAns();
-			this.setState({
-				answerCorrect: true
-				// currentScore: this.props.scores[this.props.location.state.level - 1]
-			});
+			this.setState((prevState) => ({
+				answerCorrect: true,
+				currentScore: prevState.currentScore + 10
+			}));
 		} else {
-			// this.props.onWrongAns();
-			this.setState({
-				answerCorrect: false
-				// currentScore: this.props.scores[this.props.location.state.level - 1]
-			});
+			this.setState((prevState) => ({
+				answerCorrect: false,
+				currentScore: prevState.currentScore - 10
+			}));
 		}
 	};
 
@@ -95,6 +151,30 @@ class QuestionsAnsPage extends React.Component {
 		this.handleNextClick();
 	}
 
+	getCorrectAnswer() {
+		const { questionId } = this.state;
+		let questions = this.props.questionsData.questions[0];
+		var totalQuestion = 0;
+		if (questions && questions.length > 0) {
+			totalQuestion = questions.length;
+			var correctAns =
+				questionId <= totalQuestion
+					? questions[questionId - 1].options[questions[questionId - 1].correct_answer - 1]
+					: null;
+			return correctAns;
+		}
+	}
+
+	getProgress() {
+		const { questionId } = this.state;
+		let questions = this.props.questionsData.questions[0];
+		var totalQuestion = 0;
+		if (questions && questions.length > 0) {
+			totalQuestion = questions.length;
+			var progress = (questionId - 1) / totalQuestion * 100;
+			return progress;
+		}
+	}
 	render() {
 		const {
 			answerClick,
@@ -104,18 +184,30 @@ class QuestionsAnsPage extends React.Component {
 			open,
 			parScoreStatus,
 			showCorrectAns,
-			selectedAnswer,
 			currentScore,
-			click
+			selectedAnswer,
+			infoOpen
 		} = this.state;
-		const { questions, level, moduleName, parScore } = this.props.location.state;
-		const totalQuestion = questions.length;
-		const correctAns =
-			questionId <= totalQuestion
-				? questions[questionId - 1].options[questions[questionId - 1].correct_answer - 1]
-				: null;
-		const progress = (questionId - 1) / totalQuestion * 100;
-
+		let level = parseInt(this.props.match.params.levelId);
+		let questions = this.props.questionsData.questions[0];
+		var totalQuestion = 0;
+		if (questions && questions.length > 0) {
+			totalQuestion = questions.length;
+		}
+		const correctAns = this.getCorrectAnswer();
+		const progress = this.getProgress();
+		console.log('currentScore', currentScore);
+		// let questions = this.props.questionsData.questions[0];
+		// let level = parseInt(this.props.match.params.levelId);
+		// var totalQuestion = 0;
+		// if (questions && questions.length > 0) {
+		// 	totalQuestion = questions.length;
+		// 	var correctAns =
+		// 		questionId <= totalQuestion
+		// 			? questions[questionId - 1].options[questions[questionId - 1].correct_answer - 1]
+		// 			: null;
+		// 	var progress = (questionId - 1) / totalQuestion * 100;
+		// }
 		return (
 			<Fragment>
 				<div className="question-container">
@@ -125,12 +217,34 @@ class QuestionsAnsPage extends React.Component {
 								<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
 							</button>
 
-							<p>{moduleName}</p>
+							{/* <p>{moduleName}</p> */}
 						</div>
-						<img className="info-icon" src={infoUrl} alt="info-icon" />
+						<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleInfoOpen} />
 					</div>
 					<Fragment>
-						{questionId <= totalQuestion ? !showCorrectAns ? (
+						{totalQuestion > 0 &&
+						questionId > totalQuestion &&
+						this.handleUpdateScore(currentScore) && (
+							<Redirect
+								to={{
+									pathname: '/results',
+									state: {
+										// moduleName: moduleName,
+										level: level,
+										image: parScoreStatus ? hurreyUrl : oopsUrl,
+										message: parScoreStatus
+											? `Hurrey! You have scored  ${currentScore > 0
+													? currentScore
+													: 0}/100 You are in top 100 in the rank.`
+											: `Oh! You have scored only  ${currentScore > 0
+													? currentScore
+													: 0}/100 You need to earn /100 for Level ${level + 1}.`
+									}
+								}}
+							/>
+						)}
+
+						{totalQuestion > 0 && questionId <= totalQuestion && !showCorrectAns ? (
 							<div>
 								<div className="level-question-detail">
 									<span>Level {level} :</span>
@@ -142,19 +256,21 @@ class QuestionsAnsPage extends React.Component {
 									<ProgressBar progress={progress} />
 								</div>
 								<div className="question">
-									<p>{questions[questionId - 1].question}</p>
+									<p>{questions && questions.length > 0 && questions[questionId - 1].question}</p>
 								</div>
 								<div className="answer-container">
 									{!showAnswer ? <p className="select-label">Select the right answer</p> : null}
-									{questions[questionId - 1].options.map((option, key) => (
-										<Card
-											key={key}
-											option={option}
-											correct_answer={questions[questionId - 1].correctAns}
-											answerClick={answerClick}
-											handleClick={this.handleAnswerClick(correctAns)}
-										/>
-									))}
+									{questions &&
+										questions.length > 0 &&
+										questions[questionId - 1].options.map((option, key) => (
+											<Card
+												key={key}
+												option={option}
+												correct_answer={questions[questionId - 1].correctAns}
+												answerClick={answerClick}
+												handleClick={this.handleAnswerClick(correctAns)}
+											/>
+										))}
 								</div>
 
 								{answerClick && (
@@ -174,21 +290,6 @@ class QuestionsAnsPage extends React.Component {
 								level={level}
 								questionId={questionId}
 								totalQuestion={totalQuestion}
-							/>
-						) : (
-							<Redirect
-								to={{
-									pathname: '/results',
-									state: {
-										moduleName: moduleName,
-										level: level,
-										image: parScoreStatus ? hurreyUrl : oopsUrl,
-										message: parScoreStatus
-											? `Hurrey! You have scored  ${currentScore}/100 You are in top 100 in the rank.`
-											: `Oh! You have scored only  ${currentScore}/100 You need to earn ${parScore}/100 for Level ${level +
-													1}.`
-									}
-								}}
 							/>
 						)}
 					</Fragment>
@@ -213,22 +314,24 @@ class QuestionsAnsPage extends React.Component {
 						/>
 					)}
 				</div>
+				{infoOpen && <GameInfo open={infoOpen} handleClose={this.handleInfoClose} />}
 			</Fragment>
 		);
 	}
 }
 
-// const mapStateToProps = (state) => {
-// 	return { scores: state.scores };
-// };
+const mapStateToProps = (state) => {
+	return { questionsData: state.questionsData };
+};
 
-// const mapDispatchToProps = (dispatch) => {
-// 	return {
-// 		onCorrectAns: () => dispatch({ type: 'CORRECT_ANS' }),
-// 		onWrongAns: () => dispatch({ type: 'WRONG_ANS' })
-// 	};
-// };
+const mapDispatchToProps = (dispatch) => {
+	return {
+		// onCorrectAns: () => dispatch({ type: 'CORRECT_ANS', val: 0 }),
+		// onWrongAns: () => dispatch({ type: 'WRONG_ANS', val: 0 }),
+		getQuestions: (questions) => dispatch({ type: FETCH_QUESTIONS, val: questions })
+	};
+};
 
-// export default connect(mapStateToProps, mapDispatchToProps)(QuestionsAnsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionsAnsPage);
 
-export default QuestionsAnsPage;
+// export default QuestionsAnsPage;

@@ -6,18 +6,66 @@ import infoUrl from '../../images/info.png';
 import LevelCard from '../../components/LevelCard';
 import '../../commonStyles.scss';
 import { connect } from 'react-redux';
+import { config } from '../../settings';
+
+import GameInfo from '../../components/GameInfo';
+import { FETCH_LEVELS } from './constants';
+
 class LevelsPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = { open: false };
+		this.handleClickOpen = this.handleClickOpen.bind(this);
+		this.handleClose = this.handleClose.bind(this);
 	}
 
-	componentDidMount() {
-		this.setState({ moduleId: this.props.match.params.id });
+	handleClickOpen = () => {
+		this.setState({ open: true });
+	};
+
+	handleClose = () => {
+		this.setState({ open: false });
+	};
+
+	handleClick = () => {
+		let data = { score: 10 };
+		return fetch(config.baseUrl + '/api/module/1/level/1/update-score', {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+			.then((response) => {
+				if (response.status >= 200 && response.status < 300) {
+					console.log('success');
+					this.setState({ currentScore: data.score });
+				} else {
+					console.log('fail');
+				}
+			})
+			.catch((status, err) => {
+				console.log(err);
+			});
+	};
+
+	componentWillMount() {
+		fetch(config.baseUrl + `/api/module/${this.props.match.params.moduleId}/levels`)
+			.then((response) => {
+				if (response.status >= 200 && response.status < 300) {
+					response.json().then((res) => {
+						const levels = res.moduleLevels.filter((modules) => modules !== null);
+						this.props.getLevels(levels[0]);
+					});
+				} else if (response.status === 404) {
+					console.log('Not Found');
+				}
+			})
+			.catch((err) => console.log(err));
 	}
 	render() {
-		const { levels, moduleName } = this.props.location.state;
-
+		const { open } = this.state;
+		let levels = this.props.levelsData.levels;
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">
@@ -33,43 +81,48 @@ class LevelsPage extends React.Component {
 							</a>
 						</div>
 						<div className="info-profile-icon-container">
-							<img className="info-icon" src={infoUrl} alt="info-icon" />
-							<img className="profile-icon" src={profileUrl} alt="profile-icon" />
+							<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleClickOpen} />
+							<a href="/profile">
+								<img className="profile-icon" src={profileUrl} alt="profile-icon" />
+							</a>
 						</div>
 					</div>
-					<p className="game-title"> {moduleName}</p>
+					{/* <p className="game-title"> {moduleName}</p> */}
 					<div className="game-type-card-container">
-						{levels.map((data, key) => (
-							<LevelCard
-								key={key}
-								level={data.id}
-								currentScore={data.current_score}
-								parScore={data.par_score}
-								linkedLevel={data.linked_level}
-								description={data.desc}
-								totalScore={data.total_score}
-								questions={data.questions}
-								moduleName={moduleName}
-							/>
-						))}
+						{levels &&
+							levels.length > 0 &&
+							levels.map((data, key) => (
+								<LevelCard
+									key={key}
+									level={data.id}
+									moduleId={this.props.match.params.moduleId}
+									currentScore={data.current_score}
+									parScore={data.par_score}
+									linkedLevel={data.linked_level}
+									description={data.desc}
+									totalScore={data.total_score}
+									questions={data.questions}
+									// moduleName={moduleName}
+								/>
+							))}
 					</div>
+					{open && <GameInfo open={open} handleClose={this.handleClose} />}
 				</div>
 			</div>
 		);
 	}
 }
 
-// const mapStateToProps = (state) => {
-// 	return { moduleName: state.moduleName, levels: state.levels };
-// };
+const mapStateToProps = (state) => {
+	return { levelsData: state.levelsData };
+};
 
-// const mapDispatchToProps = (dispatch) => {
-// 	return {
-// 		getModuleName: () => dispatch({ type: 'FETCH_MODULE_NAME', val: this.state.moduleId }),
-// 		getModuleLevels: () => dispatch({ type: 'FETCH_MODULE_LEVELS', val: this.state.moduleId })
-// 	};
-// };
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getLevels: (levels) => dispatch({ type: FETCH_LEVELS, val: levels })
+	};
+};
 
-// export default connect(mapStateToProps, mapDispatchToProps)(LevelsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LevelsPage);
 
-export default LevelsPage;
+// export default LevelsPage;

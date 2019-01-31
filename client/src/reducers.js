@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import landingPageReducer from './pages/LandingPage/reducers';
 import levelsPageReducer from './pages/LevelsPage/reducers';
-import scoresReducer from './components/LevelCard/reducers';
+import questionsReducer from './pages/QuestionsAnsPage/reducers';
 
-export default combineReducers({
-	landingPageReducer,
-	levelsPageReducer,
-	scoresReducer
+export const rootReducer = combineReducers({
+	moduleData: landingPageReducer,
+	levelsData: levelsPageReducer,
+	questionsData: questionsReducer
 });
+
+export default rootReducer;

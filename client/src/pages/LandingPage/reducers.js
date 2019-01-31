@@ -1,3 +1,5 @@
+import { FETCH_MODULES } from './constants';
+
 const initialState = {
 	data: []
 };
@@ -5,12 +7,13 @@ const initialState = {
 const myReducer = (state = initialState, action) => {
 	const newState = { ...state };
 	switch (action.type) {
-		case 'FETCH_MODULES':
-			return { ...state, data: action.val };
+		case FETCH_MODULES:
+            return { ...state,
+                 data: action.val };
+
 		default:
-			break;
+			return newState;
 	}
-	return newState;
 };
 
 export default myReducer;

@@ -6,19 +6,20 @@ import '../../commonStyles.scss';
 import './styles.scss';
 import { config } from '../../settings';
 import { connect } from 'react-redux';
+import { FETCH_MODULES } from './constants';
+
 class LandingPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { moduleData: [] };
+		this.state = {};
 	}
 
-	componentDidMount() {
+	componentWillMount() {
 		fetch(config.baseUrl + '/api/modules')
 			.then((response) => {
 				if (response.status >= 200 && response.status < 300) {
 					response.json().then((res) => {
-						this.setState({ moduleData: res.data });
-						// this.props.getModulesData(res.data);
+						this.props.getModulesData(res.modules);
 					});
 				} else if (response.status === 404) {
 					console.log('Not Found');
@@ -28,27 +29,28 @@ class LandingPage extends React.Component {
 	}
 
 	render() {
-		const { moduleData } = this.state;
-		// console.log(moduleData);
-		// const { moduleData } = this.props;
+		const moduleData = this.props.moduleData.data;
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">
 					<div className="header-icon">
 						<img className="company-logo" src={NdiLogoUrl} alt="ndi-logo" />
-						<img className="profile-icon" src={profileUrl} alt="profile-icon" />
+						<a href="/profile">
+							<img className="profile-icon" src={profileUrl} alt="profile-icon" />
+						</a>
 					</div>
 					<p className="game-title">DemGames - Debate</p>
 					<div className="game-type-card-container">
-						{moduleData.map((modules, key) => (
-							<ModuleCard
-								key={modules.id}
-								moduleId={modules.id}
-								moduleName={modules.name}
-								levels={modules.levels}
-								style={modules.style}
-							/>
-						))}
+						{moduleData.length > 0 &&
+							moduleData.map((modules, key) => (
+								<ModuleCard
+									key={modules.id}
+									moduleId={modules.id}
+									moduleName={modules.name}
+									levels={modules.levels}
+									style={modules.style}
+								/>
+							))}
 					</div>
 				</div>
 			</div>
@@ -56,15 +58,15 @@ class LandingPage extends React.Component {
 	}
 }
 
-// const mapStateToProps = (state) => {
-// 	return { data: state.data };
-// };
+const mapStateToProps = (state) => {
+	return { moduleData: state.moduleData };
+};
 
-// const mapDispatchToProps = (dispatch) => {
-// 	return {
-// 		getModulesData: (data) => dispatch({ type: 'FETCH_MODULES', val: data })
-// 	};
-// };
-// export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getModulesData: (data) => dispatch({ type: FETCH_MODULES, val: data })
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
 
-export default LandingPage;
+// export default LandingPage;

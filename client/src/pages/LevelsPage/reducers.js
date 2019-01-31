@@ -1,17 +1,20 @@
+import { FETCH_LEVELS } from './constants';
 const initialState = {
-	moduleName: '',
 	levels: []
 };
 
 const myReducer = (state = initialState, action) => {
 	const newState = { ...state };
-	if (action.type === 'FETCH_MODULE_NAME') {
-		newState.moduleName = 'abcd';
+	switch (action.type) {
+		case FETCH_LEVELS:
+			return {
+				...state,
+				levels: action.val
+			};
+
+		default:
+			return newState;
 	}
-	if (action.type === 'FETCH_MODULE_LEVELS') {
-		newState.levels = [ 1, 2 ];
-	}
-	return newState;
 };
 
 export default myReducer;

@@ -9,21 +9,21 @@ import QuestionsAnsPage from './pages/QuestionsAnsPage/QuestionsAnsPage';
 import { ResultPage } from './pages/ResultPage/ResultPage';
 import { CorrectAnswerInfo } from './components/CorrectAnswerInfo';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import reducer from './reducers';
+import ProfileInfo from './components/ProfileInfo';
+import store from './store';
+
 const Routes = () => (
 	<Router>
 		<div>
 			<Route path="/" exact component={App} />
-			<Route path="/modules/:moduleId/level/:levelId/questions/" exact component={QuestionsAnsPage} />
-			<Route path="/modules/:id/levels" exact component={LevelsPage} />
+			<Route path="/module/:moduleId/level/:levelId/questions/" exact component={QuestionsAnsPage} />
+			<Route path="/module/:moduleId/levels" exact component={LevelsPage} />
 			<Route path="/results" exact component={ResultPage} />
 			<Route path="/info" exact component={CorrectAnswerInfo} />
+			<Route path="/profile" exact component={ProfileInfo} />
 		</div>
 	</Router>
 );
-
-const store = createStore(reducer);
 
 ReactDOM.render(
 	<Provider store={store}>
