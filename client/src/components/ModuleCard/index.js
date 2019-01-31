@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 export const ModuleCard = (props) => (
 	<Link
 		to={{
-			pathname: `/modules/${props.moduleId}/levels`,
-			state: { levels: props.levels, moduleName: props.moduleName }
+			pathname: `/module/${props.moduleId}/levels`
 		}}
 	>
 		<button className={`module-card ${props.style}`}>

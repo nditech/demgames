@@ -7,31 +7,24 @@ import { connect } from 'react-redux';
 class LevelCard extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { scores: [ 0, 0, 0, 0 ] };
+		this.state = {};
 	}
-
+	
 	render() {
-		const { scores } = this.state;
-		const { level, parScore, linkedLevel, description, totalScore, questions, moduleName } = this.props;
-		const lock = level > 1 && scores[level - 2] < parScore;
+		const { level, currentScore, parScore, linkedLevel, description, totalScore, moduleId } = this.props;
+		const lock = level > 1 && currentScore < parScore;
 
 		return (
 			<Fragment>
 				<Link
 					className={`link-lock link-lock-${lock}`}
 					to={{
-						pathname: `level/${level}/questions`,
-						state: {
-							questions: questions,
-							level: level,
-							moduleName: moduleName,
-							parScore: parScore
-						}
+						pathname: `/module/${moduleId}/level/${level}/questions/`
 					}}
 				>
 					<button className={`level-card card-lock-${lock}`} type="button">
 						{level > 1 &&
-						scores[level - 2] < parScore && (
+						currentScore < parScore && (
 							<div className="lock-icon-container">
 								<img className="lock-icon" src={lockIconUrl} alt="lock-icon" />
 							</div>
@@ -39,7 +32,7 @@ class LevelCard extends Component {
 						<div className="level-label-score">
 							<p className="level-label">Level {level}</p>
 							<p className="level-score">
-								Score: {scores[level - 1]}/{totalScore}
+								Score: {currentScore}/{totalScore}
 							</p>
 						</div>
 
@@ -56,11 +49,5 @@ class LevelCard extends Component {
 		);
 	}
 }
-
-// const mapStateToProps = (state) => {
-// 	return { scores: state.scores };
-// };
-
-// export default connect(mapStateToProps)(LevelCard);
 
 export default LevelCard;

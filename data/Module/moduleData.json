@@ -6,7 +6,7 @@
 		"levels": [
 			{
 				"id": 1,
-				"current_score": 80,
+				"current_score": 0,
 				"par_score": 0,
 				"total_score": 100,
 				"desc": "Description1",
@@ -38,7 +38,7 @@
 						"question": "level 1 question3",
 						"options": [ "level1 X", "level1 Y", "level1 Z", "level1 A" ],
 						"correct_answer": 3
-					}	
+					}
 				]
 			},
 			{
