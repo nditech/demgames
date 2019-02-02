@@ -14,10 +14,11 @@
 	width: 100%;
 	margin: .5em 0;
 	cursor: pointer;
-	p {
-		font-size: 1.2em;
-		font-weight: bold;
-		color: white;
+	.level-score {
+		font-size: 1.6em;
+		font-family: Georgia;
+		line-height: 1.2;
+		color: #ffffff;
 	}
 
 	.level-label-score {
@@ -27,15 +28,9 @@
 		height: 3em;
 
 		.level-label {
+			font-size: 2em;
 			font-family: OpenSans;
-			font-size: 30px;
 			font-weight: bold;
-			color: #ffffff;
-		}
-
-		.level-label {
-			font-family: Georgia;
-			font-size: 24px;
 			color: #ffffff;
 		}
 	}
@@ -43,14 +38,13 @@
 	.level-description {
 		opacity: 0.8;
 		font-family: OpenSans;
-		font-size: 20px;
-		font-weight: normal;
+		font-size: 1.5em;
 		color: #ffffff;
 	}
 
 	.level-unlock-rule {
-		font-family: Georgia;
-		font-size: 24px;
+		font-family: Arial;
+		font-size: 1.5em;
 		color: #ffffff;
 	}
 

@@ -9,11 +9,11 @@ class LevelCard extends Component {
 		super(props);
 		this.state = {};
 	}
-	
+
 	render() {
 		const { level, currentScore, parScore, linkedLevel, description, totalScore, moduleId } = this.props;
-		const lock = level > 1 && currentScore < parScore;
-
+		const lock = level > 1 && this.props.levelsData.currentScores[level - 2] < parScore;
+		console.log(currentScore);
 		return (
 			<Fragment>
 				<Link
@@ -24,7 +24,7 @@ class LevelCard extends Component {
 				>
 					<button className={`level-card card-lock-${lock}`} type="button">
 						{level > 1 &&
-						currentScore < parScore && (
+						this.props.levelsData.currentScores[level - 2] < parScore && (
 							<div className="lock-icon-container">
 								<img className="lock-icon" src={lockIconUrl} alt="lock-icon" />
 							</div>
@@ -39,7 +39,7 @@ class LevelCard extends Component {
 						<p className="level-description">Two line {description}</p>
 
 						{level > 1 && (
-							<p className="level-unlcok-rule">
+							<p className="level-unlock-rule">
 								Need {parScore} in Level {linkedLevel} to unlock.
 							</p>
 						)}
@@ -50,4 +50,10 @@ class LevelCard extends Component {
 	}
 }
 
-export default LevelCard;
+const mapStateToProps = (state) => {
+	return { levelsData: state.levelsData };
+};
+
+export default connect(mapStateToProps, null)(LevelCard);
+
+// export default LevelCard;

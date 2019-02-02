@@ -44,16 +44,18 @@ class AnswerInfoPopup extends Component {
 					{<img className="answer-status-logo" src={imageUrl} alt="answer-status" />}
 				</DialogTitle>
 				<DialogContent>
-					<DialogContentText id="dialog-slide-description">
-						{answerStatus ? 'Congratulations !' : ''}
+					<DialogContentText className="greet-message" id="dialog-slide-description">
+						<span> {answerStatus ? 'Congratulations !' : ''}</span>
 					</DialogContentText>
 				</DialogContent>
 				<DialogContent>
-					<DialogContentText id="dialog-slide-description">{message}</DialogContentText>
+					<DialogContentText className="answer-status-message" id="dialog-slide-description">
+						<span>{message}</span>
+					</DialogContentText>
 				</DialogContent>
 				<DialogContent>
-					<DialogContentText id="dialog-slide-description">
-						You have{' '}
+					<DialogContentText className="points-status" id="dialog-slide-description">
+						<span>You have </span>
 						{answerStatus ? (
 							<span>
 								<span>earned</span>

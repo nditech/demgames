@@ -1,7 +1,8 @@
-import { FETCH_QUESTIONS, CORRECT_ANS, WRONG_ANS } from './constants';
+import { FETCH_QUESTIONS, FETCH_PAR_SCORES, UPDATE_SCORE } from './constants';
 const initialState = {
 	questions: [],
-	score: 0
+	score: 0,
+	parScores: []
 };
 
 const myReducer = (state = initialState, action) => {
@@ -12,16 +13,7 @@ const myReducer = (state = initialState, action) => {
 				...state,
 				questions: action.val
 			};
-		// case CORRECT_ANS:
-		// 	return {
-		// 		...state,
-		// 		score: action.val + 10
-		// 	};
-		// case WRONG_ANS:
-		// 	return {
-		// 		...state,
-		// 		score: action.val - 10
-		// 	};
+
 		default:
 			return newState;
 	}

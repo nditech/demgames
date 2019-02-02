@@ -41,6 +41,12 @@
 	.back-module-container {
 		justify-content: start;
 		width: 100%;
+		padding-left: .5em;
+		.questions-page-module-name {
+			font-family: Georgia;
+			font-size: 26px;
+			color: #050505;
+		}
 	}
 	p {
 		font-family: Georgia;

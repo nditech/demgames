@@ -9,12 +9,12 @@ import { connect } from 'react-redux';
 import { config } from '../../settings';
 
 import GameInfo from '../../components/GameInfo';
-import { FETCH_LEVELS } from './constants';
+import { FETCH_PAR_SCORES, FETCH_CURRENT_SCORES } from './constants';
 
 class LevelsPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { open: false };
+		this.state = { open: false, parScores: [], currentScores: [] };
 		this.handleClickOpen = this.handleClickOpen.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 	}
@@ -27,35 +27,23 @@ class LevelsPage extends React.Component {
 		this.setState({ open: false });
 	};
 
-	handleClick = () => {
-		let data = { score: 10 };
-		return fetch(config.baseUrl + '/api/module/1/level/1/update-score', {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data)
-		})
-			.then((response) => {
-				if (response.status >= 200 && response.status < 300) {
-					console.log('success');
-					this.setState({ currentScore: data.score });
-				} else {
-					console.log('fail');
-				}
-			})
-			.catch((status, err) => {
-				console.log(err);
-			});
-	};
-
 	componentWillMount() {
 		fetch(config.baseUrl + `/api/module/${this.props.match.params.moduleId}/levels`)
 			.then((response) => {
 				if (response.status >= 200 && response.status < 300) {
 					response.json().then((res) => {
+						const { parScores, currentScores } = this.state;
+						res.moduleLevels[this.props.match.params.moduleId - 1].map((level) => {
+							parScores.push(level.par_score);
+							currentScores.push(level.current_score);
+						});
+
+						// console.log(this.props.history);
+						this.props.getParScores(parScores);
+						this.props.getCurrentScores(currentScores);
+
 						const levels = res.moduleLevels.filter((modules) => modules !== null);
-						this.props.getLevels(levels[0]);
+						this.setState({ levels: levels[0] });
 					});
 				} else if (response.status === 404) {
 					console.log('Not Found');
@@ -64,8 +52,10 @@ class LevelsPage extends React.Component {
 			.catch((err) => console.log(err));
 	}
 	render() {
-		const { open } = this.state;
-		let levels = this.props.levelsData.levels;
+		const moduleNames = this.props.moduleData.moduleNames;
+		const { open, levels, currentScores } = this.state;
+		console.log('current scores', this.props.levelsData.currentScores);
+		// let levels = this.props.levelsData.levels;
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">
@@ -87,7 +77,7 @@ class LevelsPage extends React.Component {
 							</a>
 						</div>
 					</div>
-					{/* <p className="game-title"> {moduleName}</p> */}
+					<p className="game-title"> {moduleNames[this.props.match.params.moduleId - 1]}</p>
 					<div className="game-type-card-container">
 						{levels &&
 							levels.length > 0 &&
@@ -102,7 +92,7 @@ class LevelsPage extends React.Component {
 									description={data.desc}
 									totalScore={data.total_score}
 									questions={data.questions}
-									// moduleName={moduleName}
+									moduleName={moduleNames[this.props.match.params.moduleId - 1]}
 								/>
 							))}
 					</div>
@@ -114,12 +104,13 @@ class LevelsPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return { levelsData: state.levelsData };
+	return { moduleData: state.moduleData, levelsData: state.levelsData, questionsData: state.questionsData };
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getLevels: (levels) => dispatch({ type: FETCH_LEVELS, val: levels })
+		getParScores: (parScores) => dispatch({ type: FETCH_PAR_SCORES, val: parScores }),
+		getCurrentScores: (currentScores) => dispatch({ type: FETCH_CURRENT_SCORES, val: currentScores })
 	};
 };
 

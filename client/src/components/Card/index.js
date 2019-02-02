@@ -8,10 +8,10 @@ class Card extends Component {
 	}
 
 	render() {
-		const { answerClick, option } = this.props;
+		const { answerClick, option, selectedCard } = this.props;
 		return (
 			<button
-				className={`card-button card-button-${answerClick} color-change- ${this.props.color}`}
+				className={`card-button card-button-${answerClick} color-change-${selectedCard} ${this.props.color}`}
 				type="button"
 				value={option}
 				onClick={this.props.handleClick}

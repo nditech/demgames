@@ -1,29 +1,40 @@
 .result-page-container {
 	text-align: center;
 	font-size: 1.4em;
-}
+	p {
+		font-family: Georgia;
+		color: #000000;
+		margin-bottom: 1.5em;
+	}
 
-.retry-level {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	height: 2.5em;
-	width: 100%;
-	background-color: #12c34d;
-	color: white;
-	font-size: 1.4em;
-	border: none;
-	outline: none;
-}
-.congratulation-message-container {
-	background-color: #f3f6f9;
-	padding: 1em;
-}
+	.retry-level {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		height: 2.5em;
+		width: 100%;
+		background-color: #12c34d;
+		color: white;
+		font-size: 1.4em;
+		border: none;
+		outline: none;
+	}
+	.congratulation-message-container {
+		background-color: #f3f6f9;
+		padding: 1em;
+		p {
+			font-family: Georgia;
+			color: #000000;
+		}
+	}
 
-.score-message {
-	margin-bottom: 3.5em;
-}
-.back-to-all-levels-link {
-	color: #000000;
-	font-weight: bold;
+	.back-to-all-levels-link {
+		color: #000000;
+		font-weight: bold;
+	}
+	.result-back-module-container {
+		justify-content: center;
+		width: 100%;
+		background-color: #f3f6f9;
+	}
 }

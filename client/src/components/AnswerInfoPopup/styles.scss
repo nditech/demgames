@@ -12,6 +12,39 @@
 
 .dialog-content {
 	text-align: center;
+
+	.greet-message {
+		span {
+			font-family: Georgia !important;
+			font-size: 22px !important;
+			line-height: 1.2 !important;
+			color: #2fa44b !important;
+		}
+	}
+	.answer-status-message {
+		span {
+			font-family: Georgia !important;
+			font-size: 22px !important;
+			line-height: 1.2 !important;
+			color: #000000 !important;
+		}
+	}
+	.points-status {
+		span {
+			font-family: OpenSans !important;
+			font-size: 20px !important;
+			font-weight: 600 !important;
+			line-height: 1.2 !important;
+			color: #3d484e !important;
+		}
+		.correct-points {
+			color: #12008f !important;
+		}
+		.wrong-points {
+			color: #ed1c24 !important;
+		}
+	}
+
 	.success-message {
 		font-family: Georgia;
 		font-size: 30px;
@@ -33,15 +66,7 @@
 }
 
 .answer-status-logo {
-	width: 117.7px;
-	height: 101.5px;
+	width: 100px;
+	height: 100px;
 	object-fit: contain;
-}
-
-.correct-points {
-	color: #12008f;
-}
-
-.wrong-points {
-	color: #ed1c24;
 }

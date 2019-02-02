@@ -6,12 +6,12 @@ import '../../commonStyles.scss';
 import './styles.scss';
 import { config } from '../../settings';
 import { connect } from 'react-redux';
-import { FETCH_MODULES } from './constants';
+import { FETCH_MODULE_NAMES } from './constants';
 
 class LandingPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = { moduleData: [], moduleNames: [] };
 	}
 
 	componentWillMount() {
@@ -19,7 +19,13 @@ class LandingPage extends React.Component {
 			.then((response) => {
 				if (response.status >= 200 && response.status < 300) {
 					response.json().then((res) => {
-						this.props.getModulesData(res.modules);
+						const { moduleNames } = this.state;
+						res.modules.map((mod) => {
+							moduleNames.push(mod.name);
+						});
+						this.setState({ moduleData: res.modules });
+						// this.props.getModulesData(res.modules);
+						this.props.getModuleNames(moduleNames);
 					});
 				} else if (response.status === 404) {
 					console.log('Not Found');
@@ -29,7 +35,8 @@ class LandingPage extends React.Component {
 	}
 
 	render() {
-		const moduleData = this.props.moduleData.data;
+		const { moduleData } = this.state;
+		// const moduleData = this.props.moduleData.data;
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">
@@ -59,12 +66,14 @@ class LandingPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+	// return { moduleData: state.moduleData };
 	return { moduleData: state.moduleData };
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getModulesData: (data) => dispatch({ type: FETCH_MODULES, val: data })
+		getModuleNames: (moduleNames) => dispatch({ type: FETCH_MODULE_NAMES, val: moduleNames })
+		// getModulesData: (data) => dispatch({ type: FETCH_MODULES, val: data })
 	};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

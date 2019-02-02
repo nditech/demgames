@@ -15,6 +15,7 @@ import { config } from '../../settings';
 import './styles.scss';
 import GameInfo from '../../components/GameInfo';
 import { FETCH_QUESTIONS } from './constants';
+import { FETCH_CURRENT_SCORES } from '../LevelsPage/constants';
 
 class QuestionsAnsPage extends React.Component {
 	constructor(props) {
@@ -29,7 +30,8 @@ class QuestionsAnsPage extends React.Component {
 			parScoreStatus: false,
 			showCorrectAns: false,
 			currentScore: 0,
-			click: false
+			click: false,
+			selectedCard: null
 		};
 		this.handleAnswerClick = this.handleAnswerClick.bind(this);
 		this.handleClick = this.handleClick.bind(this);
@@ -44,6 +46,7 @@ class QuestionsAnsPage extends React.Component {
 		this.handleInfoClose = this.handleInfoClose.bind(this);
 		this.getCorrectAnswer = this.getCorrectAnswer.bind(this);
 		this.getProgress = this.getProgress.bind(this);
+		this.checkCorrectAnswer = this.checkCorrectAnswer.bind(this);
 	}
 	componentWillMount() {
 		fetch(
@@ -64,29 +67,29 @@ class QuestionsAnsPage extends React.Component {
 	}
 
 	handleUpdateScore = (newScore) => {
-		const { currentScore } = this.state;
-		console.log('handleUpdateScore', currentScore);
 		let data = { score: newScore };
-		return fetch(config.baseUrl + '/api/module/1/level/1/update-score', {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data)
-		})
-			.then((response) => response.json())
+		return fetch(
+			config.baseUrl +
+				`/api/module/${this.props.match.params.moduleId}/level/${this.props.match.params.levelId}/update-score`,
+			{
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			}
+		)
 			.then((response) => {
-				console.log(response);
 				if (response.status >= 200 && response.status < 300) {
-					console.log('success');
+					console.log('Update score success');
+					console.log(response.json());
 				} else {
-					console.log('fail');
+					console.log('Update score fail');
 				}
 			})
 			.catch((status, err) => {
 				console.log(err);
 			});
-		return true;
 	};
 
 	showRightAnswer() {
@@ -113,21 +116,31 @@ class QuestionsAnsPage extends React.Component {
 		this.setState({ open: false });
 	};
 
-	handleAnswerClick = (correctAns) => (e) => {
-		const selectedValue = e.target.value;
-		this.setState({ answerClick: true, selectedAnswer: selectedValue });
+	checkCorrectAnswer() {
+		const correctAns = this.getCorrectAnswer();
 
+		const scores = this.props.levelsData.currentScores;
+		const selectedValue = this.state.selectedAnswer;
 		if (selectedValue === correctAns) {
+			scores[0] += 10;
+			this.props.getCurrentScores(scores);
 			this.setState((prevState) => ({
 				answerCorrect: true,
 				currentScore: prevState.currentScore + 10
 			}));
 		} else {
+			scores[0] -= 10;
+			this.props.getCurrentScores(scores);
 			this.setState((prevState) => ({
 				answerCorrect: false,
 				currentScore: prevState.currentScore - 10
 			}));
 		}
+		console.log(this.props.levelsData.currentScores);
+	}
+	handleAnswerClick = (correctAns, key) => (e) => {
+		const selectedValue = e.target.value;
+		this.setState({ answerClick: true, selectedAnswer: selectedValue, selectedCard: key });
 	};
 
 	nextQuestion() {
@@ -141,9 +154,10 @@ class QuestionsAnsPage extends React.Component {
 	}
 
 	handleInfoPageClick() {
-		this.setState((prevState) => ({ showAnswer: !prevState.showAnswer }));
+		this.setState((prevState) => ({ showAnswer: !prevState.showAnswer, selectedCard: null }));
 		this.handleNextClick();
 		this.handleClickOpen();
+		this.checkCorrectAnswer();
 	}
 
 	handleClick() {
@@ -186,7 +200,8 @@ class QuestionsAnsPage extends React.Component {
 			showCorrectAns,
 			currentScore,
 			selectedAnswer,
-			infoOpen
+			infoOpen,
+			selectedCard
 		} = this.state;
 		let level = parseInt(this.props.match.params.levelId);
 		let questions = this.props.questionsData.questions[0];
@@ -196,28 +211,23 @@ class QuestionsAnsPage extends React.Component {
 		}
 		const correctAns = this.getCorrectAnswer();
 		const progress = this.getProgress();
+		const moduleNames = this.props.moduleData.moduleNames;
 		console.log('currentScore', currentScore);
-		// let questions = this.props.questionsData.questions[0];
-		// let level = parseInt(this.props.match.params.levelId);
-		// var totalQuestion = 0;
-		// if (questions && questions.length > 0) {
-		// 	totalQuestion = questions.length;
-		// 	var correctAns =
-		// 		questionId <= totalQuestion
-		// 			? questions[questionId - 1].options[questions[questionId - 1].correct_answer - 1]
-		// 			: null;
-		// 	var progress = (questionId - 1) / totalQuestion * 100;
-		// }
+		const backUrl = `/module/${this.props.match.params.moduleId}/levels`;
 		return (
 			<Fragment>
 				<div className="question-container">
 					<div className="game-type-help">
 						<div className="back-module-container">
 							<button className="back-button">
-								<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
+								<a href={backUrl}>
+									<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
+								</a>
 							</button>
 
-							{/* <p>{moduleName}</p> */}
+							<p className="questions-page-module-name">
+								{moduleNames[this.props.match.params.moduleId - 1]}
+							</p>
 						</div>
 						<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleInfoOpen} />
 					</div>
@@ -229,16 +239,20 @@ class QuestionsAnsPage extends React.Component {
 								to={{
 									pathname: '/results',
 									state: {
-										// moduleName: moduleName,
+										moduleName: moduleNames[this.props.match.params.moduleId - 1],
 										level: level,
 										image: parScoreStatus ? hurreyUrl : oopsUrl,
-										message: parScoreStatus
-											? `Hurrey! You have scored  ${currentScore > 0
-													? currentScore
-													: 0}/100 You are in top 100 in the rank.`
-											: `Oh! You have scored only  ${currentScore > 0
-													? currentScore
-													: 0}/100 You need to earn /100 for Level ${level + 1}.`
+										messageOne: parScoreStatus
+											? `Hurrey! You have scored  ${currentScore > 0 ? currentScore : 0}/100.`
+											: `Oh! You have scored only  ${currentScore > 0 ? currentScore : 0}/100.`,
+										messageTwo: parScoreStatus
+											? `You are in top 100 in the rank.`
+											: `You need to earn ${this.props.levelsData.parScores[
+													level
+												]}/100 for Level ${level}.`,
+										buttonMessage: !parScoreStatus
+											? `Retry Level ${level}`
+											: `Continue Level ${level + 1}`
 									}
 								}}
 							/>
@@ -255,8 +269,10 @@ class QuestionsAnsPage extends React.Component {
 								<div className="progress-bar-container">
 									<ProgressBar progress={progress} />
 								</div>
-								<div className="question">
-									<p>{questions && questions.length > 0 && questions[questionId - 1].question}</p>
+								<div className="questions-container">
+									<p className="question-label">
+										{questions && questions.length > 0 && questions[questionId - 1].question}
+									</p>
 								</div>
 								<div className="answer-container">
 									{!showAnswer ? <p className="select-label">Select the right answer</p> : null}
@@ -268,7 +284,8 @@ class QuestionsAnsPage extends React.Component {
 												option={option}
 												correct_answer={questions[questionId - 1].correctAns}
 												answerClick={answerClick}
-												handleClick={this.handleAnswerClick(correctAns)}
+												selectedCard={key === selectedCard}
+												handleClick={this.handleAnswerClick(correctAns, key)}
 											/>
 										))}
 								</div>
@@ -321,14 +338,15 @@ class QuestionsAnsPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return { questionsData: state.questionsData };
+	return { questionsData: state.questionsData, moduleData: state.moduleData, levelsData: state.levelsData };
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		// onCorrectAns: () => dispatch({ type: 'CORRECT_ANS', val: 0 }),
 		// onWrongAns: () => dispatch({ type: 'WRONG_ANS', val: 0 }),
-		getQuestions: (questions) => dispatch({ type: FETCH_QUESTIONS, val: questions })
+		getQuestions: (questions) => dispatch({ type: FETCH_QUESTIONS, val: questions }),
+		getCurrentScores: (currentScores) => dispatch({ type: FETCH_CURRENT_SCORES, val: currentScores })
 	};
 };
 

@@ -34,29 +34,27 @@ class GameInfo extends Component {
 				keepMounted
 				onClose={handleClose}
 			>
-				<DialogTitle id="dialog-slide-image">
-					<p className="info-label">Info</p>
+				<DialogTitle className="info-label" id="dialog-slide-image">
+					<span>Info</span>
 				</DialogTitle>
 				<DialogContent>
-					<DialogContentText id="dialog-slide-description">
-						<p className="info-heading">What is Lorem Ipsum?</p>
+					<DialogContentText className="info-heading" id="dialog-slide-description">
+						<span>What is Lorem Ipsum?</span>
 					</DialogContentText>
 				</DialogContent>
 				<DialogContent>
-					<DialogContentText id="dialog-slide-description">
-						<p className="info-sub-heading">
+					<DialogContentText className="info-sub-heading" id="dialog-slide-description">
+						<span>
 							Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
 							been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a
 							galley of type and scrambled it to make a type specimen book.
-						</p>
+						</span>
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					{
-						<Button className="ok-button" onClick={this.handleOkClick} color="primary">
-							OK
-						</Button>
-					}
+					<Button className="ok-button" onClick={this.handleOkClick} color="primary">
+						OK
+					</Button>
 				</DialogActions>
 			</Dialog>
 		);

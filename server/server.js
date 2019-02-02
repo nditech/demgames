@@ -1,5 +1,6 @@
-const modules = require('../data/Module/modules.json');
+const gameData = require('../data/Module/moduleData.json');
 const levels = require('../data/Module/levels.json');
+const modules = require('../data/Module/modules.json');
 const questions = require('../data/Module/questions.json');
 const express = require('express');
 const app = express();
@@ -11,6 +12,11 @@ app.use(bodyParser.raw({ inflate: true, limit: '100kb', type: 'text/xml' }));
 
 // const excelToJson = require('excel-as-json').processFile;
 // excelToJson('./excel1.xlsx', './row.json', (err, data) => console.log('JSON conversion failure'));
+
+app.get('/api/game', (req, res) => {
+	if (!gameData) res.status(404).send('No data found');
+	res.json({ gameData });
+});
 
 app.get('/api/modules', (req, res) => {
 	if (!modules) res.status(404).send('No modules found');
@@ -38,7 +44,6 @@ app.put('/api/module/:moduleId/level/:levelId/update-score', (req, res, err) => 
 
 	if (!newScore) res.status(404).send('Didnt get new score to update');
 
-	// res.status(200).send('score updated with ' + newScore);
 	res.json('score updated with ' + newScore);
 });
 

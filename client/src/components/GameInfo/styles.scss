@@ -1,27 +1,42 @@
 .info-label {
-	font-family: Georgia;
-	font-size: 30px;
-	line-height: 1.2;
-	text-align: left;
-	color: #1461b1;
-	margin: 2em 0 0 0;
+	span {
+		font-family: Georgia;
+		font-size: 30px;
+		line-height: 1.2;
+		text-align: left;
+		color: #1461b1;
+		margin: .2em 0 0 0;
+		display: flex;
+	}
 }
 .info-heading {
-	opacity: 0.7;
-	font-family: Georgia;
-	font-size: 20px;
-	line-height: 1.2;
-	text-align: left;
-	color: #3e3d4a;
-	margin: 0;
+	span {
+		opacity: 0.7;
+		font-family: Georgia;
+		font-size: 20px;
+		line-height: 1.2;
+		text-align: left;
+		color: #3e3d4a;
+		margin: 0;
+		display: flex;
+	}
 }
 
 .info-subheading {
-	opacity: 0.7;
-	font-family: Georgia;
-	font-size: 20px;
-	line-height: 1.2;
-	text-align: left;
-	color: #3e3d4a;
-	margin: 0;
+	span {
+		opacity: 0.7;
+		font-family: Georgia;
+		font-size: 20px;
+		line-height: 1.2;
+		text-align: left;
+		color: #3e3d4a;
+		margin: 0;
+		display: flex;
+	}
+}
+
+.ok-button {
+	background-color: #12c34d !important;
+	color: #ffffff !important;
+	font-weight: bold;
 }

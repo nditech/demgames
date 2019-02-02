@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import arrowBackUrl from '../../images/back.png';
 import editUrl from '../../images/edit.png';
+import changePassUrl from '../../images/changePass.svg';
+
 import './styles.scss';
 
 class ProfileInfo extends React.Component {
@@ -39,7 +41,7 @@ class ProfileInfo extends React.Component {
 				<div className="profile-info-container">
 					<div className="profile-header">
 						<div className="back-module-container">
-							<button className="back-button">
+							<button className="back-button" onClick={this.props.history.goBack}>
 								<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
 							</button>
 
@@ -63,7 +65,7 @@ class ProfileInfo extends React.Component {
 							}}
 							className="profile-input"
 							type="text"
-							placeholder="abdul@gmail.com"
+							placeholder="priyal@gmail.com"
 							onKeyUp={this.handleOnKeyUp.bind(this, 'email')}
 						/>
 						<p className="input-label input-label-name">Your name</p>
@@ -73,7 +75,7 @@ class ProfileInfo extends React.Component {
 							}}
 							className="profile-input"
 							type="text"
-							placeholder="ABDUL"
+							placeholder="PRIYAL"
 							onKeyUp={this.handleOnKeyUp.bind(this, 'name')}
 						/>
 						<p className="input-label input-label-password">Your password</p>
@@ -88,13 +90,13 @@ class ProfileInfo extends React.Component {
 						/>
 					</div>
 					<div className="change-password-container">
-						<img className="change-password-icon" src={arrowBackUrl} alt="back-arrow" />
+						<img className="change-password-icon" src={changePassUrl} alt="back-arrow" />
 						<a
 							ref={(input) => {
 								this.changePassword = input;
 							}}
 							className="change-password-link"
-							href="/"
+							href="/profile"
 						>
 							Change password
 						</a>
@@ -105,14 +107,14 @@ class ProfileInfo extends React.Component {
 						<div className="modules-info">
 							<p className="heading">Designing an Argument</p>
 							<p>
-								Currently persuing <span>Level 2</span>
+								Currently pursuing <span>Level 1</span>
 							</p>
 							<p>
-								Scored <span>80/100</span> in <span>Level 1</span>
+								Scored <span>20/100</span> in <span>Level 1</span>
 							</p>
 							<p className="heading">Finding Evidence</p>
 							<p>
-								Currently persuing <span>Level 1</span>
+								Currently pursuing <span>Level 1</span>
 							</p>
 							<p className="heading">Finding Flaws in Arguments</p>
 							<p>Not yet started</p>
