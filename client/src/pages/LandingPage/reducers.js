@@ -1,22 +1,17 @@
-import { FETCH_MODULES, FETCH_MODULE_NAMES } from './constants';
+import { FETCH_GAME_DATA } from './constants';
 
 const initialState = {
-	// data: []
-	moduleNames: []
+	gameData: []
 };
 
 const myReducer = (state = initialState, action) => {
 	const newState = { ...state };
+
 	switch (action.type) {
-		// case FETCH_MODULES:
-		// 	return {
-		// 		...state,
-		// 		data: action.val
-		// 	};
-		case FETCH_MODULE_NAMES:
+		case FETCH_GAME_DATA:
 			return {
 				...state,
-				moduleNames: action.val
+				gameData: action.val
 			};
 
 		default:

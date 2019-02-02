@@ -12,7 +12,7 @@ class LevelCard extends Component {
 
 	render() {
 		const { level, currentScore, parScore, linkedLevel, description, totalScore, moduleId } = this.props;
-		const lock = level > 1 && this.props.levelsData.currentScores[level - 2] < parScore;
+		const lock = level > 1 && currentScore < parScore;
 		console.log(currentScore);
 		return (
 			<Fragment>
@@ -24,7 +24,7 @@ class LevelCard extends Component {
 				>
 					<button className={`level-card card-lock-${lock}`} type="button">
 						{level > 1 &&
-						this.props.levelsData.currentScores[level - 2] < parScore && (
+						currentScore[level - 1] < parScore && (
 							<div className="lock-icon-container">
 								<img className="lock-icon" src={lockIconUrl} alt="lock-icon" />
 							</div>

@@ -11,11 +11,8 @@ import AnswerInfoPopup from '../../components/AnswerInfoPopup';
 import { CorrectAnswerInfo } from '../../components/CorrectAnswerInfo';
 import ProgressBar from '../../components/ProgressBar';
 import { connect } from 'react-redux';
-import { config } from '../../settings';
 import './styles.scss';
 import GameInfo from '../../components/GameInfo';
-import { FETCH_QUESTIONS } from './constants';
-import { FETCH_CURRENT_SCORES } from '../LevelsPage/constants';
 
 class QuestionsAnsPage extends React.Component {
 	constructor(props) {
@@ -48,49 +45,32 @@ class QuestionsAnsPage extends React.Component {
 		this.getProgress = this.getProgress.bind(this);
 		this.checkCorrectAnswer = this.checkCorrectAnswer.bind(this);
 	}
-	componentWillMount() {
-		fetch(
-			config.baseUrl +
-				`/api/module/${this.props.match.params.moduleId}/level/${this.props.match.params.levelId}/questions`
-		)
-			.then((response) => {
-				if (response.status >= 200 && response.status < 300) {
-					response.json().then((res) => {
-						const questions = res.filter((modules) => modules !== null);
-						this.props.getQuestions(questions);
-					});
-				} else if (response.status === 404) {
-					console.log('Not Found');
-				}
-			})
-			.catch((err) => console.log(err));
-	}
 
-	handleUpdateScore = (newScore) => {
-		let data = { score: newScore };
-		return fetch(
-			config.baseUrl +
-				`/api/module/${this.props.match.params.moduleId}/level/${this.props.match.params.levelId}/update-score`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(data)
-			}
-		)
-			.then((response) => {
-				if (response.status >= 200 && response.status < 300) {
-					console.log('Update score success');
-					console.log(response.json());
-				} else {
-					console.log('Update score fail');
-				}
-			})
-			.catch((status, err) => {
-				console.log(err);
-			});
-	};
+	// handleUpdateScore = (newScore) => {
+	// 	let data = { score: newScore };
+	// 	return fetch(
+	// 		config.baseUrl +
+	// 			`/api/module/${this.props.match.params.moduleId}/level/${this.props.match.params.levelId}/update-score`,
+	// 		{
+	// 			method: 'PUT',
+	// 			headers: {
+	// 				'Content-Type': 'application/json'
+	// 			},
+	// 			body: JSON.stringify(data)
+	// 		}
+	// 	)
+	// 		.then((response) => {
+	// 			if (response.status >= 200 && response.status < 300) {
+	// 				console.log('Update score success');
+	// 				console.log(response.json());
+	// 			} else {
+	// 				console.log('Update score fail');
+	// 			}
+	// 		})
+	// 		.catch((status, err) => {
+	// 			console.log(err);
+	// 		});
+	// };
 
 	showRightAnswer() {
 		this.setState({ showCorrectAns: true });
@@ -119,24 +99,18 @@ class QuestionsAnsPage extends React.Component {
 	checkCorrectAnswer() {
 		const correctAns = this.getCorrectAnswer();
 
-		const scores = this.props.levelsData.currentScores;
 		const selectedValue = this.state.selectedAnswer;
 		if (selectedValue === correctAns) {
-			scores[0] += 10;
-			this.props.getCurrentScores(scores);
 			this.setState((prevState) => ({
 				answerCorrect: true,
 				currentScore: prevState.currentScore + 10
 			}));
 		} else {
-			scores[0] -= 10;
-			this.props.getCurrentScores(scores);
 			this.setState((prevState) => ({
 				answerCorrect: false,
 				currentScore: prevState.currentScore - 10
 			}));
 		}
-		console.log(this.props.levelsData.currentScores);
 	}
 	handleAnswerClick = (correctAns, key) => (e) => {
 		const selectedValue = e.target.value;
@@ -167,7 +141,9 @@ class QuestionsAnsPage extends React.Component {
 
 	getCorrectAnswer() {
 		const { questionId } = this.state;
-		let questions = this.props.questionsData.questions[0];
+		let moduleId = this.props.match.params.moduleId;
+		let level = parseInt(this.props.match.params.levelId);
+		let questions = this.props.gameData.gameData[moduleId - 1].levels[[ level - 1 ]].questions;
 		var totalQuestion = 0;
 		if (questions && questions.length > 0) {
 			totalQuestion = questions.length;
@@ -181,7 +157,10 @@ class QuestionsAnsPage extends React.Component {
 
 	getProgress() {
 		const { questionId } = this.state;
-		let questions = this.props.questionsData.questions[0];
+		let moduleId = this.props.match.params.moduleId;
+		let level = parseInt(this.props.match.params.levelId);
+
+		let questions = this.props.gameData.gameData[moduleId].levels[[ level - 1 ]].questions;
 		var totalQuestion = 0;
 		if (questions && questions.length > 0) {
 			totalQuestion = questions.length;
@@ -189,6 +168,35 @@ class QuestionsAnsPage extends React.Component {
 			return progress;
 		}
 	}
+
+	getModuleNames = () => {
+		const gameData = this.props.gameData.gameData;
+		const moduleNames = [];
+		gameData.map((modules) => {
+			moduleNames.push(modules.name);
+		});
+		return moduleNames;
+	};
+
+	getTotalQuestions = () => {
+		let moduleId = this.props.match.params.moduleId;
+		let level = parseInt(this.props.match.params.levelId);
+
+		let questions = this.props.gameData.gameData[moduleId - 1].levels[[ level - 1 ]].questions;
+		var totalQuestion = 0;
+		if (questions && questions.length > 0) {
+			totalQuestion = questions.length;
+		}
+		return totalQuestion;
+	};
+
+	getParScores = () => {
+		let moduleId = this.props.match.params.moduleId;
+		let level = parseInt(this.props.match.params.levelId);
+		const parScores = this.props.gameData.gameData[moduleId - 1].levels.map((level) => level.par_score);
+		return parScores;
+	};
+
 	render() {
 		const {
 			answerClick,
@@ -203,17 +211,18 @@ class QuestionsAnsPage extends React.Component {
 			infoOpen,
 			selectedCard
 		} = this.state;
+
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
-		let questions = this.props.questionsData.questions[0];
-		var totalQuestion = 0;
-		if (questions && questions.length > 0) {
-			totalQuestion = questions.length;
-		}
+		const totalQuestion = this.getTotalQuestions();
 		const correctAns = this.getCorrectAnswer();
 		const progress = this.getProgress();
-		const moduleNames = this.props.moduleData.moduleNames;
+		const moduleNames = this.getModuleNames();
+		const backUrl = `/module/${moduleId}/levels`;
+		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
+		const parScores = this.getParScores();
 		console.log('currentScore', currentScore);
-		const backUrl = `/module/${this.props.match.params.moduleId}/levels`;
+
 		return (
 			<Fragment>
 				<div className="question-container">
@@ -233,13 +242,12 @@ class QuestionsAnsPage extends React.Component {
 					</div>
 					<Fragment>
 						{totalQuestion > 0 &&
-						questionId > totalQuestion &&
-						this.handleUpdateScore(currentScore) && (
+						questionId > totalQuestion && (
 							<Redirect
 								to={{
 									pathname: '/results',
 									state: {
-										moduleName: moduleNames[this.props.match.params.moduleId - 1],
+										moduleName: moduleNames[moduleId - 1],
 										level: level,
 										image: parScoreStatus ? hurreyUrl : oopsUrl,
 										messageOne: parScoreStatus
@@ -247,9 +255,7 @@ class QuestionsAnsPage extends React.Component {
 											: `Oh! You have scored only  ${currentScore > 0 ? currentScore : 0}/100.`,
 										messageTwo: parScoreStatus
 											? `You are in top 100 in the rank.`
-											: `You need to earn ${this.props.levelsData.parScores[
-													level
-												]}/100 for Level ${level}.`,
+											: `You need to earn ${parScores[level]}/100 for Level ${level}.`,
 										buttonMessage: !parScoreStatus
 											? `Retry Level ${level}`
 											: `Continue Level ${level + 1}`
@@ -338,18 +344,9 @@ class QuestionsAnsPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return { questionsData: state.questionsData, moduleData: state.moduleData, levelsData: state.levelsData };
+	return { gameData: state.gameData };
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		// onCorrectAns: () => dispatch({ type: 'CORRECT_ANS', val: 0 }),
-		// onWrongAns: () => dispatch({ type: 'WRONG_ANS', val: 0 }),
-		getQuestions: (questions) => dispatch({ type: FETCH_QUESTIONS, val: questions }),
-		getCurrentScores: (currentScores) => dispatch({ type: FETCH_CURRENT_SCORES, val: currentScores })
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionsAnsPage);
+export default connect(mapStateToProps, null)(QuestionsAnsPage);
 
 // export default QuestionsAnsPage;

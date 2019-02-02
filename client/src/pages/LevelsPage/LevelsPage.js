@@ -6,15 +6,12 @@ import infoUrl from '../../images/info.png';
 import LevelCard from '../../components/LevelCard';
 import '../../commonStyles.scss';
 import { connect } from 'react-redux';
-import { config } from '../../settings';
-
 import GameInfo from '../../components/GameInfo';
-import { FETCH_PAR_SCORES, FETCH_CURRENT_SCORES } from './constants';
 
 class LevelsPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { open: false, parScores: [], currentScores: [] };
+		this.state = { open: false };
 		this.handleClickOpen = this.handleClickOpen.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 	}
@@ -27,35 +24,19 @@ class LevelsPage extends React.Component {
 		this.setState({ open: false });
 	};
 
-	componentWillMount() {
-		fetch(config.baseUrl + `/api/module/${this.props.match.params.moduleId}/levels`)
-			.then((response) => {
-				if (response.status >= 200 && response.status < 300) {
-					response.json().then((res) => {
-						const { parScores, currentScores } = this.state;
-						res.moduleLevels[this.props.match.params.moduleId - 1].map((level) => {
-							parScores.push(level.par_score);
-							currentScores.push(level.current_score);
-						});
+	getModuleNames = () => {
+		const gameData = this.props.gameData.gameData;
+		const moduleNames = [];
+		gameData.map((modules) => {
+			moduleNames.push(modules.name);
+		});
+		return moduleNames;
+	};
 
-						// console.log(this.props.history);
-						this.props.getParScores(parScores);
-						this.props.getCurrentScores(currentScores);
-
-						const levels = res.moduleLevels.filter((modules) => modules !== null);
-						this.setState({ levels: levels[0] });
-					});
-				} else if (response.status === 404) {
-					console.log('Not Found');
-				}
-			})
-			.catch((err) => console.log(err));
-	}
 	render() {
-		const moduleNames = this.props.moduleData.moduleNames;
-		const { open, levels, currentScores } = this.state;
-		console.log('current scores', this.props.levelsData.currentScores);
-		// let levels = this.props.levelsData.levels;
+		const moduleNames = this.getModuleNames();
+		const { open } = this.state;
+		let levels = this.props.gameData.gameData[this.props.match.params.moduleId].levels;
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">
@@ -104,16 +85,9 @@ class LevelsPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return { moduleData: state.moduleData, levelsData: state.levelsData, questionsData: state.questionsData };
+	return { gameData: state.gameData };
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getParScores: (parScores) => dispatch({ type: FETCH_PAR_SCORES, val: parScores }),
-		getCurrentScores: (currentScores) => dispatch({ type: FETCH_CURRENT_SCORES, val: currentScores })
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(LevelsPage);
+export default connect(mapStateToProps, null)(LevelsPage);
 
 // export default LevelsPage;

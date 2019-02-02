@@ -6,26 +6,19 @@ import '../../commonStyles.scss';
 import './styles.scss';
 import { config } from '../../settings';
 import { connect } from 'react-redux';
-import { FETCH_MODULE_NAMES } from './constants';
-
+import { fetchGameData } from './actions';
 class LandingPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { moduleData: [], moduleNames: [] };
+		this.state = {};
 	}
 
 	componentWillMount() {
-		fetch(config.baseUrl + '/api/modules')
+		fetch(config.baseUrl + '/api/game')
 			.then((response) => {
 				if (response.status >= 200 && response.status < 300) {
 					response.json().then((res) => {
-						const { moduleNames } = this.state;
-						res.modules.map((mod) => {
-							moduleNames.push(mod.name);
-						});
-						this.setState({ moduleData: res.modules });
-						// this.props.getModulesData(res.modules);
-						this.props.getModuleNames(moduleNames);
+						this.props.getGameData(res.gameData);
 					});
 				} else if (response.status === 404) {
 					console.log('Not Found');
@@ -35,8 +28,7 @@ class LandingPage extends React.Component {
 	}
 
 	render() {
-		const { moduleData } = this.state;
-		// const moduleData = this.props.moduleData.data;
+		const gameData = this.props.gameData.gameData;
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">
@@ -48,8 +40,8 @@ class LandingPage extends React.Component {
 					</div>
 					<p className="game-title">DemGames - Debate</p>
 					<div className="game-type-card-container">
-						{moduleData.length > 0 &&
-							moduleData.map((modules, key) => (
+						{gameData.length > 0 &&
+							gameData.map((modules, key) => (
 								<ModuleCard
 									key={modules.id}
 									moduleId={modules.id}
@@ -66,14 +58,12 @@ class LandingPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	// return { moduleData: state.moduleData };
-	return { moduleData: state.moduleData };
+	return { gameData: state.gameData };
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getModuleNames: (moduleNames) => dispatch({ type: FETCH_MODULE_NAMES, val: moduleNames })
-		// getModulesData: (data) => dispatch({ type: FETCH_MODULES, val: data })
+		getGameData: (gameData) => dispatch(fetchGameData(gameData))
 	};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
