@@ -7,7 +7,7 @@ import LevelCard from '../../components/LevelCard';
 import '../../commonStyles.scss';
 import { connect } from 'react-redux';
 import GameInfo from '../../components/GameInfo';
-
+import PropTypes from 'prop-types';
 class LevelsPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -33,10 +33,25 @@ class LevelsPage extends React.Component {
 		return moduleNames;
 	};
 
+	getScores = () => {
+		let moduleId = this.props.match.params.moduleId;
+		const scores = this.props.gameData.scores[moduleId - 1];
+		return scores;
+	};
+
+	getParScores = () => {
+		let moduleId = this.props.match.params.moduleId;
+		const parScores = this.props.gameData.gameData[moduleId - 1].levels.map((level) => level.par_score);
+		return parScores;
+	};
+
 	render() {
 		const moduleNames = this.getModuleNames();
 		const { open } = this.state;
-		let levels = this.props.gameData.gameData[this.props.match.params.moduleId].levels;
+		const scores = this.getScores();
+		const parScores = this.getParScores();
+		const moduleId = parseInt(this.props.match.params.moduleId);
+		let levels = this.props.gameData.gameData[moduleId - 1].levels;
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">
@@ -58,7 +73,7 @@ class LevelsPage extends React.Component {
 							</a>
 						</div>
 					</div>
-					<p className="game-title"> {moduleNames[this.props.match.params.moduleId - 1]}</p>
+					<p className="game-title"> {moduleNames[moduleId - 1]}</p>
 					<div className="game-type-card-container">
 						{levels &&
 							levels.length > 0 &&
@@ -66,14 +81,15 @@ class LevelsPage extends React.Component {
 								<LevelCard
 									key={key}
 									level={data.id}
-									moduleId={this.props.match.params.moduleId}
-									currentScore={data.current_score}
-									parScore={data.par_score}
+									moduleId={moduleId}
+									prevLevelScore={scores[data.id - 2]}
+									currentScore={scores[data.id - 1]}
+									parScore={parScores[data.id - 1]}
 									linkedLevel={data.linked_level}
 									description={data.desc}
 									totalScore={data.total_score}
 									questions={data.questions}
-									moduleName={moduleNames[this.props.match.params.moduleId - 1]}
+									moduleName={moduleNames[moduleId - 1]}
 								/>
 							))}
 					</div>
@@ -86,6 +102,11 @@ class LevelsPage extends React.Component {
 
 const mapStateToProps = (state) => {
 	return { gameData: state.gameData };
+};
+
+LevelsPage.propTypes = {
+	gameData: PropTypes.object,
+	match: PropTypes.object
 };
 
 export default connect(mapStateToProps, null)(LevelsPage);

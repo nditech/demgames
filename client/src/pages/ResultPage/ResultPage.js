@@ -1,29 +1,97 @@
-import React from 'react';
+import React, { Component } from 'react';
 import congoUrl from '../../images/congratulations.png';
 import './styles.scss';
+import { fetchScores } from '../LandingPage/actions';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+class ResultPage extends Component {
+	handleUpdateScore = () => {
+		const { currentScore, level, moduleId } = this.props.location.state;
+		let newScore = currentScore;
+		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
+		let prevScore = currentLevelNewScores[level - 1];
 
-export const ResultPage = (props) => (
-	<div className="result-page-container">
-		<div className="game-type-help">
-			<div className="result-back-module-container">
-				<p className="result-page-module-name">{props.location.state.moduleName}</p>
+		currentLevelNewScores[level - 1] =
+			newScore > 0
+				? newScore > prevScore ? newScore : prevScore + newScore <= 100 ? prevScore + newScore : 100
+				: prevScore;
+		this.props.gameData.scores[moduleId - 1] = currentLevelNewScores;
+		this.props.getScores(this.props.gameData.scores);
+	};
+
+	componentDidMount() {
+		this.handleUpdateScore();
+	}
+
+	render() {
+		const {
+			level,
+			moduleId,
+			image,
+			moduleName,
+			messageOne,
+			messageTwo,
+			parScoreStatus
+		} = this.props.location.state;
+
+		const totalLevels = this.props.gameData.gameData[moduleId - 1].levels.length;
+
+		const backToLevelUrl = `/module/${moduleId}/levels`;
+		const retryLevelUrl = `/module/${moduleId}/level/${level}/questions`;
+		const nextLevelUrl = `/module/${moduleId}/level/${level + 1}/questions`;
+		return (
+			<div className="result-page-container">
+				<div className="game-type-help">
+					<div className="result-back-module-container">
+						<p className="result-page-module-name">{moduleName}</p>
+					</div>
+				</div>
+				<div className="congratulation-message-container">
+					<img src={congoUrl} alt="congratulations-icon" />
+					<p style={{ margin: '20px 0 0 0 ' }}>Congratulations !</p>
+					<p style={{ margin: '0' }}>You have finished level {level}</p>
+				</div>
+				<p className="score-message">{messageOne}</p>
+				<img src={image} alt="icon" />
+
+				<p className="score-message">{messageTwo}</p>
+
+				<a className="back-to-all-levels-link" href={backToLevelUrl}>
+					Back to all Levels
+				</a>
+				{!parScoreStatus ? (
+					<a className="back-to-all-levels-link" href={retryLevelUrl}>
+						<button className={`retry-level`}>Retry Level {level}</button>
+					</a>
+				) : level + 1 <= totalLevels ? (
+					<a className="back-to-all-levels-link" href={nextLevelUrl}>
+						<button className={`retry-level`}>Move To Level {level + 1}</button>
+					</a>
+				) : (
+					<a className="back-to-all-levels-link" href="/">
+						<button className={`retry-level`}>Modules</button>
+					</a>
+				)}
 			</div>
-		</div>
-		<div className="congratulation-message-container">
-			<img src={congoUrl} alt="congratulations-icon" />
-			<p style={{ margin: '20px 0 0 0 ' }}>Congratulations !</p>
-			<p style={{ margin: '0' }}>You have finished level {props.location.state.level}</p>
-		</div>
-		<p className="score-message">{props.location.state.messageOne}</p>
-		<img src={props.location.state.image} alt="icon" />
+		);
+	}
+}
 
-		<p className="score-message">{props.location.state.messageTwo}</p>
+const mapStateToProps = (state) => {
+	return { gameData: state.gameData };
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getScores: (scores) => dispatch(fetchScores(scores))
+	};
+};
 
-		<a className="back-to-all-levels-link" href="/module/1/levels">
-			Back to all Levels
-		</a>
-		<a className="back-to-all-levels-link" href="/module/1/level/1/questions/">
-			<button className={`retry-level`}>Retry Level {props.location.state.level}</button>
-		</a>
-	</div>
-);
+ResultPage.propTypes = {
+	getScores: PropTypes.func,
+	location: PropTypes.object,
+	gameData: PropTypes.object
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResultPage);
+
+// export default ResultPage;

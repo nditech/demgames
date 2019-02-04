@@ -8,11 +8,12 @@ import wrongAnsUrl from '../../images/wrong.png';
 import oopsUrl from '../../images/oops.png';
 import hurreyUrl from '../../images/hurrey.png';
 import AnswerInfoPopup from '../../components/AnswerInfoPopup';
-import { CorrectAnswerInfo } from '../../components/CorrectAnswerInfo';
+import CorrectAnswerInfo from '../../components/CorrectAnswerInfo';
 import ProgressBar from '../../components/ProgressBar';
 import { connect } from 'react-redux';
 import './styles.scss';
 import GameInfo from '../../components/GameInfo';
+import PropTypes from 'prop-types';
 
 class QuestionsAnsPage extends React.Component {
 	constructor(props) {
@@ -22,25 +23,21 @@ class QuestionsAnsPage extends React.Component {
 			answerClick: false,
 			questionId: 1,
 			showAnswer: false,
-			selectedAnswer: '',
+			selectedAnswer: [],
 			answerCorrect: true,
-			parScoreStatus: false,
+			parScoreStatus: true,
 			showCorrectAns: false,
 			currentScore: 0,
 			click: false,
-			selectedCard: null
+			selectedCard: null,
+			answerClicked: 0
 		};
-		this.handleAnswerClick = this.handleAnswerClick.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 		this.nextQuestion = this.nextQuestion.bind(this);
 		this.handleNextClick = this.handleNextClick.bind(this);
 		this.handleInfoPageClick = this.handleInfoPageClick.bind(this);
-		this.handleClose = this.handleClose.bind(this);
-		this.handleClickOpen = this.handleClickOpen.bind(this);
 		this.showRightAnswer = this.showRightAnswer.bind(this);
 		this.hideRightAnswer = this.hideRightAnswer.bind(this);
-		this.handleInfoOpen = this.handleInfoOpen.bind(this);
-		this.handleInfoClose = this.handleInfoClose.bind(this);
 		this.getCorrectAnswer = this.getCorrectAnswer.bind(this);
 		this.getProgress = this.getProgress.bind(this);
 		this.checkCorrectAnswer = this.checkCorrectAnswer.bind(this);
@@ -80,27 +77,12 @@ class QuestionsAnsPage extends React.Component {
 		this.nextQuestion();
 	}
 
-	handleInfoOpen = () => {
-		this.setState({ infoOpen: true });
-	};
-
-	handleInfoClose = () => {
-		this.setState({ infoOpen: false });
-	};
-
-	handleClickOpen = () => {
-		this.setState({ open: true });
-	};
-
-	handleClose = () => {
-		this.setState({ open: false });
-	};
-
 	checkCorrectAnswer() {
 		const correctAns = this.getCorrectAnswer();
-
 		const selectedValue = this.state.selectedAnswer;
-		if (selectedValue === correctAns) {
+		selectedValue.sort();
+		correctAns.sort();
+		if (JSON.stringify(selectedValue) === JSON.stringify(correctAns)) {
 			this.setState((prevState) => ({
 				answerCorrect: true,
 				currentScore: prevState.currentScore + 10
@@ -112,14 +94,11 @@ class QuestionsAnsPage extends React.Component {
 			}));
 		}
 	}
-	handleAnswerClick = (correctAns, key) => (e) => {
-		const selectedValue = e.target.value;
-		this.setState({ answerClick: true, selectedAnswer: selectedValue, selectedCard: key });
-	};
 
 	nextQuestion() {
 		this.setState((prevState) => ({
-			questionId: prevState.questionId + 1
+			questionId: prevState.questionId + 1,
+			selectedAnswer: []
 		}));
 	}
 
@@ -128,7 +107,11 @@ class QuestionsAnsPage extends React.Component {
 	}
 
 	handleInfoPageClick() {
-		this.setState((prevState) => ({ showAnswer: !prevState.showAnswer, selectedCard: null }));
+		this.setState((prevState) => ({
+			showAnswer: !prevState.showAnswer,
+			selectedCard: null,
+			answerClicked: 0
+		}));
 		this.handleNextClick();
 		this.handleClickOpen();
 		this.checkCorrectAnswer();
@@ -143,14 +126,11 @@ class QuestionsAnsPage extends React.Component {
 		const { questionId } = this.state;
 		let moduleId = this.props.match.params.moduleId;
 		let level = parseInt(this.props.match.params.levelId);
-		let questions = this.props.gameData.gameData[moduleId - 1].levels[[ level - 1 ]].questions;
+		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		var totalQuestion = 0;
 		if (questions && questions.length > 0) {
 			totalQuestion = questions.length;
-			var correctAns =
-				questionId <= totalQuestion
-					? questions[questionId - 1].options[questions[questionId - 1].correct_answer - 1]
-					: null;
+			var correctAns = questionId <= totalQuestion ? questions[questionId - 1].correct_answer : null;
 			return correctAns;
 		}
 	}
@@ -160,7 +140,7 @@ class QuestionsAnsPage extends React.Component {
 		let moduleId = this.props.match.params.moduleId;
 		let level = parseInt(this.props.match.params.levelId);
 
-		let questions = this.props.gameData.gameData[moduleId].levels[[ level - 1 ]].questions;
+		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		var totalQuestion = 0;
 		if (questions && questions.length > 0) {
 			totalQuestion = questions.length;
@@ -168,6 +148,67 @@ class QuestionsAnsPage extends React.Component {
 			return progress;
 		}
 	}
+
+	handleInfoOpen = () => {
+		this.setState({ infoOpen: true });
+	};
+
+	handleInfoClose = () => {
+		this.setState({ infoOpen: false });
+	};
+
+	handleClickOpen = () => {
+		this.setState({ open: true });
+	};
+
+	handleClose = () => {
+		this.setState((prevState) => ({
+			open: false,
+			showAnswer: !prevState.showAnswer
+		}));
+
+		this.checkParScoreStatus();
+	};
+
+	checkAnsClicked = (answerClicked) => {
+		let moduleId = this.props.match.params.moduleId;
+		let level = parseInt(this.props.match.params.levelId);
+		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
+		const { questionId } = this.state;
+		let correctAnsLength = questions[questionId - 1].correct_answer.length;
+		if (this.state.answerClicked === correctAnsLength) {
+			this.setState({ answerClick: true });
+		}
+	};
+
+	handleAnswerClick = (correctAns, key) => (e) => {
+		const selectedValue = key;
+		const { selectedAnswer } = this.state;
+		selectedAnswer.push(selectedValue);
+		this.setState(
+			(prevState) => ({
+				answerClicked: prevState.answerClicked + 1,
+				selectedAnswer: selectedAnswer,
+				selectedCard: key
+			}),
+			() => {
+				this.checkAnsClicked(this.state.answerClicked);
+			}
+		);
+	};
+
+	checkParScoreStatus = () => {
+		let moduleId = this.props.match.params.moduleId;
+		let level = parseInt(this.props.match.params.levelId);
+
+		const { currentScore } = this.state;
+		const parScores = this.getParScores();
+		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
+		let prevScore = currentLevelNewScores[level - 1];
+		if (prevScore + currentScore < parScores[level]) {
+			this.setState({ parScoreStatus: false });
+		}
+	};
 
 	getModuleNames = () => {
 		const gameData = this.props.gameData.gameData;
@@ -182,7 +223,7 @@ class QuestionsAnsPage extends React.Component {
 		let moduleId = this.props.match.params.moduleId;
 		let level = parseInt(this.props.match.params.levelId);
 
-		let questions = this.props.gameData.gameData[moduleId - 1].levels[[ level - 1 ]].questions;
+		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		var totalQuestion = 0;
 		if (questions && questions.length > 0) {
 			totalQuestion = questions.length;
@@ -192,7 +233,6 @@ class QuestionsAnsPage extends React.Component {
 
 	getParScores = () => {
 		let moduleId = this.props.match.params.moduleId;
-		let level = parseInt(this.props.match.params.levelId);
 		const parScores = this.props.gameData.gameData[moduleId - 1].levels.map((level) => level.par_score);
 		return parScores;
 	};
@@ -221,8 +261,6 @@ class QuestionsAnsPage extends React.Component {
 		const backUrl = `/module/${moduleId}/levels`;
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		const parScores = this.getParScores();
-		console.log('currentScore', currentScore);
-
 		return (
 			<Fragment>
 				<div className="question-container">
@@ -247,6 +285,9 @@ class QuestionsAnsPage extends React.Component {
 								to={{
 									pathname: '/results',
 									state: {
+										moduleId: moduleId,
+										parScoreStatus: parScoreStatus,
+										currentScore: currentScore,
 										moduleName: moduleNames[moduleId - 1],
 										level: level,
 										image: parScoreStatus ? hurreyUrl : oopsUrl,
@@ -264,52 +305,56 @@ class QuestionsAnsPage extends React.Component {
 							/>
 						)}
 
-						{totalQuestion > 0 && questionId <= totalQuestion && !showCorrectAns ? (
-							<div>
-								<div className="level-question-detail">
-									<span>Level {level} :</span>
-									<span className="question-number-status">
-										Question {questionId} out of {totalQuestion}
-									</span>
-								</div>
-								<div className="progress-bar-container">
-									<ProgressBar progress={progress} />
-								</div>
-								<div className="questions-container">
-									<p className="question-label">
-										{questions && questions.length > 0 && questions[questionId - 1].question}
-									</p>
-								</div>
-								<div className="answer-container">
-									{!showAnswer ? <p className="select-label">Select the right answer</p> : null}
-									{questions &&
-										questions.length > 0 &&
-										questions[questionId - 1].options.map((option, key) => (
-											<Card
-												key={key}
-												option={option}
-												correct_answer={questions[questionId - 1].correctAns}
-												answerClick={answerClick}
-												selectedCard={key === selectedCard}
-												handleClick={this.handleAnswerClick(correctAns, key)}
-											/>
-										))}
-								</div>
+						{!showCorrectAns ? (
+							totalQuestion > 0 &&
+							questionId <= totalQuestion && (
+								<div>
+									<div className="level-question-detail">
+										<span>Level {level} :</span>
+										<span className="question-number-status">
+											Question {questionId} out of {totalQuestion}
+										</span>
+									</div>
+									<div className="progress-bar-container">
+										<ProgressBar progress={progress} />
+									</div>
+									<div className="questions-container">
+										<p className="question-label">
+											{questions && questions.length > 0 && questions[questionId - 1].question}
+										</p>
+									</div>
+									<div className="answer-container">
+										{!showAnswer ? <p className="select-label">Select the right answer.</p> : null}
+										{questions &&
+											questions.length > 0 &&
+											questions[questionId - 1].options.map((option, key) => (
+												<Card
+													key={key}
+													option={option}
+													correct_answer={questions[questionId - 1].correctAns}
+													answerClick={answerClick}
+													selectedCard={key === selectedCard}
+													handleClick={this.handleAnswerClick(correctAns, key)}
+												/>
+											))}
+									</div>
 
-								{answerClick && (
-									<button
-										className={`next-page-button next-page-button-${answerClick}`}
-										onClick={this.handleInfoPageClick}
-									>
-										Proceed
-									</button>
-								)}
-							</div>
+									{answerClick && (
+										<button
+											className={`next-page-button next-page-button-${answerClick}`}
+											onClick={this.handleInfoPageClick}
+										>
+											Proceed
+										</button>
+									)}
+								</div>
+							)
 						) : (
 							<CorrectAnswerInfo
 								correctAns={correctAns}
 								selectedAnswer={selectedAnswer}
 								hideRightAnswer={this.hideRightAnswer}
+								moduleId={moduleId}
 								level={level}
 								questionId={questionId}
 								totalQuestion={totalQuestion}
@@ -345,6 +390,11 @@ class QuestionsAnsPage extends React.Component {
 
 const mapStateToProps = (state) => {
 	return { gameData: state.gameData };
+};
+
+QuestionsAnsPage.propTypes = {
+	gameData: PropTypes.object,
+	match: PropTypes.object
 };
 
 export default connect(mapStateToProps, null)(QuestionsAnsPage);

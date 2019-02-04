@@ -9,7 +9,7 @@ const styles = {
 	}
 };
 
-class LinearDeterminate extends React.Component {
+class ProgressBar extends React.Component {
 	state = {
 		completed: 0
 	};
@@ -36,8 +36,9 @@ class LinearDeterminate extends React.Component {
 	}
 }
 
-LinearDeterminate.propTypes = {
-	classes: PropTypes.object.isRequired
+ProgressBar.propTypes = {
+	classes: PropTypes.object.isRequired,
+	progress: PropTypes.number
 };
 
-export default withStyles(styles)(LinearDeterminate);
+export default withStyles(styles)(ProgressBar);

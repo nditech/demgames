@@ -8,6 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import './styles.scss';
 import '../../commonStyles.scss';
+import PropTypes from 'prop-types';
 
 function Transition(props) {
 	return <Slide direction="up" {...props} />;
@@ -60,5 +61,10 @@ class GameInfo extends Component {
 		);
 	}
 }
+
+GameInfo.propTypes = {
+	open: PropTypes.bool,
+	handleClose: PropTypes.func
+};
 
 export default GameInfo;

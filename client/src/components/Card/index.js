@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './styles.scss';
+import PropTypes from 'prop-types';
 
 class Card extends Component {
 	constructor(props) {
@@ -13,7 +14,6 @@ class Card extends Component {
 			<button
 				className={`card-button card-button-${answerClick} color-change-${selectedCard} ${this.props.color}`}
 				type="button"
-				value={option}
 				onClick={this.props.handleClick}
 			>
 				{option}
@@ -21,5 +21,11 @@ class Card extends Component {
 		);
 	}
 }
+
+Card.prototypes = {
+	answerClick: PropTypes.bool,
+	option: PropTypes.string,
+	selectedCard: PropTypes.bool
+};
 
 export default Card;

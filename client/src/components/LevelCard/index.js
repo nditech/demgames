@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import './styles.scss';
 import lockIconUrl from '../../images/lock.png';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class LevelCard extends Component {
 	constructor(props) {
@@ -11,9 +11,18 @@ class LevelCard extends Component {
 	}
 
 	render() {
-		const { level, currentScore, parScore, linkedLevel, description, totalScore, moduleId } = this.props;
-		const lock = level > 1 && currentScore < parScore;
-		console.log(currentScore);
+		const {
+			level,
+			currentScore,
+			parScore,
+			linkedLevel,
+			description,
+			totalScore,
+			moduleId,
+			prevLevelScore
+		} = this.props;
+		const lock = level > 1 && prevLevelScore < parScore;
+
 		return (
 			<Fragment>
 				<Link
@@ -24,7 +33,7 @@ class LevelCard extends Component {
 				>
 					<button className={`level-card card-lock-${lock}`} type="button">
 						{level > 1 &&
-						currentScore[level - 1] < parScore && (
+						prevLevelScore < parScore && (
 							<div className="lock-icon-container">
 								<img className="lock-icon" src={lockIconUrl} alt="lock-icon" />
 							</div>
@@ -50,10 +59,15 @@ class LevelCard extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return { levelsData: state.levelsData };
+LevelCard.propTypes = {
+	level: PropTypes.number,
+	currentScore: PropTypes.number,
+	parScore: PropTypes.number,
+	linkedLevel: PropTypes.number,
+	description: PropTypes.string,
+	totalScore: PropTypes.number,
+	moduleId: PropTypes.number,
+	prevLevelScore: PropTypes.number
 };
 
-export default connect(mapStateToProps, null)(LevelCard);
-
-// export default LevelCard;
+export default LevelCard;

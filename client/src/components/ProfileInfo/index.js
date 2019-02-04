@@ -2,13 +2,14 @@ import React, { Fragment } from 'react';
 import arrowBackUrl from '../../images/back.png';
 import editUrl from '../../images/edit.png';
 import changePassUrl from '../../images/changePass.svg';
+import PropTypes from 'prop-types';
 
 import './styles.scss';
 
 class ProfileInfo extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = { email: 'priyal@gmail.com', name: 'priyal', password: '12341234' };
 		this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
 		this.handleEditClick = this.handleEditClick.bind(this);
 	}
@@ -36,6 +37,7 @@ class ProfileInfo extends React.Component {
 	}
 
 	render() {
+		const { email, password, name } = this.state;
 		return (
 			<Fragment>
 				<div className="profile-info-container">
@@ -65,7 +67,7 @@ class ProfileInfo extends React.Component {
 							}}
 							className="profile-input"
 							type="text"
-							placeholder="priyal@gmail.com"
+							placeholder={email}
 							onKeyUp={this.handleOnKeyUp.bind(this, 'email')}
 						/>
 						<p className="input-label input-label-name">Your name</p>
@@ -75,7 +77,7 @@ class ProfileInfo extends React.Component {
 							}}
 							className="profile-input"
 							type="text"
-							placeholder="PRIYAL"
+							placeholder={name}
 							onKeyUp={this.handleOnKeyUp.bind(this, 'name')}
 						/>
 						<p className="input-label input-label-password">Your password</p>
@@ -85,7 +87,8 @@ class ProfileInfo extends React.Component {
 							}}
 							className="profile-input"
 							type="password"
-							placeholder="******"
+							value={password}
+							// placeholder="********"
 							onKeyUp={this.handleOnKeyUp.bind(this, 'password')}
 						/>
 					</div>
@@ -97,6 +100,7 @@ class ProfileInfo extends React.Component {
 							}}
 							className="change-password-link"
 							href="/profile"
+							onClick={this.updateCredentials}
 						>
 							Change password
 						</a>
@@ -125,5 +129,9 @@ class ProfileInfo extends React.Component {
 		);
 	}
 }
+
+ProfileInfo.propTypes = {
+	history: PropTypes.object
+};
 
 export default ProfileInfo;

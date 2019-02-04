@@ -6,7 +6,8 @@ import '../../commonStyles.scss';
 import './styles.scss';
 import { config } from '../../settings';
 import { connect } from 'react-redux';
-import { fetchGameData } from './actions';
+import { fetchGameData, fetchScores } from './actions';
+import PropTypes from 'prop-types';
 class LandingPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -19,6 +20,8 @@ class LandingPage extends React.Component {
 				if (response.status >= 200 && response.status < 300) {
 					response.json().then((res) => {
 						this.props.getGameData(res.gameData);
+						const scores = this.getScores();
+						this.props.getScores(scores);
 					});
 				} else if (response.status === 404) {
 					console.log('Not Found');
@@ -26,6 +29,18 @@ class LandingPage extends React.Component {
 			})
 			.catch((err) => console.log(err));
 	}
+
+	getScores = () => {
+		const allScores = [];
+		this.props.gameData.gameData.map((modules) => {
+			allScores.push(
+				modules.levels.map((level) => {
+					return level.current_score;
+				})
+			);
+		});
+		return allScores;
+	};
 
 	render() {
 		const gameData = this.props.gameData.gameData;
@@ -63,9 +78,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getGameData: (gameData) => dispatch(fetchGameData(gameData))
+		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+		getScores: (scores) => dispatch(fetchScores(scores))
 	};
 };
+
+LandingPage.propTypes = {
+	getGameData: PropTypes.func,
+	getScores: PropTypes.func,
+	gameData: PropTypes.object
+};
+
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
 
 // export default LandingPage;
