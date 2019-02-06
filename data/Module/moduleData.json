@@ -3,10 +3,12 @@
 		"id": 1,
 		"name": "Designing an Argument",
 		"style": "blue",
+		"type": "single",
+
 		"levels": [
 			{
 				"id": 1,
-				"current_score": 60,
+				"current_score": 0,
 				"par_score": 0,
 				"total_score": 100,
 				"desc": "Description1",
@@ -20,10 +22,7 @@
 							"They are ways of thinking that would block certain policies or laws. The president (and the cabinet), the leaders of the Congress, the judges of the court, the groups of interest and the public in general have the power to avoid that the policies exist.",
 							"They are laws, decisions of the supreme court and policies of the executive branch that would prevent a new policy from existing.",
 							"This is the Greek word for ethics or character and focuses on demonstrating the reliability, reliability or preparation of the debaters.",
-							"This is the Greek word for logic and focuses on the message and appeals to authority or credibility by offering experience, research or data to support the arguments.",
-							"Information used to support a claim.",
-							"This is the Greek word that means both experience and suffering and during a debate focuses on convincing the audience with emotion.",
-							"A controversial statement that a debater supports or refutes with evidence and reasoning."
+							"This is the Greek word for logic and focuses on the message and appeals to authority or credibility by offering experience, research or data to support the arguments."
 						],
 						"correct_answer": [ 0 ]
 					},
@@ -32,9 +31,6 @@
 						"question": "Evidence",
 						"options": [
 							"They are ways of thinking that would block certain policies or laws. The president (and the cabinet), the leaders of the Congress, the judges of the court, the groups of interest and the public in general have the power to avoid that the policies exist.",
-							"They are laws, decisions of the supreme court and policies of the executive branch that would prevent a new policy from existing.",
-							"This is the Greek word for ethics or character and focuses on demonstrating the reliability, reliability or preparation of the debaters.",
-							"This is the Greek word for logic and focuses on the message and appeals to authority or credibility by offering experience, research or data to support the arguments.",
 							"Information used to support a claim.",
 							"This is the Greek word that means both experience and suffering and during a debate focuses on convincing the audience with emotion.",
 							"A controversial statement that a debater supports or refutes with evidence and reasoning."
@@ -43,13 +39,21 @@
 					},
 					{
 						"id": 3,
-						"question": "Corruption",
+						"question": "Refutation",
 						"options": [
-							"They are ways of thinking that would block certain policies or laws. The president (and the cabinet), the leaders of the Congress, the judges of the court, the groups of interest and the public in general have the power to avoid that the policies exist.",
-							"They are laws, decisions of the supreme court and policies of the executive branch that would prevent a new policy from existing.",
-							"This is the Greek word for ethics or character and focuses on demonstrating the reliability, reliability or preparation of the debaters.",
-							"This is the Greek word for logic and focuses on the message and appeals to authority or credibility by offering experience, research or data to support the arguments.",
+							"The process of attacking an opponent's arguments",
 							"Information used to support a claim.",
+							"This is the Greek word that means both experience and suffering and during a debate focuses on convincing the audience with emotion.",
+							"A controversial statement that a debater supports or refutes with evidence and reasoning."
+						],
+						"correct_answer": [ 0 ]
+					},
+					{
+						"id": 4,
+						"question": "Reasoning",
+						"options": [
+							"The process of attacking an opponent's arguments",
+							"Using analysis to connect the evidence to the claim",
 							"This is the Greek word that means both experience and suffering and during a debate focuses on convincing the audience with emotion.",
 							"A controversial statement that a debater supports or refutes with evidence and reasoning."
 						],
@@ -60,29 +64,37 @@
 			{
 				"id": 2,
 				"current_score": 0,
-				"par_score": 80,
+				"par_score": 20,
 				"total_score": 100,
 				"desc": "Description2",
 				"linked_level": 1,
 				"questions": [
 					{
 						"id": 1,
-						"question": "level2 question1",
-						"options": [ "level2  A", "level2 B", "level2 C", "level2 D" ],
-						"correct_answer": [ 1 ]
+						"question": "The government should implement a tax on pollution to create a healthier environment.",
+						"options": [
+							" Ethos (Ethics) - We have an obligation to protect other species and the planet for our children and future generations.",
+							"Pathos (Emotion) - Pollution causes animals to suffocate and die, birds to be covered with tar and unable to fly and disease for our nation.",
+							"Logos (Logic) - Pollution is a systemic risk to our ecosystem, causing thousands of children to become ill each year, which results in millions of dollars in medical bills. "
+						],
+						"correct_answer": [ 0 ]
 					},
 					{
 						"id": 2,
-						"question": "level2 question2",
-						"options": [ "level2 X", "level2 Y", "level2 Z", "level2 A" ],
-						"correct_answer": [ 1 ]
+						"question": "Teachers should be paid a higher wage.",
+						"options": [
+							"Ethos (Ethics) - Researchers illustrate that paying teachers more increases long-term socioeconomic gains for students and their families which we need to increase the prosperity of our country.",
+							" Pathos (Emotion) - Teachers often work long hours and spend more time with their students than their own family. Teachers have the added responsibility of educating the future generation.",
+							"Logos (Logic) - 75% of teachers take home 20% less than they need to support themselves and their families."
+						],
+						"correct_answer": [ 0 ]
 					}
 				]
 			},
 			{
 				"id": 3,
 				"current_score": 0,
-				"par_score": 30,
+				"par_score": 20,
 				"total_score": 100,
 				"desc": "Description3",
 				"linked_level": 2,
@@ -91,20 +103,20 @@
 						"id": 1,
 						"question": "level3 question1",
 						"options": [ "level3  A", "level3 B", "level3 C", "level3 D" ],
-						"correct_answer": [ 1 ]
+						"correct_answer": [ 0 ]
 					},
 					{
 						"id": 2,
 						"question": "level3 question2",
 						"options": [ "level3 X", "level3 Y", "level3 Z", "level3 A" ],
-						"correct_answer": [ 1 ]
+						"correct_answer": [ 0 ]
 					}
 				]
 			},
 			{
 				"id": 4,
 				"current_score": 0,
-				"par_score": 30,
+				"par_score": 20,
 				"total_score": 100,
 				"desc": "Description4",
 				"linked_level": 3,
@@ -113,13 +125,13 @@
 						"id": 1,
 						"question": "",
 						"options": [ "level4  A", "level4 B", "level4 C", "level4 D" ],
-						"correct_answer": [ 1 ]
+						"correct_answer": [ 0 ]
 					},
 					{
 						"id": 2,
 						"question": "",
 						"options": [ "level4  A", "level4 B", "level4 C", "level4 D" ],
-						"correct_answer": [ 1 ]
+						"correct_answer": [ 0 ]
 					}
 				]
 			}
@@ -129,6 +141,8 @@
 		"id": 2,
 		"name": "Finding an evidence",
 		"style": "pink",
+		"type": "multi",
+
 		"levels": [
 			{
 				"id": 1,
@@ -148,14 +162,14 @@
 						"id": 2,
 						"question": "level1 question2",
 						"options": [ "level1 X", "level1 Y", "level1 Z", "level1 A" ],
-						"correct_answer": [ 0, 1 ]
+						"correct_answer": [ 0, 1, 2 ]
 					}
 				]
 			},
 			{
 				"id": 2,
 				"current_score": 0,
-				"par_score": 30,
+				"par_score": 20,
 				"total_score": 100,
 				"desc": "DescriptionB",
 				"linked_level": 1,
@@ -177,7 +191,7 @@
 			{
 				"id": 3,
 				"current_score": 0,
-				"par_score": 30,
+				"par_score": 20,
 				"total_score": 100,
 				"desc": "DescriptionC",
 				"linked_level": 2,
@@ -202,6 +216,7 @@
 		"id": 3,
 		"name": "Finding flaws in Argument",
 		"style": "green",
+		"type": "scenario",
 		"levels": [
 			{
 				"id": 1,
@@ -213,14 +228,95 @@
 				"questions": [
 					{
 						"id": 1,
-						"question": "level1 question1",
-						"options": [ "level1  A", "level1 B", "level1 C", "level1 D" ],
+						"question": "Resolution: There should be a youth quota in the national legislative body.You are arguing the affirmative. Your opponents begin their argument by saying the following: Youth quota does not exist because adult decision makers already represent youth concerns. What counterargument would you present?",
+						"options": [
+							{
+								"option": "In Guatemala, no forum currently exists to bring together decision makers and youth to capture youth concerns.",
+								"linked_question": 10
+							},
+							{
+								"option": "My parents never accurately represent my concerns. How can adults represent youth concerns?",
+								"linked_question": 3
+							}
+						],
 						"correct_answer": [ 1 ]
 					},
 					{
 						"id": 2,
-						"question": "level1 question2",
-						"options": [ "level1 X", "level1 Y", "level1 Z", "level1 A" ],
+						"question": "Your opponents note that in a past assembly meeting, young people were invited to speak about youth issues. This evidence refutes the claim that decision makers only take into account parents’ opinions.The evidence you provided was not strong enough to refute your opponents claims.",
+						"options": [ { "option": "", "linked_question": 10 }, { "option": "", "linked_question": 10 } ],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 3,
+						"question": "Your opponents note that in the past 5 assembly meetings, adults have discussed multiple youth issues. Furthermore, one anecdotal example does not refute this evidence and cannot be applied to the population of adult decision-makers as a whole. How do you respond?",
+						"options": [
+							{
+								"option": "In those past five assembly meetings, four of the five mentions on “youth issues” were voted down without debate by the assembly. ",
+								"linked_question": 4
+							},
+							{
+								"option": "Parents legally represent young people, how youth issues are addressed in assembly meetings is reflective of parents opinions",
+								"linked_question": 2
+							}
+						],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 4,
+						"question": "Your opponent acknowledges that you are correct about past meetings, however, in the last meeting there was a new amendment passed on youth unemployment. This demonstrates that decision makers are incorporating youth concerns into decision making,",
+						"options": [
+							{
+								"option": "In the past five years, amendments passed on youth unemployment have yielded less than a 2% increase in jobs for young people. Passing amendments on youth issues without engaging them meaningfully results in laws that don’t fully address the reality of the problem.",
+								"linked_question": 5
+							},
+							{
+								"option": "Including youth issues in one amendment does not erase the need for youth quotas. Youth need real representation and a seat at the table.",
+								"linked_question": 6
+							}
+						],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 5,
+						"question": "Your opponent responds by saying change takes time and decision makers in the national assembly have a responsibility to more than just young people who only represent 22% of the population. Positive change for all of society will also mean change for young people.",
+						"options": [
+							{
+								"option": "Youth quotas are not only about representing youth issues. Youth quotas represent an opportunity to demonstrate public acknowledgement of equal value and political know how. This contributes to inclusive societal norms and benefits for society as a whole.",
+								"linked_question": 7
+							},
+							{
+								"option": "Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ",
+								"linked_question": 7
+							}
+						],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 6,
+						"question": "Your opponent responds by saying youth quotas are an ineffective use of assembly seats. Establishing a quota is the opposite of democracy and does not guarantee that a quality, capable candidate will be chosen. How do you respond?",
+						"options": [
+							{
+								"option": "Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ",
+								"linked_question": 7
+							},
+							{
+								"option": "Youth quotas are an effective use of assembly seats because they help marginalized populations, such as youth, participate and have their concerns heard.",
+								"linked_question": 10
+							}
+						],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 7,
+						"question": "Your opponent responds by acknowledging the merits of your argument and requesting additional time to conduct further research for a rebuttal.",
+						"options": [ { "option": "", "linked_question": 10 }, { "option": "", "linked_question": 10 } ],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 8,
+						"question": "Your opponent responds by saying quotas may give a voice to different populations, but also runs the risk of increased marginalization in the political space. You both agree to conduct more research.",
+						"options": [ { "option": "", "linked_question": 10 }, { "option": "", "linked_question": 10 } ],
 						"correct_answer": [ 1 ]
 					}
 				]
@@ -228,21 +324,102 @@
 			{
 				"id": 2,
 				"current_score": 0,
-				"par_score": 80,
+				"par_score": 0,
 				"total_score": 100,
-				"desc": "DescriptionF",
-				"linked_level": 1,
+				"desc": "DescriptionE",
+				"linked_level": 0,
 				"questions": [
 					{
 						"id": 1,
-						"question": "level2 question1",
-						"options": [ "level2  A", "level2 B", "level2 C", "level2 D" ],
+						"question": "Resolution: There should be a youth quota in the national legislative body.You are arguing the affirmative. Your opponents begin their argument by saying the following: Youth quota does not exist because adult decision makers already represent youth concerns. What counterargument would you present?",
+						"options": [
+							{
+								"option": "In Guatemala, no forum currently exists to bring together decision makers and youth to capture youth concerns.",
+								"linked_question": 10
+							},
+							{
+								"option": "My parents never accurately represent my concerns. How can adults represent youth concerns?",
+								"linked_question": 3
+							}
+						],
 						"correct_answer": [ 1 ]
 					},
 					{
 						"id": 2,
-						"question": "level2 question2",
-						"options": [ "level2 X", "level2 Y", "level2 Z", "level2 A" ],
+						"question": "Your opponents note that in a past assembly meeting, young people were invited to speak about youth issues. This evidence refutes the claim that decision makers only take into account parents’ opinions.The evidence you provided was not strong enough to refute your opponents claims.",
+						"options": [ { "option": "", "linked_question": 10 }, { "option": "", "linked_question": 10 } ],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 3,
+						"question": "Your opponents note that in the past 5 assembly meetings, adults have discussed multiple youth issues. Furthermore, one anecdotal example does not refute this evidence and cannot be applied to the population of adult decision-makers as a whole. How do you respond?",
+						"options": [
+							{
+								"option": "In those past five assembly meetings, four of the five mentions on “youth issues” were voted down without debate by the assembly. ",
+								"linked_question": 4
+							},
+							{
+								"option": "Parents legally represent young people, how youth issues are addressed in assembly meetings is reflective of parents opinions",
+								"linked_question": 2
+							}
+						],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 4,
+						"question": "Your opponent acknowledges that you are correct about past meetings, however, in the last meeting there was a new amendment passed on youth unemployment. This demonstrates that decision makers are incorporating youth concerns into decision making,",
+						"options": [
+							{
+								"option": "In the past five years, amendments passed on youth unemployment have yielded less than a 2% increase in jobs for young people. Passing amendments on youth issues without engaging them meaningfully results in laws that don’t fully address the reality of the problem.",
+								"linked_question": 5
+							},
+							{
+								"option": "Including youth issues in one amendment does not erase the need for youth quotas. Youth need real representation and a seat at the table.",
+								"linked_question": 6
+							}
+						],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 5,
+						"question": "Your opponent responds by saying change takes time and decision makers in the national assembly have a responsibility to more than just young people who only represent 22% of the population. Positive change for all of society will also mean change for young people.",
+						"options": [
+							{
+								"option": "Youth quotas are not only about representing youth issues. Youth quotas represent an opportunity to demonstrate public acknowledgement of equal value and political know how. This contributes to inclusive societal norms and benefits for society as a whole.",
+								"linked_question": 7
+							},
+							{
+								"option": "Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ",
+								"linked_question": 7
+							}
+						],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 6,
+						"question": "Your opponent responds by saying youth quotas are an ineffective use of assembly seats. Establishing a quota is the opposite of democracy and does not guarantee that a quality, capable candidate will be chosen. How do you respond?",
+						"options": [
+							{
+								"option": "Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ",
+								"linked_question": 7
+							},
+							{
+								"option": "Youth quotas are an effective use of assembly seats because they help marginalized populations, such as youth, participate and have their concerns heard.",
+								"linked_question": 10
+							}
+						],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 7,
+						"question": "Your opponent responds by acknowledging the merits of your argument and requesting additional time to conduct further research for a rebuttal.",
+						"options": [ { "option": "", "linked_question": 10 }, { "option": "", "linked_question": 10 } ],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 8,
+						"question": "Your opponent responds by saying quotas may give a voice to different populations, but also runs the risk of increased marginalization in the political space. You both agree to conduct more research.",
+						"options": [ { "option": "", "linked_question": 10 }, { "option": "", "linked_question": 10 } ],
 						"correct_answer": [ 1 ]
 					}
 				]
@@ -250,21 +427,102 @@
 			{
 				"id": 3,
 				"current_score": 0,
-				"par_score": 70,
+				"par_score": 30,
 				"total_score": 100,
-				"desc": "DescriptionG",
-				"linked_level": 2,
+				"desc": "DescriptionE",
+				"linked_level": 0,
 				"questions": [
 					{
 						"id": 1,
-						"question": "level3 question1",
-						"options": [ "level3  A", "level3 B", "level3 C", "level3 D" ],
+						"question": "Resolution: There should be a youth quota in the national legislative body.You are arguing the affirmative. Your opponents begin their argument by saying the following: Youth quota does not exist because adult decision makers already represent youth concerns. What counterargument would you present?",
+						"options": [
+							{
+								"option": "In Guatemala, no forum currently exists to bring together decision makers and youth to capture youth concerns.",
+								"linked_question": 10
+							},
+							{
+								"option": "My parents never accurately represent my concerns. How can adults represent youth concerns?",
+								"linked_question": 3
+							}
+						],
 						"correct_answer": [ 1 ]
 					},
 					{
 						"id": 2,
-						"question": "level3 question2",
-						"options": [ "level3 X", "level3 Y", "level3 Z", "level3 A" ],
+						"question": "Your opponents note that in a past assembly meeting, young people were invited to speak about youth issues. This evidence refutes the claim that decision makers only take into account parents’ opinions.The evidence you provided was not strong enough to refute your opponents claims.",
+						"options": [ { "option": "", "linked_question": 10 }, { "option": "", "linked_question": 10 } ],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 3,
+						"question": "Your opponents note that in the past 5 assembly meetings, adults have discussed multiple youth issues. Furthermore, one anecdotal example does not refute this evidence and cannot be applied to the population of adult decision-makers as a whole. How do you respond?",
+						"options": [
+							{
+								"option": "In those past five assembly meetings, four of the five mentions on “youth issues” were voted down without debate by the assembly. ",
+								"linked_question": 4
+							},
+							{
+								"option": "Parents legally represent young people, how youth issues are addressed in assembly meetings is reflective of parents opinions",
+								"linked_question": 2
+							}
+						],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 4,
+						"question": "Your opponent acknowledges that you are correct about past meetings, however, in the last meeting there was a new amendment passed on youth unemployment. This demonstrates that decision makers are incorporating youth concerns into decision making,",
+						"options": [
+							{
+								"option": "In the past five years, amendments passed on youth unemployment have yielded less than a 2% increase in jobs for young people. Passing amendments on youth issues without engaging them meaningfully results in laws that don’t fully address the reality of the problem.",
+								"linked_question": 5
+							},
+							{
+								"option": "Including youth issues in one amendment does not erase the need for youth quotas. Youth need real representation and a seat at the table.",
+								"linked_question": 6
+							}
+						],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 5,
+						"question": "Your opponent responds by saying change takes time and decision makers in the national assembly have a responsibility to more than just young people who only represent 22% of the population. Positive change for all of society will also mean change for young people.",
+						"options": [
+							{
+								"option": "Youth quotas are not only about representing youth issues. Youth quotas represent an opportunity to demonstrate public acknowledgement of equal value and political know how. This contributes to inclusive societal norms and benefits for society as a whole.",
+								"linked_question": 7
+							},
+							{
+								"option": "Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ",
+								"linked_question": 7
+							}
+						],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 6,
+						"question": "Your opponent responds by saying youth quotas are an ineffective use of assembly seats. Establishing a quota is the opposite of democracy and does not guarantee that a quality, capable candidate will be chosen. How do you respond?",
+						"options": [
+							{
+								"option": "Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ",
+								"linked_question": 7
+							},
+							{
+								"option": "Youth quotas are an effective use of assembly seats because they help marginalized populations, such as youth, participate and have their concerns heard.",
+								"linked_question": 10
+							}
+						],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 7,
+						"question": "Your opponent responds by acknowledging the merits of your argument and requesting additional time to conduct further research for a rebuttal.",
+						"options": [ { "option": "", "linked_question": 10 }, { "option": "", "linked_question": 10 } ],
+						"correct_answer": [ 1 ]
+					},
+					{
+						"id": 8,
+						"question": "Your opponent responds by saying quotas may give a voice to different populations, but also runs the risk of increased marginalization in the political space. You both agree to conduct more research.",
+						"options": [ { "option": "", "linked_question": 10 }, { "option": "", "linked_question": 10 } ],
 						"correct_answer": [ 1 ]
 					}
 				]

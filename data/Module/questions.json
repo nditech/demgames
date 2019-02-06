@@ -178,14 +178,26 @@
 					{
 						"id": 1,
 						"question": "level1 question1",
-						"options": [ "level1  A", "level1 B", "level1 C", "level1 D" ],
-						"correct_answer": 1
+						"options": [
+							{ "option": "level1  A", "linked_question": 2 },
+							{ "option": "level1  B", "linked_question": 3 }
+						]
 					},
 					{
 						"id": 2,
 						"question": "level1 question2",
-						"options": [ "level1 X", "level1 Y", "level1 Z", "level1 A" ],
-						"correct_answer": 1
+						"options": [
+							{ "option": "level1  A", "linked_question": null },
+							{ "option": "level1  B", "linked_question": null }
+						]
+					},
+					{
+						"id": 3,
+						"question": "level1 question3",
+						"options": [
+							{ "option": "level1  A", "linked_question": null },
+							{ "option": "level1  B", "linked_question": null }
+						]
 					}
 				]
 			},

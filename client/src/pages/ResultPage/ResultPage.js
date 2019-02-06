@@ -31,14 +31,15 @@ class ResultPage extends Component {
 			moduleName,
 			messageOne,
 			messageTwo,
-			parScoreStatus
+			parScoreStatus,
+			moduleScenario
 		} = this.props.location.state;
 
 		const totalLevels = this.props.gameData.gameData[moduleId - 1].levels.length;
 
 		const backToLevelUrl = `/module/${moduleId}/levels`;
-		const retryLevelUrl = `/module/${moduleId}/level/${level}/questions`;
-		const nextLevelUrl = `/module/${moduleId}/level/${level + 1}/questions`;
+		const retryLevelUrl = `/module/${moduleScenario ? 'scenario/' : ''}${moduleId}/level/${level}/questions`;
+		const nextLevelUrl = `/module/${moduleScenario ? 'scenario/' : ''}${moduleId}/level/${level + 1}/questions`;
 		return (
 			<div className="result-page-container">
 				<div className="game-type-help">
@@ -48,8 +49,8 @@ class ResultPage extends Component {
 				</div>
 				<div className="congratulation-message-container">
 					<img src={congoUrl} alt="congratulations-icon" />
-					<p style={{ margin: '20px 0 0 0 ' }}>Congratulations !</p>
-					<p style={{ margin: '0' }}>You have finished level {level}</p>
+					<p className="congratulations-label">Congratulations !</p>
+					<p className="level-finish-label">You have finished level {level}</p>
 				</div>
 				<p className="score-message">{messageOne}</p>
 				<img src={image} alt="icon" />

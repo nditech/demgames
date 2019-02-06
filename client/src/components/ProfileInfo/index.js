@@ -87,8 +87,7 @@ class ProfileInfo extends React.Component {
 							}}
 							className="profile-input"
 							type="password"
-							value={password}
-							// placeholder="********"
+							placeholder="********"
 							onKeyUp={this.handleOnKeyUp.bind(this, 'password')}
 						/>
 					</div>

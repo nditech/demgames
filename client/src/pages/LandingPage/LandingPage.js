@@ -14,6 +14,7 @@ class LandingPage extends React.Component {
 		this.state = {};
 	}
 
+	//Fetch complete game data.
 	componentWillMount() {
 		fetch(config.baseUrl + '/api/game')
 			.then((response) => {
@@ -29,7 +30,7 @@ class LandingPage extends React.Component {
 			})
 			.catch((err) => console.log(err));
 	}
-
+	//Fetch scores for each levels of each module.
 	getScores = () => {
 		const allScores = [];
 		this.props.gameData.gameData.map((modules) => {
@@ -63,6 +64,7 @@ class LandingPage extends React.Component {
 									moduleName={modules.name}
 									levels={modules.levels}
 									style={modules.style}
+									type={modules.type}
 								/>
 							))}
 					</div>
@@ -76,6 +78,7 @@ const mapStateToProps = (state) => {
 	return { gameData: state.gameData };
 };
 
+//Dispatch action to fetch game data and scores.
 const mapDispatchToProps = (dispatch) => {
 	return {
 		getGameData: (gameData) => dispatch(fetchGameData(gameData)),

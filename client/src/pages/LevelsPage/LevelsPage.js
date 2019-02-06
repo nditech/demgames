@@ -12,18 +12,19 @@ class LevelsPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { open: false };
-		this.handleClickOpen = this.handleClickOpen.bind(this);
-		this.handleClose = this.handleClose.bind(this);
 	}
 
+	//Handle info icon click to open info dialog box.
 	handleClickOpen = () => {
 		this.setState({ open: true });
 	};
 
+	//Handle info dialog box close.
 	handleClose = () => {
 		this.setState({ open: false });
 	};
 
+	//Get list of all modules.
 	getModuleNames = () => {
 		const gameData = this.props.gameData.gameData;
 		const moduleNames = [];
@@ -33,12 +34,14 @@ class LevelsPage extends React.Component {
 		return moduleNames;
 	};
 
+	// Get Scores for each levels of a particular module.
 	getScores = () => {
 		let moduleId = this.props.match.params.moduleId;
 		const scores = this.props.gameData.scores[moduleId - 1];
 		return scores;
 	};
 
+	//Get list of par scores for each level of a particular module.
 	getParScores = () => {
 		let moduleId = this.props.match.params.moduleId;
 		const parScores = this.props.gameData.gameData[moduleId - 1].levels.map((level) => level.par_score);
@@ -51,6 +54,7 @@ class LevelsPage extends React.Component {
 		const scores = this.getScores();
 		const parScores = this.getParScores();
 		const moduleId = parseInt(this.props.match.params.moduleId);
+		const moduleName = moduleNames[moduleId - 1];
 		let levels = this.props.gameData.gameData[moduleId - 1].levels;
 		return (
 			<div className="landing-page-wrapper">
@@ -73,7 +77,7 @@ class LevelsPage extends React.Component {
 							</a>
 						</div>
 					</div>
-					<p className="game-title"> {moduleNames[moduleId - 1]}</p>
+					<p className="game-title"> {moduleName}</p>
 					<div className="game-type-card-container">
 						{levels &&
 							levels.length > 0 &&
@@ -89,7 +93,7 @@ class LevelsPage extends React.Component {
 									description={data.desc}
 									totalScore={data.total_score}
 									questions={data.questions}
-									moduleName={moduleNames[moduleId - 1]}
+									moduleName={moduleName}
 								/>
 							))}
 					</div>

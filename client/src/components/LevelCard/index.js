@@ -19,16 +19,18 @@ class LevelCard extends Component {
 			description,
 			totalScore,
 			moduleId,
-			prevLevelScore
+			prevLevelScore,
+			moduleName
 		} = this.props;
 		const lock = level > 1 && prevLevelScore < parScore;
-
 		return (
 			<Fragment>
 				<Link
 					className={`link-lock link-lock-${lock}`}
 					to={{
-						pathname: `/module/${moduleId}/level/${level}/questions/`
+						pathname: `/module/${moduleName === 'Finding flaws in Argument'
+							? 'scenario/'
+							: ''}${moduleId}/level/${level}/questions/`
 					}}
 				>
 					<button className={`level-card card-lock-${lock}`} type="button">

@@ -11,6 +11,7 @@ import CorrectAnswerInfo from './components/CorrectAnswerInfo';
 import { Provider } from 'react-redux';
 import ProfileInfo from './components/ProfileInfo';
 import store from './store';
+import ScenarioQuesAns from './pages/ScenarioBased/ScenarioQuesAns';
 
 const Routes = () => (
 	<Router>
@@ -18,6 +19,7 @@ const Routes = () => (
 			<Route path="/" exact component={App} />
 			<Route path="/module/:moduleId/level/:levelId/questions/" exact component={QuestionsAnsPage} />
 			<Route path="/module/:moduleId/levels" exact component={LevelsPage} />
+			<Route path="/module/scenario/:moduleId/level/:levelId/questions" exact component={ScenarioQuesAns} />
 			<Route path="/results" exact component={ResultPage} />
 			<Route path="/info" exact component={CorrectAnswerInfo} />
 			<Route path="/profile" exact component={ProfileInfo} />
