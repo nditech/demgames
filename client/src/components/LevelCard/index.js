@@ -20,7 +20,8 @@ class LevelCard extends Component {
 			totalScore,
 			moduleId,
 			prevLevelScore,
-			moduleName
+			moduleName,
+			moduleColor
 		} = this.props;
 		const lock = level > 1 && prevLevelScore < parScore;
 		return (
@@ -33,7 +34,7 @@ class LevelCard extends Component {
 							: ''}${moduleId}/level/${level}/questions/`
 					}}
 				>
-					<button className={`level-card card-lock-${lock}`} type="button">
+					<button className={`level-card level-card-${moduleColor} card-lock-${lock}`} type="button">
 						{level > 1 &&
 						prevLevelScore < parScore && (
 							<div className="lock-icon-container">
@@ -69,7 +70,8 @@ LevelCard.propTypes = {
 	description: PropTypes.string,
 	totalScore: PropTypes.number,
 	moduleId: PropTypes.number,
-	prevLevelScore: PropTypes.number
+	prevLevelScore: PropTypes.number,
+	moduleColor: PropTypes.string
 };
 
 export default LevelCard;

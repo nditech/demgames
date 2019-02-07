@@ -35,9 +35,16 @@ class GameInfo extends Component {
 				keepMounted
 				onClose={handleClose}
 			>
-				<DialogTitle className="info-label" id="dialog-slide-image">
-					<span>Info</span>
-				</DialogTitle>
+				<div className="info-page-header">
+					<DialogTitle className="info-label" id="dialog-slide-image">
+						<span>Info</span>
+					</DialogTitle>
+					<DialogActions>
+						<Button className="ok-button" onClick={this.handleOkClick} color="primary">
+							X
+						</Button>
+					</DialogActions>
+				</div>
 				<DialogContent>
 					<DialogContentText className="info-heading" id="dialog-slide-description">
 						<span>What is Lorem Ipsum?</span>
@@ -52,11 +59,6 @@ class GameInfo extends Component {
 						</span>
 					</DialogContentText>
 				</DialogContent>
-				<DialogActions>
-					<Button className="ok-button" onClick={this.handleOkClick} color="primary">
-						OK
-					</Button>
-				</DialogActions>
 			</Dialog>
 		);
 	}

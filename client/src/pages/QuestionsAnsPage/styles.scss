@@ -1,4 +1,4 @@
-.question-container {
+.question-main-container {
 	padding-bottom: 1em;
 	background-color: #f3f3f3;
 }
@@ -37,4 +37,32 @@
 
 .progress-bar-container {
 	margin-top: .4em;
+}
+
+@media (min-width: 1024px) {
+	.question-main-container {
+		margin: 0 15em;
+		.questions-container {
+			overflow: hidden;
+
+			.question-label {
+				font-size: 40px;
+			}
+		}
+		.answer-container {
+			.options-card-container {
+				display: flex;
+				flex-wrap: wrap;
+				// ::-webkit-scrollbar {
+				// 	width: 0.2em;
+				// 	height: .0.1em;
+				// }
+				// ::-webkit-scrollbar-thumb {
+				// 	// background: #6c70a1;
+				// 	background: green;
+				// 	height: .1em;
+				// }
+			}
+		}
+	}
 }

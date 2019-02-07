@@ -37,6 +37,7 @@
 	.top-section {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 
 		.back-ndi-logo {
 			height: 5%;
@@ -46,6 +47,18 @@
 		.info-profile-icon-container {
 			display: flex;
 			align-items: center;
+		}
+	}
+}
+
+@media (min-width: 1024px) {
+	.landing-page-wrapper {
+		margin: 0px 15em;
+		.game-type-card-container {
+			display: flex;
+			.module-card {
+				height: 35%;
+			}
 		}
 	}
 }

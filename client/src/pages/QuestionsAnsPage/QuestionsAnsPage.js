@@ -311,7 +311,7 @@ class QuestionsAnsPage extends React.Component {
 
 		return (
 			<Fragment>
-				<div className="question-container">
+				<div className="question-main-container">
 					<div className="game-type-help">
 						<div className="back-module-container">
 							<button className="back-button">
@@ -378,18 +378,20 @@ class QuestionsAnsPage extends React.Component {
 												Select {ansLength > 1 ? ansLength + ' answers.' : ' the right answer.'}
 											</p>
 										) : null}
-										{questions &&
-											questions.length > 0 &&
-											questions[questionId - 1].options.map((option, key) => (
-												<Card
-													key={key}
-													option={option}
-													correct_answer={questions[questionId - 1].correctAns}
-													answerClick={answerClick}
-													selectedCard={clickedOptions.includes(key)}
-													handleClick={this.handleAnswerClick(correctAns, key)}
-												/>
-											))}
+										<div className="options-card-container">
+											{questions &&
+												questions.length > 0 &&
+												questions[questionId - 1].options.map((option, key) => (
+													<Card
+														key={key}
+														option={option}
+														correct_answer={questions[questionId - 1].correctAns}
+														answerClick={answerClick}
+														selectedCard={clickedOptions.includes(key)}
+														handleClick={this.handleAnswerClick(correctAns, key)}
+													/>
+												))}
+										</div>
 									</div>
 
 									{answerClick && (

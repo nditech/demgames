@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 export const ModuleCard = (props) => (
 	<Link
+		className="module-card-link"
 		to={{
 			pathname: `/module/${props.moduleId}/levels`
 		}}

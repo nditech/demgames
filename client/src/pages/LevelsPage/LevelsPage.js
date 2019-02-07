@@ -5,6 +5,7 @@ import profileUrl from '../../images/profile.png';
 import infoUrl from '../../images/info.png';
 import LevelCard from '../../components/LevelCard';
 import '../../commonStyles.scss';
+import './styles.scss';
 import { connect } from 'react-redux';
 import GameInfo from '../../components/GameInfo';
 import PropTypes from 'prop-types';
@@ -56,6 +57,7 @@ class LevelsPage extends React.Component {
 		const moduleId = parseInt(this.props.match.params.moduleId);
 		const moduleName = moduleNames[moduleId - 1];
 		let levels = this.props.gameData.gameData[moduleId - 1].levels;
+		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">
@@ -94,6 +96,7 @@ class LevelsPage extends React.Component {
 									totalScore={data.total_score}
 									questions={data.questions}
 									moduleName={moduleName}
+									moduleColor={moduleColor}
 								/>
 							))}
 					</div>

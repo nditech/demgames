@@ -11,8 +11,7 @@
 }
 
 .dialog-content {
-	text-align: center;
-
+	text-align: left;
 	.greet-message {
 		span {
 			font-family: Georgia !important;
@@ -64,9 +63,13 @@
 		margin: 0;
 	}
 }
-
-.answer-status-logo {
-	width: 100px;
-	height: 100px;
-	object-fit: contain;
+.dialog-slide-image {
+	h2 {
+		text-align: center;
+	}
+	.answer-status-logo {
+		width: 100px;
+		height: 100px;
+		object-fit: contain;
+	}
 }

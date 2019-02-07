@@ -140,7 +140,7 @@
 	{
 		"id": 2,
 		"name": "Finding an evidence",
-		"style": "pink",
+		"style": "green",
 		"type": "multi",
 
 		"levels": [
@@ -215,7 +215,7 @@
 	{
 		"id": 3,
 		"name": "Finding flaws in Argument",
-		"style": "green",
+		"style": "orange",
 		"type": "scenario",
 		"levels": [
 			{

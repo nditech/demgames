@@ -18,13 +18,23 @@
 }
 
 .blue {
-	background-color: #253f8e;
+	background-color: #0968b8;
 }
 
-.pink {
-	background-color: #b058a8;
+.orange {
+	background-color: #f0713d;
 }
 
 .green {
-	background-color: #53ac5d;
+	background-color: #194866;
+}
+
+@media (min-width: 1024px) {
+	.module-card-link {
+		width: 30%;
+		margin: 0 .5em;
+		.module-card {
+			border-radius: 15px;
+		}
+	}
 }

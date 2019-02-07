@@ -44,3 +44,16 @@
 		background-color: #f3f6f9;
 	}
 }
+
+@media (min-width: 1024px) {
+	.result-page-container {
+		.retry-level {
+			position: relative;
+			left: -3em;
+			top: 2em;
+			width: 19%;
+			height: 2.2em;
+			border-radius: 8px;
+		}
+	}
+}

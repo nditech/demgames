@@ -228,7 +228,7 @@ class QuestionsAnsPage extends React.Component {
 		const emptyOption = questionId <= totalQuestion && questions[questionId - 1].options[0].option === '';
 		return (
 			<Fragment>
-				<div className="question-container">
+				<div className="question-main-container">
 					<div className="game-type-help">
 						<div className="back-module-container">
 							<button className="back-button">
