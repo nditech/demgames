@@ -36,7 +36,7 @@ class CorrectAnswerInfo extends Component {
 		});
 
 		return (
-			<Fragment>
+			<div className="correct-ans-info-container">
 				<div className="level-question-detail">
 					<span>Level {level} :</span>
 					<span className="question-number-status">
@@ -50,7 +50,7 @@ class CorrectAnswerInfo extends Component {
 				<button className={`next-page-button result-next-page-button`} onClick={hideRightAnswer}>
 					Proceed
 				</button>
-			</Fragment>
+			</div>
 		);
 	}
 }

@@ -54,12 +54,12 @@ class ResultPage extends Component {
 				</div>
 				<p className="score-message">{messageOne}</p>
 				<img src={image} alt="icon" />
-
 				<p className="score-message">{messageTwo}</p>
-
-				<a className="back-to-all-levels-link" href={backToLevelUrl}>
-					Back to all Levels
-				</a>
+				<div>
+					<a className="back-to-all-levels-link" href={backToLevelUrl}>
+						Back to all Levels
+					</a>
+				</div>
 				{!parScoreStatus ? (
 					<a className="back-to-all-levels-link" href={retryLevelUrl}>
 						<button className={`retry-level`}>Retry Level {level}</button>

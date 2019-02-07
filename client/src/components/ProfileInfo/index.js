@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import arrowBackUrl from '../../images/back.png';
 import editUrl from '../../images/edit.png';
 import changePassUrl from '../../images/changePass.svg';
@@ -39,8 +39,8 @@ class ProfileInfo extends React.Component {
 	render() {
 		const { email, password, name } = this.state;
 		return (
-			<Fragment>
-				<div className="profile-info-container">
+			<div className="profile-info-container">
+				<div>
 					<div className="profile-header">
 						<div className="back-module-container">
 							<button className="back-button" onClick={this.props.history.goBack}>
@@ -104,6 +104,8 @@ class ProfileInfo extends React.Component {
 							Change password
 						</a>
 					</div>
+				</div>
+				<div>
 					<p className="career-progress-label">Career Progress</p>
 					<div className="overall-info">
 						<p className="rank-info">You are ranked in top 100</p>
@@ -124,7 +126,7 @@ class ProfileInfo extends React.Component {
 						</div>
 					</div>
 				</div>
-			</Fragment>
+			</div>
 		);
 	}
 }

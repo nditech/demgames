@@ -124,3 +124,30 @@
 		margin-right: .4em;
 	}
 }
+
+@media (min-width: 1024px) {
+	.profile-info-container {
+		display: flex;
+		margin: 0 36em;
+		.career-progress-label {
+			margin-left: 0;
+			font-size: 1.6em;
+			font-weight: bold;
+
+			margin-top: auto;
+		}
+		.profile-input {
+			margin-top: 2.2em;
+		}
+		.input-label {
+			left: 31.5em;
+			// top: 3em;
+		}
+		.input-label-name {
+			top: 8em;
+		}
+		.input-label-password {
+			top: 13.2em;
+		}
+	}
+}
