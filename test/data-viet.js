@@ -35,7 +35,11 @@ const database = [
         "modules": [ /**contains modules IDs */
             "module-1",
             "module-2"
-        ]
+        ],
+        "stats": {
+            "module-1": "100%",
+            "module-2": "80%"
+        }
     },
     {
         "id": "event-1", // id must be unique
@@ -43,5 +47,21 @@ const database = [
         "name": "event 1 name",
         "location": "some address",
         "game": "game-1" /**ties an event with one game */
+    },
+    {
+        "id": "user-1",
+        "type": "user",
+        "name": "John",
+        "number": "+12345678901",
+        "games": {
+            "game-1": {
+                "module-1": "80%",
+                "module-2": "70%",
+                "module-3": "60%"
+            },
+            "game-2": {
+                // game scores
+            }
+        }
     }
 ];
