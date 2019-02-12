@@ -45,14 +45,14 @@
   1. [Test](#test)
   1. [Contribution](#contribution)
   
-  ### Intro
+### Intro
   
   This app is built with React (frontend), Express.js (backend) and Node.js.
   
   The app connects to a mock api in express  and gets the complete game data and renders all modules.
   
   
-  ### Installation
+### Installation
   
   Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/) and [npm](https://www.npmjs.com/get-npm) on your machine. 
   
@@ -80,11 +80,12 @@
   // Backend error:
   Error: listen EADDRINUSE: address already in use :::9000
   You need to kill port 9000
-  ```
-  sudo fuser -k 9000/tcp
+    
+    $ sudo fuser -k 9000/tcp
+  
   ```
     
-  ### Contribution
+### Contribution
   
   * Please read our [Code Commits Guide](https://github.com/nditech/git-styleguide) and [Documentation Guide](https://github.com/nditech/standardized-README).
   * We also follow Google's [Javascript Style Guide](https://google.github.io/styleguide/jsguide.html) and Airbnb's [React Style Guide](https://github.com/airbnb/javascript/tree/master/react).
