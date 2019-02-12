@@ -50,8 +50,8 @@
   This app is built with React (frontend), Express.js (backend) and Node.js.
   
   The app connects to a mock api in express  and gets the complete game data and renders all modules.
-  
-  
+  To add more modules , levels or questions you need to edit the moduleData.json file inside data directory. 
+    
 ### Installation
   
   Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/) and [npm](https://www.npmjs.com/get-npm) on your machine. 
@@ -60,14 +60,15 @@
   Clone this repository to your local machine (using SSH):
 
   ```
+  $ Create a new directory and run follwing commands in it.
   $ git clone git@github.com:nditech/demgames-debate.git
-  $ cd ndi-demgames
   $ npm install
   $ npm start
 
   ```
   
-  If the app is run for the first time, there won't be any questions. You need to run express server to fetch game data.
+  If the app is run for the first time, there won't be any modules. You need to run express server to fetch game data.
+  Open a new terminal and move to main directory and run the below command.
 
    ```
    
@@ -84,7 +85,12 @@
     $ sudo fuser -k 9000/tcp
   
   ```
-    
+   //Frontend Error:
+    Error: Access to fetch at 'http://localhost:9000/api/game' from origin 'http://localhost:8083' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+
+    Fix: You need to install cors extension in google chrome to enable cross-origin resource sharing.
+
+
 ### Contribution
   
   * Please read our [Code Commits Guide](https://github.com/nditech/git-styleguide) and [Documentation Guide](https://github.com/nditech/standardized-README).
