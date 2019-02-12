@@ -1,68 +1,103 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 align="center">
+    <a href="https://www.ndi.org/"><img src="https://www.ndi.org/sites/all/themes/ndi/images/NDI_logo_svg.svg" alt="NDI Logo" width="200"></a>
+  </h1>
+  
+  <h1 align="center">
+    DemGames - Debate
+  </h1>
+  
+  <p align="center">
+    <a href="https://github.com/nditech/demgames-debate/blob/master/LICENSE">
+      <img src="https://img.shields.io/badge/license-GPL-red.svg" alt="License"/>
+    </a>
+    <a href="https://docs.mongodb.com/">
+      <img src="https://img.shields.io/badge/mongodb-v3.6.5-blue.svg" alt="mongodb"/>
+    </a>
+    <a href="https://www.npmjs.com/package/express">
+      <img src="https://img.shields.io/badge/express-v4.16.3-blue.svg" alt="express"/>
+    </a>
+    <a href="https://www.npmjs.com/package/react">
+      <img src="https://img.shields.io/badge/react-v14.4.0-blue.svg" alt="react"/>
+    </a>
+    <a href="https://nodejs.org/en/docs/">
+      <img src="https://img.shields.io/badge/node-v10.3.0-blue.svg" alt="node"/>
+    </a>
+  </p>
+  
+  <p align="center">
+    <a href="#documentation">Documentation</a> - 
+    <a href="#license">License</a> - 
+    <a href="#authors">Author(s)</a>
+  </p>
+  
+  A full stack (MERN) app that helps users learn how to debate effectively.
+  
+  ## Documentation
+  
+  ### :warning: IN DEV. Currently three modules and its levels are available.
+  
+  ### Table of Contents
+  
+  1. [Intro](#intro)
+  1. [Demo](#demo)
+  1. [Installation](#installation)
+  1. [Diagnosis](#diagnosis)
+  1. [Test](#test)
+  1. [Contribution](#contribution)
+  
+  ### Intro
+  
+  This app is built with React (frontend), Express.js (backend) and Node.js.
+  
+  The app connects to a mock api in express  and gets the complete game data and renders all modules.
+  
+  
+  ### Installation
+  
+  Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/) and [npm](https://www.npmjs.com/get-npm) on your machine. 
+  
+  
+  Clone this repository to your local machine (using SSH):
 
-## Available Scripts
+  ```
+  $ git clone git@github.com:nditech/demgames-debate.git
+  $ cd ndi-demgames
+  $ npm install
+  $ npm start
 
-In the project directory, you can run:
+  ```
+  
+  If the app is run for the first time, there won't be any questions. You need to run express server to fetch game data.
 
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+   ```
+   
+   $ nodemon server/server.js
+   
+   ```
+  ### Diagnosis
+  
+  ```
+  // Backend error:
+  Error: listen EADDRINUSE: address already in use :::9000
+  You need to kill port 9000
+  ```
+  sudo fuser -k 9000/tcp
+  ```
+    
+  ### Contribution
+  
+  * Please read our [Code Commits Guide](https://github.com/nditech/git-styleguide) and [Documentation Guide](https://github.com/nditech/standardized-README).
+  * We also follow Google's [Javascript Style Guide](https://google.github.io/styleguide/jsguide.html) and Airbnb's [React Style Guide](https://github.com/airbnb/javascript/tree/master/react).
+  * Do your own unit test before committing code.
+  
+  ## License
+  
+  [GNU General Public License v3.0](./LICENSE)
+  
+  ## Author(s)
+  
+  * <b>Jatin Narang</b>
+      > jatin.narang@hashedin.com &nbsp;&middot;&nbsp;
+      
+  
+  **[⬆ back to top](#documentation)**
