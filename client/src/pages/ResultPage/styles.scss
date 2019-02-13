@@ -1,0 +1,59 @@
+.result-page-container {
+	text-align: center;
+	font-size: 1.4em;
+	p {
+		font-family: Georgia;
+		color: #000000;
+		margin-bottom: 1.5em;
+	}
+
+	.retry-level {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		height: 2.5em;
+		width: 100%;
+		background-color: #12c34d;
+		color: white;
+		font-size: 1.4em;
+		border: none;
+		outline: none;
+	}
+	.congratulation-message-container {
+		background-color: #f3f6f9;
+		padding: 1em;
+		p {
+			font-family: Georgia;
+			color: #000000;
+		}
+		.congratulations-label {
+			margin: 20px 0 0 0;
+		}
+		.level-finish-label {
+			margin: 0;
+		}
+	}
+
+	.back-to-all-levels-link {
+		color: #000000;
+		font-weight: bold;
+	}
+	.result-back-module-container {
+		justify-content: center;
+		width: 100%;
+		background-color: #f3f6f9;
+	}
+}
+
+@media (min-width: 1024px) {
+	.result-page-container {
+		margin: 0 15em;
+		.retry-level {
+			position: relative;
+			top: 2em;
+			width: 19%;
+			height: 2.2em;
+			border-radius: 8px;
+		}
+	}
+}

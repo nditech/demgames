@@ -1,0 +1,11 @@
+@media (min-width: 1024px) {
+	.landing-page-wrapper {
+		.landing-page-container {
+			.game-type-card-container {
+				display: flex;
+				flex-wrap: wrap;
+				height: 40em;
+			}
+		}
+	}
+}

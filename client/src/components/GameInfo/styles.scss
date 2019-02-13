@@ -1,0 +1,52 @@
+.info-label {
+	span {
+		font-family: Georgia;
+		font-size: 30px;
+		line-height: 1.2;
+		text-align: left;
+		color: #1461b1;
+		margin: .2em 0 0 0;
+		display: flex;
+	}
+}
+.info-heading {
+	span {
+		opacity: 0.7;
+		font-family: Georgia;
+		font-size: 20px;
+		line-height: 1.2;
+		text-align: left;
+		color: #3e3d4a;
+		margin: 0;
+		display: flex;
+	}
+}
+
+.info-subheading {
+	span {
+		opacity: 0.7;
+		font-family: Georgia;
+		font-size: 20px;
+		line-height: 1.2;
+		text-align: left;
+		color: #3e3d4a;
+		margin: 0;
+		display: flex;
+	}
+}
+
+.ok-button {
+	background-color: #ffffff !important;
+	border: #ffffff;
+	color: #000000 !important;
+	font-weight: bold;
+
+	span {
+		font-size: 1.5em;
+	}
+}
+
+.info-page-header {
+	display: flex;
+	justify-content: space-between;
+}

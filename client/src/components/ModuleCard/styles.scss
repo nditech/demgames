@@ -1,0 +1,40 @@
+.module-card {
+	height: 30%;
+	width: 100%;
+	margin: .5em 0;
+	border-radius: 5px;
+	background-image: url('../../images/clip.png');
+	cursor: pointer;
+	p {
+		font-family: OpenSans;
+		font-size: 2em;
+		font-weight: bold;
+		font-style: normal;
+		font-stretch: normal;
+		line-height: 1.2;
+		letter-spacing: normal;
+		color: #ffffff;
+	}
+}
+
+.blue {
+	background-color: #0968b8;
+}
+
+.orange {
+	background-color: #f0713d;
+}
+
+.green {
+	background-color: #194866;
+}
+
+@media (min-width: 1024px) {
+	.module-card-link {
+		width: 30%;
+		margin: 0 .5em;
+		.module-card {
+			border-radius: 15px;
+		}
+	}
+}

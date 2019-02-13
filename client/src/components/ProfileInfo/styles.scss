@@ -1,0 +1,153 @@
+.profile-info-container {
+	height: 21em;
+	border-radius: 2.5px;
+	background-color: #fafafd;
+	.profile-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1em .6em 0 .6em;
+		height: 2em;
+	}
+	.profile-input {
+		width: 14em;
+		height: 2.5em;
+		opacity: 0.7;
+		border-radius: 2.5px;
+		background-color: #ffffff;
+		margin-top: 1em;
+		font-size: 1.3em;
+		padding-left: 1em;
+		border: 1px solid #666566;
+	}
+	::-webkit-input-placeholder {
+		color: #3e3d4a;
+	}
+	::-ms-input-placeholder {
+		color: #3e3d4a;
+	}
+	.input-container {
+		width: 25.4em;
+		text-align: center;
+	}
+	.input-label {
+		left: 3em;
+		top: 1.9em;
+		background-color: #fafafd;
+		padding: 0 .5em;
+		position: absolute;
+		width: 8em;
+		z-index: 2;
+		font-family: Georgia;
+		font-size: 20px;
+		color: #3e3d4a;
+		text-align: left;
+	}
+	.input-label-name {
+		width: 5em;
+		top: 5.8em;
+	}
+	.input-label-password {
+		width: 6.4em;
+		top: 9.6em;
+	}
+	.change-password-container {
+		text-align: right;
+		margin-right: 2.8em;
+		font-family: Georgia;
+		font-size: 18px;
+		color: #3e3d4a;
+	}
+	.change-password-icon {
+		width: 12.5px;
+		height: 13.5px;
+		margin-top: 1em;
+		margin-right: .5em;
+	}
+	.career-progress-label {
+		font-size: 1.5em;
+		font-family: Georgia;
+		font-weight: bold;
+		color: #050505;
+		margin-left: 1em;
+		height: 0em;
+		padding: 9px 0;
+	}
+	.overall-info {
+		padding-left: 3em;
+		padding: 0.45em 2em;
+		border-radius: 2.5px;
+		font-size: 1.4em;
+		background-color: #e8f4fe;
+		p {
+			margin: 0.35em 0;
+		}
+		.rank-info {
+			font-family: Georgia;
+			font-weight: bold;
+			font-size: 1.2em;
+			text-align: left;
+			color: #3e3d4a;
+		}
+		.modules-info {
+			font-family: Georgia;
+			text-align: left;
+			color: #3e3d4a;
+			P {
+				opacity: 0.88;
+				font-family: Georgia;
+				color: #3e3d4a;
+			}
+			span {
+				color: #020202;
+			}
+		}
+		.heading {
+			font-weight: bold;
+			margin-top: 1em;
+		}
+	}
+	.my-profile-label {
+		font-family: Georgia;
+		font-size: 1.6em;
+		font-weight: bold;
+		color: #050505;
+	}
+	.change-password-link {
+		text-decoration: none;
+		color: #000000;
+	}
+	.edit-icon {
+		width: 32px;
+		height: 25px;
+		object-fit: contain;
+		margin-right: .4em;
+	}
+}
+
+@media (min-width: 1024px) {
+	.profile-info-container {
+		display: flex;
+		margin: 0 36em;
+		.career-progress-label {
+			margin-left: 0;
+			font-size: 1.6em;
+			font-weight: bold;
+
+			margin-top: auto;
+		}
+		.profile-input {
+			margin-top: 2.2em;
+		}
+		.input-label {
+			left: 31.5em;
+			// top: 3em;
+		}
+		.input-label-name {
+			top: 8em;
+		}
+		.input-label-password {
+			top: 13.2em;
+		}
+	}
+}

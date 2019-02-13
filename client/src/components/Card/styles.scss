@@ -1,0 +1,43 @@
+.card-button {
+	font-family: OpenSans;
+	font-size: 20px;
+	color: #ffffff;
+	background-color: #7166bc;
+	height: 12em;
+	width: 100%;
+	margin: .2em 0;
+	cursor: pointer;
+	border: none;
+	outline: none;
+	text-align: left;
+	padding: 6%;
+	// overflow: scroll;
+}
+
+.card-button-true {
+	pointer-events: none;
+}
+
+.green {
+	background-color: #2fa44b;
+}
+
+.color-change-true {
+	background-color: #12008f;
+}
+
+@media (min-width: 1024px) {
+	.card-button {
+		width: 48%;
+		border-radius: 15px;
+		margin: .3em;
+		padding: 5%;
+	}
+	// ::-webkit-scrollbar {
+	// 	width: 0.01em;
+	// 	height: .0.1em;
+	// }
+	// ::-webkit-scrollbar-thumb {
+	// 	background: #6c70a1;
+	// }
+}
