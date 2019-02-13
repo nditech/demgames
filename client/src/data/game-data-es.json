@@ -1,0 +1,23 @@
+[
+    {
+        "id": "disenando-un-argumento",
+        "href": "/module/disenando-un-argumento",
+        "style": "style1",
+        "title": "Diseñando un argumento",
+        "colour": "blue"
+    },
+    {
+        "id": "encontrando-evidencia",
+        "href": "/module/encontrando-evidencia",
+        "style": "style2",
+        "title": "Encontrando evidencia",
+        "colour": "green"
+    },
+    {
+        "id": "encontrando-defectos",
+        "href": "/module/encontrando-defectos",
+        "style": "style3",
+        "title": "Encontrando defectos en los argumentos",
+        "colour": "peach"
+    }
+]

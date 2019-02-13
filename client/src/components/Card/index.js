@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from 'react';
 import './styles.scss';
 import PropTypes from 'prop-types';
@@ -29,3 +30,9 @@ Card.prototypes = {
 };
 
 export default Card;
+=======
+export * from './LevelCard';
+export * from './Card';
+export * from './CardGroup';
+export * from './ModuleCard';
+>>>>>>> aa7ca6fc4f47f1526063ddf8aa9e44c8b78c6dbc
