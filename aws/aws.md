@@ -1,1 +1,0 @@
-# AWS Serverless Setup
