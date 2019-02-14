@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import './styles.scss';
-import Card from '../Card';
+import {Card} from '../Card';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
