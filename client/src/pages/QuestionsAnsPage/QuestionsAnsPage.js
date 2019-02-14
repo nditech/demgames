@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
-import Card from '../../components/Card';
+import {Card} from '../../components/Card';
 import arrowBackUrl from '../../images/back.png';
 import infoUrl from '../../images/info.png';
 import correctAnsUrl from '../../images/correct.png';
