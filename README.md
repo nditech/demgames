@@ -60,8 +60,10 @@
   Clone this repository to your local machine (using SSH):
 
   ```
-  $ Create a new directory and run follwing commands in it.
-  $ git clone git@github.com:nditech/demgames-debate.git
+  $ Create a new directory , open terminal and run follwing commands in it.
+  $ git init
+  $ git remote add upstream https://github.com/nditech/demgames-debate.git
+  $ git pull upstream hashedin
   $ npm install
   $ npm start
 
