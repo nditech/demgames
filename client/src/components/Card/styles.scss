@@ -11,19 +11,33 @@
 	outline: none;
 	text-align: left;
 	padding: 6%;
-	// overflow: scroll;
 }
 
 .card-button-true {
 	pointer-events: none;
 }
 
-.green {
+.card-button-blue {
+	background-color: #0968b8;
+	opacity: .7;
+}
+.card-button-green {
+	opacity: .7;
 	background-color: #2fa44b;
 }
+.card-button-orange {
+	opacity: .7;
+	background-color: #f0713d;
+}
 
-.color-change-true {
-	background-color: #12008f;
+.color-change-blue-true {
+	opacity: 1;
+}
+.color-change-green-true {
+	opacity: 1;
+}
+.color-change-orange-true {
+	opacity: 1;
 }
 
 @media (min-width: 1024px) {
@@ -33,11 +47,4 @@
 		margin: .3em;
 		padding: 5%;
 	}
-	// ::-webkit-scrollbar {
-	// 	width: 0.01em;
-	// 	height: .0.1em;
-	// }
-	// ::-webkit-scrollbar-thumb {
-	// 	background: #6c70a1;
-	// }
 }

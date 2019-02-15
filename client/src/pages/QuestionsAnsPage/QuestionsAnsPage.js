@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
-import {Card} from '../../components/Card';
+import { Card } from '../../components/Card';
 import arrowBackUrl from '../../images/back.png';
 import infoUrl from '../../images/info.png';
 import correctAnsUrl from '../../images/correct.png';
@@ -308,7 +308,7 @@ class QuestionsAnsPage extends React.Component {
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		const nextQuestionId =
 			questionId <= totalQuestion && questions[questionId - 1].options[selectedOption].linked_question;
-
+		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
 		return (
 			<Fragment>
 				<div className="question-main-container">
@@ -389,6 +389,7 @@ class QuestionsAnsPage extends React.Component {
 														answerClick={answerClick}
 														selectedCard={clickedOptions.includes(key)}
 														handleClick={this.handleAnswerClick(correctAns, key)}
+														moduleColor={moduleColor}
 													/>
 												))}
 										</div>
