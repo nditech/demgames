@@ -46,7 +46,7 @@ class AnswerInfoPopup extends Component {
 				</DialogTitle>
 				<DialogContent>
 					<DialogContentText className="greet-message" id="dialog-slide-description">
-						<span> {answerStatus ? 'Congratulations !' : ''}</span>
+						<span> {answerStatus ? 'Congratulations!' : ''}</span>
 					</DialogContentText>
 				</DialogContent>
 				<DialogContent>

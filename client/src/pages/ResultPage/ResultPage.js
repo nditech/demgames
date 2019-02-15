@@ -49,7 +49,7 @@ class ResultPage extends Component {
 				</div>
 				<div className="congratulation-message-container">
 					<img src={congoUrl} alt="congratulations-icon" />
-					<p className="congratulations-label">Congratulations !</p>
+					<p className="congratulations-label">Congratulations!</p>
 					<p className="level-finish-label">You have finished level {level}</p>
 				</div>
 				<p className="score-message">{messageOne}</p>
