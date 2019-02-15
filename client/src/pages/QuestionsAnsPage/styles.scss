@@ -18,13 +18,18 @@
 	width: 100%;
 	overflow: scroll;
 
-	background-color: #253f8e;
 	.question-label {
 		padding: 1em;
 		font-family: Georgia;
 		font-size: 22px;
 		font-weight: bold;
 		color: #f2f2f2;
+	}
+	.question-label-blue {
+		background-color: #0968b8;
+	}
+	.question-label-green {
+		background-color: #2fa44b;
 	}
 }
 
@@ -53,15 +58,6 @@
 			.options-card-container {
 				display: flex;
 				flex-wrap: wrap;
-				// ::-webkit-scrollbar {
-				// 	width: 0.2em;
-				// 	height: .0.1em;
-				// }
-				// ::-webkit-scrollbar-thumb {
-				// 	// background: #6c70a1;
-				// 	background: green;
-				// 	height: .1em;
-				// }
 			}
 		}
 	}
