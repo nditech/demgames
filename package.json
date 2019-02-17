@@ -9,6 +9,7 @@
 		"convert-excel-to-json": "^1.6.0",
 		"emotion": "^10.0.6",
 		"excel-as-json": "^2.0.2",
+		"jest-transform-stub": "^2.0.0",
 		"node-sass": "^4.11.0",
 		"nodemon": "^1.18.9",
 		"react": "^16.7.0",
@@ -30,12 +31,7 @@
 	"eslintConfig": {
 		"extends": "react-app"
 	},
-	"browserslist": [
-		">0.2%",
-		"not dead",
-		"not ie <= 11",
-		"not op_mini all"
-	],
+	"browserslist": [ ">0.2%", "not dead", "not ie <= 11", "not op_mini all" ],
 	"devDependencies": {
 		"@babel/cli": "^7.0.0",
 		"@babel/core": "^7.0.0",

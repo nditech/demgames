@@ -94,20 +94,10 @@ class QuestionsAnsPage extends React.Component {
 		}
 	};
 
-	// Increments the question Id by 1 for non-scenario modules and for scenario type it takes it to the linked question.
+	// Increments the question Id by 1 for non-scenario modules.
 	nextQuestion = () => {
-		let next = 0;
-		let moduleId = this.props.match.params.moduleId;
-		let level = parseInt(this.props.match.params.levelId);
-		const { moduleScenario, questionId, selectedOption } = this.state;
-		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
-
-		const nextQuestionId = questions && questions[questionId - 1].options[selectedOption].linked_question;
-
-		!moduleScenario ? (next = 1) : (next = nextQuestionId);
-
 		this.setState((prevState) => ({
-			questionId: moduleScenario ? next : prevState.questionId + 1,
+			questionId: prevState.questionId + 1,
 			selectedAnswer: []
 		}));
 	};
@@ -154,7 +144,6 @@ class QuestionsAnsPage extends React.Component {
 		const { questionId } = this.state;
 		let moduleId = this.props.match.params.moduleId;
 		let level = parseInt(this.props.match.params.levelId);
-
 		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		var totalQuestion = 0;
 		if (questions && questions.length > 0) {
@@ -225,7 +214,6 @@ class QuestionsAnsPage extends React.Component {
 	checkParScoreStatus = () => {
 		let moduleId = this.props.match.params.moduleId;
 		let level = parseInt(this.props.match.params.levelId);
-
 		const { currentScore } = this.state;
 		const parScores = this.getParScores();
 		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
@@ -251,7 +239,6 @@ class QuestionsAnsPage extends React.Component {
 	getTotalQuestions = () => {
 		let moduleId = this.props.match.params.moduleId;
 		let level = parseInt(this.props.match.params.levelId);
-
 		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		var totalQuestion = 0;
 		if (questions && questions.length > 0) {
@@ -292,8 +279,7 @@ class QuestionsAnsPage extends React.Component {
 			selectedAnswer,
 			infoOpen,
 			clickedOptions,
-			moduleScenario,
-			selectedOption
+			moduleScenario
 		} = this.state;
 
 		let moduleId = parseInt(this.props.match.params.moduleId);
@@ -325,8 +311,7 @@ class QuestionsAnsPage extends React.Component {
 						<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleInfoOpen} />
 					</div>
 					<Fragment>
-						{// nextQuestionId === null &&
-						totalQuestion > 0 &&
+						{totalQuestion > 0 &&
 						questionId > totalQuestion && (
 							<Redirect
 								to={{
@@ -456,5 +441,3 @@ QuestionsAnsPage.propTypes = {
 };
 
 export default connect(mapStateToProps, null)(QuestionsAnsPage);
-
-// export default QuestionsAnsPage;

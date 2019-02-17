@@ -37,12 +37,11 @@ class QuestionsAnsPage extends React.Component {
 			id: 1
 		};
 	}
-	// Increments the question Id by 1 for non-scenario modules and for scenario type it takes it to the linked question.
+	//Change the questionId to next linked question and renders the next linked question.
 	nextQuestion = () => {
-		let next = 0;
 		let moduleId = this.props.match.params.moduleId;
 		let level = parseInt(this.props.match.params.levelId);
-		const { moduleScenario, questionId, selectedOption } = this.state;
+		const { questionId, selectedOption } = this.state;
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 
 		const nextQuestionId =
