@@ -306,8 +306,6 @@ class QuestionsAnsPage extends React.Component {
 		const moduleNames = this.getModuleNames();
 		const backUrl = `/module/${moduleId}/levels`;
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
-		const nextQuestionId =
-			questionId <= totalQuestion && questions[questionId - 1].options[selectedOption].linked_question;
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
 		return (
 			<Fragment>
@@ -368,7 +366,8 @@ class QuestionsAnsPage extends React.Component {
 										<ProgressBar progress={progress} />
 									</div>
 									<div className="questions-container">
-										<p className="question-label">
+										<p className={`question-label question-label-${moduleColor}`}>
+											{console.log('ques', questions[questionId - 1].question)}
 											{questions && questions.length > 0 && questions[questionId - 1].question}
 										</p>
 									</div>
@@ -416,6 +415,7 @@ class QuestionsAnsPage extends React.Component {
 								level={level}
 								questionId={questionId}
 								totalQuestion={totalQuestion}
+								moduleColor={moduleColor}
 							/>
 						)}
 					</Fragment>

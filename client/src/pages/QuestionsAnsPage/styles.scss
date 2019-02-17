@@ -62,3 +62,12 @@
 		}
 	}
 }
+
+@media screen and (device-aspect-ratio: 40/71) {
+	.answer-container {
+		.select-label {
+			font-size: 1.2em;
+			padding-left: 1em;
+		}
+	}
+}

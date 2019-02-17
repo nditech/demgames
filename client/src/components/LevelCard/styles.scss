@@ -85,3 +85,34 @@
 		}
 	}
 }
+
+@media screen and (device-aspect-ratio: 40/71) {
+	.level-card {
+		.level-score {
+			font-size: 1.6em;
+		}
+
+		.level-label-score {
+			.level-label {
+				font-size: 1.4em;
+			}
+		}
+
+		.level-description {
+			font-size: 1.3em;
+			margin: 0;
+		}
+
+		.level-unlock-rule {
+			font-size: 1.3em;
+		}
+
+		.lock-icon-container {
+			.lock-icon {
+				width: 1.2em;
+				height: 1.5em;
+				margin-top: .3em;
+			}
+		}
+	}
+}

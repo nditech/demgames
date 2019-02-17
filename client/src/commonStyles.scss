@@ -114,3 +114,25 @@
 		border-radius: 6px;
 	}
 }
+
+@media screen and (device-aspect-ratio: 40/71) {
+	.game-type-help {
+		.back-module-container {
+			.back-button {
+				.back-icon {
+					width: 2em;
+					height: 1.4em;
+				}
+			}
+			.questions-page-module-name {
+				font-size: 1.2em;
+			}
+		}
+	}
+	.level-question-detail {
+		padding-left: 1em;
+		span {
+			font-size: 1.2em;
+		}
+	}
+}

@@ -38,3 +38,9 @@
 		}
 	}
 }
+
+@media screen and (device-aspect-ratio: 40/71) {
+	.module-card p {
+		font-size: 1.6em;
+	}
+}

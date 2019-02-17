@@ -53,7 +53,7 @@ class ResultPage extends Component {
 					<p className="level-finish-label">You have finished level {level}</p>
 				</div>
 				<p className="score-message">{messageOne}</p>
-				<img src={image} alt="icon" />
+				<img className="graph-icon" src={image} alt="icon" />
 				<p className="score-message">{messageTwo}</p>
 				<div>
 					<a className="back-to-all-levels-link" href={backToLevelUrl}>
@@ -61,7 +61,7 @@ class ResultPage extends Component {
 					</a>
 				</div>
 				{!parScoreStatus ? (
-					<a className="back-to-all-levels-link" href={retryLevelUrl}>
+					<a className="retry-levels-link" href={retryLevelUrl}>
 						<button className={`retry-level`}>Retry Level {level}</button>
 					</a>
 				) : level + 1 <= totalLevels ? (
