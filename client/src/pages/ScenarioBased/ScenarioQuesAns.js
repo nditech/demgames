@@ -88,37 +88,19 @@ class QuestionsAnsPage extends React.Component {
 		this.setState({ infoOpen: false });
 	};
 
-	// Listens to no of answers clicked and compare it with actual number of answers for a
-	// particular question and if it gets equal it locks the options cards.
-	checkAnsClicked = (answerClicked) => {
-		let moduleId = this.props.match.params.moduleId;
-		let level = parseInt(this.props.match.params.levelId);
-		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
-		const { questionId } = this.state;
-		let correctAnsLength = questions && questionId !== null && questions[questionId - 1].correct_answer.length;
-		if (answerClicked === correctAnsLength) {
-			this.setState({ answerClick: true });
-		}
-	};
-
 	handleAnswerClick = (key) => (e) => {
 		const { clickedOptions } = this.state;
 		clickedOptions.push(key);
 		const selectedValue = key;
 		const { selectedAnswer } = this.state;
 		selectedAnswer.push(selectedValue);
-		this.setState(
-			(prevState) => ({
-				answerClicked: prevState.answerClicked + 1,
-				selectedAnswer: selectedAnswer,
-				selectedCard: key,
-				selectedOption: key
-			}),
-			() => {
-				const { answerClicked } = this.state;
-				this.checkAnsClicked(answerClicked);
-			}
-		);
+		this.setState((prevState) => ({
+			answerClicked: prevState.answerClicked + 1,
+			selectedAnswer: selectedAnswer,
+			selectedCard: key,
+			selectedOption: key,
+			answerClick: true
+		}));
 	};
 
 	//Get list of module names.
@@ -346,5 +328,3 @@ QuestionsAnsPage.propTypes = {
 };
 
 export default connect(mapStateToProps, null)(QuestionsAnsPage);
-
-// export default QuestionsAnsPage;

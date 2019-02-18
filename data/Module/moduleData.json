@@ -238,8 +238,7 @@
 								"option": "My parents never accurately represent my concerns. How can adults represent youth concerns?",
 								"linked_question": 3
 							}
-						],
-						"correct_answer": [ 1 ]
+						]
 					},
 					{
 						"id": 2,
@@ -248,8 +247,7 @@
 							{ "option": "", "linked_question": null },
 							{ "option": "", "linked_question": null }
 						],
-						"score": 5,
-						"correct_answer": [ 1 ]
+						"score": 5
 					},
 					{
 						"id": 3,
@@ -263,8 +261,7 @@
 								"option": "Parents legally represent young people, how youth issues are addressed in assembly meetings is reflective of parents opinions",
 								"linked_question": 2
 							}
-						],
-						"correct_answer": [ 1 ]
+						]
 					},
 					{
 						"id": 4,
@@ -278,8 +275,7 @@
 								"option": "Including youth issues in one amendment does not erase the need for youth quotas. Youth need real representation and a seat at the table.",
 								"linked_question": 6
 							}
-						],
-						"correct_answer": [ 1 ]
+						]
 					},
 					{
 						"id": 5,
@@ -293,8 +289,7 @@
 								"option": "Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ",
 								"linked_question": 7
 							}
-						],
-						"correct_answer": [ 1 ]
+						]
 					},
 					{
 						"id": 6,
@@ -308,8 +303,7 @@
 								"option": "Youth quotas are an effective use of assembly seats because they help marginalized populations, such as youth, participate and have their concerns heard.",
 								"linked_question": 8
 							}
-						],
-						"correct_answer": [ 1 ]
+						]
 					},
 					{
 						"id": 7,
@@ -318,8 +312,7 @@
 							{ "option": "", "linked_question": null },
 							{ "option": "", "linked_question": null }
 						],
-						"score": 10,
-						"correct_answer": [ 1 ]
+						"score": 10
 					},
 					{
 						"id": 8,
@@ -328,8 +321,7 @@
 							{ "option": "", "linked_question": null },
 							{ "option": "", "linked_question": null }
 						],
-						"score": 15,
-						"correct_answer": [ 1 ]
+						"score": 15
 					},
 					{
 						"id": 9,
@@ -343,8 +335,7 @@
 								"option": "Simply gathering youth concerns does not ensure decision-maker accountability. They do not capture youth voice.",
 								"linked_question": 11
 							}
-						],
-						"correct_answer": [ 1 ]
+						]
 					},
 					{
 						"id": 10,
@@ -358,8 +349,7 @@
 								"option": "National surveys are a good start, but that information does not produce the same outcomes as young people at the table working collaboratively with decisions makers.",
 								"linked_question": 13
 							}
-						],
-						"correct_answer": [ 1 ]
+						]
 					},
 					{
 						"id": 11,
@@ -373,8 +363,7 @@
 								"option": "Youth centers are not what young people need, they need basic needs like employment and adequate healthcare!",
 								"linked_question": 12
 							}
-						],
-						"correct_answer": [ 1 ]
+						]
 					},
 					{
 						"id": 12,
@@ -389,8 +378,7 @@
 								"linked_question": null
 							}
 						],
-						"score": 10,
-						"correct_answer": [ 1 ]
+						"score": 10
 					},
 					{
 						"id": 13,
@@ -404,8 +392,7 @@
 								"option": "You state that youth quotas are not only for youth. Youth participation in the national assembly demonstrates the assets and capacity youth have which has positive outcomes on all of society. This is demonstrated by youth quotas in other countries around the world.",
 								"linked_question": 15
 							}
-						],
-						"correct_answer": [ 1 ]
+						]
 					},
 					{
 						"id": 14,
@@ -420,8 +407,7 @@
 								"linked_question": null
 							}
 						],
-						"score": 15,
-						"correct_answer": [ 1 ]
+						"score": 15
 					},
 					{
 						"id": 15,
@@ -436,8 +422,7 @@
 								"linked_question": null
 							}
 						],
-						"score": 10,
-						"correct_answer": [ 1 ]
+						"score": 10
 					}
 				]
 			}

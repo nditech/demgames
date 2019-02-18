@@ -57,4 +57,8 @@ test('nextQuestion()', () => {
 // 	const instance = wrapper.instance();
 // 	instance.handleProceedNext();
 // 	expect(wrapper.state().answerClick).toBeFalsy();
+// 	expect(wrapper.state().answerClick).toBeFalsy();
+// 	expect(wrapper.state().answerClick).toBeFalsy();
+// 	expect(wrapper.state().answerClick).toBeFalsy();
 // });
+
