@@ -5,6 +5,13 @@ import { fetchScores } from '../LandingPage/actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 class ResultPage extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			parScoreStatus: false
+		};
+	}
+
 	handleUpdateScore = () => {
 		const { currentScore, level, moduleId } = this.props.location.state;
 		let newScore = currentScore;
@@ -31,9 +38,9 @@ class ResultPage extends Component {
 			moduleName,
 			messageOne,
 			messageTwo,
-			parScoreStatus,
 			moduleScenario
 		} = this.props.location.state;
+		const { parScoreStatus } = this.state;
 
 		const totalLevels = this.props.gameData.gameData[moduleId - 1].levels.length;
 

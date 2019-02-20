@@ -14,8 +14,9 @@ import { connect } from 'react-redux';
 import './styles.scss';
 import GameInfo from '../../components/GameInfo';
 import PropTypes from 'prop-types';
+import gameData from './data';
 
-class QuestionsAnsPage extends React.Component {
+export class QuestionsAnsPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -37,36 +38,10 @@ class QuestionsAnsPage extends React.Component {
 		};
 	}
 
-	//Put api call to update scores at backend.
-	// handleUpdateScore = (newScore) => {
-	// 	let data = { score: newScore };
-	// 	return fetch(
-	// 		config.baseUrl +
-	// 			`/api/module/${this.props.match.params.moduleId}/level/${this.props.match.params.levelId}/update-score`,
-	// 		{
-	// 			method: 'PUT',
-	// 			headers: {
-	// 				'Content-Type': 'application/json'
-	// 			},
-	// 			body: JSON.stringify(data)
-	// 		}
-	// 	)
-	// 		.then((response) => {
-	// 			if (response.status >= 200 && response.status < 300) {
-	// 				console.log('Update score success');
-	// 				console.log(response.json());
-	// 			} else {
-	// 				console.log('Update score fail');
-	// 			}
-	// 		})
-	// 		.catch((status, err) => {
-	// 			console.log(err);
-	// 		});
-	// };
-
 	//To hide question answer and render selected option abd right option.
 	showRightAnswer = () => {
 		this.setState({ showCorrectAns: true });
+		return 1;
 	};
 
 	//To show question answer and hide selected option abd right option.
@@ -81,6 +56,7 @@ class QuestionsAnsPage extends React.Component {
 		const selectedValue = this.state.selectedAnswer;
 		selectedValue.sort();
 		correctAns.sort();
+
 		if (JSON.stringify(selectedValue) === JSON.stringify(correctAns)) {
 			this.setState((prevState) => ({
 				answerCorrect: true,
@@ -191,10 +167,9 @@ class QuestionsAnsPage extends React.Component {
 	};
 
 	handleAnswerClick = (correctAns, key) => (e) => {
-		const { clickedOptions } = this.state;
+		const { clickedOptions, selectedAnswer } = this.state;
 		clickedOptions.push(key);
 		const selectedValue = key;
-		const { selectedAnswer } = this.state;
 		selectedAnswer.push(selectedValue);
 		this.setState(
 			(prevState) => ({
@@ -293,6 +268,7 @@ class QuestionsAnsPage extends React.Component {
 		const backUrl = `/module/${moduleId}/levels`;
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
+
 		return (
 			<Fragment>
 				<div className="question-main-container">
@@ -352,7 +328,6 @@ class QuestionsAnsPage extends React.Component {
 									</div>
 									<div className="questions-container">
 										<p className={`question-label question-label-${moduleColor}`}>
-											{console.log('ques', questions[questionId - 1].question)}
 											{questions && questions.length > 0 && questions[questionId - 1].question}
 										</p>
 									</div>
