@@ -31,6 +31,7 @@
 		.header-icon {
 			display: flex;
 			justify-content: space-between;
+			padding: 1em 3em;
 		}
 	}
 
@@ -53,9 +54,22 @@
 
 @media (min-width: 1024px) {
 	.landing-page-wrapper {
-		margin: 0px 15em;
+		// margin: 0px 15em;
+		width: 100%;
+		background-color: #ffffff;
+		.top-section {
+			padding: .5em;
+		}
+		.landing-page-container {
+			width: 100%;
+			.game-title {
+				margin-left: 2em;
+			}
+		}
+
 		.game-type-card-container {
 			display: flex;
+			justify-content: space-between;
 			.module-card {
 				height: 35%;
 			}

@@ -149,8 +149,6 @@ export class QuestionsAnsPage extends React.Component {
 			open: false,
 			showAnswer: !prevState.showAnswer
 		}));
-
-		this.checkParScoreStatus();
 	};
 
 	// Listens to no of answers clicked and compare it with actual number of answers for a
@@ -185,20 +183,20 @@ export class QuestionsAnsPage extends React.Component {
 		);
 	};
 
-	//Checks if current score + previous score is less than parScore and return parScoreStatus.
-	checkParScoreStatus = () => {
-		let moduleId = this.props.match.params.moduleId;
-		let level = parseInt(this.props.match.params.levelId);
-		const { currentScore } = this.state;
-		const parScores = this.getParScores();
-		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
-		let prevScore = currentLevelNewScores[level - 1];
-		if (prevScore + currentScore < parScores[level]) {
-			this.setState({ parScoreStatus: false });
-		} else {
-			this.setState({ parScoreStatus: true });
-		}
-	};
+	// //Checks if current score + previous score is less than parScore and return parScoreStatus.
+	// checkParScoreStatus = () => {
+	// 	let moduleId = this.props.match.params.moduleId;
+	// 	let level = parseInt(this.props.match.params.levelId);
+	// 	const { currentScore } = this.state;
+	// 	const parScores = this.getParScores();
+	// 	let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
+	// 	let prevScore = currentLevelNewScores[level - 1];
+	// 	if (prevScore + currentScore < parScores[level]) {
+	// 		this.setState({ parScoreStatus: false });
+	// 	} else {
+	// 		this.setState({ parScoreStatus: true });
+	// 	}
+	// };
 
 	//Get list of module names.
 	getModuleNames = () => {
@@ -237,6 +235,7 @@ export class QuestionsAnsPage extends React.Component {
 			clickedOptions: []
 		}));
 
+		this.checkParScoreStatus();
 		this.handleNextClick();
 		this.nextQuestion();
 	};
@@ -268,6 +267,7 @@ export class QuestionsAnsPage extends React.Component {
 		const backUrl = `/module/${moduleId}/levels`;
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
+		const totalScore = totalQuestion * 10;
 
 		return (
 			<Fragment>
@@ -294,14 +294,19 @@ export class QuestionsAnsPage extends React.Component {
 									pathname: '/results',
 									state: {
 										moduleId: moduleId,
-										parScoreStatus: parScoreStatus,
+										// parScoreStatus: parScoreStatus,
+										totalScore: totalScore,
 										currentScore: currentScore,
 										moduleName: moduleNames[moduleId - 1],
 										level: level,
 										image: parScoreStatus ? hurreyUrl : oopsUrl,
 										messageOne: parScoreStatus
-											? `Hurray! You have scored  ${currentScore > 0 ? currentScore : 0}/100.`
-											: `Oh! You have scored only  ${currentScore > 0 ? currentScore : 0}/100.`,
+											? `Hurray! You have scored  ${currentScore > 0
+													? currentScore
+													: 0}/${totalScore}.`
+											: `Oh! You have scored only  ${currentScore > 0
+													? currentScore
+													: 0}/${totalScore}.`,
 										messageTwo: parScoreStatus
 											? `You are in top 100 in the rank.`
 											: `You need to earn ${parScores[level]}/100 for Level ${level}.`,
