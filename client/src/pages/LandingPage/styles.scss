@@ -31,17 +31,16 @@
 		.header-icon {
 			display: flex;
 			justify-content: space-between;
-			padding: 1em 3em;
 		}
 	}
-
 	.top-section {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 
-		.back-ndi-logo {
+		.link-lock {
 			height: 5%;
+
 			display: flex;
 			align-items: center;
 		}
@@ -54,13 +53,16 @@
 
 @media (min-width: 1024px) {
 	.landing-page-wrapper {
-		// margin: 0px 15em;
 		width: 100%;
 		background-color: #ffffff;
+
 		.top-section {
 			padding: .5em;
 		}
 		.landing-page-container {
+			.header-icon {
+				padding: 1em 3em;
+			}
 			width: 100%;
 			.game-title {
 				margin-left: 2em;

@@ -84,4 +84,3 @@ CorrectAnswerInfo.propTypes = {
 	gameData: PropTypes.object
 };
 
-// export default CorrectAnswerInfo;

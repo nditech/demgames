@@ -19,7 +19,7 @@
 	background-color: #f0713d;
 }
 .level-card {
-	height: 30%;
+	height: 33%;
 	width: 100%;
 	margin: .5em 0;
 	cursor: pointer;
@@ -81,7 +81,7 @@
 
 @media (min-width: 1024px) {
 	.link-lock {
-		width: 32%;
+		width: 30%;
 		height: 19em;
 		margin: .5em .5em;
 		.level-card {
@@ -96,7 +96,6 @@
 		.level-score {
 			font-size: 1.4em;
 		}
-		
 
 		.level-label-score {
 			.level-label {
