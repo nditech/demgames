@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 class ResultPage extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { parScoreStatus: false };
+		this.state = {};
 	}
 
 	// //Checks if current score + previous score is less than parScore and return parScoreStatus.
@@ -57,10 +57,10 @@ class ResultPage extends Component {
 			moduleName,
 			messageOne,
 			messageTwo,
-			moduleScenario
+			moduleScenario,
+			parScoreStatus
 		} = this.props.location.state;
-		const { parScoreStatus } = this.state;
-
+		console.log(parScoreStatus);
 		const totalLevels = this.props.gameData.gameData[moduleId - 1].levels.length;
 
 		const backToLevelUrl = `/module/${moduleId}/levels`;

@@ -183,20 +183,21 @@ export class QuestionsAnsPage extends React.Component {
 		);
 	};
 
-	// //Checks if current score + previous score is less than parScore and return parScoreStatus.
-	// checkParScoreStatus = () => {
-	// 	let moduleId = this.props.match.params.moduleId;
-	// 	let level = parseInt(this.props.match.params.levelId);
-	// 	const { currentScore } = this.state;
-	// 	const parScores = this.getParScores();
-	// 	let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
-	// 	let prevScore = currentLevelNewScores[level - 1];
-	// 	if (prevScore + currentScore < parScores[level]) {
-	// 		this.setState({ parScoreStatus: false });
-	// 	} else {
-	// 		this.setState({ parScoreStatus: true });
-	// 	}
-	// };
+	//Checks if current score + previous score is less than parScore and return parScoreStatus.
+	checkParScoreStatus = () => {
+		let moduleId = this.props.match.params.moduleId;
+		let level = parseInt(this.props.match.params.levelId);
+		const { currentScore } = this.state;
+		const parScores = this.getParScores();
+		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
+		let prevScore = currentLevelNewScores[level - 1];
+		if (prevScore + currentScore < parScores[level]) {
+			this.setState({ parScoreStatus: false });
+		} else {
+			this.setState({ parScoreStatus: true });
+		}
+		console.log('par', this.state.parScoreStatus);
+	};
 
 	//Get list of module names.
 	getModuleNames = () => {
@@ -294,7 +295,7 @@ export class QuestionsAnsPage extends React.Component {
 									pathname: '/results',
 									state: {
 										moduleId: moduleId,
-										// parScoreStatus: parScoreStatus,
+										parScoreStatus: parScoreStatus,
 										totalScore: totalScore,
 										currentScore: currentScore,
 										moduleName: moduleNames[moduleId - 1],
