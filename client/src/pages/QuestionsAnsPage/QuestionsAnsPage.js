@@ -338,11 +338,11 @@ export class QuestionsAnsPage extends React.Component {
 										</p>
 									</div>
 									<div className="answer-container">
-										{!showAnswer ? (
+										{!showAnswer && (
 											<p className="select-label">
 												Select {ansLength > 1 ? ansLength + ' answers.' : ' the right answer.'}
 											</p>
-										) : null}
+										)}
 										<div className="options-card-container">
 											{questions &&
 												questions.length > 0 &&
