@@ -1,6 +1,5 @@
 .question-main-container {
 	padding-bottom: 1em;
-	// background-color: #f3f3f3;
 }
 
 .answer-container {
@@ -24,6 +23,7 @@
 		font-family: Georgia;
 		font-size: 22px;
 		font-weight: bold;
+		margin: 1em;
 		color: #f2f2f2;
 	}
 	.question-label-blue {
@@ -48,7 +48,6 @@
 
 @media (min-width: 1024px) {
 	.question-main-container {
-		// margin: 0 15em;
 		.questions-container {
 			overflow: hidden;
 
