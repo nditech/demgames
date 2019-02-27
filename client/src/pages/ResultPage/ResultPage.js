@@ -10,43 +10,25 @@ class ResultPage extends Component {
 		this.state = {};
 	}
 
-	// //Checks if current score + previous score is less than parScore and return parScoreStatus.
-	// checkParScoreStatus = () => {
-	// 	let moduleId = this.props.match.params.moduleId;
-	// 	let level = parseInt(this.props.match.params.levelId);
-	// 	const { currentScore } = this.state;
-	// 	const parScores = this.getParScores();
-	// 	let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
-	// 	let prevScore = currentLevelNewScores[level - 1];
-	// 	if (prevScore + currentScore < parScores[level]) {
-	// 		this.setState({ parScoreStatus: false });
-	// 	} else {
-	// 		this.setState({ parScoreStatus: true });
-	// 	}
-	// };
-
 	handleUpdateScore = () => {
 		const { currentScore, level, moduleId, totalScore } = this.props.location.state;
 		let newScore = currentScore;
+		console.log('currentScore', currentScore);
+		console.log('totalScore', totalScore);
+
 		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
 		let prevScore = currentLevelNewScores[level - 1];
 
 		currentLevelNewScores[level - 1] =
 			newScore > 0 ? (prevScore + newScore <= totalScore ? prevScore + newScore : totalScore) : prevScore;
+		console.log('currentLevelNewScores', currentLevelNewScores);
 
 		this.props.gameData.scores[moduleId - 1] = currentLevelNewScores;
 		this.props.getScores(this.props.gameData.scores);
 	};
-	// //Get list of parScores for a module.
-	// getParScores = () => {
-	// 	let moduleId = this.props.match.params.moduleId;
-	// 	const parScores = this.props.gameData.gameData[moduleId - 1].levels.map((level) => level.par_score);
-	// 	return parScores;
-	// };
 
 	componentDidMount() {
 		this.handleUpdateScore();
-		// this.checkParScoreStatus();
 	}
 
 	render() {
@@ -60,9 +42,8 @@ class ResultPage extends Component {
 			moduleScenario,
 			parScoreStatus
 		} = this.props.location.state;
-		console.log(parScoreStatus);
-		const totalLevels = this.props.gameData.gameData[moduleId - 1].levels.length;
 
+		const totalLevels = this.props.gameData.gameData[moduleId - 1].levels.length;
 		const backToLevelUrl = `/module/${moduleId}/levels`;
 		const retryLevelUrl = `/module/${moduleScenario ? 'scenario/' : ''}${moduleId}/level/${level}/questions`;
 		const nextLevelUrl = `/module/${moduleScenario ? 'scenario/' : ''}${moduleId}/level/${level + 1}/questions`;

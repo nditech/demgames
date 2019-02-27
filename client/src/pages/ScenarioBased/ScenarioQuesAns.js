@@ -158,7 +158,7 @@ export class ScenarioQuesAns extends React.Component {
 		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
 		let prevScore = currentLevelNewScores[level - 1];
 
-		if (prevScore + currentScore < parScores[level]) {
+		if (prevScore + currentScore <= parScores[level]) {
 			this.setState({ parScoreStatus: false });
 		} else {
 			this.setState({ parScoreStatus: true });
@@ -199,7 +199,9 @@ export class ScenarioQuesAns extends React.Component {
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		const emptyOption = questionId !== null && questions[questionId - 1].options[0].option === '';
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
+		const totalScore = totalQuestion * 10;
 
+		console.log(parScoreStatus);
 		return (
 			<Fragment>
 				<div className="question-main-container">
@@ -226,6 +228,7 @@ export class ScenarioQuesAns extends React.Component {
 										moduleId: moduleId,
 										moduleScenario: moduleScenario,
 										parScoreStatus: parScoreStatus,
+										totalScore: totalScore,
 										currentScore: currentScore,
 										moduleName: moduleNames[moduleId - 1],
 										level: level,
@@ -257,7 +260,7 @@ export class ScenarioQuesAns extends React.Component {
 										<ProgressBar progress={progress} />
 									</div>
 									<div className="questions-container">
-										<p className={`question-label-${moduleColor}`}>
+										<p className={`question-label question-label-${moduleColor}`}>
 											{questions &&
 												questions.length > 0 &&
 												questionId != null &&
@@ -265,23 +268,24 @@ export class ScenarioQuesAns extends React.Component {
 										</p>
 									</div>
 									<div className="answer-container">
-										{!emptyOption && !showAnswer ? (
-											<p className="select-label">Select any option.</p>
-										) : null}
 										{!emptyOption &&
-											questions &&
-											questions.length > 0 &&
-											questionId != null &&
-											questions[questionId - 1].options.map((option, key) => (
-												<Card
-													key={key}
-													option={moduleScenario ? option.option : option}
-													answerClick={answerClick}
-													selectedCard={clickedOptions.includes(key)}
-													handleClick={this.handleAnswerClick(key)}
-													moduleColor={moduleColor}
-												/>
-											))}
+										!showAnswer && <p className="select-label">Select any option.</p>}
+										<div className="options-card-container">
+											{!emptyOption &&
+												questions &&
+												questions.length > 0 &&
+												questionId != null &&
+												questions[questionId - 1].options.map((option, key) => (
+													<Card
+														key={key}
+														option={moduleScenario ? option.option : option}
+														answerClick={answerClick}
+														selectedCard={clickedOptions.includes(key)}
+														handleClick={this.handleAnswerClick(key)}
+														moduleColor={moduleColor}
+													/>
+												))}
+										</div>
 									</div>
 									{/* Either option is clicked or question option is empty render proceed button */}
 									{(emptyOption || answerClick) && (

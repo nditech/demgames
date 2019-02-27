@@ -38,3 +38,22 @@
 .progress-bar-container {
 	margin-top: .4em;
 }
+
+@media (min-width: 1024px) {
+	.question-main-container {
+		.answer-container {
+			.options-card-container {
+				display: flex;
+				flex-wrap: wrap;
+				margin: 0 15.5em;
+				::-webkit-scrollbar {
+					width: 0em;
+				}
+				.card-button {
+					height: 10em;
+					overflow: scroll;
+				}
+			}
+		}
+	}
+}

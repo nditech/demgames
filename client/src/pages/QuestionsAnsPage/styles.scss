@@ -66,13 +66,21 @@
 			button {
 				font-size: 1em;
 			}
+
 			.options-card-container {
 				display: flex;
 				flex-wrap: wrap;
 				margin: 0 15.5em;
+				::-webkit-scrollbar {
+					width: 0em;
+				}
+				::-webkit-scrollbar-thumb {
+					background: #6c70a1;
+				}
 
 				.card-button {
 					height: 10em;
+					overflow: scroll;
 				}
 			}
 		}
