@@ -14,8 +14,9 @@ import { connect } from 'react-redux';
 import './styles.scss';
 import GameInfo from '../../components/GameInfo';
 import PropTypes from 'prop-types';
+import gameData from './data';
 
-class QuestionsAnsPage extends React.Component {
+export class QuestionsAnsPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -37,36 +38,10 @@ class QuestionsAnsPage extends React.Component {
 		};
 	}
 
-	//Put api call to update scores at backend.
-	// handleUpdateScore = (newScore) => {
-	// 	let data = { score: newScore };
-	// 	return fetch(
-	// 		config.baseUrl +
-	// 			`/api/module/${this.props.match.params.moduleId}/level/${this.props.match.params.levelId}/update-score`,
-	// 		{
-	// 			method: 'PUT',
-	// 			headers: {
-	// 				'Content-Type': 'application/json'
-	// 			},
-	// 			body: JSON.stringify(data)
-	// 		}
-	// 	)
-	// 		.then((response) => {
-	// 			if (response.status >= 200 && response.status < 300) {
-	// 				console.log('Update score success');
-	// 				console.log(response.json());
-	// 			} else {
-	// 				console.log('Update score fail');
-	// 			}
-	// 		})
-	// 		.catch((status, err) => {
-	// 			console.log(err);
-	// 		});
-	// };
-
 	//To hide question answer and render selected option abd right option.
 	showRightAnswer = () => {
 		this.setState({ showCorrectAns: true });
+		return 1;
 	};
 
 	//To show question answer and hide selected option abd right option.
@@ -81,6 +56,7 @@ class QuestionsAnsPage extends React.Component {
 		const selectedValue = this.state.selectedAnswer;
 		selectedValue.sort();
 		correctAns.sort();
+
 		if (JSON.stringify(selectedValue) === JSON.stringify(correctAns)) {
 			this.setState((prevState) => ({
 				answerCorrect: true,
@@ -94,20 +70,10 @@ class QuestionsAnsPage extends React.Component {
 		}
 	};
 
-	// Increments the question Id by 1 for non-scenario modules and for scenario type it takes it to the linked question.
+	// Increments the question Id by 1 for non-scenario modules.
 	nextQuestion = () => {
-		let next = 0;
-		let moduleId = this.props.match.params.moduleId;
-		let level = parseInt(this.props.match.params.levelId);
-		const { moduleScenario, questionId, selectedOption } = this.state;
-		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
-
-		const nextQuestionId = questions && questions[questionId - 1].options[selectedOption].linked_question;
-
-		!moduleScenario ? (next = 1) : (next = nextQuestionId);
-
 		this.setState((prevState) => ({
-			questionId: moduleScenario ? next : prevState.questionId + 1,
+			questionId: prevState.questionId + 1,
 			selectedAnswer: []
 		}));
 	};
@@ -154,7 +120,6 @@ class QuestionsAnsPage extends React.Component {
 		const { questionId } = this.state;
 		let moduleId = this.props.match.params.moduleId;
 		let level = parseInt(this.props.match.params.levelId);
-
 		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		var totalQuestion = 0;
 		if (questions && questions.length > 0) {
@@ -202,10 +167,9 @@ class QuestionsAnsPage extends React.Component {
 	};
 
 	handleAnswerClick = (correctAns, key) => (e) => {
-		const { clickedOptions } = this.state;
+		const { clickedOptions, selectedAnswer } = this.state;
 		clickedOptions.push(key);
 		const selectedValue = key;
-		const { selectedAnswer } = this.state;
 		selectedAnswer.push(selectedValue);
 		this.setState(
 			(prevState) => ({
@@ -225,7 +189,6 @@ class QuestionsAnsPage extends React.Component {
 	checkParScoreStatus = () => {
 		let moduleId = this.props.match.params.moduleId;
 		let level = parseInt(this.props.match.params.levelId);
-
 		const { currentScore } = this.state;
 		const parScores = this.getParScores();
 		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
@@ -251,7 +214,6 @@ class QuestionsAnsPage extends React.Component {
 	getTotalQuestions = () => {
 		let moduleId = this.props.match.params.moduleId;
 		let level = parseInt(this.props.match.params.levelId);
-
 		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		var totalQuestion = 0;
 		if (questions && questions.length > 0) {
@@ -292,8 +254,7 @@ class QuestionsAnsPage extends React.Component {
 			selectedAnswer,
 			infoOpen,
 			clickedOptions,
-			moduleScenario,
-			selectedOption
+			moduleScenario
 		} = this.state;
 
 		let moduleId = parseInt(this.props.match.params.moduleId);
@@ -307,6 +268,7 @@ class QuestionsAnsPage extends React.Component {
 		const backUrl = `/module/${moduleId}/levels`;
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
+
 		return (
 			<Fragment>
 				<div className="question-main-container">
@@ -325,8 +287,7 @@ class QuestionsAnsPage extends React.Component {
 						<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleInfoOpen} />
 					</div>
 					<Fragment>
-						{// nextQuestionId === null &&
-						totalQuestion > 0 &&
+						{totalQuestion > 0 &&
 						questionId > totalQuestion && (
 							<Redirect
 								to={{
@@ -367,7 +328,6 @@ class QuestionsAnsPage extends React.Component {
 									</div>
 									<div className="questions-container">
 										<p className={`question-label question-label-${moduleColor}`}>
-											{console.log('ques', questions[questionId - 1].question)}
 											{questions && questions.length > 0 && questions[questionId - 1].question}
 										</p>
 									</div>
@@ -456,5 +416,3 @@ QuestionsAnsPage.propTypes = {
 };
 
 export default connect(mapStateToProps, null)(QuestionsAnsPage);
-
-// export default QuestionsAnsPage;

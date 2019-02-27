@@ -15,7 +15,7 @@ import './styles.scss';
 import GameInfo from '../../components/GameInfo';
 import PropTypes from 'prop-types';
 
-class QuestionsAnsPage extends React.Component {
+export class ScenarioQuesAns extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -37,12 +37,11 @@ class QuestionsAnsPage extends React.Component {
 			id: 1
 		};
 	}
-	// Increments the question Id by 1 for non-scenario modules and for scenario type it takes it to the linked question.
+	//Change the questionId to next linked question and renders the next linked question.
 	nextQuestion = () => {
-		let next = 0;
 		let moduleId = this.props.match.params.moduleId;
 		let level = parseInt(this.props.match.params.levelId);
-		const { moduleScenario, questionId, selectedOption } = this.state;
+		const { questionId, selectedOption } = this.state;
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 
 		const nextQuestionId =
@@ -89,37 +88,19 @@ class QuestionsAnsPage extends React.Component {
 		this.setState({ infoOpen: false });
 	};
 
-	// Listens to no of answers clicked and compare it with actual number of answers for a
-	// particular question and if it gets equal it locks the options cards.
-	checkAnsClicked = (answerClicked) => {
-		let moduleId = this.props.match.params.moduleId;
-		let level = parseInt(this.props.match.params.levelId);
-		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
-		const { questionId } = this.state;
-		let correctAnsLength = questions && questionId !== null && questions[questionId - 1].correct_answer.length;
-		if (answerClicked === correctAnsLength) {
-			this.setState({ answerClick: true });
-		}
-	};
-
 	handleAnswerClick = (key) => (e) => {
 		const { clickedOptions } = this.state;
 		clickedOptions.push(key);
 		const selectedValue = key;
 		const { selectedAnswer } = this.state;
 		selectedAnswer.push(selectedValue);
-		this.setState(
-			(prevState) => ({
-				answerClicked: prevState.answerClicked + 1,
-				selectedAnswer: selectedAnswer,
-				selectedCard: key,
-				selectedOption: key
-			}),
-			() => {
-				const { answerClicked } = this.state;
-				this.checkAnsClicked(answerClicked);
-			}
-		);
+		this.setState((prevState) => ({
+			answerClicked: prevState.answerClicked + 1,
+			selectedAnswer: selectedAnswer,
+			selectedCard: key,
+			selectedOption: key,
+			answerClick: true
+		}));
 	};
 
 	//Get list of module names.
@@ -136,7 +117,6 @@ class QuestionsAnsPage extends React.Component {
 	getTotalQuestions = () => {
 		let moduleId = this.props.match.params.moduleId;
 		let level = parseInt(this.props.match.params.levelId);
-
 		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		var totalQuestion = 0;
 		if (questions && questions.length > 0) {
@@ -166,6 +146,23 @@ class QuestionsAnsPage extends React.Component {
 
 		this.handleNextClick();
 		this.nextQuestion();
+		this.checkParScoreStatus();
+	};
+
+	//Checks if current score + previous score is less than parScore and return parScoreStatus.
+	checkParScoreStatus = () => {
+		let moduleId = this.props.match.params.moduleId;
+		let level = parseInt(this.props.match.params.levelId);
+		const { currentScore } = this.state;
+		const parScores = this.getParScores();
+		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
+		let prevScore = currentLevelNewScores[level - 1];
+
+		if (prevScore + currentScore < parScores[level]) {
+			this.setState({ parScoreStatus: false });
+		} else {
+			this.setState({ parScoreStatus: true });
+		}
 	};
 
 	//Get list of parScores for a module.
@@ -202,7 +199,7 @@ class QuestionsAnsPage extends React.Component {
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		const emptyOption = questionId !== null && questions[questionId - 1].options[0].option === '';
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
-		console.log('score', currentScore);
+
 		return (
 			<Fragment>
 				<div className="question-main-container">
@@ -315,7 +312,6 @@ class QuestionsAnsPage extends React.Component {
 							open={open}
 							message={'Your answer is correct'}
 							answerStatus={true}
-							handleClose={this.handleClose}
 							imageUrl={correctAnsUrl}
 							nextQuestion={this.nextQuestion}
 						/>
@@ -323,8 +319,6 @@ class QuestionsAnsPage extends React.Component {
 						<AnswerInfoPopup
 							open={open}
 							message={'Oh! Seems like you selected the wrong answer.'}
-							answerStatus={false}
-							handleClose={this.handleClose}
 							imageUrl={wrongAnsUrl}
 							showRightAnswer={this.showRightAnswer}
 							nextQuestion={this.nextQuestion}
@@ -341,11 +335,9 @@ const mapStateToProps = (state) => {
 	return { gameData: state.gameData };
 };
 
-QuestionsAnsPage.propTypes = {
+ScenarioQuesAns.propTypes = {
 	gameData: PropTypes.object,
 	match: PropTypes.object
 };
 
-export default connect(mapStateToProps, null)(QuestionsAnsPage);
-
-// export default QuestionsAnsPage;
+export default connect(mapStateToProps, null)(ScenarioQuesAns);
