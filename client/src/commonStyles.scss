@@ -105,16 +105,30 @@
 }
 
 @media (min-width: 1024px) {
+	.landing-page-wrapper {
+		height: 100vh;
+		background-color: #f2f2f2;
+		.landing-page-container {
+			padding: 0;
+			height: 100%;
+		}
+	}
+
 	.next-page-button {
 		position: relative;
 		float: right;
-		margin-right: 2em;
-		margin-top: 2em;
-		width: 11em;
+		margin: .8em;
+		margin-right: 12em;
+		width: 10em;
+		height: 2.2em;
 		border-radius: 6px;
 	}
 }
-
+@media screen and (min-width: 1024px) {
+	.level-question-detail {
+		text-align: center;
+	}
+}
 @media screen and (device-aspect-ratio: 40/71) {
 	.game-type-help {
 		.back-module-container {

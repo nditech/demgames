@@ -9,7 +9,7 @@ import Slide from '@material-ui/core/Slide';
 import './styles.scss';
 import '../../commonStyles.scss';
 import PropTypes from 'prop-types';
-
+import { alignCenter } from './styles';
 function Transition(props) {
 	return <Slide direction="up" {...props} />;
 }
@@ -41,8 +41,8 @@ class AnswerInfoPopup extends Component {
 				keepMounted
 				onClose={handleClose}
 			>
-				<DialogTitle id="dialog-slide-image">
-					{<img className="answer-status-logo" src={imageUrl} alt="answer-status" />}
+				<DialogTitle id="dialog-slide-image" style={alignCenter}>
+					<img className="answer-status-logo" src={imageUrl} alt="answer-status" />
 				</DialogTitle>
 				<DialogContent>
 					<DialogContentText className="greet-message" id="dialog-slide-description">
@@ -91,7 +91,7 @@ class AnswerInfoPopup extends Component {
 AnswerInfoPopup.propTypes = {
 	open: PropTypes.bool,
 	handleClose: PropTypes.func,
-	imageUrl: PropTypes.object,
+	imageUrl: PropTypes.string,
 	answerStatus: PropTypes.bool,
 	message: PropTypes.string,
 	showRightAnswer: PropTypes.func,

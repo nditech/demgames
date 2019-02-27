@@ -13,6 +13,7 @@
 .dialog-content {
 	text-align: left;
 	.greet-message {
+		text-align: center !important;
 		span {
 			font-family: Georgia !important;
 			font-size: 22px !important;
@@ -21,6 +22,7 @@
 		}
 	}
 	.answer-status-message {
+		text-align: center !important;
 		span {
 			font-family: Georgia !important;
 			font-size: 22px !important;
@@ -29,6 +31,7 @@
 		}
 	}
 	.points-status {
+		text-align: center !important;
 		span {
 			font-family: OpenSans !important;
 			font-size: 20px !important;
@@ -63,10 +66,7 @@
 		margin: 0;
 	}
 }
-.dialog-slide-image {
-	h2 {
-		text-align: center;
-	}
+@media screen and (min-width: 1024px) {
 	.answer-status-logo {
 		width: 100px;
 		height: 100px;
@@ -74,7 +74,7 @@
 	}
 }
 
-	@media screen and (device-aspect-ratio: 40/71) {
+@media screen and (device-aspect-ratio: 40/71) {
 	.dialog-content {
 		text-align: center;
 		.greet-message {

@@ -7,27 +7,46 @@ import PropTypes from 'prop-types';
 class ResultPage extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			parScoreStatus: false
-		};
+		this.state = {};
 	}
 
+	// //Checks if current score + previous score is less than parScore and return parScoreStatus.
+	// checkParScoreStatus = () => {
+	// 	let moduleId = this.props.match.params.moduleId;
+	// 	let level = parseInt(this.props.match.params.levelId);
+	// 	const { currentScore } = this.state;
+	// 	const parScores = this.getParScores();
+	// 	let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
+	// 	let prevScore = currentLevelNewScores[level - 1];
+	// 	if (prevScore + currentScore < parScores[level]) {
+	// 		this.setState({ parScoreStatus: false });
+	// 	} else {
+	// 		this.setState({ parScoreStatus: true });
+	// 	}
+	// };
+
 	handleUpdateScore = () => {
-		const { currentScore, level, moduleId } = this.props.location.state;
+		const { currentScore, level, moduleId, totalScore } = this.props.location.state;
 		let newScore = currentScore;
 		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
 		let prevScore = currentLevelNewScores[level - 1];
 
 		currentLevelNewScores[level - 1] =
-			newScore > 0
-				? newScore > prevScore ? newScore : prevScore + newScore <= 100 ? prevScore + newScore : 100
-				: prevScore;
+			newScore > 0 ? (prevScore + newScore <= totalScore ? prevScore + newScore : totalScore) : prevScore;
+
 		this.props.gameData.scores[moduleId - 1] = currentLevelNewScores;
 		this.props.getScores(this.props.gameData.scores);
 	};
+	// //Get list of parScores for a module.
+	// getParScores = () => {
+	// 	let moduleId = this.props.match.params.moduleId;
+	// 	const parScores = this.props.gameData.gameData[moduleId - 1].levels.map((level) => level.par_score);
+	// 	return parScores;
+	// };
 
 	componentDidMount() {
 		this.handleUpdateScore();
+		// this.checkParScoreStatus();
 	}
 
 	render() {
@@ -38,10 +57,10 @@ class ResultPage extends Component {
 			moduleName,
 			messageOne,
 			messageTwo,
-			moduleScenario
+			moduleScenario,
+			parScoreStatus
 		} = this.props.location.state;
-		const { parScoreStatus } = this.state;
-
+		console.log(parScoreStatus);
 		const totalLevels = this.props.gameData.gameData[moduleId - 1].levels.length;
 
 		const backToLevelUrl = `/module/${moduleId}/levels`;
@@ -49,15 +68,17 @@ class ResultPage extends Component {
 		const nextLevelUrl = `/module/${moduleScenario ? 'scenario/' : ''}${moduleId}/level/${level + 1}/questions`;
 		return (
 			<div className="result-page-container">
-				<div className="game-type-help">
-					<div className="result-back-module-container">
-						<p className="result-page-module-name">{moduleName}</p>
+				<div>
+					<div className="game-type-help">
+						<div className="result-back-module-container">
+							<p className="result-page-module-name">{moduleName}</p>
+						</div>
 					</div>
-				</div>
-				<div className="congratulation-message-container">
-					<img src={congoUrl} alt="congratulations-icon" />
-					<p className="congratulations-label">Congratulations!</p>
-					<p className="level-finish-label">You have finished level {level}</p>
+					<div className="congratulation-message-container">
+						<img src={congoUrl} alt="congratulations-icon" />
+						<p className="congratulations-label">Congratulations!</p>
+						<p className="level-finish-label">You have finished level {level}</p>
+					</div>
 				</div>
 				<p className="score-message">{messageOne}</p>
 				<img className="graph-icon" src={image} alt="icon" />
