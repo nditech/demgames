@@ -46,6 +46,13 @@
 				display: flex;
 				flex-wrap: wrap;
 				margin: 0 15.5em;
+				::-webkit-scrollbar {
+					width: 0em;
+				}
+				.card-button {
+					height: 10em;
+					overflow: scroll;
+				}
 			}
 		}
 	}

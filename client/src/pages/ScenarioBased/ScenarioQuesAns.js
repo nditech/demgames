@@ -158,7 +158,7 @@ export class ScenarioQuesAns extends React.Component {
 		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
 		let prevScore = currentLevelNewScores[level - 1];
 
-		if (prevScore + currentScore < parScores[level]) {
+		if (prevScore + currentScore <= parScores[level]) {
 			this.setState({ parScoreStatus: false });
 		} else {
 			this.setState({ parScoreStatus: true });
@@ -199,7 +199,9 @@ export class ScenarioQuesAns extends React.Component {
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		const emptyOption = questionId !== null && questions[questionId - 1].options[0].option === '';
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
+		const totalScore = totalQuestion * 10;
 
+		console.log(parScoreStatus);
 		return (
 			<Fragment>
 				<div className="question-main-container">
@@ -226,6 +228,7 @@ export class ScenarioQuesAns extends React.Component {
 										moduleId: moduleId,
 										moduleScenario: moduleScenario,
 										parScoreStatus: parScoreStatus,
+										totalScore: totalScore,
 										currentScore: currentScore,
 										moduleName: moduleNames[moduleId - 1],
 										level: level,

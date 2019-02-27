@@ -58,6 +58,7 @@ class LevelsPage extends React.Component {
 		const moduleName = moduleNames[moduleId - 1];
 		let levels = this.props.gameData.gameData[moduleId - 1].levels;
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
+	
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">

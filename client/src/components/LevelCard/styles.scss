@@ -19,7 +19,7 @@
 	background-color: #f0713d;
 }
 .level-card {
-	height: 33%;
+	height: 15em;
 	width: 100%;
 	margin: .5em 0;
 	cursor: pointer;
@@ -81,12 +81,17 @@
 
 @media (min-width: 1024px) {
 	.link-lock {
-		width: 30%;
+		width: 31%;
 		height: 19em;
 		margin: .5em .5em;
 		.level-card {
 			height: 100%;
 			border-radius: 15px;
+			.lock-icon-container {
+				position: relative;
+				bottom: 3em;
+				right: .5em;
+			}
 		}
 	}
 }

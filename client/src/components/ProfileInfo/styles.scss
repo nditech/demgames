@@ -32,7 +32,7 @@
 	}
 	.input-label {
 		left: 3em;
-		top: 3em;
+		top: 2em;
 		background-color: #fafafd;
 		padding: 0 .5em;
 		position: absolute;
@@ -128,7 +128,7 @@
 @media (min-width: 1024px) {
 	.profile-info-container {
 		display: flex;
-		margin: 0 19em;
+		margin: 0 14em;
 		.career-progress-label {
 			margin-left: 0;
 			font-size: 1.6em;
@@ -140,7 +140,8 @@
 			margin-top: 2.2em;
 		}
 		.input-label {
-			left: 18em;
+			left: 14em;
+			top: 3em;
 		}
 		.input-label-name {
 			top: 8em;

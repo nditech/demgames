@@ -91,7 +91,7 @@ class AnswerInfoPopup extends Component {
 AnswerInfoPopup.propTypes = {
 	open: PropTypes.bool,
 	handleClose: PropTypes.func,
-	imageUrl: PropTypes.object,
+	imageUrl: PropTypes.string,
 	answerStatus: PropTypes.bool,
 	message: PropTypes.string,
 	showRightAnswer: PropTypes.func,
