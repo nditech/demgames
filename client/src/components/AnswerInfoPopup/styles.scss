@@ -73,3 +73,32 @@
 		object-fit: contain;
 	}
 }
+
+	@media screen and (device-aspect-ratio: 40/71) {
+	.dialog-content {
+		text-align: center;
+		.greet-message {
+			span {
+				font-size: 1.2em !important;
+			}
+		}
+		.answer-status-message {
+			span {
+				font-size: 1.2em !important;
+			}
+		}
+		.points-status {
+			span {
+				font-size: .9em !important;
+			}
+			.correct-points {
+			}
+			.wrong-points {
+			}
+		}
+	}
+	.answer-status-logo {
+		width: 3em;
+		height: 3em;
+	}
+}

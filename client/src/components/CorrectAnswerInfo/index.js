@@ -1,12 +1,21 @@
 import React, { Fragment, Component } from 'react';
 import './styles.scss';
-import {Card} from '../Card';
+import { Card } from '../Card';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class CorrectAnswerInfo extends Component {
 	render() {
-		const { level, questionId, moduleId, totalQuestion, correctAns, selectedAnswer, hideRightAnswer } = this.props;
+		const {
+			level,
+			questionId,
+			moduleId,
+			totalQuestion,
+			correctAns,
+			selectedAnswer,
+			hideRightAnswer,
+			moduleColor
+		} = this.props;
 		const selectedAnsList = [];
 		selectedAnsList.push(
 			selectedAnswer.map((correct) => {
@@ -44,9 +53,9 @@ class CorrectAnswerInfo extends Component {
 					</span>
 				</div>
 				<p className="answer">Your answer</p>
-				<Card option={strSelectedAns} color={'blue'} />
+				<Card option={strSelectedAns} moduleColor={moduleColor} />
 				<p className="answer">Correct answer</p>
-				<Card option={strCorrectAns} color={'green'} />
+				<Card option={strCorrectAns} moduleColor={moduleColor} />
 				<button className={`next-page-button result-next-page-button`} onClick={hideRightAnswer}>
 					Proceed
 				</button>

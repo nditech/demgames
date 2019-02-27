@@ -1,6 +1,10 @@
 .result-page-container {
 	text-align: center;
 	font-size: 1.4em;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	p {
 		font-family: Georgia;
 		color: #000000;
@@ -8,7 +12,7 @@
 	}
 
 	.retry-level {
-		position: fixed;
+		// position: fixed;
 		bottom: 0;
 		left: 0;
 		height: 2.5em;
@@ -38,10 +42,21 @@
 		color: #000000;
 		font-weight: bold;
 	}
+	.retry-levels-link {
+		margin-top: 1em;
+
+		color: #000000;
+		font-weight: bold;
+	}
 	.result-back-module-container {
 		justify-content: center;
 		width: 100%;
 		background-color: #f3f6f9;
+	}
+	.graph-icon {
+		width: 3em;
+		height: 3em;
+		margin: 0 auto;
 	}
 }
 
@@ -49,11 +64,21 @@
 	.result-page-container {
 		margin: 0 15em;
 		.retry-level {
-			position: relative;
 			top: 2em;
 			width: 19%;
 			height: 2.2em;
 			border-radius: 8px;
+		}
+	}
+}
+
+@media screen and (device-aspect-ratio: 40/71) {
+	.result-page-container {
+		font-size: 1.2em;
+	}
+	.retry-levels-link {
+		.retry-level {
+			height: 2em;
 		}
 	}
 }

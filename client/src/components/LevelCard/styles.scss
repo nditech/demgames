@@ -26,6 +26,9 @@
 	margin: .5em 0;
 	cursor: pointer;
 	.level-score {
+		text-align: right;
+		width: 50%;
+		padding-right: 2em;
 		font-size: 1.6em;
 		font-family: Georgia;
 		line-height: 1.2;
@@ -39,6 +42,10 @@
 		height: 3em;
 
 		.level-label {
+			width: 50%;
+			text-align: left;
+			padding-left: 1.5em;
+
 			font-size: 2em;
 			font-family: OpenSans;
 			font-weight: bold;
@@ -82,6 +89,37 @@
 		.level-card {
 			height: 100%;
 			border-radius: 15px;
+		}
+	}
+}
+
+@media screen and (device-aspect-ratio: 40/71) {
+	.level-card {
+		.level-score {
+			font-size: 1.4em;
+		}
+
+		.level-label-score {
+			.level-label {
+				font-size: 1.4em;
+			}
+		}
+
+		.level-description {
+			font-size: 1.3em;
+			margin: 0;
+		}
+
+		.level-unlock-rule {
+			font-size: 1.3em;
+		}
+
+		.lock-icon-container {
+			.lock-icon {
+				width: 1.2em;
+				height: 1.5em;
+				margin-top: .3em;
+			}
 		}
 	}
 }
