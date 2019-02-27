@@ -152,13 +152,4 @@ describe('<QuestionsAnsPage/>', () => {
 		const wrapper = shallow(<QuestionsAnsPage {...defaultProps} />);
 		expect(Array.isArray(wrapper.instance().getModuleNames())).toBe(true);
 	});
-
-	it('handleScenarioProceed()', () => {
-		const wrapper = shallow(<QuestionsAnsPage {...defaultProps} />);
-		wrapper.setState({ selectedCard: 1, answerClicked: 1, clickedOptions: [ 0, 1, 2 ] });
-		wrapper.instance().handleScenarioProceed();
-		expect(wrapper.state('selectedCard')).toBe(null);
-		expect(wrapper.state('answerClicked')).toBe(0);
-		expect(wrapper.state('clickedOptions')).toEqual([]);
-	});
 });

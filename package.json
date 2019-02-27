@@ -10,6 +10,7 @@
 		"emotion": "^10.0.6",
 		"excel-as-json": "^2.0.2",
 		"jest-transform-stub": "^2.0.0",
+		"node-fetch": "^2.3.0",
 		"node-sass": "^4.11.0",
 		"nodemon": "^1.18.9",
 		"react": "^16.7.0",

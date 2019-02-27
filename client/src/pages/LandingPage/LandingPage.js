@@ -8,6 +8,8 @@ import { config } from '../../settings';
 import { connect } from 'react-redux';
 import { fetchGameData, fetchScores } from './actions';
 import PropTypes from 'prop-types';
+
+global.fetch = require('node-fetch');
 class LandingPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -16,7 +18,8 @@ class LandingPage extends React.Component {
 
 	//Fetch complete game data.
 	componentWillMount() {
-		fetch(config.baseUrl + '/api/game')
+		// fetch(config.baseUrl + '/api/game')
+		fetch(config.baseUrl + 'http://localhost:9000/api/game')
 			.then((response) => {
 				if (response.status >= 200 && response.status < 300) {
 					response.json().then((res) => {
