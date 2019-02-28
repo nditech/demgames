@@ -49,7 +49,8 @@ class LevelCard extends Component {
 
 					<p className="level-description">Two line {description}</p>
 
-					{level > 1 && (
+					{level > 1 &&
+					prevLevelScore < parScore && (
 						<p className="level-unlock-rule">
 							Need {parScore} in Level {linkedLevel} to unlock.
 						</p>

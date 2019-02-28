@@ -14,7 +14,6 @@ import { connect } from 'react-redux';
 import './styles.scss';
 import GameInfo from '../../components/GameInfo';
 import PropTypes from 'prop-types';
-import gameData from './data';
 
 export class QuestionsAnsPage extends React.Component {
 	constructor(props) {
@@ -34,7 +33,8 @@ export class QuestionsAnsPage extends React.Component {
 			answerClicked: 0,
 			clickedOptions: [],
 			moduleScenario: false,
-			selectedOption: 0
+			selectedOption: 0,
+			scenario: false
 		};
 	}
 
@@ -104,7 +104,7 @@ export class QuestionsAnsPage extends React.Component {
 	//Return Correct answer for current question.
 	getCorrectAnswer = () => {
 		const { questionId } = this.state;
-		let moduleId = this.props.match.params.moduleId;
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		var totalQuestion = 0;
@@ -118,7 +118,7 @@ export class QuestionsAnsPage extends React.Component {
 	//Return progress for current level.
 	getProgress = () => {
 		const { questionId } = this.state;
-		let moduleId = this.props.match.params.moduleId;
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		var totalQuestion = 0;
@@ -154,7 +154,7 @@ export class QuestionsAnsPage extends React.Component {
 	// Listens to no of answers clicked and compare it with actual number of answers for a
 	// particular question and if it gets equal it locks the options cards.
 	checkAnsClicked = (answerClicked) => {
-		let moduleId = this.props.match.params.moduleId;
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		const { questionId } = this.state;
@@ -185,7 +185,7 @@ export class QuestionsAnsPage extends React.Component {
 
 	//Checks if current score + previous score is less than parScore and return parScoreStatus.
 	checkParScoreStatus = () => {
-		let moduleId = this.props.match.params.moduleId;
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 		const { currentScore } = this.state;
 		const parScores = this.getParScores();
@@ -196,7 +196,6 @@ export class QuestionsAnsPage extends React.Component {
 		} else {
 			this.setState({ parScoreStatus: true });
 		}
-		console.log('par', this.state.parScoreStatus);
 	};
 
 	//Get list of module names.
@@ -211,7 +210,7 @@ export class QuestionsAnsPage extends React.Component {
 
 	//Returns number of questions for current level.
 	getTotalQuestions = () => {
-		let moduleId = this.props.match.params.moduleId;
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		var totalQuestion = 0;
@@ -254,7 +253,8 @@ export class QuestionsAnsPage extends React.Component {
 			selectedAnswer,
 			infoOpen,
 			clickedOptions,
-			moduleScenario
+			moduleScenario,
+			scenario
 		} = this.state;
 
 		let moduleId = parseInt(this.props.match.params.moduleId);
@@ -268,7 +268,7 @@ export class QuestionsAnsPage extends React.Component {
 		const backUrl = `/module/${moduleId}/levels`;
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
-		const totalScore = totalQuestion * 10;
+		const totalScore = this.props.gameData.gameData[moduleId - 1].levels[level - 1].total_score;
 
 		return (
 			<Fragment>
@@ -298,6 +298,7 @@ export class QuestionsAnsPage extends React.Component {
 										parScoreStatus: parScoreStatus,
 										totalScore: totalScore,
 										currentScore: currentScore,
+										scenario: scenario,
 										moduleName: moduleNames[moduleId - 1],
 										level: level,
 										image: parScoreStatus ? hurreyUrl : oopsUrl,

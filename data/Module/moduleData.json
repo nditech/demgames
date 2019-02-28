@@ -127,7 +127,7 @@
 				"id": 4,
 				"current_score": 0,
 				"par_score": 20,
-				"total_score": 20,
+				"total_score": 50,
 				"desc": "Description4",
 				"linked_level": 3,
 				"questions": [
@@ -158,7 +158,7 @@
 				"id": 1,
 				"current_score": 0,
 				"par_score": 0,
-				"total_score": 100,
+				"total_score": 60,
 				"desc": "DescriptionA",
 				"linked_level": 0,
 				"questions": [
@@ -198,7 +198,7 @@
 				"id": 2,
 				"current_score": 0,
 				"par_score": 20,
-				"total_score": 100,
+				"total_score": 70,
 				"desc": "DescriptionB",
 				"linked_level": 1,
 				"questions": [
@@ -220,7 +220,7 @@
 				"id": 3,
 				"current_score": 0,
 				"par_score": 20,
-				"total_score": 100,
+				"total_score": 80,
 				"desc": "DescriptionC",
 				"linked_level": 2,
 				"questions": [
@@ -250,7 +250,7 @@
 				"id": 1,
 				"current_score": 0,
 				"par_score": 0,
-				"total_score": 100,
+				"total_score": 50,
 				"desc": "DescriptionE",
 				"linked_level": 0,
 				"questions": [
@@ -458,7 +458,7 @@
 				"id": 2,
 				"current_score": 0,
 				"par_score": 10,
-				"total_score": 100,
+				"total_score": 60,
 				"desc": "DescriptionF",
 				"linked_level": 0,
 				"questions": [
@@ -666,7 +666,7 @@
 				"id": 3,
 				"current_score": 0,
 				"par_score": 10,
-				"total_score": 100,
+				"total_score": 70,
 				"desc": "DescriptionF",
 				"linked_level": 0,
 				"questions": [

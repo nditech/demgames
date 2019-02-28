@@ -37,14 +37,14 @@ class LevelsPage extends React.Component {
 
 	// Get Scores for each levels of a particular module.
 	getScores = () => {
-		let moduleId = this.props.match.params.moduleId;
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		const scores = this.props.gameData.scores[moduleId - 1];
 		return scores;
 	};
 
 	//Get list of par scores for each level of a particular module.
 	getParScores = () => {
-		let moduleId = this.props.match.params.moduleId;
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		const parScores = this.props.gameData.gameData[moduleId - 1].levels.map((level) => level.par_score);
 		return parScores;
 	};
@@ -58,7 +58,7 @@ class LevelsPage extends React.Component {
 		const moduleName = moduleNames[moduleId - 1];
 		let levels = this.props.gameData.gameData[moduleId - 1].levels;
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
-	
+
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">
