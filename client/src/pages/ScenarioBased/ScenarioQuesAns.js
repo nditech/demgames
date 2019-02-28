@@ -98,7 +98,6 @@ export class ScenarioQuesAns extends React.Component {
 			selectedOption: key,
 			answerClick: true
 		}));
-		this.checkParScoreStatus();
 	};
 
 	//Get list of module names.
@@ -132,13 +131,16 @@ export class ScenarioQuesAns extends React.Component {
 
 		const nextQuestionId = questionId !== null && questions[questionId - 1].options[selectedOption].linked_question;
 		if (nextQuestionId === null) {
-			this.setState({
-				redirect: true,
-				currentScore: questions[questionId - 1].score,
-				conclusion: true,
-				open: true
-			});
-			this.checkParScoreStatus();
+			this.setState(
+				{
+					redirect: true,
+					currentScore: questions[questionId - 1].score,
+					open: true
+				},
+				() => {
+					this.checkParScoreStatus();
+				}
+			);
 		}
 		this.setState((prevState) => ({
 			selectedCard: null,
@@ -147,7 +149,6 @@ export class ScenarioQuesAns extends React.Component {
 			questionId: 10,
 			id: prevState.id + 1
 		}));
-
 		this.handleNextClick();
 		this.nextQuestion();
 	};
@@ -202,7 +203,7 @@ export class ScenarioQuesAns extends React.Component {
 		const emptyOption = questionId !== null && questions[questionId - 1].options[0].option === '';
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
 		const totalScore = this.props.gameData.gameData[moduleId - 1].levels[level - 1].total_score;
-
+		
 		return (
 			<Fragment>
 				<div className="question-main-container">
