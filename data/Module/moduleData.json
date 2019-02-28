@@ -104,7 +104,7 @@
 			{
 				"id": 3,
 				"current_score": 0,
-				"par_score": 20,
+				"par_score": 30,
 				"total_score": 20,
 				"desc": "Description3",
 				"linked_level": 2,
@@ -126,7 +126,7 @@
 			{
 				"id": 4,
 				"current_score": 0,
-				"par_score": 20,
+				"par_score": 40,
 				"total_score": 50,
 				"desc": "Description4",
 				"linked_level": 3,
