@@ -3,12 +3,8 @@ import { Redirect } from 'react-router-dom';
 import { Card } from '../../components/Card';
 import arrowBackUrl from '../../images/back.png';
 import infoUrl from '../../images/info.png';
-import correctAnsUrl from '../../images/correct.png';
-import wrongAnsUrl from '../../images/wrong.png';
 import oopsUrl from '../../images/oops.png';
 import hurreyUrl from '../../images/hurrey.png';
-import AnswerInfoPopup from '../../components/AnswerInfoPopup';
-import CorrectAnswerInfo from '../../components/CorrectAnswerInfo';
 import ProgressBar from '../../components/ProgressBar';
 import { connect } from 'react-redux';
 import './styles.scss';
@@ -34,12 +30,13 @@ export class ScenarioQuesAns extends React.Component {
 			clickedOptions: [],
 			moduleScenario: true,
 			selectedOption: 0,
+			scenario: true,
 			id: 1
 		};
 	}
 	//Change the questionId to next linked question and renders the next linked question.
 	nextQuestion = () => {
-		let moduleId = this.props.match.params.moduleId;
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 		const { questionId, selectedOption } = this.state;
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
@@ -66,7 +63,7 @@ export class ScenarioQuesAns extends React.Component {
 	//Return progress for current level.
 	getProgress = () => {
 		const { id } = this.state;
-		let moduleId = this.props.match.params.moduleId;
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 
 		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
@@ -101,6 +98,7 @@ export class ScenarioQuesAns extends React.Component {
 			selectedOption: key,
 			answerClick: true
 		}));
+		this.checkParScoreStatus();
 	};
 
 	//Get list of module names.
@@ -115,7 +113,7 @@ export class ScenarioQuesAns extends React.Component {
 
 	//Returns number of questions for current level.
 	getTotalQuestions = () => {
-		let moduleId = this.props.match.params.moduleId;
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 		let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		var totalQuestion = 0;
@@ -128,13 +126,19 @@ export class ScenarioQuesAns extends React.Component {
 	//Handle proceed button for scenario type.
 	handleScenarioProceed = () => {
 		const { questionId, selectedOption } = this.state;
-		const moduleId = parseInt(this.props.match.params.moduleId);
+		const moduleId = parseInt(parseInt(this.props.match.params.moduleId));
 		const level = parseInt(this.props.match.params.levelId);
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 
 		const nextQuestionId = questionId !== null && questions[questionId - 1].options[selectedOption].linked_question;
 		if (nextQuestionId === null) {
-			this.setState({ redirect: true, currentScore: questions[questionId - 1].score });
+			this.setState({
+				redirect: true,
+				currentScore: questions[questionId - 1].score,
+				conclusion: true,
+				open: true
+			});
+			this.checkParScoreStatus();
 		}
 		this.setState((prevState) => ({
 			selectedCard: null,
@@ -146,19 +150,17 @@ export class ScenarioQuesAns extends React.Component {
 
 		this.handleNextClick();
 		this.nextQuestion();
-		this.checkParScoreStatus();
 	};
 
 	//Checks if current score + previous score is less than parScore and return parScoreStatus.
 	checkParScoreStatus = () => {
-		let moduleId = this.props.match.params.moduleId;
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 		const { currentScore } = this.state;
 		const parScores = this.getParScores();
 		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
 		let prevScore = currentLevelNewScores[level - 1];
-
-		if (prevScore + currentScore <= parScores[level]) {
+		if (prevScore + currentScore < parScores[level]) {
 			this.setState({ parScoreStatus: false });
 		} else {
 			this.setState({ parScoreStatus: true });
@@ -167,7 +169,7 @@ export class ScenarioQuesAns extends React.Component {
 
 	//Get list of parScores for a module.
 	getParScores = () => {
-		let moduleId = this.props.match.params.moduleId;
+		let moduleId = parseInt(this.props.match.params.moduleId);
 		const parScores = this.props.gameData.gameData[moduleId - 1].levels.map((level) => level.par_score);
 		return parScores;
 	};
@@ -177,19 +179,19 @@ export class ScenarioQuesAns extends React.Component {
 			answerClick,
 			questionId,
 			showAnswer,
-			answerCorrect,
 			open,
 			parScoreStatus,
 			showCorrectAns,
 			currentScore,
-			selectedAnswer,
 			infoOpen,
 			clickedOptions,
 			moduleScenario,
 			id,
+			scenario,
 			redirect
 		} = this.state;
-		const moduleId = parseInt(this.props.match.params.moduleId);
+
+		const moduleId = parseInt(parseInt(this.props.match.params.moduleId));
 		const level = parseInt(this.props.match.params.levelId);
 		const totalQuestion = this.getTotalQuestions();
 		const moduleNames = this.getModuleNames();
@@ -199,9 +201,8 @@ export class ScenarioQuesAns extends React.Component {
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		const emptyOption = questionId !== null && questions[questionId - 1].options[0].option === '';
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
-		const totalScore = totalQuestion * 10;
+		const totalScore = this.props.gameData.gameData[moduleId - 1].levels[level - 1].total_score;
 
-		console.log(parScoreStatus);
 		return (
 			<Fragment>
 				<div className="question-main-container">
@@ -214,7 +215,7 @@ export class ScenarioQuesAns extends React.Component {
 							</button>
 
 							<p className="questions-page-module-name">
-								{moduleNames[this.props.match.params.moduleId - 1]}
+								{moduleNames[parseInt(this.props.match.params.moduleId) - 1]}
 							</p>
 						</div>
 						<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleInfoOpen} />
@@ -231,14 +232,18 @@ export class ScenarioQuesAns extends React.Component {
 										totalScore: totalScore,
 										currentScore: currentScore,
 										moduleName: moduleNames[moduleId - 1],
+										open: open,
+										scenario: scenario,
 										level: level,
 										image: parScoreStatus ? hurreyUrl : oopsUrl,
 										messageOne: parScoreStatus
 											? `Scenario Ends.`
-											: `Oh! You have scored only  ${currentScore > 0 ? currentScore : 0}/100.`,
+											: `Oh! You have scored only  ${currentScore > 0
+													? currentScore
+													: 0}/${totalScore}.`,
 										messageTwo: parScoreStatus
 											? `You are in top 100 in the rank.`
-											: `You need to earn ${parScores[level]}/100 for Level ${level}.`,
+											: `You need to earn ${parScores[level]}/${totalScore} for Level ${level}.`,
 										buttonMessage: !parScoreStatus
 											? `Retry Level ${level}`
 											: `Continue Level ${level + 1}`
@@ -247,87 +252,57 @@ export class ScenarioQuesAns extends React.Component {
 							/>
 						)}
 
-						{!showCorrectAns ? (
-							questionId != null && (
-								<div>
-									<div className="level-question-detail">
-										<span>Level {level} </span>
-										<span className="question-number-status">
-											Question {id} out of {totalQuestion}
-										</span>
-									</div>
-									<div className="progress-bar-container">
-										<ProgressBar progress={progress} />
-									</div>
-									<div className="questions-container">
-										<p className={`question-label question-label-${moduleColor}`}>
-											{questions &&
-												questions.length > 0 &&
-												questionId != null &&
-												questions[questionId - 1].question}
-										</p>
-									</div>
-									<div className="answer-container">
-										{!emptyOption &&
-										!showAnswer && <p className="select-label">Select any option.</p>}
-										<div className="options-card-container">
-											{!emptyOption &&
-												questions &&
-												questions.length > 0 &&
-												questionId != null &&
-												questions[questionId - 1].options.map((option, key) => (
-													<Card
-														key={key}
-														option={moduleScenario ? option.option : option}
-														answerClick={answerClick}
-														selectedCard={clickedOptions.includes(key)}
-														handleClick={this.handleAnswerClick(key)}
-														moduleColor={moduleColor}
-													/>
-												))}
-										</div>
-									</div>
-									{/* Either option is clicked or question option is empty render proceed button */}
-									{(emptyOption || answerClick) && (
-										<button
-											className={`next-page-button next-page-button-${true}`}
-											onClick={
-												moduleScenario ? this.handleScenarioProceed : this.handleProceedNext
-											}
-										>
-											Proceed
-										</button>
-									)}
+						{!showCorrectAns &&
+						questionId != null && (
+							<div>
+								<div className="level-question-detail">
+									<span>Level {level} </span>
+									<span className="question-number-status">
+										Question {id} out of {totalQuestion}
+									</span>
 								</div>
-							)
-						) : (
-							<CorrectAnswerInfo
-								selectedAnswer={selectedAnswer}
-								hideRightAnswer={this.hideRightAnswer}
-								moduleId={moduleId}
-								level={level}
-								questionId={questionId}
-								totalQuestion={totalQuestion}
-							/>
+								<div className="progress-bar-container">
+									<ProgressBar progress={progress} />
+								</div>
+								<div className="questions-container">
+									<p className={`question-label question-label-${moduleColor}`}>
+										{questions &&
+											questions.length > 0 &&
+											questionId != null &&
+											questions[questionId - 1].question}
+									</p>
+								</div>
+								<div className="answer-container">
+									{!emptyOption && !showAnswer && <p className="select-label">Select any option.</p>}
+									<div className="options-card-container">
+										{!emptyOption &&
+											questions &&
+											questions.length > 0 &&
+											questionId != null &&
+											questions[questionId - 1].options.map((option, key) => (
+												<Card
+													key={key}
+													option={moduleScenario ? option.option : option}
+													answerClick={answerClick}
+													selectedCard={clickedOptions.includes(key)}
+													handleClick={this.handleAnswerClick(key)}
+													moduleColor={moduleColor}
+												/>
+											))}
+									</div>
+								</div>
+								{/* Either option is clicked or question option is empty render proceed button */}
+								{(emptyOption || answerClick) && (
+									<button
+										className={`next-page-button next-page-button-${true}`}
+										onClick={moduleScenario ? this.handleScenarioProceed : this.handleProceedNext}
+									>
+										Proceed
+									</button>
+								)}
+							</div>
 						)}
 					</Fragment>
-					{answerCorrect ? (
-						<AnswerInfoPopup
-							open={open}
-							message={'Your answer is correct'}
-							answerStatus={true}
-							imageUrl={correctAnsUrl}
-							nextQuestion={this.nextQuestion}
-						/>
-					) : (
-						<AnswerInfoPopup
-							open={open}
-							message={'Oh! Seems like you selected the wrong answer.'}
-							imageUrl={wrongAnsUrl}
-							showRightAnswer={this.showRightAnswer}
-							nextQuestion={this.nextQuestion}
-						/>
-					)}
 				</div>
 				{infoOpen && <GameInfo open={infoOpen} handleClose={this.handleInfoClose} />}
 			</Fragment>

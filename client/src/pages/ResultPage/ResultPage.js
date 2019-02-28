@@ -4,24 +4,21 @@ import './styles.scss';
 import { fetchScores } from '../LandingPage/actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
 class ResultPage extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = { open: true };
 	}
 
 	handleUpdateScore = () => {
 		const { currentScore, level, moduleId, totalScore } = this.props.location.state;
 		let newScore = currentScore;
-		console.log('currentScore', currentScore);
-		console.log('totalScore', totalScore);
-
 		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
 		let prevScore = currentLevelNewScores[level - 1];
 
 		currentLevelNewScores[level - 1] =
 			newScore > 0 ? (prevScore + newScore <= totalScore ? prevScore + newScore : totalScore) : prevScore;
-		console.log('currentLevelNewScores', currentLevelNewScores);
 
 		this.props.gameData.scores[moduleId - 1] = currentLevelNewScores;
 		this.props.getScores(this.props.gameData.scores);

@@ -1,5 +1,6 @@
 import React from 'react';
 import NdiLogoUrl from '../../images/ndiLogo.png';
+import infoUrl from '../../images/info.png';
 import profileUrl from '../../images/profile.png';
 import { ModuleCard } from '../../components/ModuleCard';
 import '../../commonStyles.scss';
@@ -8,12 +9,13 @@ import { config } from '../../settings';
 import { connect } from 'react-redux';
 import { fetchGameData, fetchScores } from './actions';
 import PropTypes from 'prop-types';
+import GameInfo from '../../components/GameInfo';
 
 global.fetch = require('node-fetch');
 class LandingPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = { open: false };
 	}
 
 	//Fetch complete game data.
@@ -45,16 +47,30 @@ class LandingPage extends React.Component {
 		return allScores;
 	};
 
+	//Handle info icon click to open info dialog box.
+	handleClickOpen = () => {
+		this.setState({ open: true });
+	};
+
+	//Handle info dialog box close.
+	handleClose = () => {
+		this.setState({ open: false });
+	};
+
 	render() {
 		const gameData = this.props.gameData.gameData;
+		const { open } = this.state;
 		return (
 			<div className="landing-page-wrapper">
 				<div className="landing-page-container">
 					<div className="header-icon">
 						<img className="company-logo" src={NdiLogoUrl} alt="ndi-logo" />
-						<a href="/profile">
-							<img className="profile-icon" src={profileUrl} alt="profile-icon" />
-						</a>
+						<div className="info-profile-icon-container">
+							<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleClickOpen} />
+							<a href="/profile">
+								<img className="profile-icon" src={profileUrl} alt="profile-icon" />
+							</a>
+						</div>
 					</div>
 					<p className="game-title">DemGames - Debate</p>
 					<div className="game-type-card-container">
@@ -71,6 +87,7 @@ class LandingPage extends React.Component {
 							))}
 					</div>
 				</div>
+				{open && <GameInfo open={open} handleClose={this.handleClose} />}
 			</div>
 		);
 	}

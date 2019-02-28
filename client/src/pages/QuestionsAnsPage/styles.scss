@@ -36,7 +36,6 @@
 
 .select-label {
 	padding-left: 0.5em;
-	padding-top: 1em;
 	font-family: Georgia;
 	font-size: 22px;
 	color: #3e3d4a;
@@ -74,10 +73,6 @@
 				::-webkit-scrollbar {
 					width: 0em;
 				}
-				::-webkit-scrollbar-thumb {
-					background: #6c70a1;
-				}
-
 				.card-button {
 					height: 10em;
 					overflow: scroll;
