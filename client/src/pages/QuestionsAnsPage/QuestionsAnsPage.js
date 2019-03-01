@@ -162,6 +162,7 @@ export class QuestionsAnsPage extends React.Component {
 		if (answerClicked === correctAnsLength) {
 			this.setState({ answerClick: true });
 		}
+		this.checkLevelUnlock();
 	};
 
 	handleAnswerClick = (correctAns, key) => (e) => {
@@ -240,6 +241,22 @@ export class QuestionsAnsPage extends React.Component {
 		this.nextQuestion();
 	};
 
+	checkLevelUnlock = () => {
+		let level = parseInt(this.props.match.params.levelId);
+		const parScores = this.getParScores();
+		const parScore = parScores[level - 1];
+		const scores = this.getScores();
+		const score = level > 1 && scores[level - 2];
+		return score >= parScore;
+	};
+
+	// Get Scores for each levels of a particular module.
+	getScores = () => {
+		let moduleId = parseInt(this.props.match.params.moduleId);
+		const scores = this.props.gameData.scores[moduleId - 1];
+		return scores;
+	};
+
 	render() {
 		const {
 			answerClick,
@@ -269,7 +286,7 @@ export class QuestionsAnsPage extends React.Component {
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
 		const totalScore = this.props.gameData.gameData[moduleId - 1].levels[level - 1].total_score;
-
+		const isLevelLocked = this.checkLevelUnlock();
 		return (
 			<Fragment>
 				<div className="question-main-container">
@@ -288,6 +305,8 @@ export class QuestionsAnsPage extends React.Component {
 						<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleInfoOpen} />
 					</div>
 					<Fragment>
+						{!isLevelLocked && <Redirect to={`/module/${moduleId}/levels`} />}
+
 						{totalQuestion > 0 &&
 						questionId > totalQuestion && (
 							<Redirect
