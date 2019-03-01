@@ -89,8 +89,12 @@ export class ScenarioQuesAns extends React.Component {
 		const { clickedOptions } = this.state;
 		clickedOptions.push(key);
 		const selectedValue = key;
-		const { selectedAnswer } = this.state;
+
+		let { selectedAnswer } = this.state;
+		// selectedAnswer.push(selectedValue);
+		selectedAnswer = [];
 		selectedAnswer.push(selectedValue);
+
 		this.setState((prevState) => ({
 			answerClicked: prevState.answerClicked + 1,
 			selectedAnswer: selectedAnswer,
@@ -187,6 +191,7 @@ export class ScenarioQuesAns extends React.Component {
 			infoOpen,
 			clickedOptions,
 			moduleScenario,
+			selectedCard,
 			id,
 			scenario,
 			redirect
@@ -203,7 +208,7 @@ export class ScenarioQuesAns extends React.Component {
 		const emptyOption = questionId !== null && questions[questionId - 1].options[0].option === '';
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
 		const totalScore = this.props.gameData.gameData[moduleId - 1].levels[level - 1].total_score;
-		
+
 		return (
 			<Fragment>
 				<div className="question-main-container">
@@ -285,7 +290,8 @@ export class ScenarioQuesAns extends React.Component {
 													key={key}
 													option={moduleScenario ? option.option : option}
 													answerClick={answerClick}
-													selectedCard={clickedOptions.includes(key)}
+													// selectedCard={clickedOptions.includes(key)}
+													selectedCard={selectedCard === key}
 													handleClick={this.handleAnswerClick(key)}
 													moduleColor={moduleColor}
 												/>
