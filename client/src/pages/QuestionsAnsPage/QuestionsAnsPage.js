@@ -9,6 +9,7 @@ import oopsUrl from '../../images/oops.png';
 import hurreyUrl from '../../images/hurrey.png';
 import AnswerInfoPopup from '../../components/AnswerInfoPopup';
 import CorrectAnswerInfo from '../../components/CorrectAnswerInfo';
+import { fetchScores } from '../LandingPage/actions';
 import ProgressBar from '../../components/ProgressBar';
 import { connect } from 'react-redux';
 import './styles.scss';
@@ -83,15 +84,20 @@ export class QuestionsAnsPage extends React.Component {
 
 	//Handle proceed button click, answer-info dialog box rendering, option click and check for correctAns
 	handleProceedNext = () => {
+		const { questionId } = this.state;
 		this.setState((prevState) => ({
 			showAnswer: !prevState.showAnswer,
 			selectedCard: null,
 			answerClicked: 0,
 			clickedOptions: []
 		}));
+		window.scrollTo(0, 0);
 		this.handleNextClick();
 		this.handleClickOpen();
 		this.checkCorrectAnswer();
+		if (questionId === this.getTotalQuestions()) {
+			this.handleUpdateScore();
+		}
 	};
 
 	handleClick = () => {
@@ -245,6 +251,23 @@ export class QuestionsAnsPage extends React.Component {
 		return scores;
 	};
 
+	handleUpdateScore = () => {
+		let moduleId = parseInt(this.props.match.params.moduleId);
+		let level = parseInt(this.props.match.params.levelId);
+		const { currentScore } = this.state;
+		const totalScore = this.props.gameData.gameData[moduleId - 1].levels[level - 1].total_score;
+
+		let newScore = currentScore;
+		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
+		let prevScore = currentLevelNewScores[level - 1];
+
+		currentLevelNewScores[level - 1] =
+			newScore > 0 ? (prevScore + newScore <= totalScore ? prevScore + newScore : totalScore) : prevScore;
+
+		this.props.gameData.scores[moduleId - 1] = currentLevelNewScores;
+		this.props.getScores(this.props.gameData.scores);
+	};
+
 	render() {
 		const {
 			answerClick,
@@ -260,7 +283,7 @@ export class QuestionsAnsPage extends React.Component {
 			selectedCard,
 			moduleScenario
 		} = this.state;
-		
+
 		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 		const totalQuestion = this.getTotalQuestions();
@@ -423,9 +446,15 @@ const mapStateToProps = (state) => {
 	return { gameData: state.gameData };
 };
 
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getScores: (scores) => dispatch(fetchScores(scores))
+	};
+};
+
 QuestionsAnsPage.propTypes = {
 	gameData: PropTypes.object,
 	match: PropTypes.object
 };
 
-export default connect(mapStateToProps, null)(QuestionsAnsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionsAnsPage);

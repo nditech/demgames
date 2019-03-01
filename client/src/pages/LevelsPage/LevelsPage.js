@@ -89,7 +89,7 @@ class LevelsPage extends React.Component {
 									key={key}
 									level={data.id}
 									moduleId={moduleId}
-									prevLevelScore={scores[data.id - 2]}
+									prevLevelScore={data.id > 1 ? scores[data.id - 2] : 0}
 									currentScore={scores[data.id - 1]}
 									parScore={parScores[data.id - 1]}
 									linkedLevel={data.linked_level}

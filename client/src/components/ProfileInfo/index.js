@@ -37,7 +37,7 @@ class ProfileInfo extends React.Component {
 	}
 
 	render() {
-		const { email, password, name } = this.state;
+		const { email, name } = this.state;
 		return (
 			<div className="profile-info-container">
 				<div>
