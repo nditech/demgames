@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Card } from '../../components/Card';
 import arrowBackUrl from '../../images/back.png';
+import correctAnsUrl from '../../images/correct.png';
 import infoUrl from '../../images/info.png';
 import oopsUrl from '../../images/oops.png';
 import hurreyUrl from '../../images/hurrey.png';
@@ -11,6 +12,7 @@ import { fetchScores } from '../LandingPage/actions';
 import './styles.scss';
 import GameInfo from '../../components/GameInfo';
 import PropTypes from 'prop-types';
+import AnswerInfoPopup from '../../components/AnswerInfoPopup';
 
 export class ScenarioQuesAns extends React.Component {
 	constructor(props) {
@@ -31,7 +33,8 @@ export class ScenarioQuesAns extends React.Component {
 			clickedOptions: [],
 			moduleScenario: true,
 			selectedOption: 0,
-			id: 1
+			id: 1,
+			conclusionReached: false
 		};
 	}
 	//Change the questionId to next linked question and renders the next linked question.
@@ -104,6 +107,17 @@ export class ScenarioQuesAns extends React.Component {
 		}));
 	};
 
+	//Hide AnswerInfo popup and show the points scored and also checks for parScoreStatus.
+	handleClose = () => {
+		// this.checkParScoreStatus();
+
+		this.setState((prevState) => ({
+			open: false,
+			redirect: true
+		}));
+		this.handleUpdateScore();
+	};
+
 	//Get list of module names.
 	getModuleNames = () => {
 		const gameData = this.props.gameData.gameData;
@@ -154,12 +168,11 @@ export class ScenarioQuesAns extends React.Component {
 		if (nextQuestionId === null) {
 			this.setState(
 				{
-					redirect: true,
+					conclusionReached: true,
 					currentScore: questions[questionId - 1].score,
 					open: true
 				},
 				() => {
-					this.handleUpdateScore();
 					this.checkParScoreStatus();
 				}
 			);
@@ -177,7 +190,7 @@ export class ScenarioQuesAns extends React.Component {
 
 	//Checks if current score + previous score is less than parScore and return parScoreStatus.
 	checkParScoreStatus = () => {
-	
+
 		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 		const { currentScore } = this.state;
@@ -186,7 +199,7 @@ export class ScenarioQuesAns extends React.Component {
 		let prevScore = currentLevelNewScores[level - 1];
 		if (prevScore + currentScore < parScores[level]) {
 			this.setState({ parScoreStatus: false });
-		} else {
+		} else {		
 			this.setState({ parScoreStatus: true });
 		}
 		this.render();
@@ -212,7 +225,8 @@ export class ScenarioQuesAns extends React.Component {
 			moduleScenario,
 			selectedCard,
 			id,
-			redirect
+			redirect,
+			conclusionReached
 		} = this.state;
 
 		const moduleId = parseInt(parseInt(this.props.match.params.moduleId));
@@ -245,6 +259,19 @@ export class ScenarioQuesAns extends React.Component {
 						<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleInfoOpen} />
 					</div>
 					<Fragment>
+						{conclusionReached && (
+							<AnswerInfoPopup
+								open={open}
+								message={'Your answer is correct'}
+								answerStatus={true}
+								handleClose={this.handleClose}
+								imageUrl={correctAnsUrl}
+								nextQuestion={this.nextQuestion}
+								moduleScenario={moduleScenario}
+								currentScore={currentScore}
+							/>
+						)}
+
 						{redirect && (
 							<Redirect
 								to={{
@@ -260,11 +287,13 @@ export class ScenarioQuesAns extends React.Component {
 										level: level,
 										image: parScoreStatus ? hurreyUrl : oopsUrl,
 										messageOne: parScoreStatus
-											? `Scenario Ends.`
+											? `You have scored  ${currentScore > 0 ? currentScore : 0}/${totalScore}.`
 											: `Oh! You have scored only  ${currentScore > 0
 													? currentScore
 													: 0}/${totalScore}.`,
-										messageTwo: parScoreStatus
+										messageTwo: `Scenario Ends`,
+
+										messageThree: parScoreStatus
 											? `You are in top 100 in the rank.`
 											: `You need to earn ${parScores[level]}/${totalScore} for Level ${level}.`,
 										buttonMessage: !parScoreStatus
