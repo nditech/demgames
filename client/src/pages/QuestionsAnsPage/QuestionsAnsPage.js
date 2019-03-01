@@ -316,7 +316,7 @@ export class QuestionsAnsPage extends React.Component {
 						<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleInfoOpen} />
 					</div>
 					<Fragment>
-						{/* {!isLevelLocked && <Redirect to={`/module/${moduleId}/levels`} />} */}
+						{!isLevelLocked && <Redirect to={`/module/${moduleId}/levels`} />}
 
 						{totalQuestion > 0 &&
 						questionId > totalQuestion && (
