@@ -177,6 +177,8 @@ export class ScenarioQuesAns extends React.Component {
 				}
 			);
 		}
+		window.scrollTo(0, 0);
+
 		this.setState((prevState) => ({
 			selectedCard: null,
 			answerClicked: 0,
@@ -190,7 +192,6 @@ export class ScenarioQuesAns extends React.Component {
 
 	//Checks if current score + previous score is less than parScore and return parScoreStatus.
 	checkParScoreStatus = () => {
-
 		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 		const { currentScore } = this.state;
@@ -199,7 +200,7 @@ export class ScenarioQuesAns extends React.Component {
 		let prevScore = currentLevelNewScores[level - 1];
 		if (prevScore + currentScore < parScores[level]) {
 			this.setState({ parScoreStatus: false });
-		} else {		
+		} else {
 			this.setState({ parScoreStatus: true });
 		}
 		this.render();

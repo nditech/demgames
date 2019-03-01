@@ -1,5 +1,6 @@
 .profile-info-container {
-	height: 27em;
+	height: 100%;
+	width: 100%;
 	border-radius: 2.5px;
 	background-color: #fafafd;
 	.profile-header {
@@ -27,29 +28,26 @@
 		color: #3e3d4a;
 	}
 	.input-container {
-		width: 25.4em;
 		text-align: center;
 	}
 	.input-label {
-		left: 3em;
-		top: 2em;
+		left: 2em;
+		top: 3em;
 		background-color: #fafafd;
 		padding: 0 .5em;
 		position: absolute;
-		width: 8em;
 		z-index: 2;
 		font-family: Georgia;
 		font-size: 20px;
 		color: #3e3d4a;
 		text-align: left;
+		margin: 0;
 	}
 	.input-label-name {
-		width: 5em;
-		top: 5.8em;
+		top: 6.8em;
 	}
 	.input-label-password {
-		width: 6.4em;
-		top: 9.6em;
+		top: 10.6em;
 	}
 	.change-password-container {
 		text-align: right;
