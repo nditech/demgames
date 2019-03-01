@@ -37,7 +37,8 @@ class ResultPage extends Component {
 			messageOne,
 			messageTwo,
 			moduleScenario,
-			parScoreStatus
+			parScoreStatus,
+			expression
 		} = this.props.location.state;
 
 		const totalLevels = this.props.gameData.gameData[moduleId - 1].levels.length;
@@ -58,6 +59,7 @@ class ResultPage extends Component {
 						<p className="level-finish-label">You have finished level {level}</p>
 					</div>
 				</div>
+				<p className="score-message">{expression}</p>
 				<p className="score-message">{messageOne}</p>
 				<img className="graph-icon" src={image} alt="icon" />
 				<p className="score-message">{messageTwo}</p>

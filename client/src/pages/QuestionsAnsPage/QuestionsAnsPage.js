@@ -25,7 +25,7 @@ export class QuestionsAnsPage extends React.Component {
 			showAnswer: false,
 			selectedAnswer: [],
 			answerCorrect: true,
-			parScoreStatus: true,
+			parScoreStatus: false,
 			showCorrectAns: false,
 			currentScore: 0,
 			click: false,
@@ -33,15 +33,13 @@ export class QuestionsAnsPage extends React.Component {
 			answerClicked: 0,
 			clickedOptions: [],
 			moduleScenario: false,
-			selectedOption: 0,
-			scenario: false
+			selectedOption: 0
 		};
 	}
 
 	//To hide question answer and render selected option abd right option.
 	showRightAnswer = () => {
 		this.setState({ showCorrectAns: true });
-		return 1;
 	};
 
 	//To show question answer and hide selected option abd right option.
@@ -93,6 +91,7 @@ export class QuestionsAnsPage extends React.Component {
 		}));
 		this.handleNextClick();
 		this.handleClickOpen();
+		this.checkParScoreStatus();
 		this.checkCorrectAnswer();
 	};
 
@@ -165,7 +164,7 @@ export class QuestionsAnsPage extends React.Component {
 		this.checkLevelUnlock();
 	};
 
-	handleAnswerClick = (correctAns, key) => (e) => {
+	handleAnswerClick = (key) => (e) => {
 		const { clickedOptions, selectedAnswer } = this.state;
 		clickedOptions.push(key);
 		const selectedValue = key;
@@ -228,19 +227,6 @@ export class QuestionsAnsPage extends React.Component {
 		return parScores;
 	};
 
-	//Handle proceed button for scenario type.
-	handleScenarioProceed = () => {
-		this.setState((prevState) => ({
-			selectedCard: null,
-			answerClicked: 0,
-			clickedOptions: []
-		}));
-
-		this.checkParScoreStatus();
-		this.handleNextClick();
-		this.nextQuestion();
-	};
-
 	checkLevelUnlock = () => {
 		let level = parseInt(this.props.match.params.levelId);
 		const parScores = this.getParScores();
@@ -270,8 +256,7 @@ export class QuestionsAnsPage extends React.Component {
 			selectedAnswer,
 			infoOpen,
 			clickedOptions,
-			moduleScenario,
-			scenario
+			moduleScenario
 		} = this.state;
 
 		let moduleId = parseInt(this.props.match.params.moduleId);
@@ -287,6 +272,7 @@ export class QuestionsAnsPage extends React.Component {
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
 		const totalScore = this.props.gameData.gameData[moduleId - 1].levels[level - 1].total_score;
 		const isLevelLocked = this.checkLevelUnlock();
+
 		return (
 			<Fragment>
 				<div className="question-main-container">
@@ -317,20 +303,18 @@ export class QuestionsAnsPage extends React.Component {
 										parScoreStatus: parScoreStatus,
 										totalScore: totalScore,
 										currentScore: currentScore,
-										scenario: scenario,
 										moduleName: moduleNames[moduleId - 1],
 										level: level,
 										image: parScoreStatus ? hurreyUrl : oopsUrl,
+										expression: parScoreStatus ? `Hurray!` : `Oh!`,
 										messageOne: parScoreStatus
-											? `Hurray! You have scored  ${currentScore > 0
-													? currentScore
-													: 0}/${totalScore}.`
-											: `Oh! You have scored only  ${currentScore > 0
+											? `You have scored  ${currentScore > 0 ? currentScore : 0}/${totalScore}.`
+											: `You have scored only  ${currentScore > 0
 													? currentScore
 													: 0}/${totalScore}.`,
 										messageTwo: parScoreStatus
 											? `You are in top 100 in the rank.`
-											: `You need to earn ${parScores[level]}/100 for Level ${level}.`,
+											: `You need to earn ${parScores[level]}/${totalScore} for Level ${level}.`,
 										buttonMessage: !parScoreStatus
 											? `Retry Level ${level}`
 											: `Continue Level ${level + 1}`
@@ -373,7 +357,7 @@ export class QuestionsAnsPage extends React.Component {
 														correct_answer={questions[questionId - 1].correctAns}
 														answerClick={answerClick}
 														selectedCard={clickedOptions.includes(key)}
-														handleClick={this.handleAnswerClick(correctAns, key)}
+														handleClick={this.handleAnswerClick(key)}
 														moduleColor={moduleColor}
 													/>
 												))}
