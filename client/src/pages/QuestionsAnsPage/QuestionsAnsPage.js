@@ -165,10 +165,12 @@ export class QuestionsAnsPage extends React.Component {
 	};
 
 	handleAnswerClick = (key) => (e) => {
-		const { clickedOptions, selectedAnswer } = this.state;
+		let { clickedOptions, selectedAnswer } = this.state;
 		clickedOptions.push(key);
 		const selectedValue = key;
+		selectedAnswer = [];
 		selectedAnswer.push(selectedValue);
+
 		this.setState(
 			(prevState) => ({
 				answerClicked: prevState.answerClicked + 1,
@@ -256,6 +258,7 @@ export class QuestionsAnsPage extends React.Component {
 			selectedAnswer,
 			infoOpen,
 			clickedOptions,
+			selectedCard,
 			moduleScenario
 		} = this.state;
 
@@ -356,7 +359,8 @@ export class QuestionsAnsPage extends React.Component {
 														option={option}
 														correct_answer={questions[questionId - 1].correctAns}
 														answerClick={answerClick}
-														selectedCard={clickedOptions.includes(key)}
+														// selectedCard={clickedOptions.includes(key)}
+														selectedCard={selectedCard === key}
 														handleClick={this.handleAnswerClick(key)}
 														moduleColor={moduleColor}
 													/>
