@@ -91,7 +91,6 @@ export class QuestionsAnsPage extends React.Component {
 		}));
 		this.handleNextClick();
 		this.handleClickOpen();
-		this.checkParScoreStatus();
 		this.checkCorrectAnswer();
 	};
 
@@ -144,6 +143,7 @@ export class QuestionsAnsPage extends React.Component {
 	};
 	//Hide AnswerInfo popup and show the points scored and also checks for parScoreStatus.
 	handleClose = () => {
+		this.checkParScoreStatus();
 		this.setState((prevState) => ({
 			open: false,
 			showAnswer: !prevState.showAnswer
@@ -257,11 +257,10 @@ export class QuestionsAnsPage extends React.Component {
 			currentScore,
 			selectedAnswer,
 			infoOpen,
-			clickedOptions,
 			selectedCard,
 			moduleScenario
 		} = this.state;
-
+		
 		let moduleId = parseInt(this.props.match.params.moduleId);
 		let level = parseInt(this.props.match.params.levelId);
 		const totalQuestion = this.getTotalQuestions();

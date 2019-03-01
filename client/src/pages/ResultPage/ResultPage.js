@@ -8,24 +8,7 @@ import PropTypes from 'prop-types';
 class ResultPage extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { open: true };
-	}
-
-	handleUpdateScore = () => {
-		const { currentScore, level, moduleId, totalScore } = this.props.location.state;
-		let newScore = currentScore;
-		let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
-		let prevScore = currentLevelNewScores[level - 1];
-
-		currentLevelNewScores[level - 1] =
-			newScore > 0 ? (prevScore + newScore <= totalScore ? prevScore + newScore : totalScore) : prevScore;
-
-		this.props.gameData.scores[moduleId - 1] = currentLevelNewScores;
-		this.props.getScores(this.props.gameData.scores);
-	};
-
-	componentDidMount() {
-		this.handleUpdateScore();
+		this.state = {};
 	}
 
 	render() {
@@ -89,11 +72,6 @@ class ResultPage extends Component {
 const mapStateToProps = (state) => {
 	return { gameData: state.gameData };
 };
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getScores: (scores) => dispatch(fetchScores(scores))
-	};
-};
 
 ResultPage.propTypes = {
 	getScores: PropTypes.func,
@@ -101,6 +79,6 @@ ResultPage.propTypes = {
 	gameData: PropTypes.object
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResultPage);
+export default connect(mapStateToProps, null)(ResultPage);
 
 // export default ResultPage;

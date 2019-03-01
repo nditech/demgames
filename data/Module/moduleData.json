@@ -10,7 +10,7 @@
 				"id": 1,
 				"current_score": 0,
 				"par_score": 0,
-				"total_score": 40,
+				"total_score": 60,
 				"desc": "Description1",
 				"linked_level": 0,
 				"questions": [
@@ -50,6 +50,28 @@
 					},
 					{
 						"id": 4,
+						"question": "Claim",
+						"options": [
+							"A controversial statement that a debater supports or refutes with evidence and reasoning",
+							"The process of attacking an opponent's arguments",
+							"This is the Greek word that means both experience and suffering and during a debate focuses on convincing the audience with emotion.",
+							"A controversial statement that a debater supports or refutes with evidence and reasoning."
+						],
+						"correct_answer": [ 0 ]
+					},
+					{
+						"id": 5,
+						"question": "Claim",
+						"options": [
+							"A controversial statement that a debater supports or refutes with evidence and reasoning",
+							"The process of attacking an opponent's arguments",
+							"This is the Greek word that means both experience and suffering and during a debate focuses on convincing the audience with emotion.",
+							"A controversial statement that a debater supports or refutes with evidence and reasoning."
+						],
+						"correct_answer": [ 0 ]
+					},
+					{
+						"id": 6,
 						"question": "Claim",
 						"options": [
 							"A controversial statement that a debater supports or refutes with evidence and reasoning",
