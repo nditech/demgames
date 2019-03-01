@@ -27,12 +27,15 @@ class AnswerInfoPopup extends Component {
 	}
 
 	handleOkClick() {
+		const { moduleScenario } = this.props;
 		this.props.handleClose();
-		this.props.nextQuestion();
+		if (!moduleScenario) {
+			this.props.nextQuestion();
+		}
 	}
 
 	render() {
-		const { open, handleClose, imageUrl, answerStatus, message } = this.props;
+		const { open, handleClose, imageUrl, answerStatus, message, moduleScenario, currentScore } = this.props;
 		return (
 			<Dialog
 				className="dialog-content"
@@ -60,7 +63,7 @@ class AnswerInfoPopup extends Component {
 						{answerStatus ? (
 							<span>
 								<span>earned</span>
-								<span className="correct-points"> 10</span>
+								<span className="correct-points"> {moduleScenario ? currentScore : 10} </span>
 							</span>
 						) : (
 							<span>

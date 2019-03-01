@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import congoUrl from '../../images/congratulations.png';
 import './styles.scss';
-import { fetchScores } from '../LandingPage/actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -19,6 +18,7 @@ class ResultPage extends Component {
 			moduleName,
 			messageOne,
 			messageTwo,
+			messageThree,
 			moduleScenario,
 			parScoreStatus,
 			expression
@@ -44,8 +44,9 @@ class ResultPage extends Component {
 				</div>
 				<p className="score-message">{expression}</p>
 				<p className="score-message">{messageOne}</p>
-				<img className="graph-icon" src={image} alt="icon" />
 				<p className="score-message">{messageTwo}</p>
+				<img className="graph-icon" src={image} alt="icon" />
+				<p className="score-message">{messageThree}</p>
 				<div>
 					<a className="back-to-all-levels-link" href={backToLevelUrl}>
 						Back to all Levels
