@@ -82,14 +82,14 @@
 @media (min-width: 1024px) {
 	.link-lock {
 		width: 31%;
-		height: 19em;
-		margin: .5em .5em;
+		height: 10em;
+		margin: .5em;
 		.level-card {
 			height: 100%;
 			border-radius: 15px;
 			.lock-icon-container {
 				position: relative;
-				bottom: 3em;
+				top: .5em;
 				right: .5em;
 			}
 		}
