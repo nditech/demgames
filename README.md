@@ -77,6 +77,32 @@
    $ nodemon server/server.js
    
    ```
+
+  ### Test localhost app on mobile device
+    To run the localhost app on your mobile you need to be connected with same wifi network, once you are connected you can run following command:
+    ```
+    $ HOST=0.0.0.0 npm start
+
+    ```
+
+
+    It will run the react app but data won't load unless you change some configuration in settings.js.
+
+	
+    In settings.js you will find "config = { baseUrl: 'http://localhost:9000' };", you need to replace 'localhost' with your inet address.
+
+    Example: config = { baseUrl: 'http://<inet address>:9000' };
+
+  To check you inet address open your terminal and run ifconfig and check for inet address.
+
+  Example: inet addr:192.168.1.22
+  
+    inet addr:192.168.1.10 
+
+  To open this react app on mobile :
+
+  Open your browser and type <inet address>:Port number on which you are running the react app.
+
   ### Diagnosis
   
   ```

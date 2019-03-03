@@ -84,7 +84,6 @@ export class QuestionsAnsPage extends React.Component {
 
 	//Handle proceed button click, answer-info dialog box rendering, option click and check for correctAns
 	handleProceedNext = () => {
-		const { questionId } = this.state;
 		this.setState((prevState) => ({
 			showAnswer: !prevState.showAnswer,
 			selectedCard: null,
@@ -95,9 +94,6 @@ export class QuestionsAnsPage extends React.Component {
 		this.handleNextClick();
 		this.handleClickOpen();
 		this.checkCorrectAnswer();
-		if (questionId === this.getTotalQuestions()) {
-			this.handleUpdateScore();
-		}
 	};
 
 	handleClick = () => {
@@ -150,6 +146,11 @@ export class QuestionsAnsPage extends React.Component {
 	//Hide AnswerInfo popup and show the points scored and also checks for parScoreStatus.
 	handleClose = () => {
 		this.checkParScoreStatus();
+		const { questionId } = this.state;
+		if (questionId === this.getTotalQuestions()) {
+			this.handleUpdateScore();
+		}
+
 		this.setState((prevState) => ({
 			open: false,
 			showAnswer: !prevState.showAnswer
