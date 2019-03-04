@@ -40,7 +40,7 @@ class ProfileInfo extends React.Component {
 		const { email, name } = this.state;
 		return (
 			<div className="profile-info-container">
-				<div>
+				<div className="profile-form-container">
 					<div className="profile-header">
 						<div className="back-module-container">
 							<button className="back-button" onClick={this.props.history.goBack}>
