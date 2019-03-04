@@ -228,13 +228,13 @@
 						"id": 1,
 						"question": "level2 question1",
 						"options": [ "level2  A", "level2 B", "level2 C", "level2 D" ],
-						"correct_answer": [ 0, 1 ]
+						"correct_answer": [ 0 ]
 					},
 					{
 						"id": 2,
 						"question": "level2 question2",
 						"options": [ "level2 X", "level2 Y", "level2 Z", "level2 A" ],
-						"correct_answer": [ 0, 1 ]
+						"correct_answer": [ 0 ]
 					}
 				]
 			},
@@ -250,13 +250,13 @@
 						"id": 1,
 						"question": "level3 question1",
 						"options": [ "level3  A", "level3 B", "level3 C", "level3 D" ],
-						"correct_answer": [ 0, 1 ]
+						"correct_answer": [ 0 ]
 					},
 					{
 						"id": 2,
 						"question": "level3 question2",
 						"options": [ "level3 X", "level3 Y", "level3 Z", "level3 A" ],
-						"correct_answer": [ 0, 1 ]
+						"correct_answer": [ 0 ]
 					}
 				]
 			}
