@@ -127,6 +127,9 @@
 	.profile-info-container {
 		display: flex;
 		margin: 0 14em;
+		.profile-form-container{
+			width: 26em;
+		}
 		.career-progress-label {
 			margin-left: 0;
 			font-size: 1.6em;
@@ -139,13 +142,13 @@
 		}
 		.input-label {
 			left: 14em;
-			top: 3em;
+			top: 4em;
 		}
 		.input-label-name {
-			top: 8em;
+			top: 9em;
 		}
 		.input-label-password {
-			top: 13.2em;
+			top: 14.2em;
 		}
 	}
 }

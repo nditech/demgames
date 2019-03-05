@@ -263,7 +263,7 @@ export class ScenarioQuesAns extends React.Component {
 						{conclusionReached && (
 							<AnswerInfoPopup
 								open={open}
-								message={'Your answer is correct'}
+								message={'Scenario Ends'}
 								answerStatus={true}
 								handleClose={this.handleClose}
 								imageUrl={correctAnsUrl}
@@ -290,8 +290,8 @@ export class ScenarioQuesAns extends React.Component {
 										messageOne: parScoreStatus
 											? `You have scored  ${currentScore > 0 ? currentScore : 0}/${totalScore}.`
 											: `Oh! You have scored only  ${currentScore > 0
-													? currentScore
-													: 0}/${totalScore}.`,
+												? currentScore
+												: 0}/${totalScore}.`,
 										messageTwo: `Scenario Ends`,
 
 										messageThree: parScoreStatus
@@ -306,56 +306,56 @@ export class ScenarioQuesAns extends React.Component {
 						)}
 
 						{!showCorrectAns &&
-						questionId != null && (
-							<div>
-								<div className="level-question-detail">
-									<span>Level {level} </span>
-									<span className="question-number-status">
-										Question {id} out of {totalQuestion}
-									</span>
-								</div>
-								<div className="progress-bar-container">
-									<ProgressBar progress={progress} />
-								</div>
-								<div className="questions-container">
-									<p className={`question-label question-label-${moduleColor}`}>
-										{questions &&
-											questions.length > 0 &&
-											questionId != null &&
-											questions[questionId - 1].question}
-									</p>
-								</div>
-								<div className="answer-container">
-									{!emptyOption && !showAnswer && <p className="select-label">Select any option.</p>}
-									<div className="options-card-container">
-										{!emptyOption &&
-											questions &&
-											questions.length > 0 &&
-											questionId != null &&
-											questions[questionId - 1].options.map((option, key) => (
-												<Card
-													key={key}
-													option={moduleScenario ? option.option : option}
-													answerClick={answerClick}
-													// selectedCard={clickedOptions.includes(key)}
-													selectedCard={selectedCard === key}
-													handleClick={this.handleAnswerClick(key)}
-													moduleColor={moduleColor}
-												/>
-											))}
+							questionId != null && (
+								<div>
+									<div className="level-question-detail">
+										<span>Level {level} </span>
+										<span className="question-number-status">
+											Question {id} out of {totalQuestion}
+										</span>
 									</div>
-								</div>
-								{/* Either option is clicked or question option is empty render proceed button */}
-								{(emptyOption || answerClick) && (
-									<button
-										className={`next-page-button next-page-button-${true}`}
-										onClick={moduleScenario ? this.handleScenarioProceed : this.handleProceedNext}
-									>
-										Proceed
+									<div className="progress-bar-container">
+										<ProgressBar progress={progress} />
+									</div>
+									<div className="questions-container">
+										<p className={`question-label question-label-${moduleColor}`}>
+											{questions &&
+												questions.length > 0 &&
+												questionId != null &&
+												questions[questionId - 1].question}
+										</p>
+									</div>
+									<div className="answer-container">
+										{!emptyOption && !showAnswer && <p className="select-label">Select any option.</p>}
+										<div className="options-card-container">
+											{!emptyOption &&
+												questions &&
+												questions.length > 0 &&
+												questionId != null &&
+												questions[questionId - 1].options.map((option, key) => (
+													<Card
+														key={key}
+														option={moduleScenario ? option.option : option}
+														answerClick={answerClick}
+														// selectedCard={clickedOptions.includes(key)}
+														selectedCard={selectedCard === key}
+														handleClick={this.handleAnswerClick(key)}
+														moduleColor={moduleColor}
+													/>
+												))}
+										</div>
+									</div>
+									{/* Either option is clicked or question option is empty render proceed button */}
+									{(emptyOption || answerClick) && (
+										<button
+											className={`next-page-button next-page-button-${true}`}
+											onClick={moduleScenario ? this.handleScenarioProceed : this.handleProceedNext}
+										>
+											Proceed
 									</button>
-								)}
-							</div>
-						)}
+									)}
+								</div>
+							)}
 					</Fragment>
 				</div>
 				{infoOpen && <GameInfo open={infoOpen} handleClose={this.handleInfoClose} />}
