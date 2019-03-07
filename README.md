@@ -83,7 +83,10 @@
 
 ### Debugging and troubleshooting
 
-  The following are some common issues you may run into
+  The following are some common issues you may run into.
+
+First, remember to run `npm install` before running any part of the application. Commands such as `npm run build` will fail if this has not been run first.
+
 
   ```
   // Backend error:
@@ -97,8 +100,6 @@
     Error: Access to fetch at 'http://localhost:9000/api/game' from origin 'http://localhost:8083' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
 
     Fix: You need to install cors extension in google chrome to enable cross-origin resource sharing.
-
-    Remember to run `npm install` before running any part of the application.
 
 ### Contribution
   
