@@ -54,7 +54,7 @@
     
 ### Installation
   
-  Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/) and [npm](https://www.npmjs.com/get-npm) on your machine.  
+  Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/) and [npm](https://www.npmjs.com/get-npm) on your machine. To download and install, use the commands below. 
   
 
   ```
@@ -68,7 +68,7 @@
   In order to do local testing, edit the file `client/src/pages/LandingPage/LandingPage.js`. Comment out the line `fetch('./moduleData.json')` (by default line 23), and uncomment `fetch('localhost:9000/api/game')` (line 24). To run the app, first start the express server by running the following command in the main directory:
 
   ```
-  nodemon server/server.js`  
+  nodemon server/server.js  
   ```
 
   In another window, start the application with the following command:
