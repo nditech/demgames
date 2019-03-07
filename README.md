@@ -50,65 +50,41 @@
   This app is built with React (frontend), Express.js (backend) and Node.js.
   
   The app connects to a mock api in express  and gets the complete game data and renders all modules.
-  To add more modules , levels or questions you need to edit the moduleData.json file inside data directory. 
+  To add more modules , levels or questions you need to edit the moduleData.json file inside dist directory. 
     
 ### Installation
   
-  Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/) and [npm](https://www.npmjs.com/get-npm) on your machine. 
+  Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/) and [npm](https://www.npmjs.com/get-npm) on your machine.  
   
-  
-  Clone this repository to your local machine (using SSH):
 
   ```
-  $ Create a new directory , open terminal and run follwing commands in it.
-  $ git init
-  $ git remote add upstream https://github.com/nditech/demgames-debate.git
-  $ git pull upstream hashedin
-  $ npm install
-  $ npm start
-
+  git clone https://github.com/nditech/demgames-debate
+  cd demgames-debate
+  npm install
   ```
   
-  If the app is run for the first time, there won't be any modules. You need to run express server to fetch game data.
-  Open a new terminal and move to main directory and run the below command.
+  In order to run the project out of an S3 bucket, copy the contents of the directory `dist/` into your S3 bucket, and set `index.html` as the Index document. In order to edit the application, do not edit the dist directory directly, but rather edit the application code located in other directories, and then update the contents of the dist directory by running `npm run build`.
 
-   ```
-   
-   $ nodemon server/server.js
-   
-   ```
+  In order to do local testing, edit the file `client/src/pages/LandingPage/LandingPage.js`. Comment out the line `fetch('./moduleData.json')` (by default line 23), and uncomment `fetch('localhost:9000/api/game')` (line 24). To run the app, first start the express server by running the following command in the main directory:
 
-  ### Test localhost app on mobile device
-    To run the localhost app on your mobile you need to be connected with same wifi network and you need to check your inet address.
+  ```
+  nodemon server/server.js`  
+  ```
 
-  To check you inet address open your terminal and run " $ ifconfig " and check for inet address.
+  In another window, start the application with the following command:
 
-  Example: inet addr:192.168.1.22
-  
-    inet addr:192.168.1.10 
+  ```
+  npm start
+  ```
 
-    
-    Once you are connected you can run following command:
-    ```
-    $ HOST=<inet addr>:Port Number npm start
+  The application will then be visible in your browser at localhost:8080. (If it is not running there, check one of the first lines of output from npm start, which will look something like the following: `｢wds｣: Project is running at http://localhost:8080/`. This indicates the port at which the application is running.)
 
-    ```
+  By default, your browser will likely block the application from communicating with the express server. To avoid this, start chrome without security enabled by entering the following command in your terminal `google-chrome --disable-web-security --user-data-dir="/tmp/chrome_tmp"`, or download a CORS extension for your browser (such as https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en)
 
+### Debugging and troubleshooting
 
-    It will run the react app but data won't load unless you change some configuration in settings.js.
+  The following are some common issues you may run into
 
-	
-    In settings.js you will find "config = { baseUrl: 'http://localhost:9000' };", you need to replace 'localhost' with your inet address.
-
-    Example: config = { baseUrl: 'http://<inet address>:9000' };
-
-  
-  To open this react app on mobile :
-
-  Open your browser and type <inet address>:Port number on which you are running the react app.
-
-  ### Diagnosis
-  
   ```
   // Backend error:
   Error: listen EADDRINUSE: address already in use :::9000
@@ -122,6 +98,7 @@
 
     Fix: You need to install cors extension in google chrome to enable cross-origin resource sharing.
 
+    Remember to run `npm install` before running any part of the application.
 
 ### Contribution
   
