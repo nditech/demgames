@@ -21,7 +21,7 @@ class LandingPage extends React.Component {
 	//Fetch complete game data.
 	componentWillMount() {
 		fetch('./moduleData.json')
-                //fetch('localhost:9000/api/game')
+                //fetch('http://localhost:9000/api/game')
                 //fetch(config.baseUrl + '/api/game')
 			.then((response) => {
 				if (response.status >= 200 && response.status < 300) {
