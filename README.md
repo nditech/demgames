@@ -65,7 +65,7 @@
   
   In order to run the project out of an S3 bucket, copy the contents of the directory `dist/` into your S3 bucket, and set `index.html` as the Index document. In order to edit the application, do not edit the dist directory directly, but rather edit the application code located in other directories, and then update the contents of the dist directory by running `npm run build`.
 
-  In order to do local testing, edit the file `client/src/pages/LandingPage/LandingPage.js`. Comment out the line `fetch('./moduleData.json')` (by default line 23), and uncomment `fetch('localhost:9000/api/game')` (line 24). To run the app, first start the express server by running the following command in the main directory:
+  In order to do local testing, edit the file `client/src/pages/LandingPage/LandingPage.js`. Comment out the line `fetch('./moduleData.json')` (by default line 23), and uncomment `fetch('http://localhost:9000/api/game')` (line 24). To run the app, first start the express server by running the following command in the main directory:
 
   ```
   nodemon server/server.js  
