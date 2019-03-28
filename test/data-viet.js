@@ -75,6 +75,6 @@ const database = [
         "module-1": "52.45%",
         "module-2": "14.5%"
     }
-    // Can also add more meta data: % of genders, age group...
+    // Can also add more meta data: % of genders, age group, etc.
 }
 ];
