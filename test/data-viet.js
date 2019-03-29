@@ -8,21 +8,13 @@
 
 const database = [
 {
-    "id": "module-1", // id must be unique. Partition key.
+    "id": "module-1", // Partition key.
     "type": "module", // Sort key.
     "name": "Designing an Argument",
-    "levels": [
-        {
-            "id": "level-1",
-            "questions": [ /** references to questions. could be different */
-                "question-1",
-                "question-2"
-            ]
-        },
-    ]
+    "levels": []
 },
 { /**Each event queries 1 set of game */
-    "id": "game-1", // id must be unique. Partition key.
+    "id": "game-1", // Partition key.
     "type": "game", // Sort key.
     "modules": [ /**contains modules IDs */
         "module-1",
@@ -30,14 +22,37 @@ const database = [
     ]
 },
 {
-    "id": "event-1", // id must be unique. Partition key.
+    "id": "user-1", /** Partition Key - same user id but different composite Primary Key because of Sort Key */
+    "type": "user-report", /** Sort Key */
+    "game": "game-1",
+    "scores": []
+},
+{
+    "id": "report-1", /** Can even have a new Global Secondary Index to query */
+    "type": "report-details", /** New Sort Key */
+    "game": "game-3", /** New Partition Key */
+    "scores": []
+},
+{
+    "id": "question-1",
+    "type": "question",
+    "text": "some text",
+    "options": []
+},
+{
+    "id": "module-1", /** Can reference to module-1 with a new type as sort key */
+    "type": "module-with-question", /** Can be a new Global Secondary Index Sort Key or Primary Key */
+    "questions": []
+},
+{
+    "id": "event-1", // Partition key.
     "type": "event", // Sort key.
     "name": "event 1 name",
     "location": "some address",
     "game": "game-1" /**ties an event with one game */
 },
 {
-    "id": "user-1", // id must be unique. Partition key.
+    "id": "user-1", // Partition key.
     "type": "user", // Sort key.
     "name": "John",
     "number": "+12345678901",
