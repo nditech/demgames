@@ -25,24 +25,64 @@ const database = [
  * So we can query for different types of the same user,
  * or different users that share the same score by using a certain type.
 */
+/** Query user report with type = user-report id = user-id */
 {
     "id": "user-1", /** Partition Key - same user id but different composite Primary Key because of Sort Key */
     "type": "user-report", /** Sort Key */
-    "game": "game-1",
-    "scores": []
+    "games": [],
+    "scores": [],
+    "modules": []
 },
+/** Query user's details by using type=user id=user-id */
 {
     "id": "user-1", // Partition key.
     "type": "user", // Sort key.
     "name": "John",
     "number": "+12345678901"
 },
+/** Quickly query user's progress using GSI: type = userprogress, game = game-id */
 {
     "id": "user-1", // Partition key.
     "type": "userprogress", // Sort key.
     "game": [],
     "modules": []
 },
+/** Could also bind type=userprogress + game-id for an item that contains:
+ * User's progress in that specific game with
+ * Scores and Modules Completion
+ */
+{
+    "id": "user-1",
+    "type": "userprogress-game-1",
+    "game": "game-1",
+    "game": [],
+    "modules": []
+},
+/**
+ * Also can query for top scorers with GSI: partition key = type, sort key = score.
+ * NOTE: keep the number of indexes minimum.
+ * Query for all players have played game-1: type = user-report-game-1
+ * Query for top players of game-1: type = user-report-game-1, score = 100
+ */
+{
+    "id": "user-1",
+    "type": "user-report-game-1",
+    "game": "game-1",
+    "score": 100,
+},
+{
+    "id": "user-2",
+    "type": "user-report-game-1",
+    "game": "game-1",
+    "score": 75,
+},
+{
+    "id": "user-3",
+    "type": "user-report-game-1",
+    "game": "game-1",
+    "score": 100,
+},
+/** For details of a specific game, query id = report-id, type = report-details */
 {
     "id": "report-1", /** Can even have a new Global Secondary Index to query */
     "type": "report-details", /** New Sort Key */
