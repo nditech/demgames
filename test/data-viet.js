@@ -12,8 +12,11 @@
  * but a new game always has its own and new id.
  * Once a user submits score, there can be multiple writes to id: user-id and type: user-report, userprogress,
  * user-report-game-*, etc. given that the submit actions are not frequent.
+ * A user can only write to one user id, and even with multiple writes, the amount of data in each
+ * transaction is very small.
  * Keeping different types of items for the same user (same id) reduces the cost of a scan or a query for
- * reports later.
+ * reports later when there's a large amount of data. 
+ * On top of that, it's a lot easier to change or update a granular database.
  */
 
 const database = [
