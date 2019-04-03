@@ -2,8 +2,18 @@
  * Database structure proposed by Viet.
  * Goal: keep the structure as flat as possible to reduce cost for database scans/queries
  * and improve search speed.
- * Can be used for multiple games, modules...
- * Can easily add more types of data
+ * Can be used for multiple games, modules, etc.
+ * Can easily add more types of data.
+ * Once a set of game is used, the game and its modules cannot be modified to protect the integrity of the game.
+ * That means later scores and users cannot affect the content of a played game.
+ * => Keep game items and module items intact.
+ * Only edit questions of modules that have never been used.
+ * For a new game that has the same content of a previous game, it can use used modules,
+ * but a new game always has its own and new id.
+ * Once a user submits score, there can be multiple writes to id: user-id and type: user-report, userprogress,
+ * user-report-game-*, etc. given that the submit actions are not frequent.
+ * Keeping different types of items for the same user (same id) reduces the cost of a scan or a query for
+ * reports later.
  */
 
 const database = [
