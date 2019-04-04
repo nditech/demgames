@@ -81,6 +81,25 @@
 
   By default, your browser will likely block the application from communicating with the express server. To avoid this, start chrome without security enabled by entering the following command in your terminal `google-chrome --disable-web-security --user-data-dir="/tmp/chrome_tmp"`, or download a CORS extension for your browser (such as https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en)
 
+### Deployment to AWS
+
+Before deploying, if you have been made changes to the code, run `npm run build` (after having previously run `npm install`) in order to update the code in the directory `dist/`. If you have made changes to the game data in `data/Module/moduleData.json`, run `nodemon server/server.js` and select and copy the contents displayed on the webpage at `http://localhost:9000/api/game` to replace the contents of `dist/moduleData.json`
+
+To deploy to AWS, follow the steps below:
+
+1. Create an S3 bucket for storing the contents of the site. You can proceed with the default settings.
+
+2. In order to make the site publically available, go to https://awspolicygen.s3.amazonaws.com/policygen.html. For step 1, select S3 bucket policy. For step 2, select 'Allow' for Effect, enter `*` for Principal, select 'Amazon S3' for AWS Service, select 'GetObject' for Actions, and for Amazon Resource Name enter 'arn:aws:s3:::' followed by the name of your S3 bucket. Click Add Statement and then Generate Policy. Copy the resulting JSON Document. In your S3 bucket, go to the Permissions tab, and then Bucket Policy, and paste the copied text in the Bucket Policy Editor, and then click Save.
+
+3. Copy the contents of the `dist/` directory into the S3 bucket. (This means do not copy the `dist/` directory itself - only the contents inside).
+
+4. Under the properties tab for the S3 bucket, select 'Static website hosting'. Select the option 'Use this bucket to host a website'
+
+5. Enter `index.html` for both 'Index document' and 'Error Document'.
+
+6. The link following the words 'Endpoint :' is the link for the site.
+
+
 ### Debugging and troubleshooting
 
   The following are some common issues you may run into.
