@@ -39,9 +39,9 @@
   ### Table of Contents
   
   1. [Intro](#intro)
-  1. [Demo](#installation)
-  1. [Diagnosis](#deployment-to-aws)
-  1. [Test](#debugging-and-troubleshooting)
+  1. [Installation](#installation)
+  1. [Deployment](#deployment-to-aws)
+  1. [Troubleshooting](#debugging-and-troubleshooting)
   1. [Contribution](#contribution)
   
 ### Intro
