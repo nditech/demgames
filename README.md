@@ -39,10 +39,9 @@
   ### Table of Contents
   
   1. [Intro](#intro)
-  1. [Demo](#demo)
-  1. [Installation](#installation)
-  1. [Diagnosis](#diagnosis)
-  1. [Test](#test)
+  1. [Demo](#installation)
+  1. [Diagnosis](#deployment-to-aws)
+  1. [Test](#debugging-and-troubleshooting)
   1. [Contribution](#contribution)
   
 ### Intro
@@ -100,7 +99,7 @@ To deploy to AWS, follow the steps below:
 6. The link following the words 'Endpoint :' is the link for the site.
 
 
-### Debugging and troubleshooting
+### Debugging and Troubleshooting
 
   The following are some common issues you may run into.
 
