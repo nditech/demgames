@@ -34,7 +34,7 @@
   
   ## Documentation
   
-  ### :warning: IN DEV. Currently three modules and its levels are available.
+  ### :warning: IN DEV. Currently three modules and its levels are available. Database is not yet configured, requiring workarounds for loading data.
   
   ### Table of Contents
   
@@ -48,8 +48,8 @@
   
   This app is built with React (frontend), Express.js (backend) and Node.js.
   
-  The app connects to a mock api in express  and gets the complete game data and renders all modules.
-  To add more modules , levels or questions you need to edit the moduleData.json file inside dist directory. 
+  The app connects to a mock api in express and gets the complete game data and renders all modules.
+  To add more modules, levels, or questions, you need to edit the moduleData.json file inside dist directory. 
     
 ### Installation
   
@@ -80,9 +80,11 @@
 
   By default, your browser will likely block the application from communicating with the express server. To avoid this, start chrome without security enabled by entering the following command in your terminal `google-chrome --disable-web-security --user-data-dir="/tmp/chrome_tmp"`, or download a CORS extension for your browser (such as https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en)
 
+To edit data for the local deployment, edit the file `data/Module/moduleData.json`. Note that you will have to re-run `nodemon server/server.js` while running `npm start` to load the new content. (If the new content is not displaying, check [troubleshooting](#debugging-and-troubleshooting) below).
+
 ### Deployment to AWS
 
-Before deploying, if you have been made changes to the code, run `npm run build` (after having previously run `npm install`) in order to update the code in the directory `dist/`. If you have made changes to the game data in `data/Module/moduleData.json`, run `nodemon server/server.js` and select and copy the contents displayed on the webpage at `http://localhost:9000/api/game` to replace the contents of `dist/moduleData.json`
+Before deploying, if you have been made changes to the code, run `npm run build` (after having previously run `npm install`) in order to update the code in the directory `dist/`. If you have made changes to the game data in `data/Module/moduleData.json`, run `nodemon server/server.js`. In your browser, go to `http://localhost:9000/api/game` and select and copy the contents displayed. Clear the contents of the file `dist/moduleData.json` and paste in the copied content.
 
 To deploy to AWS, follow the steps below:
 
@@ -103,21 +105,21 @@ To deploy to AWS, follow the steps below:
 
   The following are some common issues you may run into.
 
-First, remember to run `npm install` before running any part of the application. Commands such as `npm run build` will fail if this has not been run first.
+1. Remember to run `npm install` before running any part of the application. Commands such as `npm run build` will fail if this has not been run first.
 
-
+2. In some cases, you will get the error below, meaning that you need to clear the processes currently running at port 9000.
   ```
   // Backend error:
   Error: listen EADDRINUSE: address already in use :::9000
   You need to kill port 9000
-    
-    $ sudo fuser -k 9000/tcp
-  
   ```
-   //Frontend Error:
-    Error: Access to fetch at 'http://localhost:9000/api/game' from origin 'http://localhost:8083' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
 
-    Fix: You need to install cors extension in google chrome to enable cross-origin resource sharing.
+To clear port 9000, use the following command:
+``` 
+$ sudo fuser -k 9000/tcp
+```
+
+3. If content is not updating when you change the data file, it may be caching on the browser. To avoid this, close all incongito windows and try opening a new incognito session.
 
 ### Contribution
   
