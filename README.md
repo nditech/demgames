@@ -33,9 +33,7 @@
   A full stack (MERN) app that helps users learn how to debate effectively.
   
   ## Documentation
-  
-  ### :warning: IN DEV. Currently three modules and its levels are available. Database is not yet configured, requiring workarounds for loading data.
-  
+    
   ### Table of Contents
   
   1. [Intro](#intro)
