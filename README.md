@@ -40,6 +40,7 @@
   
   1. [Intro](#intro)
   1. [Installation](#installation)
+  1. [Local Testing](#local-testing)
   1. [Deployment](#deployment-to-aws)
   1. [Troubleshooting](#debugging-and-troubleshooting)
   1. [Contribution](#contribution)
@@ -61,10 +62,10 @@
   cd demgames-debate
   npm install
   ```
-  
-  In order to run the project out of an S3 bucket, copy the contents of the directory `dist/` into your S3 bucket, and set `index.html` as the Index document. In order to edit the application, do not edit the dist directory directly, but rather edit the application code located in other directories, and then update the contents of the dist directory by running `npm run build`.
 
-  In order to do local testing, edit the file `client/src/pages/LandingPage/LandingPage.js`. Comment out the line `fetch('./moduleData.json')` (by default line 23), and uncomment `fetch('http://localhost:9000/api/game')` (line 24). To run the app, first start the express server by running the following command in the main directory:
+### Local Testing
+
+ In order to do local testing or otherwise deploy to code locally on your own computer, edit the file `client/src/pages/LandingPage/LandingPage.js`. Comment out the line `fetch('./moduleData.json')` (by default line 23), and uncomment `fetch('http://localhost:9000/api/game')` (line 24). To run the app, first start the express server by running the following command in the main directory:
 
   ```
   nodemon server/server.js  
@@ -84,7 +85,9 @@ To edit data for the local deployment, edit the file `data/Module/moduleData.jso
 
 ### Deployment to AWS
 
-Before deploying, if you have been made changes to the code, run `npm run build` (after having previously run `npm install`) in order to update the code in the directory `dist/`. If you have made changes to the game data in `data/Module/moduleData.json`, run `nodemon server/server.js`. In your browser, go to `http://localhost:9000/api/game` and select and copy the contents displayed. Clear the contents of the file `dist/moduleData.json` and paste in the copied content.
+DemGames is designed to be run out of an object storage service such as Amazon Web Service's S3 Bucket. The instructions below indicate how to deploy the application to S3.
+
+First, the code should be loaded on to your local machine using the installation instructions. Before deploying, if you have  made changes to the code, run `npm run build` (after having previously run `npm install`) in order to update the code in the directory `dist/`. If you have made changes to the game data in `data/Module/moduleData.json`, run `nodemon server/server.js`. In your browser, go to `http://localhost:9000/api/game` and select and copy the contents displayed. Clear the contents of the file `dist/moduleData.json` and paste in the copied content.
 
 To deploy to AWS, follow the steps below:
 
@@ -133,6 +136,10 @@ $ sudo fuser -k 9000/tcp
   
   ## Author(s)
   
+  * <b>Viet Nyugen</b>
+      > vnyugen@ndi.org &nbsp;&middot;&nbsp;
+  * <b>Noble Ackerson</b>
+      > nackerson@ndi.org &nbsp;&middot;&nbsp;
   * <b>Jatin Narang</b>
       > jatin.narang@hashedin.com &nbsp;&middot;&nbsp;
       
