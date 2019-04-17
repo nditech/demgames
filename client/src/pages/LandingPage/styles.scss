@@ -1,0 +1,101 @@
+.landing-page-wrapper {
+	.next-button {
+		width: 100%;
+		height: 2.5em;
+		background-color: #62c44f;
+		font-size: 1.4em;
+		color: white;
+	}
+	.landing-page-container {
+		.game-title {
+			margin-bottom: 0;
+			font-family: Georgia;
+			font-size: 1.8em;
+			font-weight: bold;
+			line-height: 1.2;
+			text-align: left;
+			color: #12008f;
+		}
+
+		.game-type-card-container {
+			width: 100%;
+			height: 87%;
+			.levels-link {
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				text-decoration: none;
+			}
+		}
+
+		.header-icon {
+			display: flex;
+			justify-content: space-between;
+		}
+	}
+	.top-section {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		.link-lock {
+			height: 5%;
+
+			display: flex;
+			align-items: center;
+		}
+		.info-profile-icon-container {
+			display: flex;
+			align-items: center;
+		}
+	}
+}
+
+@media screen and (min-width: 1024px) {
+	.landing-page-wrapper {
+		width: 100%;
+		background-color: #ffffff;
+
+		.top-section {
+			padding: .5em;
+		}
+		.landing-page-container {
+			.header-icon {
+				padding: 1em 3em;
+			}
+			width: 100%;
+			.game-title {
+				margin-left: 2em;
+				margin-top: 0.5em;
+			}
+		}
+
+		.game-type-card-container {
+			display: flex;
+			justify-content: space-between;
+			.module-card {
+				height: 18em;
+			}
+		}
+	}
+}
+
+@media screen and (device-aspect-ratio: 40/71) {
+	.landing-page-wrapper {
+		.landing-page-container {
+			.game-title {
+				font-size: 1.5em;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 220px) and (max-width: 330px) {
+	.landing-page-wrapper {
+		.landing-page-container {
+			.game-title {
+				font-size: 1.4em;
+			}
+		}
+	}
+}

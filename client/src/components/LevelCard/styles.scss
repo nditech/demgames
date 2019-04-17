@@ -1,0 +1,128 @@
+.link-lock-true {
+	pointer-events: none;
+}
+.card-lock-false {
+	opacity: 1;
+}
+
+.card-lock-true {
+	opacity: .6;
+}
+
+.level-card-blue {
+	background-color: #0968b8;
+}
+.level-card-green {
+	background-color: #2fa44b;
+}
+.level-card-orange {
+	background-color: #f0713d;
+}
+.level-card {
+	height: 15em;
+	width: 100%;
+	margin: .5em 0;
+	cursor: pointer;
+	.level-score {
+		text-align: right;
+		width: 50%;
+		padding-right: 2em;
+		font-size: 1.6em;
+		font-family: Georgia;
+		line-height: 1.2;
+		color: #ffffff;
+	}
+
+	.level-label-score {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		height: 3em;
+
+		.level-label {
+			width: 50%;
+			text-align: left;
+			padding-left: 1.5em;
+
+			font-size: 2em;
+			font-family: OpenSans;
+			font-weight: bold;
+			color: #ffffff;
+		}
+	}
+
+	.level-description {
+		opacity: 0.8;
+		font-family: OpenSans;
+		font-size: 1.5em;
+		color: #ffffff;
+		text-align: left;
+		padding-left: 2em;
+	}
+
+	.level-unlock-rule {
+		font-family: Arial;
+		font-size: 1.5em;
+		color: #ffffff;
+		text-align: left;
+		padding-left: 2em;
+	}
+
+	.lock-icon-container {
+		display: flex;
+		justify-content: flex-end;
+		.lock-icon {
+			width: 1.4em;
+			height: 1.8em;
+			object-fit: contain;
+		}
+	}
+}
+
+@media (min-width: 1024px) {
+	.link-lock {
+		width: 31%;
+		height: 10em;
+		margin: .5em;
+		.level-card {
+			height: 100%;
+			border-radius: 15px;
+			.lock-icon-container {
+				position: relative;
+				top: .5em;
+				right: .5em;
+			}
+		}
+	}
+}
+
+@media screen and (device-aspect-ratio: 40/71) {
+	.level-card {
+		.level-score {
+			font-size: 1.4em;
+		}
+
+		.level-label-score {
+			.level-label {
+				font-size: 1.4em;
+			}
+		}
+
+		.level-description {
+			font-size: 1.3em;
+			margin: 0;
+		}
+
+		.level-unlock-rule {
+			font-size: 1.3em;
+		}
+
+		.lock-icon-container {
+			.lock-icon {
+				width: 1.2em;
+				height: 1.5em;
+				margin-top: .3em;
+			}
+		}
+	}
+}
