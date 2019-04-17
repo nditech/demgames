@@ -34,94 +34,95 @@
   
   ## Documentation
   
-  ### :warning: IN DEV. Currently three modules and its levels are available.
+  ### :warning: IN DEV. Currently three modules and its levels are available. Database is not yet configured, requiring workarounds for loading data.
   
   ### Table of Contents
   
   1. [Intro](#intro)
-  1. [Demo](#demo)
   1. [Installation](#installation)
-  1. [Diagnosis](#diagnosis)
-  1. [Test](#test)
+  1. [Local Testing](#local-testing)
+  1. [Deployment](#deployment-to-aws)
+  1. [Troubleshooting](#debugging-and-troubleshooting)
   1. [Contribution](#contribution)
   
 ### Intro
   
   This app is built with React (frontend), Express.js (backend) and Node.js.
   
-  The app connects to a mock api in express  and gets the complete game data and renders all modules.
-  To add more modules , levels or questions you need to edit the moduleData.json file inside data directory. 
+  The app connects to a mock api in express and gets the complete game data and renders all modules.
+  To add more modules, levels, or questions, you need to edit the moduleData.json file inside dist directory. 
     
 ### Installation
   
-  Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/) and [npm](https://www.npmjs.com/get-npm) on your machine. 
+  Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/) and [npm](https://www.npmjs.com/get-npm) on your machine. To download and install, use the commands below. 
   
-  
-  Clone this repository to your local machine (using SSH):
 
   ```
-  $ Create a new directory , open terminal and run follwing commands in it.
-  $ git init
-  $ git remote add upstream https://github.com/nditech/demgames-debate.git
-  $ git pull upstream hashedin
-  $ npm install
-  $ npm start
+  git clone https://github.com/nditech/demgames-debate
+  cd demgames-debate
+  npm install
+  ```
+
+### Local Testing
+
+ In order to do local testing or otherwise deploy to code locally on your own computer, edit the file `client/src/pages/LandingPage/LandingPage.js`. Comment out the line `fetch('./moduleData.json')` (by default line 23), and uncomment `fetch('http://localhost:9000/api/game')` (line 24). To run the app, first start the express server by running the following command in the main directory:
 
   ```
-  
-  If the app is run for the first time, there won't be any modules. You need to run express server to fetch game data.
-  Open a new terminal and move to main directory and run the below command.
+  nodemon server/server.js  
+  ```
 
-   ```
-   
-   $ nodemon server/server.js
-   
-   ```
+  In another window, start the application with the following command:
 
-  ### Test localhost app on mobile device
-    To run the localhost app on your mobile you need to be connected with same wifi network and you need to check your inet address.
+  ```
+  npm start
+  ```
 
-  To check you inet address open your terminal and run " $ ifconfig " and check for inet address.
+  The application will then be visible in your browser at localhost:8080. (If it is not running there, check one of the first lines of output from npm start, which will look something like the following: `｢wds｣: Project is running at http://localhost:8080/`. This indicates the port at which the application is running.)
 
-  Example: inet addr:192.168.1.22
-  
-    inet addr:192.168.1.10 
+  By default, your browser will likely block the application from communicating with the express server. To avoid this, start chrome without security enabled by entering the following command in your terminal `google-chrome --disable-web-security --user-data-dir="/tmp/chrome_tmp"`, or download a CORS extension for your browser (such as https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en)
 
-    
-    Once you are connected you can run following command:
-    ```
-    $ HOST=<inet addr>:Port Number npm start
+To edit data for the local deployment, edit the file `data/Module/moduleData.json`. Note that you will have to re-run `nodemon server/server.js` while running `npm start` to load the new content. (If the new content is not displaying, check [troubleshooting](#debugging-and-troubleshooting) below).
 
-    ```
+### Deployment to AWS
+
+DemGames is designed to be run out of an object storage service such as Amazon Web Service's S3 Bucket. The instructions below indicate how to deploy the application to S3.
+
+First, the code should be loaded on to your local machine using the installation instructions. Before deploying, if you have  made changes to the code, run `npm run build` (after having previously run `npm install`) in order to update the code in the directory `dist/`. If you have made changes to the game data in `data/Module/moduleData.json`, run `nodemon server/server.js`. In your browser, go to `http://localhost:9000/api/game` and select and copy the contents displayed. Clear the contents of the file `dist/moduleData.json` and paste in the copied content.
+
+To deploy to AWS, follow the steps below:
+
+1. Create an S3 bucket for storing the contents of the site. You can proceed with the default settings.
+
+2. In order to make the site publically available, go to https://awspolicygen.s3.amazonaws.com/policygen.html. For step 1, select S3 bucket policy. For step 2, select 'Allow' for Effect, enter `*` for Principal, select 'Amazon S3' for AWS Service, select 'GetObject' for Actions, and for Amazon Resource Name enter 'arn:aws:s3:::' followed by the name of your S3 bucket. Click Add Statement and then Generate Policy. Copy the resulting JSON Document. In your S3 bucket, go to the Permissions tab, and then Bucket Policy, and paste the copied text in the Bucket Policy Editor, and then click Save.
+
+3. Copy the contents of the `dist/` directory into the S3 bucket. (This means do not copy the `dist/` directory itself - only the contents inside).
+
+4. Under the properties tab for the S3 bucket, select 'Static website hosting'. Select the option 'Use this bucket to host a website'
+
+5. Enter `index.html` for both 'Index document' and 'Error Document'.
+
+6. The link following the words 'Endpoint :' is the link for the site.
 
 
-    It will run the react app but data won't load unless you change some configuration in settings.js.
+### Debugging and Troubleshooting
 
-	
-    In settings.js you will find "config = { baseUrl: 'http://localhost:9000' };", you need to replace 'localhost' with your inet address.
+  The following are some common issues you may run into.
 
-    Example: config = { baseUrl: 'http://<inet address>:9000' };
+1. Remember to run `npm install` before running any part of the application. Commands such as `npm run build` will fail if this has not been run first.
 
-  
-  To open this react app on mobile :
-
-  Open your browser and type <inet address>:Port number on which you are running the react app.
-
-  ### Diagnosis
-  
+2. In some cases, you will get the error below, meaning that you need to clear the processes currently running at port 9000.
   ```
   // Backend error:
   Error: listen EADDRINUSE: address already in use :::9000
   You need to kill port 9000
-    
-    $ sudo fuser -k 9000/tcp
-  
   ```
-   //Frontend Error:
-    Error: Access to fetch at 'http://localhost:9000/api/game' from origin 'http://localhost:8083' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
 
-    Fix: You need to install cors extension in google chrome to enable cross-origin resource sharing.
+To clear port 9000, use the following command:
+``` 
+$ sudo fuser -k 9000/tcp
+```
 
+3. If content is not updating when you change the data file, it may be caching on the browser. To avoid this, close all incongito windows and try opening a new incognito session.
 
 ### Contribution
   
@@ -135,6 +136,10 @@
   
   ## Author(s)
   
+  * <b>Viet Nyugen</b>
+      > vnyugen@ndi.org &nbsp;&middot;&nbsp;
+  * <b>Noble Ackerson</b>
+      > nackerson@ndi.org &nbsp;&middot;&nbsp;
   * <b>Jatin Narang</b>
       > jatin.narang@hashedin.com &nbsp;&middot;&nbsp;
       
