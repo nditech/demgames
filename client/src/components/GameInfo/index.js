@@ -37,7 +37,7 @@ class GameInfo extends Component {
 			>
 				<div className="info-page-header">
 					<DialogTitle className="info-label" id="dialog-slide-image">
-						<span>Info</span>
+						<span>About DemGames</span>
 					</DialogTitle>
 					<DialogActions>
 						<Button className="ok-button" onClick={this.handleOkClick} color="primary">
@@ -47,15 +47,19 @@ class GameInfo extends Component {
 				</div>
 				<DialogContent>
 					<DialogContentText className="info-heading" id="dialog-slide-description">
-						<span>What is Lorem Ipsum?</span>
+						<span>DemGames is a lightweight, “edutainment” platform that hosts simple games to provide basic instruction at scale to youth on democracy concepts. Play through this debate-themed demo!</span>
 					</DialogContentText>
 				</DialogContent>
 				<DialogContent>
 					<DialogContentText className="info-sub-heading" id="dialog-slide-description">
 						<span>
-							Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-							been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a
-							galley of type and scrambled it to make a type specimen book.
+							DemGames has:
+							<ul>
+								<li>Self-paced multiple choice and matching questions to  offer quick reinforcement on key concepts</li>
+								<li>Choose-your-own-adventure narration that mimics practical decision-making and builds high-level reasoning skills</li>
+                                                                <li>Ability to customize themes and certain features to better fit program goals</li>
+							</ul>
+							Players earn points to advance in the game and unlock new levels. Program implementer can tailor the level of difficulty and choose between the different game types to better match program objectives. 
 						</span>
 					</DialogContentText>
 				</DialogContent>
