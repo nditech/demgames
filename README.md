@@ -82,7 +82,7 @@ A civic engagement platform that hosts simple games for engagement at scale for 
 
 ### Changing Content
 
-All content related to levels or questions is stored in the file `data/Module/moduleData.json` in a [JSON format](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON). This file can be edited with any text or code editor. While the file is fairly large and contains many nested sections, new content can be created fairly easily by copying and pasting existing current levels and questions to capture the correct format. For example, questions can be added by pasting the following format under a level:
+All content related to levels or questions is stored in the file `data/Module/moduleData.json` in a [JSON format](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON). This file can be edited with any text or code editor. While the file is fairly large and contains many nested sections, new content can be created fairly easily by copying and pasting existing current levels and questions to capture the correct format. Examples of the format for the questions, levels, and overall format are shown below.
 
 #### Question Format
 ```
@@ -105,6 +105,28 @@ All content related to levels or questions is stored in the file `data/Module/mo
 * *answer* - lists the possible answers that will appear below.
 * *correct_answer* The number in brackets after correct_answer refers to which answer is the correct one. Note that here, the first answer is labeled 0, the second answer is labeled 1, and so on.
 
+#### Level Format
+
+                        {
+                                "id": 1,
+                                "current_score": 0,
+                                "par_score": 0,
+                                "total_score": 40,
+                                "desc": "Match definitions in this level to learn debate vocabulary.",
+                                "linked_level": 0,
+                                "questions": [
+                                ]
+                        },
+                                     
+* *id* - the level order, where the levels for a module should have sequential id's starting at 1
+* *current_score* - as of the current software version, should be left at 0 
+* *par_score* - the number of points a player needs to get on the previous level to gain access to this level. Until the user scores that amount on the previous level, they will not be able to access this level (for the first level in a module, this should be 0)
+* *total_score* - this is what will be displayed for each level as the total score. It should equal the number of questions times 10
+* *desc* - the description that will appear on the level selection screen on the button for that level
+* *linked_level* - specifies which level comes before it (and therefore needs to be beaten to unlock this level)
+* *questions* - insert your questions in the bracket here
+* Note that the game sets each right answer as being worth 10 points, and each wrong answer as costing 10 points.
+
 #### Module Format
 
         {
@@ -114,8 +136,15 @@ All content related to levels or questions is stored in the file `data/Module/mo
                 "type": "single",
 
                 "levels": [
-                        {
+                ]
+        },
 
+* *id* - the module order, where the modules should be order starting at 1.
+* *name* - the name that will appear in the button for that module on the module selection page
+* *style* - the color the module button will appear as. Can be 'blue', 'green', or 'orange'
+* *type* - what type of levels will be in the module. Options are 'single' for questions in which there is only one right answer, 'multi' for levels where the player should select more than 1 answer per question (*under construction*), or
+
+The format for the "choose your own adventure"-style questions is slightly different, and can be seen by looking at module 3.
 
 #### Loading content
 
