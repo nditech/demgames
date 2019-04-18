@@ -39,6 +39,7 @@ A civic engagement platform that hosts simple games for engagement at scale for 
   1. [Intro](#intro)
   1. [Installation](#installation)
   1. [Local Testing](#local-testing)
+  1. [Changing Content](#changing-content)
   1. [Deployment](#deployment-to-aws)
   1. [Troubleshooting](#debugging-and-troubleshooting)
   1. [Contribution](#contribution)
@@ -79,7 +80,49 @@ A civic engagement platform that hosts simple games for engagement at scale for 
 
   By default, your browser will likely block the application from communicating with the express server. To avoid this, start chrome without security enabled by entering the following command in your terminal `google-chrome --disable-web-security --user-data-dir="/tmp/chrome_tmp"`, or download a CORS extension for your browser (such as https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en)
 
-To edit data for the local deployment, edit the file `data/Module/moduleData.json`. Note that you will have to re-run `nodemon server/server.js` while running `npm start` to load the new content. (If the new content is not displaying, check [troubleshooting](#debugging-and-troubleshooting) below).
+### Changing Content
+
+All content related to levels or questions is stored in the file `data/Module/moduleData.json` in a [JSON format](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON). This file can be edited with any text or code editor. While the file is fairly large and contains many nested sections, new content can be created fairly easily by copying and pasting existing current levels and questions to capture the correct format. For example, questions can be added by pasting the following format under a level:
+
+#### Question Format
+```
+                                        {
+                                                "id": 1,
+
+                                                "question": "Resolution",
+                                                "options": [
+                                                        "The topic or claim that is being debated. Example: The death penalty is a justified method of punishment.",
+                                                        "They are laws, decisions of the supreme court and policies of the executive branch that would prevent a new policy from existing.",
+                                                        "This is the Greek word for ethics or character and focuses on demonstrating the reliability, reliability or preparation of the debaters.",
+                                                        "This is the Greek word for logic and focuses on the message and appeals to authority or credibility by offering experience, research or data to support the arguments."
+                                                ],
+                                                "correct_answer": [ 0 ]
+                                        },
+```
+
+* *id* - the question order, where the questions for a level should have sequential id's starting at 1
+* *question* - the question that will appear at the top
+* *answer* - lists the possible answers that will appear below.
+* *correct_answer* The number in brackets after correct_answer refers to which answer is the correct one. Note that here, the first answer is labeled 0, the second answer is labeled 1, and so on.
+
+#### Module Format
+
+        {
+                "id": 1,
+                "name": "Designing an Argument",
+                "style": "blue",
+                "type": "single",
+
+                "levels": [
+                        {
+
+
+#### Loading content
+
+After making changes to the data, to test it locally, re-run `nodemon server/server.js` while running `npm start` to load the new content. (If the new content is not displaying, check [troubleshooting](#debugging-and-troubleshooting) below).
+
+#### Tips for json/content-editing issues
+
 
 ### Deployment to AWS
 
