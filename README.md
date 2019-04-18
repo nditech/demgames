@@ -30,7 +30,7 @@
     <a href="#authors">Author(s)</a>
   </p>
   
-  A full stack (MERN) app that helps users learn how to debate effectively.
+A civic engagement platform that hosts simple games for engagement at scale for civic organizing, political inclusion, and other democratic concepts. 
   
   ## Documentation
     
