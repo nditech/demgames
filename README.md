@@ -142,16 +142,14 @@ All content related to levels or questions is stored in the file `data/Module/mo
 * *id* - the module order, where the modules should be order starting at 1.
 * *name* - the name that will appear in the button for that module on the module selection page
 * *style* - the color the module button will appear as. Can be 'blue', 'green', or 'orange'
-* *type* - what type of levels will be in the module. Options are 'single' for questions in which there is only one right answer, 'multi' for levels where the player should select more than 1 answer per question (*under construction*), or
+* *type* - what type of levels will be in the module. Options are 'single' for questions in which there is only one right answer, 'multi' for levels where the player should select more than 1 answer per question (*under construction*), or 'scenario' for modules in which the player has multiple choices which puts them on different paths
+* *levels* - insert the levels here
 
-The format for the "choose your own adventure"-style questions is slightly different, and can be seen by looking at module 3.
+The format for the scenario questions is slightly different, and can be seen by looking at module 3. Also, note that there should be commas after each question, level, and module as seen in the format examples above, except for the last question/level/module, after which there should be no comma.
 
 #### Loading content
 
-After making changes to the data, to test it locally, re-run `nodemon server/server.js` while running `npm start` to load the new content. (If the new content is not displaying, check [troubleshooting](#debugging-and-troubleshooting) below).
-
-#### Tips for json/content-editing issues
-
+After making changes to the data, to test it locally, re-run `nodemon server/server.js` while running `npm start` to load the new content. If the old content is not being replaced by the new content there is likely a caching issue - see [troubleshooting](#debugging-and-troubleshooting) below.
 
 ### Deployment to AWS
 
@@ -178,9 +176,13 @@ To deploy to AWS, follow the steps below:
 
   The following are some common issues you may run into.
 
-1. Remember to run `npm install` before running any part of the application. Commands such as `npm run build` will fail if this has not been run first.
+#### `npm ____` does not work
 
-2. In some cases, you will get the error below, meaning that you need to clear the processes currently running at port 9000.
+Remember to run `npm install` before running any part of the application. Commands such as `npm run build` will fail if this has not been run first.
+
+#### port 9000 in use
+
+In some cases, you will get the error below, meaning that you need to clear the processes currently running at port 9000.
   ```
   // Backend error:
   Error: listen EADDRINUSE: address already in use :::9000
@@ -191,8 +193,9 @@ To clear port 9000, use the following command:
 ``` 
 $ sudo fuser -k 9000/tcp
 ```
+#### the app is not updating based on changes made
 
-3. If content is not updating when you change the data file, it may be caching on the browser. To avoid this, close all incongito windows and try opening a new incognito session.
+If content is not updating when you change the data file, it may be caching on the browser. To avoid this, close all incongito windows and try opening a new incognito session.
 
 ### Contribution
   
