@@ -29,9 +29,7 @@
     <a href="#license">License</a> - 
     <a href="#authors">Author(s)</a>
   </p>
-  
-A civic engagement platform that hosts simple games for engagement at scale for civic organizing, political inclusion, and other democratic concepts. 
-  
+    
   ## Documentation
     
   ### Table of Contents
@@ -46,11 +44,8 @@ A civic engagement platform that hosts simple games for engagement at scale for 
   
 ### Intro
   
-  This app is built with React (frontend), Express.js (backend) and Node.js.
-  
-  The app connects to a mock api in express and gets the complete game data and renders all modules.
-  To add more modules, levels, or questions, you need to edit the moduleData.json file inside dist directory. 
-    
+  DemGames is a civic engagement platform that hosts simple games for engagement at scale for civic organizing, political inclusion, and other democratic concepts. Gamified learning platforms offer a unique opportunity to provide light touch, broad reach training for youth with a technology approach that meets them where they are. Games for good can provide basic instruction and reinforce the attitudes and concepts that help young citizens engage in social change. DemGames brings together NDI’s tested civic education best practices with an engaging, fun platform. DemGames makes it easy to set up your own game and gives program implementers an innovative way to reinforce absorption and retention of knowledge while tracking use and learning over time.
+      
 ### Installation
   
   Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/) and [npm](https://www.npmjs.com/get-npm) on your machine. To download and install, use the commands below. 
@@ -180,7 +175,7 @@ To deploy to AWS, follow the steps below:
 
 Remember to run `npm install` before running any part of the application. Commands such as `npm run build` will fail if this has not been run first.
 
-#### port 9000 in use
+#### Port 9000 in use
 
 In some cases, you will get the error below, meaning that you need to clear the processes currently running at port 9000.
   ```
@@ -193,7 +188,7 @@ To clear port 9000, use the following command:
 ``` 
 $ sudo fuser -k 9000/tcp
 ```
-#### the app is not updating based on changes made
+#### The app is not updating based on changes made
 
 If content is not updating when you change the data file, it may be caching on the browser. To avoid this, close all incongito windows and try opening a new incognito session.
 
