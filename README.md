@@ -135,7 +135,7 @@ $ sudo fuser -k 9000/tcp
   ## Author(s)
   
   * <b>Viet Nguyen</b>
-      > vgyuyen@ndi.org &nbsp;&middot;&nbsp;
+      > vnguyen@ndi.org &nbsp;&middot;&nbsp;
   * <b>Noble Ackerson</b>
       > nackerson@ndi.org &nbsp;&middot;&nbsp;
   * <b>Jatin Narang</b>
