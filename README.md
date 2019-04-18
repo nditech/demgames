@@ -85,7 +85,7 @@ To edit data for the local deployment, edit the file `data/Module/moduleData.jso
 
 DemGames is designed to be run out of an object storage service such as Amazon Web Service's S3 Bucket. The instructions below indicate how to deploy the application to S3.
 
-First, the code should be loaded on to your local machine using the installation instructions. Before deploying, if you have  made changes to the code, run `npm run build` (after having previously run `npm install`) in order to update the code in the directory `dist/`. If you have made changes to the game data in `data/Module/moduleData.json`, run `nodemon server/server.js`. In your browser, go to `http://localhost:9000/api/game` and select and copy the contents displayed. Clear the contents of the file `dist/moduleData.json` and paste in the copied content.
+First, the code should be loaded on to your local machine using the installation instructions. Before deploying, if you have  made changes to the code, run `npm run build` (after having previously run `npm install`) in order to update the code in the directory `dist/`. If you have made changes to the game data in `data/Module/moduleData.json`, run `nodemon server/server.js`. In your browser, go to `http://localhost:9000/api/game` and select and copy the contents displayed. Clear the contents of the file `dist/moduleData.json` and paste in the copied content. (Note that for it to work, you sometimes may have to edit the generated policy by going to the line starting with the word Resource, and adding `/*` after the name of S3 bucket within the quotes, so that it looks something like `"Resource": "arn:aws:s3:::example-bucket-name/*",`)
 
 To deploy to AWS, follow the steps below:
 
