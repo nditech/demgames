@@ -9,7 +9,7 @@ import './styles.scss';
 class ProfileInfo extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { email: 'priyal@gmail.com', name: 'priyal', password: '12341234' };
+		this.state = { email: 'example@gmail.com', name: 'example', password: '12341234' };
 		this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
 		this.handleEditClick = this.handleEditClick.bind(this);
 	}
@@ -47,7 +47,7 @@ class ProfileInfo extends React.Component {
 								<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
 							</button>
 
-							<p className="my-profile-label">My Profile</p>
+							<p className="my-profile-label">My Profile - Coming Soon</p>
 						</div>
 						<img
 							ref={(input) => {
@@ -106,7 +106,7 @@ class ProfileInfo extends React.Component {
 					</div>
 				</div>
 				<div>
-					<p className="career-progress-label">Career Progress</p>
+					<p className="career-progress-label">Game Progress - Coming Soon</p>
 					<div className="overall-info">
 						<p className="rank-info">You are ranked in top 100</p>
 						<div className="modules-info">

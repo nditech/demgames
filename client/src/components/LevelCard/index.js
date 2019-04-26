@@ -47,7 +47,7 @@ class LevelCard extends Component {
 						</p>
 					</div>
 
-					<p className="level-description">Two line {description}</p>
+					<p className="level-description"> {description}</p>
 
 					{level > 1 &&
 					prevLevelScore < parScore && (

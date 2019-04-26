@@ -20,7 +20,8 @@ class LandingPage extends React.Component {
 
 	//Fetch complete game data.
 	componentWillMount() {
-		fetch(config.baseUrl + '/api/game')
+		fetch('./moduleData.json')
+                //fetch(config.baseUrl + '/api/game')
 			.then((response) => {
 				if (response.status >= 200 && response.status < 300) {
 					response.json().then((res) => {
@@ -72,7 +73,7 @@ class LandingPage extends React.Component {
 							</a>
 						</div>
 					</div>
-					<p className="game-title">DemGames - Debate</p>
+					<p className="game-title">DemGames - Demo</p>
 					<div className="game-type-card-container">
 						{gameData.length > 0 &&
 							gameData.map((modules, key) => (
