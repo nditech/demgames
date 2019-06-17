@@ -37,9 +37,7 @@ class GameInfo extends Component {
 					</DialogActions>
 				</div>
 				<DialogContent>
-					<DialogContentText className="info-heading" id="dialog-slide-description">
 						<div>DemGames is a lightweight, “edutainment” platform that hosts simple games to provide basic instruction at scale to youth on democracy concepts. Play through this debate-themed demo!</div>
-					</DialogContentText>
 				</DialogContent>
 				<DialogContent>
 					<div className="info-sub-heading" id="dialog-slide-description">
