@@ -5,6 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import '../css/GameInfo.scss';
 
 class GameInfo extends Component {
 	constructor(props) {
@@ -37,21 +38,25 @@ class GameInfo extends Component {
 				</div>
 				<DialogContent>
 					<DialogContentText className="info-heading" id="dialog-slide-description">
-						<span>DemGames is a lightweight, “edutainment” platform that hosts simple games to provide basic instruction at scale to youth on democracy concepts. Play through this debate-themed demo!</span>
+						<div>DemGames is a lightweight, “edutainment” platform that hosts simple games to provide basic instruction at scale to youth on democracy concepts. Play through this debate-themed demo!</div>
 					</DialogContentText>
 				</DialogContent>
 				<DialogContent>
-					<DialogContentText className="info-sub-heading" id="dialog-slide-description">
-						<span>
-							DemGames has:
-							<ul>
-								<li>Self-paced multiple choice and matching questions to  offer quick reinforcement on key concepts</li>
-								<li>Choose-your-own-adventure narration that mimics practical decision-making and builds high-level reasoning skills</li>
-                                                                <li>Ability to customize themes and certain features to better fit program goals</li>
-							</ul>
-							Players earn points to advance in the game and unlock new levels. Program implementer can tailor the level of difficulty and choose between the different game types to better match program objectives. 
-						</span>
-					</DialogContentText>
+					<div className="info-sub-heading" id="dialog-slide-description">
+                        DemGames has:
+                        <ul className="mdc-list">
+                            <li className="mdc-list-item">
+                                <span className="mdc-list-item__text">Self-paced multiple choice and matching questions to  offer quick reinforcement on key concepts</span>
+                            </li>
+                            <li className="mdc-list-item">
+                                <span className="mdc-list-item__text">Choose-your-own-adventure narration that mimics practical decision-making and builds high-level reasoning skills</span>
+                            </li>
+                            <li className="mdc-list-item">
+                                <span className="mdc-list-item__text">Ability to customize themes and certain features to better fit program goals</span>
+                            </li>
+                        </ul>
+						Players earn points to advance in the game and unlock new levels. Program implementer can tailor the level of difficulty and choose between the different game types to better match program objectives. 
+					</div>
 				</DialogContent>
 			</Dialog>
 		);
