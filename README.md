@@ -178,7 +178,7 @@ Remember to run `npm install` before running any part of the application. Comman
 
 #### Removing partially installed node modules
 
-If npm install fails, after fixing the issue, you may have to remove the directory node_modules. Run `rm -rf node_modules`, and then run `npm install again`.
+If npm install fails, after fixing the issue, you may have to remove the directory node_modules. Run `rm -rf node_modules`, and then run `npm install` again.
 
 #### Port 9000 in use
 
