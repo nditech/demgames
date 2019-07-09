@@ -48,8 +48,9 @@
       
 ### Installation
   
-  Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/) and [npm](https://www.npmjs.com/get-npm) on your machine. To download and install, use the commands below. 
-  
+  Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/), [npm](https://www.npmjs.com/get-npm), and [nodemon](https://www.npmjs.com/package/nodemon) on your machine. Make sure nodemon is installed globally, using `sudo npm install -g nodemon`
+
+To download and install demgames, use the commands below.   
 
   ```
   git clone https://github.com/nditech/demgames-debate
@@ -174,6 +175,10 @@ To deploy to AWS, follow the steps below:
 #### `npm ____` does not work
 
 Remember to run `npm install` before running any part of the application. Commands such as `npm run build` will fail if this has not been run first.
+
+#### Removing partially installed node modules
+
+If npm install fails, after fixing the issue, you may have to remove the directory node_modules. Run `rm -rf node_modules`, and then run `npm install again`.
 
 #### Port 9000 in use
 
