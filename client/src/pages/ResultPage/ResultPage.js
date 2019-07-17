@@ -71,7 +71,10 @@ class ResultPage extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return { gameData: state.gameData };
+	return { 
+		//player_given_name:this.props.
+		gameData: state.gameData 
+	};
 };
 
 ResultPage.propTypes = {
