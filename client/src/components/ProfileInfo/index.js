@@ -3,13 +3,33 @@ import arrowBackUrl from '../../images/back.png';
 import editUrl from '../../images/edit.png';
 import changePassUrl from '../../images/changePass.svg';
 import PropTypes from 'prop-types';
+import Auth from '../../Auth';
+import { connect } from 'react-redux';
 
 import './styles.scss';
+const auth0=new Auth();
+
+const authDetail={
+					player_given_name:"",
+					player_family_name:"",
+					player_email:"",
+					player_username:"",
+					player_picture:"",
+					player_gender:""
+				};
+const scoreDetail={
+					
+}
 
 class ProfileInfo extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { email: 'example@gmail.com', name: 'example', password: '12341234' };
+		this.state = { 
+			email: 'example@gmail.com', 
+			name: this.props.player_given_name, 
+			password: '12341234' 
+		};
+
 		this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
 		this.handleEditClick = this.handleEditClick.bind(this);
 	}
@@ -38,6 +58,8 @@ class ProfileInfo extends React.Component {
 
 	render() {
 		const { email, name } = this.state;
+		
+
 		return (
 			<div className="profile-info-container">
 				<div className="profile-form-container">
@@ -47,7 +69,7 @@ class ProfileInfo extends React.Component {
 								<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
 							</button>
 
-							<p className="my-profile-label">My Profile - Coming Soon</p>
+							<p className="my-profile-label">{this.props.player_given_name} Profile</p>
 						</div>
 						<img
 							ref={(input) => {
@@ -67,7 +89,7 @@ class ProfileInfo extends React.Component {
 							}}
 							className="profile-input"
 							type="text"
-							placeholder={email}
+							placeholder={this.props.player_email}
 							onKeyUp={this.handleOnKeyUp.bind(this, 'email')}
 						/>
 						<p className="input-label input-label-name">Your name</p>
@@ -77,7 +99,7 @@ class ProfileInfo extends React.Component {
 							}}
 							className="profile-input"
 							type="text"
-							placeholder={name}
+							placeholder={this.props.player_given_name}
 							onKeyUp={this.handleOnKeyUp.bind(this, 'name')}
 						/>
 						<p className="input-label input-label-password">Your password</p>
@@ -106,7 +128,7 @@ class ProfileInfo extends React.Component {
 					</div>
 				</div>
 				<div>
-					<p className="career-progress-label">Game Progress - Coming Soon</p>
+					<p className="career-progress-label">Hi {this.props.player_given_name} your game progress is as follows</p>
 					<div className="overall-info">
 						<p className="rank-info">You are ranked in top 100</p>
 						<div className="modules-info">
@@ -132,7 +154,32 @@ class ProfileInfo extends React.Component {
 }
 
 ProfileInfo.propTypes = {
-	history: PropTypes.object
+	history: PropTypes.object,
+	getGameData: PropTypes.func,
+	getScores: PropTypes.func,
+	gameData: PropTypes.object,
+	authDetail:PropTypes.object,
+	setAuth: PropTypes.func,
+	clearAuth: PropTypes.func
 };
 
-export default ProfileInfo;
+
+const mapStateToProps = (state) => ({
+	player_given_name:state.authDetail.authDetail.player_given_name,
+	player_email:state.authDetail.authDetail.player_email,
+	player_picture:state.authDetail.authDetail.player_picture,
+	gameData: state.gameData 
+});
+
+//Dispatch action to fetch game data and scores.
+const mapDispatchToProps = (dispatch) => {
+	return {
+		//getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+		getScores: (scores) => dispatch(fetchScores(scores)),
+		setAuth:(authDetail) => dispatch(fetchAuthDetails(authDetail)),
+		clearAuth:(authDetail)=> dispatch(clearAuthDetails(authDetail)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
+//export default ProfileInfo;

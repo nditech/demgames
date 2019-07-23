@@ -14,6 +14,9 @@ import * as jwtDecode from 'jwt-decode';
 import Auth from '../../Auth';
 import {bindActionCreators} from 'redux';
 //import {connect} from 'react-redux';
+import profile from '../../components/ProfileInfo';
+import list from '../../components/List/List';
+import admin from '../../components/admin/admin';
 
 const auth0=new Auth();
 
@@ -131,19 +134,24 @@ class LandingPage extends React.Component {
 						<img className="company-logo" src={NdiLogoUrl} alt="ndi-logo" /><p className="welcome" align="left">Welcome {this.props.player_given_name}</p>
 						<div className="info-profile-icon-container">
 							<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleClickOpen} />
-								{
+							{
 									!auth0.isAuthenticated()&&	
 									<a onClick={this.handleLogIn}>									
 										<img className="profile-icon" src={this.props.player_given_name||profileUrl} alt="Log out" />
 									</a>
-								}
-								{
+							}
+							{
 									auth0.isAuthenticated()&&
-									<a onClick={this.handleLogOut}>									
-										<acronym title="Logout"> <img className="profile-icon" src={this.props.player_picture||profileUrl} alt="Log out" />
-										</acronym>
-									</a>
-								}
+									<div>
+										<a href="/profile">Profile</a> || 
+										<a href="/admin">Admin Page</a> || 
+										<a onClick={this.handleLogOut}>									
+											<acronym title="Logout"> <img className="profile-icon" src={this.props.player_picture||profileUrl} alt="Log out" />
+											</acronym>
+										</a>
+									</div>
+									
+							}
 						</div>
 					</div>
 					<p className="game-title">DemGames - Demo</p>

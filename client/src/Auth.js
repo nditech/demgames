@@ -1,6 +1,6 @@
 // src/Auth/Auth.js
 /* eslint no-restricted-globals: */
-import auth0 from '../../node_modules/auth0-js';
+import auth0 from 'auth0-js';
 
 //import jwtDecode from "jwt-decode";
 import jwtDecode from 'jwt-decode';
