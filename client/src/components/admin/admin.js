@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Route, Nav, Link, BrowserRouter as Router} from "react-router-dom";
 import list from '../../components/List/List';
+import UpdatePlayer from '../../components/Update/UpdateProfile';
 
 /*
 import Listq from './Listq';
@@ -129,11 +130,12 @@ class Admin extends Component{
                     <Router>
                        <div>
                         <div>
-                            <Link to="/list">List players</Link>           
+                            <Link to="/list">List players</Link>
+                            <Link to="/UpdatePlayer">Update player</Link>           
                         </div>
-
                         <div>
                             <Route path="/list" component={list} />
+                            <Route path="/UpdatePlayer" component={UpdatePlayer} />
                         </div>
                         </div>
                     </Router>   

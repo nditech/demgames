@@ -15,6 +15,7 @@ import store from './store';
 import ScenarioQuesAns from './pages/ScenarioBased/ScenarioQuesAns';
 import admin from './components/admin/admin';
 import list from './components/List/List';
+import UpdatePlayer from './components/Update/UpdateProfile';
 
 import Auth from './Auth';
 import Callback from './pages/LandingPage/callback';
@@ -33,7 +34,8 @@ import Callback from './pages/LandingPage/callback';
 			    <Route path="/info" exact component={CorrectAnswerInfo} />
 			    <Route path="/profile" exact component={ProfileInfo} />
 				<Route path="/admin" exact component={admin}/>
-				<Route path="list" exact component={list} />
+				<Route path="/list" exact component={list} />
+				<Route path="/UpdatePlayer" exact component={UpdatePlayer} />
 		    </div>
 	    </Router>
     );

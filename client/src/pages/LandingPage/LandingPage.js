@@ -17,7 +17,7 @@ import {bindActionCreators} from 'redux';
 import profile from '../../components/ProfileInfo';
 import list from '../../components/List/List';
 import admin from '../../components/admin/admin';
-
+import UpdatePlayer from '../../components/Update/UpdateProfile';
 const auth0=new Auth();
 
 const authDetail={
@@ -59,12 +59,14 @@ class LandingPage extends React.Component {
 		//auth0.handleAuthentication();
 		if(auth0.isAuthenticated()===true){
 						
-			authDetail.player_given_name=auth0.getProfile().given_name||'Berhanu';
-			authDetail.player_picture=auth0.getProfile().picture||'Berhanu';
-			authDetail.player_username=auth0.getProfile().nickname||'Berhanu';
-			authDetail.player_email=auth0.getProfile().email||'Berhanu';
-			authDetail.player_picture=auth0.getProfile().picture||'Berhanu';
-			authDetail.player_gender=auth0.getProfile().gender||'Berhanu';
+			authDetail.player_given_name=auth0.getProfile().given_name;
+			authDetail.player_family_name=auth0.getProfile().family_name;
+			authDetail.player_picture=auth0.getProfile().picture;
+			authDetail.player_username=auth0.getProfile().nickname;
+			authDetail.player_email=auth0.getProfile().email;
+			authDetail.player_picture=auth0.getProfile().picture;
+			authDetail.player_gender=auth0.getProfile().gender;
+			console.log(auth0.getProfile());
 			console.log(authDetail);
 			console.log(auth0.getProfile());
 			this.props.setAuth(authDetail);

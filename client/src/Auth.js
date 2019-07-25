@@ -44,7 +44,7 @@ export default class Auth {
   signup(){
     //var newUser=1;
     this.auth0.signup({ 
-        connection: 'berhanu-auth0-db-connection', 
+        connection: 'dev-4veatje-auth0-db-connection', 
         email: 'Berhanub@gmail.com', 
         password: null,
         username: null

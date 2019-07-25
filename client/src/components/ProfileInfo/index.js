@@ -10,17 +10,35 @@ import './styles.scss';
 const auth0=new Auth();
 
 const authDetail={
-					player_given_name:"",
-					player_family_name:"",
-					player_email:"",
-					player_username:"",
-					player_picture:"",
-					player_gender:""
-				};
-const scoreDetail={
-					
-}
-
+				player_given_name:"",
+				player_family_name:"",
+				player_email:"",
+				player_username:"",
+				player_picture:"",
+				player_gender:""
+			};
+/* const scoreDetail={
+				current:0,
+				score:0,
+				play_id:null,
+				player_id:null,
+				game_id:null,
+				email:this.props.player_email||null,
+				player_id:null,
+				given_name:null,
+				middle_name:null,
+				family_name:this.props.family_name,
+				username:this.props.username,
+				picture:this.props.picture,
+				gender:this.props.gender,
+				city:this.props.city||null,
+				country:this.props.country||null,
+				program:this.props.program||null,
+				total:0,
+				program_rank:null,
+				total_rank:null
+			}
+*/
 class ProfileInfo extends React.Component {
 	constructor(props) {
 		super(props);
