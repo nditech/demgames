@@ -17,6 +17,7 @@ import admin from './components/admin/admin';
 import list from './components/List/List';
 import UpdatePlayer from './components/Update/UpdateProfile';
 import Register from './components/Add/Register';
+import AddGame from './components/Add/AddGame';
 import Auth from './Auth';
 import Callback from './pages/LandingPage/callback';
 
@@ -37,6 +38,7 @@ import Callback from './pages/LandingPage/callback';
 				<Route path="/list" exact component={list} />
 				<Route path="/UpdatePlayer" exact component={UpdatePlayer} />
 				<Route path="/registerplayer" exact component={Register} />
+				<Route path="/addgame" exact component={AddGame} />
 		    </div>
 	    </Router>
     );

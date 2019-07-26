@@ -106,9 +106,12 @@ class Register extends Component {
         },
         body: JSON.stringify(this.state)
       })
-      .then(res=>res.json()) 
-      .then((data)=>{console.log(data)})
-      .then(alert("Your profile is now stored!"))
+      .then((res)=>{
+          //res.json();
+//          alert(res.message);
+          return(res.json());
+      }) 
+      .then((data)=>{alert(data.message)})
       .catch((error)=>console.log(error));         
     }
     

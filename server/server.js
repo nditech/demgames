@@ -187,22 +187,76 @@ app.post('/selectPlayerProfile',(req, res)=>{
 
 //Post player on mysql db
 app.post('/registerplayer', (req, res) => {
+  
   var data=req.body;
   console.log(data);
   
-  const d= new moment(data.dateOfBirth);
-  //const s=d.format('YYYY-MM-DD');
-  data.dateOfBirth=d.format('YYYY-MM-DD');
+  const sqlS="select * from Players where email ='"+data.email+"'";                    
+  connectionMysql.query(sqlS,(err, datanew, fields)=>
+  {
+        if(err)
+        { 
+              console.log("Not Successful access");        
+        }
+        else
+        {    
+          if(datanew.length<1)
+          {
+            const d= new moment(data.dateOfBirth);
+            //const s=d.format('YYYY-MM-DD');
+            data.dateOfBirth=d.format('YYYY-MM-DD');
+            console.log(data);
+          
+            const sqlInsertStatement='insert into Players SET ?';
+            connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
+                  if (err) throw err;
+                  console.log(data);
+                  console.log("Number of rows affected : " + result.affectedRows);
+                  console.log("Number of records affected with warning : " + result.warningCount);
+                  console.log("Message from MySQL Server : " + result.message);               
+            });
+          } 
+          else
+          {
+            res.send({message:'email already exists'})
+          }                
+        }
+  });
+               
+});
+
+app.post('/registergame', (req, res) => {
+  
+  var data=req.body;
   console.log(data);
- 
-  const sqlInsertStatement='insert into Players SET ?';
-  connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
-        if (err) throw err;
-        console.log(data);
-        console.log("Number of rows affected : " + result.affectedRows);
-        console.log("Number of records affected with warning : " + result.warningCount);
-        console.log("Message from MySQL Server : " + result.message);               
-  });       
+  
+  const sqlS="select * from Games where id ='"+data.id+"'";                    
+  connectionMysql.query(sqlS,(err, datanew, fields)=>
+  {
+        if(err)
+        { 
+              console.log("Not Successful access");        
+        }
+        else
+        {    
+          if(datanew.length<1)
+          {           
+                const sqlInsertStatement='insert into Games SET ?';
+                connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
+                  if (err) throw err;
+                  console.log(data);               
+                  console.log("Number of rows affected : " + result.affectedRows);
+                  console.log("Number of records affected with warning : " + result.warningCount);
+                  console.log("Message from MySQL Server : " + result.message);
+                });  
+                res.send({message:'game successfully added'})
+          } 
+          else
+          {
+                res.send({message:'game already exists'})
+          }                
+        }
+    });                     
 });
 
 app.listen(9000, () => console.log('listening'));

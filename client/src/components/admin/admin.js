@@ -3,6 +3,7 @@ import {Route, Nav, Link, BrowserRouter as Router} from "react-router-dom";
 import list from '../../components/List/List';
 import UpdatePlayer from '../../components/Update/UpdateProfile';
 import Register from '../Add/Register';
+import AddGame from '../Add/AddGame';
 
 /*
 import Listq from './Listq';
@@ -32,6 +33,7 @@ import UpdateGame from './UpdateGame';
 import Auth from '../../Auth';
 //import notfound from './NotFound';
 import Callback from '../../pages/LandingPage/callback';
+
 
 const auth=  new Auth();
 
@@ -133,12 +135,15 @@ class Admin extends Component{
                         <div>
                             <Link to="/list">List players</Link> || 
                             <Link to="/UpdatePlayer">Update player</Link> || 
-                            <Link to="/registerplayer">Register new player</Link> ||            
+                            <Link to="/registerplayer">Register new player</Link> || 
+                            <Link to="/addgame">Add game</Link> || 
+                                       
                         </div>
                         <div>
                             <Route path="/list" component={list} />
                             <Route path="/UpdatePlayer" component={UpdatePlayer} />
                             <Route path="/registerplayer" component={Register} />
+                            <Route path="/addgame" component={AddGame} />
                         </div>
                         </div>
                     </Router>   
