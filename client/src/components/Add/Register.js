@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-//import '../App.css';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 //import "react-datepicker/dist/react-datepicker.css";
 
@@ -89,18 +90,14 @@ class Register extends Component {
                     console.log("Found it");
             }
         }        
-        console.log(event.target.name);
-         
    }
 
    handleSubmit(event) 
    {
        event.preventDefault();
-      // console.log("Successful"); 
-      // alert(this.state.firstName+this.state.middleName+this.state.lastName+this.state.userName+this.state.email+this.state.gender+this.state.dateOfBirth+this.state.country+this.state.city+this.state.program)
        console.log(JSON.stringify(this.state));
        
-       const url ='http://localhost:3001/registerplayer';
+       const url ='http://localhost:9000/registerplayer';
        fetch(url, {
         method: 'POST',
         headers: {
@@ -114,11 +111,13 @@ class Register extends Component {
       .then(alert("Your profile is now stored!"))
       .catch((error)=>console.log(error));         
     }
+    
     reset(e){
         e.preventDefault();
         this.setState(this.initialState);
     }      
-   render() {
+   
+    render() {
       return (
       <div className="App">
             <div>
@@ -237,12 +236,43 @@ class Register extends Component {
                             <br/>
                         </label>
                         <br/>
-                        <button type="submit">Save</button> | <button type="button" onClick={this.reset}>Reset</button> | <button onClick={this.props.logout}>Log out</button>                 
+                        <button type="submit">Save</button> | <button type="button" onClick={this.reset}>Reset</button>              
                 </form>
             </div>            
       </div>
     );
   }
 }
+const mapStateToProps = (state) => ({
+/*
+    player_given_name:state.authDetail.authDetail.player_given_name,
+    player_family_name:state.authDetail.authDetail.player_given_name,
+    player_picture:state.authDetail.authDetail.player_picture,
+    player_email:state.authDetail.authDetail.player_email,
+    player_username:state.authDetail.authDetail.player_username,
+    player_gender:state.authDetail.authDetail.player_gender,
+    player_dateOfBirth:state.authDetail.authDetail.player_dateOfBirth
+	gameData: state.gameData 
+*/
+});
 
-export default Register;
+//Dispatch action to fetch game data and scores.
+const mapDispatchToProps = (dispatch) => {
+	return {
+//		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+//		getScores: (scores) => dispatch(fetchScores(scores)),
+		setAuth:(authDetail) => dispatch(fetchAuthDetails(authDetail)),
+		clearAuth:(authDetail)=> dispatch(clearAuthDetails(authDetail)),
+	};
+};
+
+Register.propTypes = {
+//	getGameData: PropTypes.func,
+//	getScores: PropTypes.func,
+//	gameData: PropTypes.object,
+	authDetail:PropTypes.object,
+//	setAuth: PropTypes.func,
+//	clearAuth: PropTypes.func
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

@@ -55,7 +55,7 @@ app.post('/updateplayer', (req, res) => {
     var data=req.body;
     console.log(data);
     
-    const d= new moment(data.dateofBirth);
+    const d= new moment(data.dateOfBirth);
     const s=d.format('YYYY-MM-DD');
     
     const sqlUpdateStatement='update Players set dateofbirth="'+s+'", firstname="'+req.body.given_name+'", middlename="'+req.body.middle_name+'", lastname="'+req.body.family_name+'", username="'+req.body.username+
@@ -69,7 +69,7 @@ app.post('/updateplayer', (req, res) => {
           console.log("Number of rows affected : " + result.affectedRows);
           console.log("Number of records affected with warning : " + result.warningCount);
           console.log("Message from MySQL Server : " + result.message); 
-          res.send(JSON.stringify(200));              
+          res.send(JSON.stringify(data));              
     });
     
           
@@ -142,9 +142,9 @@ app.post('/selectPlayerProfile',(req, res)=>{
               else
               {
                 console.log("Executed but not found reply")
-                const d= new moment('2019-04-30T20:13:00.000Z');
+                
+                const d= new moment(data.dateOfBirth);
                 const s=d.format('YYYY-MM-DD');
-                //console.log(snd);
                   
                 const sqlInsertStatement="insert into Players (`firstname`,`lastname`, `username`, `gender`, `dateofbirth`, `country`, `city`, `program`, `email`) values ('"+snd.given_name+"','"+snd.family_name+"','"+snd.username+"','"+snd.gender+"','"+s+"','','','','"+snd.email+"')";
                 
@@ -185,5 +185,24 @@ app.post('/selectPlayerProfile',(req, res)=>{
     }
 });
 
+//Post player on mysql db
+app.post('/registerplayer', (req, res) => {
+  var data=req.body;
+  console.log(data);
+  
+  const d= new moment(data.dateOfBirth);
+  //const s=d.format('YYYY-MM-DD');
+  data.dateOfBirth=d.format('YYYY-MM-DD');
+  console.log(data);
+ 
+  const sqlInsertStatement='insert into Players SET ?';
+  connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
+        if (err) throw err;
+        console.log(data);
+        console.log("Number of rows affected : " + result.affectedRows);
+        console.log("Number of records affected with warning : " + result.warningCount);
+        console.log("Message from MySQL Server : " + result.message);               
+  });       
+});
 
 app.listen(9000, () => console.log('listening'));

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Route, Nav, Link, BrowserRouter as Router} from "react-router-dom";
 import list from '../../components/List/List';
 import UpdatePlayer from '../../components/Update/UpdateProfile';
+import Register from '../Add/Register';
 
 /*
 import Listq from './Listq';
@@ -16,7 +17,7 @@ import RemoveQuestion from './RemoveQuestion';
 import UpdateQuestion from './UpdateQuestion.js';
 import UpdateChoice from './UpdateChoice.js';
 import AddChoices from './AddChoices';
-import Register2 from './Register2';
+
 import ListGames from './ListGames';
 import RemoveUser from './RemoveUser';
 import RemoveChoice from './RemoveChoice';
@@ -130,12 +131,14 @@ class Admin extends Component{
                     <Router>
                        <div>
                         <div>
-                            <Link to="/list">List players</Link>
-                            <Link to="/UpdatePlayer">Update player</Link>           
+                            <Link to="/list">List players</Link> || 
+                            <Link to="/UpdatePlayer">Update player</Link> || 
+                            <Link to="/registerplayer">Register new player</Link> ||            
                         </div>
                         <div>
                             <Route path="/list" component={list} />
                             <Route path="/UpdatePlayer" component={UpdatePlayer} />
+                            <Route path="/registerplayer" component={Register} />
                         </div>
                         </div>
                     </Router>   

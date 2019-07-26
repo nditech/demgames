@@ -16,7 +16,7 @@ import ScenarioQuesAns from './pages/ScenarioBased/ScenarioQuesAns';
 import admin from './components/admin/admin';
 import list from './components/List/List';
 import UpdatePlayer from './components/Update/UpdateProfile';
-
+import Register from './components/Add/Register';
 import Auth from './Auth';
 import Callback from './pages/LandingPage/callback';
 
@@ -36,6 +36,7 @@ import Callback from './pages/LandingPage/callback';
 				<Route path="/admin" exact component={admin}/>
 				<Route path="/list" exact component={list} />
 				<Route path="/UpdatePlayer" exact component={UpdatePlayer} />
+				<Route path="/registerplayer" exact component={Register} />
 		    </div>
 	    </Router>
     );
