@@ -11,17 +11,16 @@ class AddChoices extends Component {
                     choicedescription:'',
                     weight:'',
                     isanswer:0,
-                    questions:[{
-                        id:0,
-                        statement:''
-                    }]
+                    questionid:'',
+                    questions:[]
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit  = this.handleSubmit.bind(this);
     }
     componentDidMount()
     {
-        fetch('/listquestions', {
+        let initialquestions = [];
+        fetch('http://localhost:9000/listquestions', {
             method: 'GET',
             headers: {
                 'Accept':'application/json',
@@ -29,17 +28,32 @@ class AddChoices extends Component {
             },
           })
           .then(res=>res.json())
-          .then((data)=>{
-                console.log('The '+ data+'  was successfully uploaded');
+          .then((data)=>
+            {
+                initialquestions = data.map((question) => {
+                        return question
+                });
+
+                //console.log(initialquestions);
+                
+                this.setState({
+                            questions: initialquestions,
+                });    
             })
           .catch((error)=>console.log(error)); 
     }
 
     handleChange(event) {   
         switch(event.target.name){
-            case "questionId":
-            {
-                    this.setState({questionId: event.target.value});
+            case "question_statement":
+            {       
+                    console.log(event.target.value);
+                    this.state.questions.filter((question)=>
+                        {
+                             return(question.question_statement === event.target.value ? this.setState({questionid:question.id}):console.log(0))
+                        }
+                    );
+                    
                     break;
             }
             case "choicestatement":
@@ -57,9 +71,9 @@ class AddChoices extends Component {
                     this.setState({weight: event.target.value});
                     break;
             }
-            case "answer":
+            case "isanswer":
             {
-                    this.setState({answer: event.target.value});
+                    this.setState({isanswer: event.target.value});
                     break;
             }
             default:
@@ -76,7 +90,7 @@ class AddChoices extends Component {
        console.log(JSON.stringify(this.state));
        
        //const url ='/registergame';
-       fetch('/addchoice', {
+       fetch('http://localhost:9000/addchoice', {
         method: 'POST',
         headers: {
             'Accept':'application/json',
@@ -92,12 +106,20 @@ class AddChoices extends Component {
     }
            
 render() {
+
+      let optionItems = this.state.questions.map((question) =>
+            <option key={question.id}>{question.question_statement}</option>
+      );
+
       return (
       <div className="App">
             <div>
                <form className="questionForm" onSubmit={this.handleSubmit}>        
-                        <label>Question ID 
-                            <input type="text" name="questionId" value={this.state.questionId} onChange={this.handleChange}/> <br/>
+                        <label>Question statement 
+                        <select name="question_statement" value={this.state.selectValue} onClick={this.handleChange}>
+                            {optionItems}
+                        </select>
+                        <br/>
                         </label>
                         <label>Choice statement 
                             <input type="text" name="choicestatement" value={this.state.choicestatement} onChange={this.handleChange}/> <br/>

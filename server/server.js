@@ -266,6 +266,16 @@ app.post('/addchoice',  (req, res) => {
   var data=req.body;
   console.log(data);
   
+  var data={
+          questionid: req.body.questions[0].id,
+          choicedescription: req.body.choicedescription,
+          answer: req.body.isanswer,
+          choicestatement: req.body.choicestatement,
+          weight:req.body.weight 
+  }
+
+  console.log(data);
+  /*
   const sqlS="select * from Choices where id ='"+data.id+"'";                    
   connectionMysql.query(sqlS,(err, datanew, fields)=>
   {
@@ -277,6 +287,7 @@ app.post('/addchoice',  (req, res) => {
         {    
           if(datanew.length<1)
           {
+ */ 
               const sqlInsertStatement='insert into Choices SET ?';
               connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
               if (err) throw err;
@@ -286,13 +297,14 @@ app.post('/addchoice',  (req, res) => {
                 console.log("Message from MySQL Server : " + result.message);              
                 res.send({message:'The choice detail is successfully added'});
               }); 
-          }
+ /*         }
           else
           {
               res.send({message:'This choice id already exists'})
           }                
         }
-  });                     
+  });
+  */                     
 });
 
 //Post question on mysql db
