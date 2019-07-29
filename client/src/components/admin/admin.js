@@ -6,20 +6,15 @@ import Register from '../Add/Register';
 import AddGame from '../Add/AddGame';
 import AddChoices from '../Add/AddChoices';
 import AddQuestion from '../Add/AddQuestion';
+import ListQuestions from '../List/ListQuestions';
+import ListChoices from '../List/ListChoices';
+import ListGames from '../List/ListGames';
 
 /*
-import Listq from './Listq';
-import ListQuestions from './ListQuestions';
-import ListChoices from './ListChoices';
-import Register from './Register2';
-import UpdatePlayer from './UpdatePlayer2';
-import Home from './Home';
-import AddGame from './AddGame';
-import AddQuestion from './AddQuestion';
 import RemoveQuestion from './RemoveQuestion';
 import UpdateQuestion from './UpdateQuestion.js';
 import UpdateChoice from './UpdateChoice.js';
-import ListGames from './ListGames';
+
 import RemoveUser from './RemoveUser';
 import RemoveChoice from './RemoveChoice';
 import Game from './Game';
@@ -134,12 +129,15 @@ class Admin extends Component{
                        <div>
                         <div>
                             <Link to="/list">List players</Link> || 
+                            <Link to="/listgames">List games</Link> || 
+                            <Link to="/listquestions">List questions</Link> || 
+                            <Link to="/listchoices">List choices</Link> || 
                             <Link to="/UpdatePlayer">Update player</Link> || 
                             <Link to="/registerplayer">Register new player</Link> || 
                             <Link to="/addgame">Add game</Link> ||
                             <Link to="/addchoices">Add choices</Link> || 
                             <Link to="/addquestion">Add question</Link> || 
-                                       
+                                               
                         </div>
                         <div>
                             <Route path="/list" component={list} />
@@ -148,6 +146,10 @@ class Admin extends Component{
                             <Route path="/addgame" component={AddGame} />
                             <Route path="/addchoices" component={AddChoices} />
                             <Route path="/addquestion" component={AddQuestion} />
+                            <Route path="/listquestions" component={ListQuestions} />  
+                            <Route path="/listchoices" component={ListChoices} />
+                            <Route path="/listgames" component={ListGames} />
+
                         </div>
                        </div>
                     </Router>   

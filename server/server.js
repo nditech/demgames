@@ -259,6 +259,30 @@ app.post('/registergame', (req, res) => {
     });                     
 });
 
+// List all choices from mysql
+app.get('/listchoices',(req,res)=>{
+    // res.set('Content-Type', 'application/json');     
+       connectionMysql.query('select * from Choices',(err, data, fields)=>{
+         if(err){ 
+           console.log("Not Successful access to games");
+         }else{
+           console.log(JSON.stringify(data));
+           res.send(JSON.stringify(data));
+         }     
+     })
+})
+
+//Lists all games from mysql database
+app.get('/listgames',(req,res)=>{
+    connectionMysql.query('select * from Games',(err, data, fields)=>{
+      if(err){ 
+        console.log("Not Successful access to games");
+      }else{
+        console.log(JSON.stringify(data));
+        res.send(JSON.stringify(data));         
+      }    
+  })   
+})
 
 //Post choices on mysql db
 app.post('/addchoice',  (req, res) => {
