@@ -1,19 +1,38 @@
 import React, { Component } from 'react';
-import '../App.css';
+import PropTypes from 'prop-types';
+//import '../App.css';
+import {connect} from 'react-redux';
 
 class AddChoices extends Component {
     constructor(props){
         super(props);
         this.state={
-                id:'',
-                questionId:'',
-                choicestatement:'',
-                choicedescription:'',
-                weight:'',
-                answer:0
+                    choicestatement:'',
+                    choicedescription:'',
+                    weight:'',
+                    isanswer:0,
+                    questions:[{
+                        id:0,
+                        statement:''
+                    }]
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit  = this.handleSubmit.bind(this);
+    }
+    componentDidMount()
+    {
+        fetch('/listquestions', {
+            method: 'GET',
+            headers: {
+                'Accept':'application/json',
+                'Content-Type': 'application/json'          
+            },
+          })
+          .then(res=>res.json())
+          .then((data)=>{
+                console.log('The '+ data+'  was successfully uploaded');
+            })
+          .catch((error)=>console.log(error)); 
     }
 
     handleChange(event) {   
@@ -84,7 +103,9 @@ render() {
                             <input type="text" name="choicestatement" value={this.state.choicestatement} onChange={this.handleChange}/> <br/>
                         </label>
                         <label>Choice description 
-                            <input type="text" name="choicedescription" value={this.state.choicedescription} onChange={this.handleChange}/> <br/>
+                            <textarea type="text" name="choicedescription" value={this.state.choicedescription} onChange={this.handleChange}> 
+                            </textarea>
+                            <br/>
                         </label>
                         <label>Weight
                             <input type="text" name="weight" value={this.state.weight} onChange={this.handleChange}/> <br/>
@@ -100,5 +121,35 @@ render() {
     );
   }
 }
+    const mapStateToProps = (state) => ({
+        /*
+            player_given_name:state.authDetail.authDetail.player_given_name,
+            player_family_name:state.authDetail.authDetail.player_given_name,
+            player_picture:state.authDetail.authDetail.player_picture,
+            player_email:state.authDetail.authDetail.player_email,
+            player_username:state.authDetail.authDetail.player_username,
+            player_gender:state.authDetail.authDetail.player_gender,
+            player_dateOfBirth:state.authDetail.authDetail.player_dateOfBirth
+            gameData: state.gameData 
+        */
+        });
+        
+    //Dispatch action to fetch game data and scores.
+    const mapDispatchToProps = (dispatch) => {
+        return {
+    //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+    //		getScores: (scores) => dispatch(fetchScores(scores)),
+            setAuth:(authDetail) => dispatch(fetchAuthDetails(authDetail)),
+            clearAuth:(authDetail)=> dispatch(clearAuthDetails(authDetail)),
+        };
+    };
 
-export default AddChoices;
+    AddChoices.propTypes = {
+    //	getGameData: PropTypes.func,
+    //	getScores: PropTypes.func,
+    //	gameData: PropTypes.object,
+        authDetail:PropTypes.object,
+    //	setAuth: PropTypes.func,
+    //	clearAuth: PropTypes.func
+    };
+export default connect(mapStateToProps, mapDispatchToProps) (AddChoices);

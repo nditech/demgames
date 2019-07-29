@@ -259,4 +259,97 @@ app.post('/registergame', (req, res) => {
     });                     
 });
 
+
+//Post choices on mysql db
+app.post('/addchoice',  (req, res) => {
+
+  var data=req.body;
+  console.log(data);
+  
+  const sqlS="select * from Choices where id ='"+data.id+"'";                    
+  connectionMysql.query(sqlS,(err, datanew, fields)=>
+  {
+        if(err)
+        { 
+              console.log("Not Successful access");        
+        }
+        else
+        {    
+          if(datanew.length<1)
+          {
+              const sqlInsertStatement='insert into Choices SET ?';
+              connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
+              if (err) throw err;
+                console.log(data);
+                console.log("Number of rows affected : " + result.affectedRows);
+                console.log("Number of records affected with warning : " + result.warningCount);
+                console.log("Message from MySQL Server : " + result.message);              
+                res.send({message:'The choice detail is successfully added'});
+              }); 
+          }
+          else
+          {
+              res.send({message:'This choice id already exists'})
+          }                
+        }
+  });                     
+});
+
+//Post question on mysql db
+app.post('/addquestion',  (req, res) => {
+  //var data=req.body;  
+  var data={
+      gameid: req.body.gameid,
+      difficulty_level: req.body.difficulty_level,
+      question_statement: req.body.question_statement,
+      weight: req.body.weight,
+      explanation: req.body.explanation,
+      isitmedia: req.body.isitmedia 
+  }
+
+  console.log(data);
+
+  const sqlS="select * from Questions where question_statement ='"+data.question_statement+"'";
+
+  connectionMysql.query(sqlS,(err, datanew, fields)=>
+  {
+        if(err)
+        { 
+              console.log("Not Successful access");        
+        }
+        else
+        {    
+          if(datanew.length<1)
+          {
+              const sqlInsertStatement='insert into Questions SET ?';
+              connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
+              if (err) throw err;
+                console.log(data);
+                console.log("Number of rows affected : " + result.affectedRows);
+                console.log("Number of records affected with warning : " + result.warningCount);
+                console.log("Message from MySQL Server : " + result.message);              
+                res.send({message:'The question detail is successfully added'});
+              }); 
+          }
+          else
+          {
+              res.send({message:'This question already exists'})
+          }                
+        }
+  });                     
+});
+
+// List all questions from mysql
+app.get('/listquestions',(req,res)=>{
+  // res.set('Content-Type', 'application/json');     
+     connectionMysql.query('select * from Questions',(err, data, fields)=>{
+       if(err){ 
+         console.log("Not Successful access to games");
+       }else{
+         console.log(JSON.stringify(data));
+         res.send(JSON.stringify(data));
+       }     
+   })
+ });
+
 app.listen(9000, () => console.log('listening'));

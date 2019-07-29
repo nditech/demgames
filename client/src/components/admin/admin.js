@@ -4,6 +4,8 @@ import list from '../../components/List/List';
 import UpdatePlayer from '../../components/Update/UpdateProfile';
 import Register from '../Add/Register';
 import AddGame from '../Add/AddGame';
+import AddChoices from '../Add/AddChoices';
+import AddQuestion from '../Add/AddQuestion';
 
 /*
 import Listq from './Listq';
@@ -17,8 +19,6 @@ import AddQuestion from './AddQuestion';
 import RemoveQuestion from './RemoveQuestion';
 import UpdateQuestion from './UpdateQuestion.js';
 import UpdateChoice from './UpdateChoice.js';
-import AddChoices from './AddChoices';
-
 import ListGames from './ListGames';
 import RemoveUser from './RemoveUser';
 import RemoveChoice from './RemoveChoice';
@@ -136,7 +136,9 @@ class Admin extends Component{
                             <Link to="/list">List players</Link> || 
                             <Link to="/UpdatePlayer">Update player</Link> || 
                             <Link to="/registerplayer">Register new player</Link> || 
-                            <Link to="/addgame">Add game</Link> || 
+                            <Link to="/addgame">Add game</Link> ||
+                            <Link to="/addchoices">Add choices</Link> || 
+                            <Link to="/addquestion">Add question</Link> || 
                                        
                         </div>
                         <div>
@@ -144,8 +146,10 @@ class Admin extends Component{
                             <Route path="/UpdatePlayer" component={UpdatePlayer} />
                             <Route path="/registerplayer" component={Register} />
                             <Route path="/addgame" component={AddGame} />
+                            <Route path="/addchoices" component={AddChoices} />
+                            <Route path="/addquestion" component={AddQuestion} />
                         </div>
-                        </div>
+                       </div>
                     </Router>   
 
                 </div>
