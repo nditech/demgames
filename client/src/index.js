@@ -22,6 +22,7 @@ import AddQuestion from './components/Add/AddQuestion';
 import AddChoices from './components/Add/AddChoices';
 import Auth from './Auth';
 import Callback from './pages/LandingPage/callback';
+import RemovePlayer from './components/Remove/RemovePlayer';
 
 
     const Routes = ()=> (
@@ -43,6 +44,7 @@ import Callback from './pages/LandingPage/callback';
 				<Route path="/addgame" exact component={AddGame} />
 				<Route path="/addquestion" exact component={AddQuestion} />
 				<Route path="/addchoices" exact component={AddChoices}/>
+				<Route path="/removeplayer" exact component={RemovePlayer} />
 		    </div>
 	    </Router>
     );

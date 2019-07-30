@@ -388,4 +388,93 @@ app.get('/listquestions',(req,res)=>{
    })
  });
 
+  //Post player delete on mysql db
+  app.post('/deleteplayer',(req, res) => {
+    var data=req.body;
+    console.log(data);
+
+    if((data.email===null)||(data.username===null)||(data.id===null))
+        res.sendStatus(JSON.stringify({message:"Missing email or id or username"}));
+    else if((data.email==='undefined')||(data.username==='undefined')||(data.id==='undefined'))
+        res.sendStatus(JSON.stringify({message:"Missing email or id or username"}));
+    else if((data.email==='')||(data.username==='')||(data.id===''))
+        res.sendStatus(JSON.stringify({message:"Missing email or id or username"}));
+    else
+    {
+            const sqlDeleteStatement='Delete from Players where id="'+req.body.player_id+'" or email="'+req.body.email+'"';
+     
+            console.log(sqlDeleteStatement);
+
+            connectionMysql.query(sqlDeleteStatement, function (err, result, fields) {
+                  if (err) throw err;
+                  console.log(sqlDeleteStatement);
+                  console.log("Number of rows affected : " + result.affectedRows);
+                  console.log("Number of records affected with warning : " + result.warningCount);
+                  console.log("Message from MySQL Server : " + result.message);
+                  res.sendStatus(JSON.stringify({message:'Player is now deleted successfully'}));               
+            });
+    }
+
+  });
+
+  //Get specific player profile from mysql db
+app.post('/selectProfileforDel',(req, res)=>{
+    
+  const snd=req.body;    
+  if(snd.email===null)
+    res.sendStatus(300);
+  else if(snd.email==='null')
+    res.sendStatus(300);
+  else if(snd.email==='')
+    res.sendStatus(300)
+  else
+  {
+      console.log(snd); 
+      console.log(snd.email);
+      console.log(snd.username);
+      console.log(snd.given_name);
+      console.log(snd.family_name);
+      console.log(snd.gender);
+
+      if((snd.given_name===null)||(snd.given_name==='undefined'))
+          snd.given_name='';
+
+      if((snd.family_name===null)||(snd.family_name==='undefined'))
+          snd.family_name='';
+
+      if((snd.username===null)||(snd.username==='undefined'))
+          snd.username='';
+      
+      if((snd.gender===null)||(snd.gender==='undefined'))
+          snd.gender='';
+          
+      const sqlS="select * from Players where email='"+snd.email+"' or id='"+snd.player_id+"' or username='"+snd.username+"'";              
+      console.log(sqlS);      
+      connectionMysql.query(sqlS,(err, data, fields)=>
+      {
+          if(err){ 
+              console.log("Not Successful access");        
+              console.log(err);
+          }
+          else
+          {
+            //console.log("Now successful");
+              if(data.length>0)
+              {  
+                  console.log('Yes data is found');
+                  console.log(data[0].id);
+                  console.log(data[0].email);
+                  console.log(data[0]);
+                  res.send( JSON.stringify(data));
+              }
+              else
+              {
+                  console.log("Email not found")
+                  res.send(JSON.stringify({message:"Not found"}));                        
+              }
+          }
+      })    
+  }
+});
+
 app.listen(9000, () => console.log('listening'));

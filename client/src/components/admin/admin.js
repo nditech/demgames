@@ -9,6 +9,7 @@ import AddQuestion from '../Add/AddQuestion';
 import ListQuestions from '../List/ListQuestions';
 import ListChoices from '../List/ListChoices';
 import ListGames from '../List/ListGames';
+import RemovePlayer from '../Remove/RemovePlayer';
 
 /*
 import RemoveQuestion from './RemoveQuestion';
@@ -137,7 +138,7 @@ class Admin extends Component{
                             <Link to="/addgame">Add game</Link> ||
                             <Link to="/addchoices">Add choices</Link> || 
                             <Link to="/addquestion">Add question</Link> || 
-                                               
+                            <Link to="/removeplayer">Remove player</Link> ||                    
                         </div>
                         <div>
                             <Route path="/list" component={list} />
@@ -149,7 +150,7 @@ class Admin extends Component{
                             <Route path="/listquestions" component={ListQuestions} />  
                             <Route path="/listchoices" component={ListChoices} />
                             <Route path="/listgames" component={ListGames} />
-
+                            <Route path="/removeplayer" component={RemovePlayer} />
                         </div>
                        </div>
                     </Router>   
