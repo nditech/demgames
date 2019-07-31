@@ -506,6 +506,51 @@ app.post('/selectProfileforDel',(req, res)=>{
   }
 });
 
+//Get specific game from mysql db
+app.post('/selectGameforDel',(req, res)=>{
+    
+  const snd=req.body;    
+  if(snd.questionid===null)
+    res.sendStatus(300);
+  else if(snd.questionid==='null')
+    res.sendStatus(300);
+  else if(snd.questionid==='')
+    res.sendStatus(300)
+  else
+  {
+      console.log(snd); 
+          
+      const sqlS="select * from Games where id='"+snd.id+"'";              
+      console.log(sqlS);      
+      connectionMysql.query(sqlS,(err, data, fields)=>
+      {
+          if(err){ 
+              console.log("Not Successful access");        
+              console.log(err);
+          }
+          else
+          {
+            //console.log("Now successful");
+              if(data.length>0)
+              {  
+                  console.log('Yes data is found');
+                  console.log(data[0].id);
+                  console.log(data[0].email);
+                  console.log(data[0]);
+                  res.status(200).send( JSON.stringify(data));
+              }
+              else
+              {
+                  console.log(data);
+                  console.log("Id given is not found")
+                  res.status(200).send(JSON.stringify({message:"Not found"}));                        
+              }
+          }
+      })    
+  }
+});
+
+
 //Get specific choice from mysql db
 app.post('/selectChoiceforDel',(req, res)=>{
     
@@ -593,5 +638,21 @@ app.post('/selectQuestionforDel',(req, res)=>{
       })    
   }
 });
+
+//Update games from mysql database
+app.post('/updateGame',(req,res)=>{
+   console.log(req.body);
+   const sqlUpdateStatement='update Games set caption="'+req.body.caption+'", gamedescription="'+req.body.gamedescription+'", gametype="'+req.body.gametype+'" where id = "'+req.body.id+'"';
+           
+           console.log(sqlUpdateStatement);
+           connectionMysql.query(sqlUpdateStatement, function (err, result, fields) {
+              if (err) throw err;
+              console.log(sqlUpdateStatement);
+              console.log("Number of rows affected : " + result.affectedRows);
+              console.log("Number of records affected with warning : " + result.warningCount);
+              console.log("Message from MySQL Server : " + result.message); 
+              res.status(200).send({message:'updated successfully'});              
+             }); 
+})
 
 app.listen(9000, () => console.log('listening'));

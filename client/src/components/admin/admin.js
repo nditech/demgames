@@ -12,11 +12,11 @@ import ListGames from '../List/ListGames';
 import RemovePlayer from '../Remove/RemovePlayer';
 import removequestion from '../Remove/RemoveQuestion';
 import RemoveChoice from '../Remove/RemoveChoice';
-
+import UpdateGame from '../Update/UpdateGame';
 /*
 import UpdateQuestion from './UpdateQuestion.js';
 import UpdateChoice from './UpdateChoice.js';
-import UpdateGame from './UpdateGame';
+
 import NotFound from './NotFound';
 
 */
@@ -136,6 +136,7 @@ class Admin extends Component{
                             <Link to="/removeplayer">Remove player</Link> ||                    
                             <Link to="/removechoice">Remove choice</Link> || 
                             <Link to="/removequestion">Remove question</Link> || 
+                            <Link to="/updategame">Update game</Link> ||  
                         </div>
                         <div>
                             <Route path="/list" component={list} />
@@ -150,6 +151,7 @@ class Admin extends Component{
                             <Route path="/removeplayer" component={RemovePlayer} />
                             <Route path="/removechoice" component={RemoveChoice} />
                             <Route path="/removequestion" component={removequestion} />
+                            <Route path="/updategame" component={UpdateGame} />
                         </div>
                        </div>
                     </Router>   

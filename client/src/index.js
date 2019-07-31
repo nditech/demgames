@@ -25,6 +25,7 @@ import Callback from './pages/LandingPage/callback';
 import RemovePlayer from './components/Remove/RemovePlayer';
 import RemoveChoice from './components/Remove/RemoveChoice';
 import RemoveQuestion from './components/Remove/RemoveQuestion';
+import UpdateGame from './components/Update/UpdateGame';
 
     const Routes = ()=> (
     	<Router>
