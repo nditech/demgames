@@ -411,11 +411,40 @@ app.get('/listquestions',(req,res)=>{
                   console.log("Number of rows affected : " + result.affectedRows);
                   console.log("Number of records affected with warning : " + result.warningCount);
                   console.log("Message from MySQL Server : " + result.message);
-                  res.sendStatus(JSON.stringify({message:'Player is now deleted successfully'}));               
+                  res.status(200).send({message:'The player is now deleted successfully'});               
             });
     }
-
   });
+
+  //Post choice delete on mysql db
+  app.post('/deletechoice',(req, res) => {
+      var data=req.body;
+      console.log(data);
+      const sqlDeleteStatement='Delete from Choices where id="'+req.body.id+'"';
+      connectionMysql.query(sqlDeleteStatement, function (err, result, fields) {
+            if (err) throw err;
+            console.log(sqlDeleteStatement);
+            console.log("Number of rows affected : " + result.affectedRows);
+            console.log("Number of records affected with warning : " + result.warningCount);
+            console.log("Message from MySQL Server : " + result.message); 
+            res.status(200).send({message:'The choice is now deleted successfully'});              
+      });      
+  });
+
+//Post choice delete on mysql db
+app.post('/deletequestion',(req, res) => {
+  var data=req.body;
+  console.log(data);
+  const sqlDeleteStatement='Delete from Questions where id="'+req.body.id+'"';
+  connectionMysql.query(sqlDeleteStatement, function (err, result, fields) {
+        if (err) throw err;
+        console.log(sqlDeleteStatement);
+        console.log("Number of rows affected : " + result.affectedRows);
+        console.log("Number of records affected with warning : " + result.warningCount);
+        console.log("Message from MySQL Server : " + result.message); 
+        res.status(200).send({message:'The question is now deleted successfully'});              
+  });      
+});
 
   //Get specific player profile from mysql db
 app.post('/selectProfileforDel',(req, res)=>{
@@ -470,6 +499,94 @@ app.post('/selectProfileforDel',(req, res)=>{
               else
               {
                   console.log("Email not found")
+                  res.send(JSON.stringify({message:"Not found"}));                        
+              }
+          }
+      })    
+  }
+});
+
+//Get specific choice from mysql db
+app.post('/selectChoiceforDel',(req, res)=>{
+    
+    const snd=req.body;    
+    if(snd.questionid===null)
+      res.sendStatus(300);
+    else if(snd.questionid==='null')
+      res.sendStatus(300);
+    else if(snd.questionid==='')
+      res.sendStatus(300)
+    else
+    {
+        console.log(snd); 
+            
+        const sqlS="select * from Choices where id='"+snd.id+"'";              
+        console.log(sqlS);      
+        connectionMysql.query(sqlS,(err, data, fields)=>
+        {
+            if(err){ 
+                console.log("Not Successful access");        
+                console.log(err);
+            }
+            else
+            {
+              //console.log("Now successful");
+                if(data.length>0)
+                {  
+                    console.log('Yes data is found');
+                    console.log(data[0].id);
+                    console.log(data[0].email);
+                    console.log(data[0]);
+                    res.send( JSON.stringify(data));
+                }
+                else
+                {
+                    console.log(data);
+                    console.log("Id given is not found")
+                    res.send(JSON.stringify({message:"Not found"}));                        
+                }
+            }
+        })    
+    }
+});
+
+//Get specific choice from mysql db
+app.post('/selectQuestionforDel',(req, res)=>{
+    
+  const snd=req.body;    
+  if(snd.questionid===null)
+    res.sendStatus(300);
+  else if(snd.questionid==='null')
+    res.sendStatus(300);
+  else if(snd.questionid==='')
+    res.sendStatus(300)
+  else
+  {
+      console.log(snd); 
+          
+      const sqlS="select * from Questions where id='"+snd.id+"'";              
+      console.log(sqlS);      
+      connectionMysql.query(sqlS,(err, data, fields)=>
+      {
+          if(err){ 
+              console.log("Not Successful access");        
+              console.log(err);
+          }
+          else
+          {
+            //console.log("Now successful");
+              if(data.length>0)
+              {  
+                  console.log('Yes data is found');
+                  console.log(data[0].id);
+                  console.log(data[0].email);
+                  console.log(data[0]);
+                  res.send( JSON.stringify(data));
+              }
+              else
+              {
+                  console.log(data);
+                  console.log("Id given is not found")
                   res.send(JSON.stringify({message:"Not found"}));                        
               }
           }

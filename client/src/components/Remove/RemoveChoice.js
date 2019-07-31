@@ -1,301 +1,210 @@
 import React, { Component } from 'react';
+import Auth from "../../Auth";
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
-import '../App.css';
 
+class RemoveChoice extends Component{
+   constructor(props){
+       super(props);
 
-class RemoveUser extends Component {  
-    constructor(props){
-        super(props);
-        this.state={
-            choices:[{
-                id:"",
-                questionid:"",
-                choicestatement:"",
-                choicedescription:"",
-                weight:"",
-                answer:0
-            }],
-            updatechoice:{
-                id:"",
-                questionid:"",
-                choicestatement:"",
-                choicedescription:"",
-                weight:"",
-                answer:0
-            },
-            choiceidI:null         
-        }
-        this.handleSearch=this.handleSearch.bind(this);
-        this.pool=this.pool.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit  = this.handleSubmit.bind(this);
-        this.handleChangeS = this.handleChangeS.bind(this);      
-    }
+       this.state = {
+                    choice:{
+                            choicestatement:'',
+                            choicedescription:'',
+                            weight:'',
+                            isanswer:0,
+                            id:null,
+                            questionid:null
+                    },
+                    search:{
+                            id:null
+                    }
+       }; 
 
-    componentDidMount() {
-        this.pool();        
-     }
+      // this.getInitialState=this.getInitialState.bind(this);                  
+//       this.handleReset=this.handleReset.bind(this);
+       this.handleReset=this.handleReset.bind(this);
+       this.handleChange=this.handleChange.bind(this);
+       this.handleSearchChange=this.handleSearchChange.bind(this);
+       this.handleSearch=this.handleSearch.bind(this);
+       this.handleSubmit=this.handleSubmit.bind(this);
+   }
 
-    handleSearch(event){
-        event.preventDefault();   
-        console.log("The value being searched is :" + this.state.choiceidI);
-        this.state.choices.map(
-            (element) => {
-                console.log("The value being searched is :" + this.state.choiceidI+" "+element.id);
-                if(element.id===this.state.choiceidI) {
-                           
-                     this.setState(
-                    {
-                        updatechoice: element},
-                             ()=>{
-                                   console.log(this.state.updatechoice.id+"    "+this.state.choiceidI+"  "+element.id);                                   
-                                 }
-                    )                  
-                }
-                else
-                 console.log("Value not found");
-            }
-        );
-        console.log(this.state.updatechoice.id)  
-    }
-
-    pool(){
-        fetch('/listchoices')
-        .then((res) =>res.json())
-        .then((data)=>{                        
-               const Str2=JSON.stringify(JSON.parse(JSON.stringify(data)));
-               const bObj2=JSON.parse(Str2);
-               const newchoice=JSON.parse(JSON.stringify(bObj2)); 
-               console.log(newchoice);                             
-               this.setState(prevState=>({
-                      choices:prevState.choices.concat(newchoice)
-               }))
-               console.log(JSON.stringify(JSON.parse(JSON.stringify(this.state.choices))));                 
-        });        
-        console.log(this.state.choices);
-    }
-
-    handleChange(event) { 
-        event.preventDefault();
-          
-        switch(event.target.name){
-            case "choiceid":
-            {
+   handleChange(e){
+       e.preventDefault();
+       const sc=e.target.value;
+       
+        switch(e.target.name)
+        {
+            case "id":
                 this.setState({
-                    updatechoice:{
-                        id:event.target.value
-                    }},
-                    ()=>{
-                        console.log("value"+this.state.updatechoice.id)
-                    }
-                );
+                    id:sc
+                })
                 break;
-            }
-            case "questionid":
-            {   
-                var questionid=event.target.value;    
-                this.setState(prevState => ({
-                    updatechoice:{
-                        questionid:questionid,
-                        id:prevState.updatechoice.id,
-                        choicestatement:prevState.updatechoice.choicestatement,
-                        choicedescription:prevState.updatechoice.choicedescription,
-                        weight:prevState.updatechoice.weight,
-                        answer:prevState.updatechoice.answer
-                    }}),
-                    ()=>{
-                        console.log("New Value :"+this.state.updatechoice)
-                    }
-                );
+            default:
                 break;
-            }
-            case "choicestatement":
-            {   
-                var choicestatement=event.target.value;    
-                this.setState(prevState => ({
-                    updatechoice:{
-                        choicestatement:choicestatement,
-                        id:prevState.updatechoice.id,
-                        questionid:prevState.updatechoice.questionid,
-                        choicedescription:prevState.updatechoice.choicedescription,
-                        weight:prevState.updatechoice.weight,
-                        answer:prevState.updatechoice.answer
-                    }}),
-                    ()=>{
-                        console.log("New Value :"+this.state.updatechoice)
-                    }
-                );
-                break;
-            }
-            case "choicedescription":
-            {   
-                var choicedescription=event.target.value;    
-                this.setState(prevState => ({
-                    updatechoice:{
-                        choicedescription:choicedescription,
-                        id:prevState.updatechoice.id,
-                        questionid:prevState.updatechoice.questionid,
-                        choicestatement:prevState.updatechoice.choicestatement,
-                        weight:prevState.updatechoice.weight,
-                        answer:prevState.updatechoice.answer
-                    }}),
-                    ()=>{
-                        console.log("New Value :"+this.state.updatechoice)
-                    }
-                );
-                break;
-            }
-            case "weight":
-            {   
-                var weight=event.target.value;    
-                this.setState(prevState => ({
-                    updatechoice:{
-                        weight:weight,
-                        choicedescription:choicedescription,
-                        id:prevState.updatechoice.id,
-                        questionid:prevState.updatechoice.questionid,
-                        choicestatement:prevState.updatechoice.choicestatement,
-                        choicedescription:prevState.updatechoice.choicedescription,
-                        answer:prevState.updatechoice.answer
-                    }}),
-                    ()=>{
-                         console.log("New Value :"+this.state.updatechoice)
-                    }
-                );
-                break;
-            }
-            case "answer":
+        }
+   }
+
+   handleSubmit(e){
+      e.preventDefault();                      
+      const url ="http://localhost:9000/deletechoice";
+      fetch(url, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "Application/json",
+                "Accept":"application/json"
+            },
+            body: JSON.stringify(this.state.choice),
+            mode:'cors'
+      })
+      .then((res) => res.json())      
+      .then((data)=>{         
+            console.log(data);
+            if(data.message)
             {
-                var answer=event.target.value;
-                this.setState(prevState => ({
-                    updatechoice:{
-                        answer:answer,
-                        choicedescription:choicedescription,
-                        id:prevState.updatechoice.id,
-                        questionid:prevState.updatechoice.questionid,
-                        choicestatement:prevState.updatechoice.choicestatement,
-                        choicedescription:prevState.updatechoice.choicedescription,
-                        weight:prevState.updatechoice.weight
-                    }}),
+                alert(data.message);
+            }
+      })
+      .catch((error)=>console.log(error))  
+   }
+   
+
+   handleSearchChange(event){
+        event.preventDefault();
+        
+        switch(event.target.name)
+        {
+            case "id":
+                this.setState({
+                        search:{
+                                id:event.target.value
+                        }
+                    }
+                    ,
                     ()=>{
-                         console.log("New Value :"+this.state.updatechoice)
+                                console.log(this.state.search); 
                         }
                 );
-                break;                
-            }           
-            default:
-            {
-                console.log("Found it");
                 break;
-            }
-        }             
-   }
-   handleClearForm(){
-    this.setState={
-        choices:[{
-                id:"",
-                questionid:"",
-                choicestatement:"",
-                choicedescription:"",
-                weight:"",
-                answer:0
-        }],
-        updatechoice:{
-                id:"",
-                questionid:"",
-                choicestatement:"",
-                choicedescription:"",
-                weight:"",
-                answer:0
-        },
-        choiceidI:null
-   }
-}
-
-   handleChangeS(event) { 
-    event.preventDefault();
-    var valId=event.target.value;
-    switch(event.target.name){
-        case "choiceidI":
-        {
-            this.setState(
-                {
-                    choiceidI:valId
-                },
-                ()=>{
-                    console.log("value"+this.state.choiceidI)
-                }
-            );
-            break;
-        }                
-        default:
-        {
-                console.log("Found it");
+            default:
+                break;
         }
-    }                   
    }
 
+   handleSearch(){
 
-   handleSubmit(event) 
-   {          
-       event.preventDefault();
-              
-       const url ="/deletechoice";
-       fetch(url, {
-        method: 'POST',
+        fetch(`http://localhost:9000/selectChoiceforDel`, {
+        method: 'post',        
         headers: {
           "Content-Type": "Application/json",
           "Accept":"application/json"
         },
-        body: JSON.stringify(this.state.updatechoice),
-        mode:'cors'
-      })
-      .then((res) => res.json())      
-      .then((data)=>{console.log(data)})
-      .catch((error)=>console.log(error))     
-      
-    }
-           
-   render() {
-     
-      return (
-            <div className="App">
-            <div>
-                <form className="playerForm" onSubmit={this.handleSubmit} >
-                        <label>Search by Choices Id 
-                            <input type="text" name="choiceidI" value={this.state.choiceidI||''} onChange={this.handleChangeS}/> <br/>
+        body: JSON.stringify(this.state.search)
+       })
+       .then((res) => res.json())      
+       .then((data)=>{
+            if(data.message==='Not found')
+            {
+                alert("Question with specified Id is not found");
+            }
+            else
+            {
+                console.log(data);   
+                this.setState({              
+                      choice:{
+                            id:data[0].id,
+                            choicestatement:data[0].choicestatement,
+                            choicedescription:data[0].choicedescription,
+                            weight:data[0].weight,
+                            isanswer:data[0].answer,
+                            questionid:data[0].questionid
+                      }
+                });
+            }       
+       })
+       .catch((error)=>console.log(error))
+   }
+
+   handleReset(e){
+       this.setState({
+                search:{
+                    id:null
+                }
+       });
+   }
+
+   render(){        
+        return (
+                <div>              
+                    <form className="searchPlayer">
+                        <label>Choice id 
+                                <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange}/> <br/>
+                        </label>                                
+                        <label> 
+                            <input type="button" name="Search" onClick={this.handleSearch} value="Search"/>                                                              
                         </label>
-                        <label>Choice Id 
-                            <input type="text" name="choiceid" readOnly value={this.state.updatechoice.id||''} onChange={this.handleChange}/> <br/>
-                        </label>
+                    </form>     
+                   <div>
+                    <form className="questionForm" onSubmit={this.handleSubmit}>        
                         <label>Question id
-                            <input type="text" name="questionid" onKeyDown={this.handleKeyDown} value={this.state.updatechoice.questionid||''} onChange={this.handleChange}/> <br/>
+                            <input type="text" name="questionid" value={this.state.choice.questionid} onChange={this.handleChange}/> <br/>
                         </label>
-                        <label>Choice statement
-                            <input type="text" name="choicestatement" value={this.state.updatechoice.choicestatement||''} onChange={this.handleChange}/> <br/>
+                        <label>Choice statement 
+                            <input type="text" name="choicestatement" value={this.state.choice.choicestatement} onChange={this.handleChange}/> <br/>
                         </label>
-                        <label>Choice description
-                            <input type="text" name="choicedescription" value={this.state.updatechoice.choicedescription||''} onChange={this.handleChange}/> <br/>
+                        <label>Choice description 
+                            <textarea type="text" name="choicedescription" value={this.state.choice.choicedescription} onChange={this.handleChange}> 
+                            </textarea>
+                            <br/>
                         </label>
                         <label>Weight
-                            <input type="text" name="weight" value={this.state.updatechoice.weight||''} onChange={this.handleChange}/> <br/>
-                        </label>
-                        <label>Answer 
-                            <input type="text" name="answer" value={this.state.updatechoice.answer||''} onChange={this.handleChange}/> <br/>
-                        </label>
-                        <label>
-                        <button
-                            className="btn btn-link float-left"
-                            onClick={this.handleClearForm}>Clear
-                        </button>
-                        <input type="button" name="Delete" onClick={this.handleSearch} value="Search"/>                        
-                        <button type="submit">Delete</button>                                        
-                        </label>
+                            <input type="text" name="weight" value={this.state.choice.weight} onChange={this.handleChange}/> <br/>
+                        </label> 
+                        <label>is it answer
+                            <input type="text" name="answer" value={this.state.choice.isanswer} onChange={this.handleChange}/> <br/>
+                        </label> 
+                        <button type="submit">Delete Choice</button>                     
                 </form>
-            </div>            
-      </div>
-    );
-  }
+                </div>
+            </div>    
+        )
+    }
 }
 
-export default RemoveUser;
+const mapStateToProps = (state) => ({
+ /*
+    player_given_name:state.authDetail.authDetail.player_given_name,
+    player_family_name:state.authDetail.authDetail.player_given_name,
+    player_picture:state.authDetail.authDetail.player_picture,
+    player_email:state.authDetail.authDetail.player_email,
+    player_username:state.authDetail.authDetail.player_username,
+    player_gender:state.authDetail.authDetail.player_gender,
+    player_dateOfBirth:state.authDetail.authDetail.player_dateOfBirth
+//	gameData: state.gameData
+*/ 
+});
+
+//Dispatch action to fetch game data and scores.
+const mapDispatchToProps = (dispatch) => {
+	return {
+//		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+//		getScores: (scores) => dispatch(fetchScores(scores)),
+		setAuth:(authDetail) => dispatch(fetchAuthDetails(authDetail)),
+		clearAuth:(authDetail)=> dispatch(clearAuthDetails(authDetail)),
+	};
+};
+
+RemoveChoice.propTypes = {
+//	getGameData: PropTypes.func,
+//	getScores: PropTypes.func,
+//	gameData: PropTypes.object,
+	authDetail:PropTypes.object,
+//	setAuth: PropTypes.func,
+//	clearAuth: PropTypes.func
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RemoveChoice);

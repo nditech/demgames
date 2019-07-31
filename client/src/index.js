@@ -23,7 +23,8 @@ import AddChoices from './components/Add/AddChoices';
 import Auth from './Auth';
 import Callback from './pages/LandingPage/callback';
 import RemovePlayer from './components/Remove/RemovePlayer';
-
+import RemoveChoice from './components/Remove/RemoveChoice';
+import RemoveQuestion from './components/Remove/RemoveQuestion';
 
     const Routes = ()=> (
     	<Router>
@@ -45,6 +46,7 @@ import RemovePlayer from './components/Remove/RemovePlayer';
 				<Route path="/addquestion" exact component={AddQuestion} />
 				<Route path="/addchoices" exact component={AddChoices}/>
 				<Route path="/removeplayer" exact component={RemovePlayer} />
+				<Route path="/removequestion" exact component={RemovePlayer} />
 		    </div>
 	    </Router>
     );

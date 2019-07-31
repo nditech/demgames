@@ -10,20 +10,15 @@ import ListQuestions from '../List/ListQuestions';
 import ListChoices from '../List/ListChoices';
 import ListGames from '../List/ListGames';
 import RemovePlayer from '../Remove/RemovePlayer';
+import removequestion from '../Remove/RemoveQuestion';
+import RemoveChoice from '../Remove/RemoveChoice';
 
 /*
-import RemoveQuestion from './RemoveQuestion';
 import UpdateQuestion from './UpdateQuestion.js';
 import UpdateChoice from './UpdateChoice.js';
-
-import RemoveUser from './RemoveUser';
-import RemoveChoice from './RemoveChoice';
-import Game from './Game';
-import game from './Game';
-
-import NotFound from './NotFound';
-import { withRouter } from 'react-router-dom';
 import UpdateGame from './UpdateGame';
+import NotFound from './NotFound';
+
 */
 
 import Auth from '../../Auth';
@@ -139,6 +134,8 @@ class Admin extends Component{
                             <Link to="/addchoices">Add choices</Link> || 
                             <Link to="/addquestion">Add question</Link> || 
                             <Link to="/removeplayer">Remove player</Link> ||                    
+                            <Link to="/removechoice">Remove choice</Link> || 
+                            <Link to="/removequestion">Remove question</Link> || 
                         </div>
                         <div>
                             <Route path="/list" component={list} />
@@ -151,6 +148,8 @@ class Admin extends Component{
                             <Route path="/listchoices" component={ListChoices} />
                             <Route path="/listgames" component={ListGames} />
                             <Route path="/removeplayer" component={RemovePlayer} />
+                            <Route path="/removechoice" component={RemoveChoice} />
+                            <Route path="/removequestion" component={removequestion} />
                         </div>
                        </div>
                     </Router>   
@@ -161,45 +160,3 @@ class Admin extends Component{
 }
 
 export default Admin;
-
-/*
-
-<Router>
-                        <div>
-                           <Link to="/Register">Register</Link> || <Link to="/List">List players</Link> || <Link to="/ListGames">List games</Link> || 
-                           <Link to="/ListQuestions">List questions</Link> || <Link to="/ListChoices">List choices</Link> || <Link to="/UpdatePlayer">Update Player</Link> || <Link to="/updateGame">Update Game</Link>  
-                           || <Link to="/UpdateQuestion">Update question</Link> || <Link to="/UpdateChoice">Update choice</Link> || <Link to="/AddGame">Add game</Link>
-                            || <Link to="/AddQuestion">Add question</Link> || <Link to="/AddChoice">Add choice</Link> || <Link to="/RemoveUser">Remove player</Link>
-                            || <Link to="/RemoveQuestion">Remove question</Link> || <Link to="/RemoveChoice">Remove choice</Link>           
-                        </div>
-
-                        <div>
-                            <Route path="/Register" component={Register} />
-                            <Route path="/List" component={List} />
-                            <Route path="/ListGames" component={ListGames} />
-                            <Route path="/ListQuestions" component={ListQuestions}/>
-                            <Route path="/ListChoices" component={ListChoices}/>
-                            <Route path="/UpdatePlayer" component={UpdatePlayer}/>
-                            <Route path="/UpdateQuestion" component={UpdateQuestion}/>
-                            <Route path="/UpdateChoice" component={UpdateChoice}/>
-                            <Route path="/AddGame" component={AddGame}/>
-                            <Route path="/AddQuestion" component={AddQuestion}/>
-                            <Route path="/AddChoice" component={AddChoices}/>
-                            <Route path="/RemoveUser" component={RemoveUser}/>
-                            <Route path="/RemoveQuestion" component={RemoveQuestion}/>
-                            <Route path="/RemoveChoice" component={RemoveChoice}/>
-                            <Route path="/updateGame" component={UpdateGame}/>
-                            
-
-                        </div>
-                        </Router>   
-
-
-*/
-
-
-
-
-
-
-
