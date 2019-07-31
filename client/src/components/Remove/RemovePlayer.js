@@ -214,12 +214,18 @@ class RemovePlayer extends Component{
    }
 
    handleReset(e){
-       this.setState({
-                search:{
-                    player_id:null
-                }
-       });
-   }
+    this.setState({
+         search:{
+                 player_id:'',
+                 username:'',
+                 email:''
+             }
+         },
+         () => {
+                     console.log(this.state.search) 
+         }
+    );
+    }
 
    render(){        
         return (
@@ -236,6 +242,7 @@ class RemovePlayer extends Component{
                         </label>
                         <label> 
                             <input type="button" name="Delete" onClick={this.handleSearch} value="Search"/>                                                              
+                            <input type="button" name="reset" onClick={this.handleReset} value="Reset"/>
                         </label>
                     </form>     
                 <div>

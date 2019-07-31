@@ -129,13 +129,17 @@ class RemoveChoice extends Component{
        .catch((error)=>console.log(error))
    }
 
-   handleReset(e){
-       this.setState({
-                search:{
-                    id:null
-                }
-       });
-   }
+    handleReset(e){
+        this.setState({
+             search:{
+                     id:''
+                 }
+             },
+             () => {
+                         console.log(this.state.search) 
+             }
+        );
+    }
 
    render(){        
         return (
@@ -146,6 +150,7 @@ class RemoveChoice extends Component{
                         </label>                                
                         <label> 
                             <input type="button" name="Search" onClick={this.handleSearch} value="Search"/>                                                              
+                            <input type="button" name="reset" onClick={this.handleReset} value="Reset"/>
                         </label>
                     </form>     
                    <div>

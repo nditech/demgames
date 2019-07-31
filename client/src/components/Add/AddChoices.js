@@ -14,9 +14,23 @@ class AddChoices extends Component {
                     questionid:'',
                     questions:[]
         };
+        this.initialState={
+                    choicestatement:'',
+                    choicedescription:'',
+                    weight:'',
+                    isanswer:0,
+                    questionid:'',
+                    questions:[]
+        }
+        this.handleReset = this.handleReset.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit  = this.handleSubmit.bind(this);
     }
+
+    handleReset(){
+        this.setState(this.initialState)
+    }
+
     componentDidMount()
     {
         let initialquestions = [];
@@ -133,9 +147,10 @@ render() {
                             <input type="text" name="weight" value={this.state.weight} onChange={this.handleChange}/> <br/>
                         </label> 
                         <label>is it answer
-                            <input type="text" name="answer" value={this.state.answer} onChange={this.handleChange}/> <br/>
+                            <input type="text" name="answer" value={this.state.isanswer} onChange={this.handleChange}/> <br/>
                         </label> 
                         <button type="submit">Save</button>
+                        <button type="button" onClick={this.handleReset}>Reset</button> 
                                          
               </form>
             </div>            

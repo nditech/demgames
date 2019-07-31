@@ -118,9 +118,13 @@ class RemoveQuestion extends Component{
    handleReset(e){
        this.setState({
                 search:{
-                    id:null
+                        id:''
+                    }
+                },
+                () => {
+                            console.log(this.state.search) 
                 }
-       });
+        );
    }
 
    render(){        
@@ -131,7 +135,8 @@ class RemoveQuestion extends Component{
                                 <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange}/> <br/>
                         </label>                                
                         <label> 
-                            <input type="button" name="Search" onClick={this.handleSearch} value="Search"/>                                                              
+                            <input type="button" name="Search" onClick={this.handleSearch} value="Search"/>
+                            <input type="button" name="reset" onClick={this.handleReset} value="Reset"/>                                                              
                         </label>
                     </form>     
                    <div>

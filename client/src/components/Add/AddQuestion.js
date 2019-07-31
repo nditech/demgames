@@ -17,14 +17,22 @@ class AddQuestion extends Component {
                     explanation:"",
                     isitmedia:""
         };
-
+        this.initialState={
+                    gameid:1,
+                    gametype:"multiplechoice",
+                    difficulty_level:"",
+                    question_statement:"",
+                    weight:"",
+                    explanation:"",
+                    isitmedia:""
+        };
         this.handleReset  = this.handleReset.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit  = this.handleSubmit.bind(this);
     }
 
     handleReset(event){
-        console.log("Reset")
+        this.setState(this.initialState);
     }
 
     handleChange(event) {   
@@ -146,7 +154,7 @@ class AddQuestion extends Component {
                         <label>is it media? 
                             <input type="text" name="isitmedia" value={this.state.isitmedia} onChange={this.handleChange}/> <br/>
                         </label>
-                        <button type="button">Reset</button> <button type="submit">Save</button>                                   
+                        <button type="button" onClick={this.handleReset}>Reset</button> <button type="submit">Save</button>                                   
                 </form>
             </div>            
       </div>
