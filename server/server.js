@@ -655,4 +655,20 @@ app.post('/updateGame',(req,res)=>{
              }); 
 })
 
+//Update games from mysql database
+app.post('/updatechoice',(req,res)=>{
+  console.log(req.body);
+  const sqlUpdateStatement='update Choices set questionid="'+req.body.questionid+'", choicestatement="'+req.body.choicestatement+'", choicedescription="'+req.body.choicedescription+'", weight="'+req.body.weight+'", answer="'+req.body.weight+'" where id = "'+req.body.id+'"';
+          
+          console.log(sqlUpdateStatement);
+          connectionMysql.query(sqlUpdateStatement, function (err, result, fields) {
+             if (err) throw err;
+             console.log(sqlUpdateStatement);
+             console.log("Number of rows affected : " + result.affectedRows);
+             console.log("Number of records affected with warning : " + result.warningCount);
+             console.log("Message from MySQL Server : " + result.message); 
+             res.status(200).send({message:'updated successfully'});              
+            }); 
+})
+
 app.listen(9000, () => console.log('listening'));

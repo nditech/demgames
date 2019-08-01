@@ -26,6 +26,9 @@ import RemovePlayer from './components/Remove/RemovePlayer';
 import RemoveChoice from './components/Remove/RemoveChoice';
 import RemoveQuestion from './components/Remove/RemoveQuestion';
 import UpdateGame from './components/Update/UpdateGame';
+import UpdateQuestion from './components/Update/UpdateQuestion';
+import UpdateChoice from './components/Update/UpdateChoice';
+
 
     const Routes = ()=> (
     	<Router>
@@ -48,6 +51,9 @@ import UpdateGame from './components/Update/UpdateGame';
 				<Route path="/addchoices" exact component={AddChoices}/>
 				<Route path="/removeplayer" exact component={RemovePlayer} />
 				<Route path="/removequestion" exact component={RemovePlayer} />
+				<Route path="/updatequestion" exact component={UpdatePlayer} />
+				<Route path="/updategame" exact component={UpdateGame} />
+				<Route path="/updatechoice" exact component={UpdateChoice} />
 		    </div>
 	    </Router>
     );
