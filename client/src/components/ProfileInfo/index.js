@@ -17,28 +17,18 @@ const authDetail={
 				player_picture:"",
 				player_gender:""
 			};
-/* const scoreDetail={
+
+const scoreDetail={
 				current:0,
 				score:0,
-				play_id:null,
-				player_id:null,
+				play_id:'null',
+				player_id:'null',
 				game_id:null,
-				email:this.props.player_email||null,
-				player_id:null,
-				given_name:null,
-				middle_name:null,
-				family_name:this.props.family_name,
-				username:this.props.username,
-				picture:this.props.picture,
-				gender:this.props.gender,
-				city:this.props.city||null,
-				country:this.props.country||null,
-				program:this.props.program||null,
+				program:null,
 				total:0,
 				program_rank:null,
-				total_rank:null
-			}
-*/
+				total_rank:null	
+			};
 class ProfileInfo extends React.Component {
 	constructor(props) {
 		super(props);
@@ -148,21 +138,25 @@ class ProfileInfo extends React.Component {
 				<div>
 					<p className="career-progress-label">Hi {this.props.player_given_name} your game progress is as follows</p>
 					<div className="overall-info">
-						<p className="rank-info">You are ranked in top 100</p>
+						<p className="rank-info">You are ranked {this.props.total_rank} overall and {this.props.program_rank} from your program</p>
 						<div className="modules-info">
-							<p className="heading">Designing an Argument</p>
+							<p className="heading">Designing an Argument - Game {this.props.game_id}</p>
 							<p>
 								Currently pursuing <span>Level 1</span>
 							</p>
-							<p>
-								Scored <span>20/100</span> in <span>Level 1</span>
+							<p> {
+									scoreDetail.current=this.props.current[0][0]
+									
+								}
+								Scored <span>{this.props.current[0][0]}/100</span> in <span>Level 1</span>
 							</p>
-							<p className="heading">Finding Evidence</p>
+							<p className="heading">Finding Evidence - Game {this.props.game_id}</p>
 							<p>
 								Currently pursuing <span>Level 1</span>
 							</p>
 							<p className="heading">Finding Flaws in Arguments</p>
 							<p>Not yet started</p>
+							<p> Your over all score is {this.props.total}</p>
 						</div>
 					</div>
 				</div>
@@ -178,7 +172,8 @@ ProfileInfo.propTypes = {
 	gameData: PropTypes.object,
 	authDetail:PropTypes.object,
 	setAuth: PropTypes.func,
-	clearAuth: PropTypes.func
+	clearAuth: PropTypes.func,
+	scoreDetail:PropTypes.object
 };
 
 
@@ -186,7 +181,18 @@ const mapStateToProps = (state) => ({
 	player_given_name:state.authDetail.authDetail.player_given_name,
 	player_email:state.authDetail.authDetail.player_email,
 	player_picture:state.authDetail.authDetail.player_picture,
-	gameData: state.gameData 
+	gameData: state.gameData,
+	player_id:state.scoreDetail.scoreDetail.play_id,
+	
+	total:state.scoreDetail.scoreDetail.total, 
+	total_rank:state.scoreDetail.scoreDetail.total_rank,
+	current:state.gameData.scores,
+	score:state.scoreDetail.scoreDetail.score,
+	play_id:state.scoreDetail.scoreDetail.play_id,
+	player_id:state.scoreDetail.scoreDetail.player_id,
+	game_id:state.scoreDetail.scoreDetail.game_id,
+	program:state.scoreDetail.scoreDetail.program,
+	program_rank:state.scoreDetail.scoreDetail.program_rank
 });
 
 //Dispatch action to fetch game data and scores.
@@ -196,6 +202,8 @@ const mapDispatchToProps = (dispatch) => {
 		getScores: (scores) => dispatch(fetchScores(scores)),
 		setAuth:(authDetail) => dispatch(fetchAuthDetails(authDetail)),
 		clearAuth:(authDetail)=> dispatch(clearAuthDetails(authDetail)),
+		getScoreDetails:(scoreDetail)=>dispatch(fetchScoreDetails(scoreDetail)),
+		setScoreDetails:(scoreDetail)=>dispatch(fetchScoreDetails(scoreDetail))
 	};
 };
 

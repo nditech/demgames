@@ -181,7 +181,6 @@ app.post('/selectPlayerProfile',(req, res)=>{
               
             }
           })
-        
     }
 });
 

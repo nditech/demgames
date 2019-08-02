@@ -18,6 +18,8 @@ import profile from '../../components/ProfileInfo';
 import list from '../../components/List/List';
 import admin from '../../components/admin/admin';
 import UpdatePlayer from '../../components/Update/UpdateProfile';
+import { fetchScoreDetail } from '../../components/ProfileInfo/action';
+
 const auth0=new Auth();
 
 const authDetail={
@@ -29,7 +31,20 @@ const authDetail={
 					player_gender:""
 				};
 
+const scoreDetail={
+					current:0,
+					score:0,
+					play_id:'null',
+					player_id:'null',
+					game_id:null,
+					program:null,
+					total:0,
+					program_rank:null,
+					total_rank:null	
+				};
+
 global.fetch = require('node-fetch');
+
 class LandingPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -69,10 +84,40 @@ class LandingPage extends React.Component {
 			console.log(auth0.getProfile());
 			console.log(authDetail);
 			console.log(auth0.getProfile());
+			
 			this.props.setAuth(authDetail);
+
 		}
 		else{
 			this.props.clearAuth(authDetail);
+		}
+
+		if(auth0.isAuthenticated()===true){
+			fetch('http://localhost:9000/selectPlayerProfile',{
+				method: 'post',        
+				headers: {
+						"Content-Type": "Application/json",
+						"Accept":"application/json"
+				},
+				body: JSON.stringify(auth0.getProfile())
+			})
+			.then(res=>res.json())
+			.then((data)=>{					
+				console.log(data);
+				
+				scoreDetail.current=data[0].current;
+				scoreDetail.game_id=data[0].game_id;
+				scoreDetail.play_id=data[0].id;
+				scoreDetail.player_id=data[0].player_id;
+				scoreDetail.score=data[0].score;
+				scoreDetail.total=data[0].total;
+				scoreDetail.total_rank=data[0].total_rank;
+				scoreDetail.program=data[0].program;
+				scoreDetail.program_rank=data[0].program_rank;
+				console.log(scoreDetail);
+				this.props.setScoreDetail(scoreDetail);
+			})
+			.catch((error)=>console.log(error));	
 		}
 	}
 	//Fetch scores for each levels of each module.
@@ -177,7 +222,6 @@ class LandingPage extends React.Component {
 	}
 }
 
-
 const mapStateToProps = (state) => ({
 	player_given_name:state.authDetail.authDetail.player_given_name,
 	player_picture:state.authDetail.authDetail.player_picture,
@@ -186,11 +230,13 @@ const mapStateToProps = (state) => ({
 
 //Dispatch action to fetch game data and scores.
 const mapDispatchToProps = (dispatch) => {
+	console.log(scoreDetail);
 	return {
 		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
 		getScores: (scores) => dispatch(fetchScores(scores)),
 		setAuth:(authDetail) => dispatch(fetchAuthDetails(authDetail)),
 		clearAuth:(authDetail)=> dispatch(clearAuthDetails(authDetail)),
+		setScoreDetail:(scoreDetail) => dispatch(fetchScoreDetail(scoreDetail))
 	};
 };
 
@@ -200,9 +246,10 @@ LandingPage.propTypes = {
 	gameData: PropTypes.object,
 	authDetail:PropTypes.object,
 	setAuth: PropTypes.func,
-	clearAuth: PropTypes.func
+	clearAuth: PropTypes.func,
+	scoreDetail: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
 
-// export default LandingPage;
+
