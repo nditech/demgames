@@ -28,7 +28,7 @@ class LevelCard extends Component {
 			<Link
 				className={`link-lock link-lock-${lock}`}
 				to={{
-					pathname: `/module/${moduleName === 'Finding flaws in Argument'
+					pathname: `/module/${moduleName === 'Encontrando fallas en el argumento'
 						? 'scenario/'
 						: ''}${moduleId}/level/${level}/questions/`
 				}}
