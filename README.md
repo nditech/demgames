@@ -172,6 +172,12 @@ To deploy to AWS, follow the steps below:
 
   The following are some common issues you may run into.
 
+#### Changing name of Module 3
+
+Note that to change the name of Module 3, in addition to editing moduleData.json, you must also put the new name of the level in quotation marks on line 31 of `client/src/components/LevelCard/index.js` shown below:
+
+```                                        pathname: `/module/${moduleName === 'Finding flaws in Argument'```
+
 #### `npm ____` does not work
 
 Remember to run `npm install` before running any part of the application. Commands such as `npm run build` will fail if this has not been run first.
