@@ -73,7 +73,7 @@ class LandingPage extends React.Component {
 							</a>
 						</div>
 					</div>
-					<p className="game-title">DemGames</p>
+					<p className="game-title">DemGames - Demo</p>
 					<div className="game-type-card-container">
 						{gameData.length > 0 &&
 							gameData.map((modules, key) => (

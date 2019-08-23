@@ -47,19 +47,19 @@ class CorrectAnswerInfo extends Component {
 		return (
 			<Fragment>
 				<div className="level-question-detail">
-					<span>Nivel {level} :</span>
+					<span>Level {level} :</span>
 					<span className="question-number-status">
-						Pregunta {questionId} de {totalQuestion}
+						Question {questionId} out of {totalQuestion}
 					</span>
 				</div>
 
 				<div className="correct-ans-info-container">
-					<p className="answer">Tu repuesta</p>
+					<p className="answer">Your answer</p>
 					<Card option={strSelectedAns} moduleColor={moduleColor} />
-					<p className="answer">Repuesta Correcta</p>
+					<p className="answer">Correct answer</p>
 					<Card option={strCorrectAns} moduleColor={moduleColor} />
 					<button className={`next-page-button result-next-page-button`} onClick={hideRightAnswer}>
-						Procede
+						Proceed
 					</button>
 				</div>
 			</Fragment>
