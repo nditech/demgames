@@ -49,7 +49,7 @@ class AnswerInfoPopup extends Component {
 				</DialogTitle>
 				<DialogContent>
 					<DialogContentText className="greet-message" id="dialog-slide-description">
-						<span> {answerStatus ? 'Congratulations!' : ''}</span>
+						<span> {answerStatus ? '¡Felicitaciones!' : ''}</span>
 					</DialogContentText>
 				</DialogContent>
 				<DialogContent>
@@ -59,22 +59,22 @@ class AnswerInfoPopup extends Component {
 				</DialogContent>
 				<DialogContent>
 					<DialogContentText className="points-status" id="dialog-slide-description">
-						<span>You have </span>
+						<span>Haz</span>
 						{answerStatus ? (
 							<span>
-								<span>earned</span>
+								<span>ganado</span>
 								<span className="correct-points"> {moduleScenario ? currentScore : 10} </span>
 							</span>
 						) : (
 							<span>
-								<span>reduced</span>
+								<span>perdido</span>
 								<span className="wrong-points"> -10</span>
 							</span>
 						)}{' '}
-						<span>points.</span>{' '}
+						<span>puntos.</span>{' '}
 						{!answerStatus && (
 							<button className="show-right-answer-button" onClick={this.handleClick}>
-								Show me the answer
+								Muéstrame la respuesta
 							</button>
 						)}
 					</DialogContentText>

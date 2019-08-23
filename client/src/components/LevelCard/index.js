@@ -52,7 +52,7 @@ class LevelCard extends Component {
 					{level > 1 &&
 					prevLevelScore < parScore && (
 						<p className="level-unlock-rule">
-							Need {parScore} in Level {linkedLevel} to unlock.
+							Necesitas {parScore} en el nivel {linkedLevel} para desbloquearlo.
 						</p>
 					)}
 				</button>
