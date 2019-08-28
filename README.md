@@ -215,8 +215,6 @@ If content is not updating when you change the data file, it may be caching on t
   
   ## Author(s)
   
-  * <b>Viet Nguyen</b>
-      > vnguyen@ndi.org &nbsp;&middot;&nbsp;
   * <b>Noble Ackerson</b>
       > nackerson@ndi.org &nbsp;&middot;&nbsp;
   * <b>Jatin Narang</b>
