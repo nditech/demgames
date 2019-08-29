@@ -1,7 +1,7 @@
 const gameData = require('../data/Module/moduleData.json');
 const express = require('express');
 const app = express();
-const Sequelize = require('sequelize')
+// const Sequelize = require('sequelize')
 
 const models = require('./models');
 const players = models.Players
