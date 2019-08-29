@@ -9,6 +9,20 @@ import './styles.scss';
 import { connect } from 'react-redux';
 import GameInfo from '../../components/GameInfo';
 import PropTypes from 'prop-types';
+import Auth from '../../Auth';
+
+const auth0=new Auth();
+
+const authDetail=
+		{
+					player_given_name:"",
+					player_family_name:"",
+					player_email:"",
+					player_username:"",
+					player_picture:"",
+					player_gender:""
+		};
+
 class LevelsPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -49,6 +63,33 @@ class LevelsPage extends React.Component {
 		return parScores;
 	};
 
+		//handle Login in action
+		handleLogIn = () => {
+
+			if (!auth0.isAuthenticated())
+			{
+				auth0.login();
+			}
+		};
+	
+		//handle Logout in action
+		handleLogOut = () => {
+	
+			if (auth0.isAuthenticated())
+			{
+					
+				authDetail.player_given_name="";
+				authDetail.player_family_name="";
+				authDetail.player_email="";
+				authDetail.player_username="";
+				authDetail.player_picture="";
+				authDetail.player_gender=""
+				
+				//this.props.clearAuth(authDetail);
+				auth0.logout();
+			}
+		};
+
 	render() {
 		const moduleNames = this.getModuleNames();
 		const { open } = this.state;
@@ -75,9 +116,19 @@ class LevelsPage extends React.Component {
 						</div>
 						<div className="info-profile-icon-container">
 							<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleClickOpen} />
-							<a href="/profile">
-								<img className="profile-icon" src={profileUrl} alt="profile-icon" />
-							</a>
+								{
+									!auth0.isAuthenticated()&&	
+									<a onClick={this.handleLogIn}>									
+										<img className="profile-icon" src={this.props.player_picture||profileUrl} alt="Log out" />
+									</a>
+								}
+								{
+									auth0.isAuthenticated()&&
+									<a onClick={this.handleLogOut}>									
+										<acronym title="Logout"> <img className="profile-icon" src={this.props.player_picture||profileUrl} alt="Log out" />
+										</acronym>
+									</a>
+								}
 						</div>
 					</div>
 					<p className="game-title"> {moduleName}</p>
@@ -109,8 +160,22 @@ class LevelsPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return { gameData: state.gameData };
+	return { 
+		player_given_name:state.authDetail.authDetail.player_given_name,
+		player_picture:state.authDetail.authDetail.player_picture,
+		gameData: state.gameData 
+	};
 };
+
+
+//Dispatch action to fetch game data and scores.
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setAuth:(authDetail) => dispatch(fetchAuthDetails(authDetail)),
+		clearAuth:(authDetail)=> dispatch(clearAuthDetails(authDetail)),
+	};
+};
+
 
 LevelsPage.propTypes = {
 	gameData: PropTypes.object,

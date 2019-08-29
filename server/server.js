@@ -27,6 +27,7 @@ const moment = require('moment');
 //     console.log('connected as id '+connectionMysql.threadId);
 // });
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.raw({ inflate: true, limit: '100kb', type: 'text/xml' }));
@@ -76,13 +77,12 @@ app.post('/updateplayer', (req, res) => {
     //       console.log("Message from MySQL Server : " + result.message); 
     //       res.send(JSON.stringify(data));              
     // });
-    
+   
           
 });
 
   //Get players from mysql db
 app.get('/users',(req,res)=>{
-
     console.log('getting the list of players');
     players.findAll().then(result => {
       res.send(JSON.stringify(result));
@@ -99,6 +99,7 @@ app.get('/users',(req,res)=>{
     //     res.send(JSON.stringify(data));
     //   }    
     // }) 
+
 });
 
 
@@ -196,6 +197,7 @@ app.post('/selectPlayerProfile',(req, res)=>{
     //         }
     //       })
     // }
+    
 });
 
 //Post player on mysql db
@@ -234,54 +236,10 @@ app.post('/registerplayer', (req, res) => {
     console.log(err);
   });
 
-  // console.log('data sent : '+JSON.stringify(data));
-  
-  // players.findOne({
-  //   where: {
-  //     email: 'pankaj.singh@hashedin.com'
-  // }}
-  // ).then(function (player) {
-  //   console.log(player.get('email'));
-  //   res.send(player);
-  // });
-
-  
-  // const sqlS="select * from Players where email ='"+data.email+"'";                    
-  // connectionMysql.query(sqlS,(err, datanew, fields)=>
-  // {
-  //       if(err)
-  //       { 
-  //             console.log("Not Successful access");        
-  //       }
-  //       else
-  //       {    
-  //         if(datanew.length<1)
-  //         {
-  //           const d= new moment(data.dateOfBirth);
-  //           //const s=d.format('YYYY-MM-DD');
-  //           data.dateOfBirth=d.format('YYYY-MM-DD');
-  //           console.log(data);
-          
-  //           const sqlInsertStatement='insert into Players SET ?';
-  //           connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
-  //                 if (err) throw err;
-  //                 console.log(data);
-  //                 console.log("Number of rows affected : " + result.affectedRows);
-  //                 console.log("Number of records affected with warning : " + result.warningCount);
-  //                 console.log("Message from MySQL Server : " + result.message);               
-  //           });
-  //         } 
-  //         else
-  //         {
-  //           res.send({message:'email already exists'})
-  //         }                
-  //       }
-  // });
-               
 });
 
 app.post('/registergame', (req, res) => {
-  
+
   // var data=req.body;
   // console.log(data);
   
@@ -312,6 +270,36 @@ app.post('/registergame', (req, res) => {
   //         }                
   //       }
   //   });                     
+  var data=req.body;
+  console.log(data);
+  
+  const sqlS="select * from Games where id ='"+data.id+"'";                    
+  connectionMysql.query(sqlS,(err, datanew, fields)=>
+  {
+        if(err)
+        { 
+              console.log("Not Successful access");        
+        }
+        else
+        {    
+          if(datanew.length<1)
+          {           
+                const sqlInsertStatement='insert into Games SET ?';
+                connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
+                  if (err) throw err;
+                  console.log(data);               
+                  console.log("Number of rows affected : " + result.affectedRows);
+                  console.log("Number of records affected with warning : " + result.warningCount);
+                  console.log("Message from MySQL Server : " + result.message);
+                });  
+                res.send({message:'game successfully added'})
+          } 
+          else
+          {
+                res.send({message:'game already exists'})
+          }                
+        }
+    });                     
 });
 
 // List all choices from mysql
