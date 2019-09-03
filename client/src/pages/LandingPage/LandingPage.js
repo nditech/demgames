@@ -56,8 +56,15 @@ class LandingPage extends React.Component {
 	//Fetch complete game data.
 	componentWillMount() {
 
-		fetch('./moduleData.json')
-                //fetch(config.baseUrl + '/api/game')
+		// fetch('./moduleData.json')
+                fetch(config.baseUrl + '/api/game',{
+                    method: 'get',
+                    headers: {
+                            "authorization": "Bearer "+auth0.getAccessToken(),
+                            "Content-Type":"Application/json",
+                            "Accept":"application/json"
+					}
+				})
 			.then((response) => {
 				if (response.status >= 200 && response.status < 300) {
 					response.json().then((res) => {
@@ -81,7 +88,9 @@ class LandingPage extends React.Component {
 			authDetail.player_email=auth0.getProfile().email;
 			authDetail.player_picture=auth0.getProfile().picture;
 			authDetail.player_gender=auth0.getProfile().gender;
+			console.log('auth details below: ----------------- ');
 			console.log(auth0.getProfile());
+			console.log(auth0.getProfile()['http://demozero.net/roles']);
 			console.log(authDetail);
 			console.log(auth0.getProfile());
 			

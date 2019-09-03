@@ -24,10 +24,16 @@ class List2 extends Component {
     }
 
     pool(){
-        
          console.log(this.props.auth);
          const url ='http://localhost:9000/users';
-         fetch(url)
+         fetch(url,{
+            method: 'get',
+            headers: {
+                    "authorization": "Bearer "+ localStorage.getItem("access_token"),
+                    "Content-Type":"Application/json",
+                    "Accept":"application/json"
+            }
+        })
          .then((res) =>res.json())
          .then((data)=>{                                                     
  

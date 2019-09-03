@@ -1,14 +1,30 @@
 const gameData = require('../data/Module/moduleData.json');
 const express = require('express');
 const app = express();
-// const Sequelize = require('sequelize')
-
+const {check, validationResult} = require('express-validator');
 const models = require('./models');
-const players = models.Players
+const players = models.Players;
+const jwt = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
 
 var bodyParser = require('body-parser');
-const cors = require('cors');
-const moment = require('moment');
+
+const checkJwt = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 50,
+    jwksUri: 'https://pankaj-hashedin.auth0.com/.well-known/jwks.json'
+  }),
+  // Validate the audience and the issuer.
+  audience: 'https://pankaj-hashedin.auth0.com/api/v2/',
+  issuer: 'https://pankaj-hashedin.auth0.com/',
+  algorithms: ['RS256']
+ });
+
+ app.use(checkJwt);
+// const cors = require('cors');
+// const moment = require('moment');
 
 // const mysql = require('mysql');
 // const connectionMysql =mysql.createConnection({
@@ -82,7 +98,8 @@ app.post('/updateplayer', (req, res) => {
 });
 
   //Get players from mysql db
-app.get('/users',(req,res)=>{
+  app.get('/users',(req,res)=>{
+
     console.log('getting the list of players');
     players.findAll().then(result => {
       res.send(JSON.stringify(result));
@@ -99,7 +116,6 @@ app.get('/users',(req,res)=>{
     //     res.send(JSON.stringify(data));
     //   }    
     // }) 
-
 });
 
 
@@ -201,42 +217,48 @@ app.post('/selectPlayerProfile',(req, res)=>{
 });
 
 //Post player on mysql db
-app.post('/registerplayer', (req, res) => {
-  // console.log("/registerplayer --- api")
-  var data=req.body;
-  var firstname = data.firstName.trim();
-  var middleName = data.middleName.trim();
-  var lastName = data.lastName.trim();
-  var userName = data.userName.trim();
-  var email = data.email.trim();
-  var dateOfBirth = data.dateOfBirth;
-  var gender = data.gender;
-  var country = data.country;
-  var city = data.city;
-  var program = data.program;
-  if(!firstname || !userName || !email){
-    console.log('firstname, username and email can"t be empty');
-    return;
-  }
+app.post(
+  '/registerplayer',
+  [
+    check('firstName', 'First Name is required').not().isEmpty(),
+    check('email', 'Please include a valid Email').isEmail(),
+    check('userName', 'Username is required').isLength({min:3})
+  ],
+  
+  async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors: errors.array()});
+    }
 
-  players.create({
-    firstname: firstname,
-    middlename: middleName,
-    lastname: lastName,
-    username: userName,
-    email: email,
-    dateofbirth: dateOfBirth,
-    gender: gender,
-    country: country,
-    city: city,
-    program: program
-  }).then(result => {
-    console.log(result);
-  }).catch(err => {
-    console.log(err);
+    const {firstName, middleName, lastName, userName, email, dateOfBirth, gender, country, city, program} = req.body;
+
+    try {
+        let user = await players.findOne({where: {username: userName}});
+        
+        if(user){
+            return res.status(400).json({errors: [{ msg: 'User already exists'}]});
+        }
+        await players.create({
+          firstname: firstName,
+          middlename: middleName,
+          lastname: lastName,
+          username: userName,
+          email: email,
+          dateofbirth: dateOfBirth,
+          gender: gender,
+          country: country,
+          city: city,
+          program: program
+        });
+        
+        res.send('Player Registered');
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
   });
-
-});
 
 app.post('/registergame', (req, res) => {
 
@@ -270,36 +292,36 @@ app.post('/registergame', (req, res) => {
   //         }                
   //       }
   //   });                     
-  var data=req.body;
-  console.log(data);
+  // var data=req.body;
+  // console.log(data);
   
-  const sqlS="select * from Games where id ='"+data.id+"'";                    
-  connectionMysql.query(sqlS,(err, datanew, fields)=>
-  {
-        if(err)
-        { 
-              console.log("Not Successful access");        
-        }
-        else
-        {    
-          if(datanew.length<1)
-          {           
-                const sqlInsertStatement='insert into Games SET ?';
-                connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
-                  if (err) throw err;
-                  console.log(data);               
-                  console.log("Number of rows affected : " + result.affectedRows);
-                  console.log("Number of records affected with warning : " + result.warningCount);
-                  console.log("Message from MySQL Server : " + result.message);
-                });  
-                res.send({message:'game successfully added'})
-          } 
-          else
-          {
-                res.send({message:'game already exists'})
-          }                
-        }
-    });                     
+  // const sqlS="select * from Games where id ='"+data.id+"'";                    
+  // connectionMysql.query(sqlS,(err, datanew, fields)=>
+  // {
+  //       if(err)
+  //       { 
+  //             console.log("Not Successful access");        
+  //       }
+  //       else
+  //       {    
+  //         if(datanew.length<1)
+  //         {           
+  //               const sqlInsertStatement='insert into Games SET ?';
+  //               connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
+  //                 if (err) throw err;
+  //                 console.log(data);               
+  //                 console.log("Number of rows affected : " + result.affectedRows);
+  //                 console.log("Number of records affected with warning : " + result.warningCount);
+  //                 console.log("Message from MySQL Server : " + result.message);
+  //               });  
+  //               res.send({message:'game successfully added'})
+  //         } 
+  //         else
+  //         {
+  //               res.send({message:'game already exists'})
+  //         }                
+  //       }
+  //   });                     
 });
 
 // List all choices from mysql

@@ -13,12 +13,12 @@ const LOGIN_FAILURE_PAGE="/";
 export default class Auth {
 
   auth0 = new auth0.WebAuth({
-    domain: 'dev--4veatje.auth0.com',
-    clientID: 'sgMB6r00w7NBBrd60AuBJlcEFvO8NPQJ',
-    redirectUri: 'http://localhost:8080/callback',
-    audience:'https://dev--4veatje.auth0.com/userinfo',
-    responseType: 'token id_token',
-    scope: 'openid profile email address'
+    domain: 'pankaj-hashedin.auth0.com',
+   clientID: '8APzGywrBbRrfx5BEx5iHFV6Zq3GWQai',
+   redirectUri: 'http://localhost:8080/callback',
+   audience:'https://pankaj-hashedin.auth0.com/api/v2/',
+   responseType: 'token id_token',
+   scope: 'openid profile email address'
   });
 
   constructor() {
@@ -78,6 +78,12 @@ export default class Auth {
   getProfile(){
     if(localStorage.getItem("id_token")){
       return jwtDecode(localStorage.getItem("id_token"));
+    }
+  }
+
+  getAccessToken(){
+    if(localStorage.getItem("access_token")){
+      return localStorage.getItem("access_token");
     }
   }
 }
