@@ -51,7 +51,8 @@ app.get('/api/game', (req, res) => {
   res.json({ gameData });
 });
 
-//Post player updates on mysql db
+// @route   POST /updateplayer
+// @desc    Post player updates
 app.post('/updateplayer', (req, res) => {
 
   // var data=req.body;
@@ -77,7 +78,8 @@ app.post('/updateplayer', (req, res) => {
 
 });
 
-//Get players list database
+// @route   GET /users
+// @desc    Get players list from db
 app.get('/users', (req, res) => {
   console.log("GET /users ")
   console.log('getting the list of players');
@@ -187,8 +189,9 @@ app.post('/selectPlayerProfile', (req, res) => {
 
 });
 
-//Post player on mysql db
-app.post(
+// @route   POST /registerplayer
+// @desc    Create a new player
+app.post(   
   '/registerplayer',
   [
     check('firstName', 'First Name is required').not().isEmpty(),
@@ -295,7 +298,8 @@ app.post('/registergame', (req, res) => {
   //   });                     
 });
 
-// List all choices from mysql
+// @route   GET /listchoices
+// @desc    Get list of all choices from db
 app.get('/listchoices', (req, res) => {
   // res.set('Content-Type', 'application/json');     
   //    connectionMysql.query('select * from Choices',(err, data, fields)=>{
@@ -308,7 +312,8 @@ app.get('/listchoices', (req, res) => {
   //  })
 })
 
-//Lists all games from mysql database
+// @route   GET /listgames
+// @desc    Get list of all games from db
 app.get('/listgames', (req, res) => {
   //   connectionMysql.query('select * from Games',(err, data, fields)=>{
   //     if(err){ 
@@ -320,7 +325,8 @@ app.get('/listgames', (req, res) => {
   // })   
 })
 
-//Post choices on mysql db
+// @route   POST /addchoice
+// @desc    Post choices on db
 app.post('/addchoice', (req, res) => {
 
   //   var data=req.body;
@@ -367,7 +373,8 @@ app.post('/addchoice', (req, res) => {
   //   */                     
 });
 
-//Post question on mysql db
+// @route   POST /addquestion
+// @desc    Add a new question to db
 app.post('/addquestion', (req, res) => {
   //var data=req.body;  
   // var data={
@@ -411,7 +418,8 @@ app.post('/addquestion', (req, res) => {
   // });                     
 });
 
-// List all questions from mysql
+// @route   GET /listquestions
+// @desc    Get list of all questions from db
 app.get('/listquestions', (req, res) => {
   // res.set('Content-Type', 'application/json');     
   //    connectionMysql.query('select * from Questions',(err, data, fields)=>{
@@ -424,7 +432,8 @@ app.get('/listquestions', (req, res) => {
   //  })
 });
 
-//Post player delete on mysql db
+// @route   POST /deleteplayer
+// @desc    Delete existing player from db
 app.post('/deleteplayer', (req, res) => {
   // var data=req.body;
   // console.log(data);
@@ -452,7 +461,8 @@ app.post('/deleteplayer', (req, res) => {
   // }
 });
 
-//Post choice delete on mysql db
+// @route   POST /deletechoice
+// @desc    Delete choice from db
 app.post('/deletechoice', (req, res) => {
   // var data=req.body;
   // console.log(data);
@@ -467,7 +477,8 @@ app.post('/deletechoice', (req, res) => {
   // });      
 });
 
-//Post choice delete on mysql db
+// @route   POST /deletequestion
+// @desc    Delete question from db
 app.post('/deletequestion', (req, res) => {
   // var data=req.body;
   // console.log(data);
@@ -482,7 +493,8 @@ app.post('/deletequestion', (req, res) => {
   // });      
 });
 
-//Get specific player profile from mysql db
+// @route   POST /selectProfileforDel
+// @desc    Delete a specific players profile
 app.post('/selectProfileforDel', (req, res) => {
 
   // const snd=req.body;    
@@ -542,7 +554,8 @@ app.post('/selectProfileforDel', (req, res) => {
   // }
 });
 
-//Get specific game from mysql db
+// @route   GET /selectGameforDel
+// @desc    Get specific game from db
 app.post('/selectGameforDel', (req, res) => {
 
   // const snd=req.body;    
@@ -587,7 +600,8 @@ app.post('/selectGameforDel', (req, res) => {
 });
 
 
-//Get specific choice from mysql db
+// @route   POST /selectChoiceforDel
+// @desc    Get specific choice from db
 app.post('/selectChoiceforDel', (req, res) => {
 
   // const snd=req.body;    
@@ -631,7 +645,8 @@ app.post('/selectChoiceforDel', (req, res) => {
   // }
 });
 
-//Get specific choice from mysql db
+// @route   POST /registerplayer
+// @desc    Get specific question from db
 app.post('/selectQuestionforDel', (req, res) => {
 
   // const snd=req.body;    
@@ -675,7 +690,8 @@ app.post('/selectQuestionforDel', (req, res) => {
   // }
 });
 
-//Update games from mysql database
+// @route   POST /updateGame
+// @desc    Update games
 app.post('/updateGame', (req, res) => {
   //  console.log(req.body);
   //  const sqlUpdateStatement='update Games set caption="'+req.body.caption+'", gamedescription="'+req.body.gamedescription+'", gametype="'+req.body.gametype+'" where id = "'+req.body.id+'"';
@@ -691,7 +707,8 @@ app.post('/updateGame', (req, res) => {
   //            }); 
 })
 
-//Update games from mysql database
+// @route   POST /updatechoice
+// @desc    Update game choice
 app.post('/updatechoice', (req, res) => {
   // console.log(req.body);
   // const sqlUpdateStatement='update Choices set questionid="'+req.body.questionid+'", choicestatement="'+req.body.choicestatement+'", choicedescription="'+req.body.choicedescription+'", weight="'+req.body.weight+'", answer="'+req.body.weight+'" where id = "'+req.body.id+'"';
