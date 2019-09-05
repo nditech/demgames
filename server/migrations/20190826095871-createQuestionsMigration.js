@@ -12,7 +12,7 @@ module.exports = {
       },
       game_id:{
           type: Sequelize.INTEGER,
-          allowNull: true,
+          allowNull: false,
           references:{
             model: 'Games',
             key: 'id'

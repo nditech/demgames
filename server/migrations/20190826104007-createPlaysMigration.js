@@ -15,9 +15,8 @@ module.exports = {
           allowNull: false,
           references:{
             model: 'Players',
-            key: 'id',
-            unique: true
-          }, 
+            key: 'id'
+          },
           onDelete: 'cascade'
       },
       game_id:{
@@ -25,8 +24,7 @@ module.exports = {
           allowNull: false,
           references:{
             model: 'Games',
-            key: 'id',
-            unique: true 
+            key: 'id' 
           }, 
           onDelete: 'cascade'
       },

@@ -12,7 +12,7 @@ module.exports = {
         },
         questionid:{
             type: Sequelize.INTEGER,
-            allowNull: true,
+            allowNull: false,
             references:{
               model: 'Questions',
               key: 'id',
