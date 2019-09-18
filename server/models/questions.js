@@ -12,7 +12,7 @@
     
 //     Games(id) on delete cascade
 //     );
-'use strict';
+// 'use strict';
  
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('Questions', {
@@ -47,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, 
     {
+        timestamps: false,
         freezeTableName: true
     });
 }

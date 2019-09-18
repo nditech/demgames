@@ -1,34 +1,3 @@
-
-// create table Plays(
-
-//     id varchar(30) not null,
-//     player_id integer not null,
-//     game_id integer not null,
-//     playdate Date,
-//     score numeric not null,
-//     total numeric,
-//     program varchar(100),
-//     playstartdate Date,
-//     program_rank numeric,
-//     total_rank numeric,
-//     index (player_id),
-//     index (game_id),
-//     primary key(id),
-    
-
-//     CONSTRAINT player_id_fk foreign key(player_id) references
-    
-//     Players(id) on delete cascade,
-    
-//     CONSTRAINT game_id_fk foreign key(game_id) references
-    
-//     Games(id) on delete cascade,
-    
-//     UNIQUE KEY uniqueGamesPerPlayer (player_id, game_id,
-    
-//     score)
-//     );
-'use strict';
 module.exports = (sequelize, DataTypes) => {
     const Plays = sequelize.define('Plays', {
         id: {
@@ -50,6 +19,12 @@ module.exports = (sequelize, DataTypes) => {
             references: 'Games',
             referencesKey: 'id',
             onDelete: 'cascade'
+        },
+        cohort_id:{
+            type: DataTypes.INTEGER,
+            allowNull:true,
+            references:'Cohorts',
+            referencesKey:'id'
         },
         playdate:{
             type: DataTypes.DATE
@@ -76,6 +51,7 @@ module.exports = (sequelize, DataTypes) => {
 
     }, 
     {
+        timestamps: false,
         freezeTableName: true,
         indexes: [
             {

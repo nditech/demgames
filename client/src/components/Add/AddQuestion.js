@@ -1,195 +1,120 @@
-import React, { Component } from 'react';
-import DatePicker from 'react-datepicker';
+import React, { useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-class AddQuestion extends Component {
-  
-    constructor(props){
-        super(props);
-        this.state={
-                    gameid:1,
-                    gametype:"multiplechoice",
-                    difficulty_level:"",
-                    question_statement:"",
-                    weight:"",
-                    explanation:"",
-                    isitmedia:""
-        };
-        this.initialState={
-                    gameid:1,
-                    gametype:"multiplechoice",
-                    difficulty_level:"",
-                    question_statement:"",
-                    weight:"",
-                    explanation:"",
-                    isitmedia:""
-        };
-        this.handleReset  = this.handleReset.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit  = this.handleSubmit.bind(this);
+const AddQuestion = () => {
+
+    const initialState = {
+        gameid: 1,
+        gametype: "multiplechoice",
+        difficulty_level: '1',
+        question_statement: "",
+        weight: "",
+        explanation: "",
+        isitmedia: ""
+    };
+
+    const [formData, setFormData] = useState(initialState);
+
+    const {
+        gameid,
+        gametype,
+        difficulty_level,
+        question_statement,
+        weight,
+        explanation,
+        isitmedia
+    } = formData;
+
+
+
+    const reset = (event) => {
+        setFormData(initialState);
     }
 
-    handleReset(event){
-        this.setState(this.initialState);
-    }
+    const handleChange = (event) => {
 
-    handleChange(event) {   
-        
-        event.preventDefault();
-        
-        //console.log(event.target.value);
-        const val=event.target.value;
+        const val = event.target.value;
+        const fieldName = event.target.name;
 
-        switch(event.target.name){
-        
-            case "gametype":
-            {
-                    this.setState({gametype: val},
-                        function(){
-                                if(val==='multiplechoice')
-                                    this.setState({gameid:1});
-                                else if(val==='matching')
-                                    this.setState({gameid:2});
-                                else if(val==='truefalse')
-                                    this.setState({gameid:3});
-                                else if(val==='fillin')
-                                    this.setState({gameid:4});
-                                else
-                                    this.setState({gameid:1});
-                                
-                                console.log(this.state.gameid);
-                        });
-                    break;
+        if(fieldName === 'gametype'){
+            if (val === 'multiplechoice'){
+                setFormData({ ...formData, gameid: 1, gametype: val  });
             }
-            case "difficulty_level":
-            {
-                    this.setState({difficulty_level: event.target.value});
-                    break;
+            if (val === 'matching'){
+                setFormData({ ...formData, gameid: 2, gametype: val  });
             }
-            case "question_statement":
-            {
-                    this.setState({question_statement: event.target.value});
-                    break;
+            if (val === 'truefalse'){
+                setFormData({ ...formData, gameid: 3, gametype: val  });
             }
-            case "weight":
-            {
-                    this.setState({weight: event.target.value});
-                    break;
+            if (val === 'fillin'){
+                setFormData({ ...formData, gameid: 4, gametype: val  });
             }
-            case "explanation":
-            {
-                    this.setState({explanation:event.target.value});
-                    break;
-            }
-            case "isitmedia":
-            {
-                    this.setState({isitmedia: event.target.value});
-                    break;
-            }
-            default:
-            {
-                    console.log("Not Found it");
-            }
+        } else{
+            setFormData({ ...formData, [fieldName]: val });
         }
-        console.log(event.target.name);
-   }
-
-   handleSubmit(event) 
-   {
-       event.preventDefault();
-       console.log(JSON.stringify(this.state));
-       
-       fetch('http://localhost:9000/addquestion', {
-        method: 'POST',
-        headers: {
-            'Accept':'application/json',
-            'Content-Type': 'application/json'          
-        },
-        body: JSON.stringify(this.state)
-      })
-      .then(res=>res.json())
-      .then((data)=>{
-              alert('The '+ data+'  was successfully uploaded');
-      })
-      .catch((error)=>console.log(error));         
+        
+        // console.log('form data --> ', formData);
     }
-           
-   render() {
-      return (
-      <div className="App">
-            <div>
-               <form className="playerForm" onSubmit={this.handleSubmit}>
-                    <label>Game type     
-                        <select name="gametype" value={this.state.selectValue} onChange={this.handleChange} >
-                            <option defaultChecked value="multiplechoice">Multiple Choice</option>
-                            <option value="matching">Matching</option>
-                            <option value="truefalse">True or False</option>                      
-                            <option value="fillin">Fill in</option>
-                        </select>
-                        <br/>
-                    </label>
-                    <label>Difficulty Level             
-                        <select name="difficulty_level" value={this.state.selectValue} onChange={this.handleChange} >
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log('form data---> ',formData);
+
+        fetch('http://localhost:9000/addquestion', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(res => res.json())
+            .then((data) => {
+                alert('Question was successfully added');
+            })
+            .catch((error) => console.log(error));
+    }
+
+    return (
+        <div className="container App">
+            <div className="row">
+                <div className="col-md-2"></div>
+                <div className="col-md-8">
+                    <form className="text-center border border-light p-5" onSubmit={e => handleSubmit(e)}>
+                        <label className="mr-3">Game type
+                        <select className="custom-select custom-select-sm" name="gametype" value={gametype} onChange={e => handleChange(e)} >
+                                <option defaultChecked value="multiplechoice">Multiple Choice</option>
+                                <option value="matching">Matching</option>
+                                <option value="truefalse">True or False</option>
+                                <option value="fillin">Fill in</option>
+                            </select>
+                            <br />
+                        </label>
+                        <label>Difficulty Level
+                        <select className="custom-select custom-select-sm" name="difficulty_level" value={difficulty_level} onChange={e => handleChange(e)} >
                                 <option value="1">Very simple</option>
                                 <option value="2">Simple</option>
-                                <option defaultChecked value="3">Normal/Regular</option>                      
+                                <option defaultChecked value="3">Normal/Regular</option>
                                 <option value="4">Difficult</option>
                                 <option value="5">Very difficult</option>
                             </select>
-                            <br/>
+                            <br />
                         </label>
-                        <label>Question Statement 
-                            <input type="text" name="question_statement" value={this.state.question_statement} onChange={this.handleChange}/> <br/>
-                        </label>
-                        <label>Weight 
-                            <input type="text" name="weight" value={this.state.weight} onChange={this.handleChange}/> <br/>
-                        </label>
-                        <label>Explanation 
-                            <textarea type="text" name="explanation" value={this.state.explanation} onChange={this.handleChange}> 
-                            </textarea>
-                            <br/>
-                        </label>
-                        <label>is it media? 
-                            <input type="text" name="isitmedia" value={this.state.isitmedia} onChange={this.handleChange}/> <br/>
-                        </label>
-                        <button type="button" onClick={this.handleReset}>Reset</button> <button type="submit">Save</button>                                   
-                </form>
-            </div>            
-      </div>
+                        <input className="form-control mb-1" placeholder="Question Statement" type="text" name="question_statement" value={question_statement} onChange={e => handleChange(e)} /> <br />
+                        <input className="form-control mb-1" placeholder="Weight" type="text" name="weight" value={weight} onChange={e => handleChange(e)} /> <br />
+                        <textarea className="form-control mb-1" placeholder="Explanation" type="text" name="explanation" value={explanation} onChange={e => handleChange(e)}>
+                        </textarea>
+                        <br />
+                        <input className="form-control mb-1" placeholder="is it media?" type="text" name="isitmedia" value={isitmedia} onChange={e => handleChange(e)} /> <br />
+                        <button className="btn btn-info" type="submit">Save</button> | <button className="btn btn-warning" type="button" onClick={e => reset(e)}>Reset</button>
+                    </form>
+                </div>
+                <div className="col-md-2"></div>
+            </div>
+        </div>
     );
-  }
 }
-const mapStateToProps = (state) => ({
-    /*
-        player_given_name:state.authDetail.authDetail.player_given_name,
-        player_family_name:state.authDetail.authDetail.player_given_name,
-        player_picture:state.authDetail.authDetail.player_picture,
-        player_email:state.authDetail.authDetail.player_email,
-        player_username:state.authDetail.authDetail.player_username,
-        player_gender:state.authDetail.authDetail.player_gender,
-        player_dateOfBirth:state.authDetail.authDetail.player_dateOfBirth
-        gameData: state.gameData 
-    */
-});
 
-//Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => {
-    return {
-//		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-//		getScores: (scores) => dispatch(fetchScores(scores)),
-        setAuth:(authDetail) => dispatch(fetchAuthDetails(authDetail)),
-        clearAuth:(authDetail)=> dispatch(clearAuthDetails(authDetail)),
-    };
-};
-
-AddQuestion.propTypes = {
-//	getGameData: PropTypes.func,
-//	getScores: PropTypes.func,
-//	gameData: PropTypes.object,
-    authDetail:PropTypes.object,
-//	setAuth: PropTypes.func,
-//	clearAuth: PropTypes.func
-};
-export default connect(mapStateToProps, mapDispatchToProps)(AddQuestion);
+export default connect(null, {})(AddQuestion);

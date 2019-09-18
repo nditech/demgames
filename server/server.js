@@ -2,8 +2,13 @@ const gameData = require('../data/Module/moduleData.json');
 const express = require('express');
 const app = express();
 const { check, validationResult } = require('express-validator');
+// models
 const models = require('./models');
 const players = models.Players;
+const questions = models.Questions;
+const games = models.Games;
+const choices = models.Choices;
+// JWT
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 
@@ -23,7 +28,7 @@ const checkJwt = jwt({
   algorithms: ['RS256']
 });
 
-app.use(checkJwt);
+// app.use(checkJwt);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.raw({ inflate: true, limit: '100kb', type: 'text/xml' }));
@@ -81,8 +86,7 @@ app.post('/updateplayer', (req, res) => {
 // @route   GET /users
 // @desc    Get players list from db
 app.get('/users', (req, res) => {
-  console.log("GET /users ")
-  console.log('getting the list of players');
+  console.log("GET /users ----api")
   players.findAll().then(result => {
     res.send(JSON.stringify(result));
     console.log(result);
@@ -200,6 +204,8 @@ app.post(
   ],
 
   async (req, res) => {
+
+    console.log('POST /registerplayer  -------api');
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -234,73 +240,42 @@ app.post(
     }
   });
 
-app.post('/registergame', (req, res) => {
+// @route   POST /registergame
+// @desc    Create a new game
+app.post('/registergame', async (req, res) => {
 
-  // var data=req.body;
-  // console.log(data);
+  console.log('POST /registergame  -------api');
 
-  // const sqlS="select * from Games where id ='"+data.id+"'";                    
-  // connectionMysql.query(sqlS,(err, datanew, fields)=>
-  // {
-  //       if(err)
-  //       { 
-  //             console.log("Not Successful access");        
-  //       }
-  //       else
-  //       {    
-  //         if(datanew.length<1)
-  //         {           
-  //               const sqlInsertStatement='insert into Games SET ?';
-  //               connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
-  //                 if (err) throw err;
-  //                 console.log(data);               
-  //                 console.log("Number of rows affected : " + result.affectedRows);
-  //                 console.log("Number of records affected with warning : " + result.warningCount);
-  //                 console.log("Message from MySQL Server : " + result.message);
-  //               });  
-  //               res.send({message:'game successfully added'})
-  //         } 
-  //         else
-  //         {
-  //               res.send({message:'game already exists'})
-  //         }                
-  //       }
-  //   });                     
-  // var data=req.body;
-  // console.log(data);
+    const { caption, gamedescription, gametype} = req.body;
 
-  // const sqlS="select * from Games where id ='"+data.id+"'";                    
-  // connectionMysql.query(sqlS,(err, datanew, fields)=>
-  // {
-  //       if(err)
-  //       { 
-  //             console.log("Not Successful access");        
-  //       }
-  //       else
-  //       {    
-  //         if(datanew.length<1)
-  //         {           
-  //               const sqlInsertStatement='insert into Games SET ?';
-  //               connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
-  //                 if (err) throw err;
-  //                 console.log(data);               
-  //                 console.log("Number of rows affected : " + result.affectedRows);
-  //                 console.log("Number of records affected with warning : " + result.warningCount);
-  //                 console.log("Message from MySQL Server : " + result.message);
-  //               });  
-  //               res.send({message:'game successfully added'})
-  //         } 
-  //         else
-  //         {
-  //               res.send({message:'game already exists'})
-  //         }                
-  //       }
-  //   });                     
+    try {
+      
+      await games.create({
+        caption: caption,
+        gamedescription: gamedescription,
+        gametype: gametype
+      });
+
+      res.send({message:'game successfully added'});
+
+
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send({ message: 'Server Error'});
+    }
 });
 
 // @route   GET /listchoices
 // @desc    Get list of all choices from db
 app.get('/listchoices', (req, res) => {
+
+  console.log("GET /listchoices ")
+  choices.findAll().then(result => {
+    res.send(JSON.stringify(result));
+    console.log(result);
+  }).catch(err => {
+    console.log(err);
+  });
   // res.set('Content-Type', 'application/json');     
   //    connectionMysql.query('select * from Choices',(err, data, fields)=>{
   //      if(err){ 
@@ -315,19 +290,40 @@ app.get('/listchoices', (req, res) => {
 // @route   GET /listgames
 // @desc    Get list of all games from db
 app.get('/listgames', (req, res) => {
-  //   connectionMysql.query('select * from Games',(err, data, fields)=>{
-  //     if(err){ 
-  //       console.log("Not Successful access to games");
-  //     }else{
-  //       console.log(JSON.stringify(data));
-  //       res.send(JSON.stringify(data));         
-  //     }    
-  // })   
-})
+  console.log("GET /listgames -----api")
+  games.findAll().then(result => {
+    res.send(JSON.stringify(result));
+    console.log(result);
+  }).catch(err => {
+    console.log(err);
+  });
+});
 
 // @route   POST /addchoice
 // @desc    Post choices on db
-app.post('/addchoice', (req, res) => {
+app.post('/addchoice', async (req, res) => {
+
+  console.log('POST /addchoice  -------api');
+
+    const { choicedescription, choicestatement, isanswer, questionid, weight} = req.body;
+
+    try {
+      
+      await choices.create({
+        choicedescription: choicedescription,
+        choicestatement: choicestatement,
+        answer: isanswer,
+        questionid: questionid,
+        weight: weight
+      });
+
+      res.send({message:'choice successfully added'});
+
+
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send({ message: 'Server Error'});
+    }
 
   //   var data=req.body;
   //   console.log(data);
@@ -375,61 +371,54 @@ app.post('/addchoice', (req, res) => {
 
 // @route   POST /addquestion
 // @desc    Add a new question to db
-app.post('/addquestion', (req, res) => {
-  //var data=req.body;  
-  // var data={
-  //     gameid: req.body.gameid,
-  //     difficulty_level: req.body.difficulty_level,
-  //     question_statement: req.body.question_statement,
-  //     weight: req.body.weight,
-  //     explanation: req.body.explanation,
-  //     isitmedia: req.body.isitmedia 
-  // }
+app.post('/addquestion',
+  [
+    check('question_statement', 'Question statement is required').not().isEmpty()
+  ],
 
-  // console.log(data);
+  async (req, res) => {
+  
+    console.log('POST /addquestion -- api')
+    var data=req.body;
+    console.log(data);
 
-  // const sqlS="select * from Questions where question_statement ='"+data.question_statement+"'";
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors: errors.array()});
+    }
 
-  // connectionMysql.query(sqlS,(err, datanew, fields)=>
-  // {
-  //       if(err)
-  //       { 
-  //             console.log("Not Successful access");        
-  //       }
-  //       else
-  //       {    
-  //         if(datanew.length<1)
-  //         {
-  //             const sqlInsertStatement='insert into Questions SET ?';
-  //             connectionMysql.query(sqlInsertStatement, [data], function (err, result, fields) {
-  //             if (err) throw err;
-  //               console.log(data);
-  //               console.log("Number of rows affected : " + result.affectedRows);
-  //               console.log("Number of records affected with warning : " + result.warningCount);
-  //               console.log("Message from MySQL Server : " + result.message);              
-  //               res.send({message:'The question detail is successfully added'});
-  //             }); 
-  //         }
-  //         else
-  //         {
-  //             res.send({message:'This question already exists'})
-  //         }                
-  //       }
-  // });                     
+    const {difficulty_level, explanation, gameid, gametype, isitmedia, question_statement, weight} = req.body;
+
+    try {
+      
+      await questions.create({
+        game_id: gameid,
+        difficulty_level: difficulty_level,
+        question_statement: question_statement,
+        weight: weight,
+        explanation: explanation,
+        isitmedia: isitmedia 
+      });
+      
+      res.send({message:'question successfully added'});
+
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).send({ message: 'Server Error'});
+  }               
 });
 
 // @route   GET /listquestions
 // @desc    Get list of all questions from db
+
 app.get('/listquestions', (req, res) => {
-  // res.set('Content-Type', 'application/json');     
-  //    connectionMysql.query('select * from Questions',(err, data, fields)=>{
-  //      if(err){ 
-  //        console.log("Not Successful access to games");
-  //      }else{
-  //        console.log(JSON.stringify(data));
-  //        res.send(JSON.stringify(data));
-  //      }     
-  //  })
+  console.log("GET /listquestions ")
+  questions.findAll().then(result => {
+    res.send(JSON.stringify(result));
+    console.log(result);
+  }).catch(err => {
+    console.log(err);
+  });
 });
 
 // @route   POST /deleteplayer

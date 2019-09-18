@@ -13,13 +13,22 @@ const LOGIN_FAILURE_PAGE="/";
 export default class Auth {
 
   auth0 = new auth0.WebAuth({
-    domain: 'pankaj-hashedin.auth0.com',
-   clientID: '8APzGywrBbRrfx5BEx5iHFV6Zq3GWQai',
-   redirectUri: 'http://localhost:8080/callback',
-   audience:'https://pankaj-hashedin.auth0.com/api/v2/',
-   responseType: 'token id_token',
-   scope: 'openid profile email address'
+    domain: 'demgamestest.auth0.com',
+    clientID: 'GBdaITi8eaqrS4H4q4JY284ctpmataM2',
+    redirectUri: 'http://localhost:8080/callback',
+    audience:'https://demgamestest.auth0.com/api/v2/',
+    responseType: 'token id_token',
+    scope: 'openid profile email address'
   });
+
+  // auth0 = new auth0.WebAuth({
+  //   domain: 'pankaj-hashedin.auth0.com',
+  //  clientID: '8APzGywrBbRrfx5BEx5iHFV6Zq3GWQai',
+  //  redirectUri: 'http://localhost:8080/callback',
+  //  audience:'https://pankaj-hashedin.auth0.com/api/v2/',
+  //  responseType: 'token id_token',
+  //  scope: 'openid profile email address'
+  // });
 
   constructor() {
     this.login = this.login.bind(this);
@@ -44,8 +53,8 @@ export default class Auth {
   signup(){
     //var newUser=1;
     this.auth0.signup({ 
-        connection: 'dev-4veatje-auth0-db-connection', 
-        email: 'Berhanub@gmail.com', 
+        connection: 'demgamesDB', 
+        email: null, 
         password: null,
         username: null
     }, function (err) { 

@@ -1,18 +1,3 @@
-// Create Table Players(
-//     id integer not null AUTO_INCREMENT,
-//     firstname varchar(20),
-//     middlename varchar(20),
-//     lastname varchar(20),
-//     username varchar(20) not null,
-//     email varchar(101) not null,
-//     dateofbirth Date,
-//     gender varchar(6),
-//     country varchar(35),
-//     city varchar(35),
-//     program varchar(100),
-//     primary key(id)
-//     );
-'use strict';
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('Players', {
         id: {
@@ -59,9 +44,21 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false,
         freezeTableName: true,
         hooks: {
-            afterValidate: (player, options) => {
-                console.log('stored procedure working ....');
-                console.log(player);
+            afterCreate: async (player, options) => {
+                console.log('stored procedure for players called ....');
+
+                await sequelize.models.Plays.create({
+                    player_id: player.id,
+                    game_id: 1,
+                    score: 0,
+                    total: 0,
+                    program_rank: 0,
+                    total_rank: 0,
+                    playstartdate: new Date
+                })
+
+                console.log('player successfully registered  ....');
+
             }
           }
     });

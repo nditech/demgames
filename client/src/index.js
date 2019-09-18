@@ -14,7 +14,6 @@ import ProfileInfo from './components/ProfileInfo';
 import store from './store';
 import ScenarioQuesAns from './pages/ScenarioBased/ScenarioQuesAns';
 import admin from './components/admin/admin';
-import list from './components/List/List';
 import UpdatePlayer from './components/Update/UpdateProfile';
 import Register from './components/Add/Register';
 import AddGame from './components/Add/AddGame';
@@ -43,7 +42,6 @@ import UpdateChoice from './components/Update/UpdateChoice';
 			    <Route path="/info" exact component={CorrectAnswerInfo} />
 			    <Route path="/profile" exact component={ProfileInfo} />
 				<Route path="/admin" exact component={admin}/>
-				<Route path="/list" exact component={list} />
 				<Route path="/UpdatePlayer" exact component={UpdatePlayer} />
 				<Route path="/registerplayer" exact component={Register} />
 				<Route path="/addgame" exact component={AddGame} />

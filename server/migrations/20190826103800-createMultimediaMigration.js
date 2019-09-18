@@ -30,7 +30,7 @@ module.exports = {
           type: Sequelize.STRING(2000)
       },
       keywords:{
-          type: Sequelize.STRING(1000)
+          type: Sequelize.STRING(100)
       }
   }, 
   {

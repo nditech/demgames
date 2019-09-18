@@ -1,38 +1,34 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import '../App.css';
 import {connect} from 'react-redux';
 
-class AddChoices extends Component {
-    constructor(props){
-        super(props);
-        this.state={
-                    choicestatement:'',
-                    choicedescription:'',
-                    weight:'',
-                    isanswer:0,
-                    questionid:'',
-                    questions:[]
-        };
-        this.initialState={
-                    choicestatement:'',
-                    choicedescription:'',
-                    weight:'',
-                    isanswer:0,
-                    questionid:'',
-                    questions:[]
-        }
-        this.handleReset = this.handleReset.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit  = this.handleSubmit.bind(this);
-    }
+const AddChoices = () => {
 
-    handleReset(){
-        this.setState(this.initialState)
-    }
+    const initialState = {
+        choicestatement:'',
+        choicedescription:'',
+        weight:'',
+        isanswer:'',
+        questionid:'',
+        questions:[]
+    };
 
-    componentDidMount()
-    {
+    const [formData, setFormData] = useState(initialState);
+
+    const {
+        choicestatement,
+        choicedescription,
+        weight,
+        isanswer,
+        questionid,
+    } = formData;
+
+    const handleReset = () => {
+        setFormData({...formData, choicestatement: '', choicedescription: '', weight: '', isanswer: '', questionid: ''});
+    };
+
+    useEffect(() => {
         let initialquestions = [];
         fetch('http://localhost:9000/listquestions', {
             method: 'GET',
@@ -44,149 +40,76 @@ class AddChoices extends Component {
           .then(res=>res.json())
           .then((data)=>
             {
+                console.log('questions list ----', data);
                 initialquestions = data.map((question) => {
                         return question
                 });
 
                 //console.log(initialquestions);
                 
-                this.setState({
-                            questions: initialquestions,
-                });    
+                setFormData({ ...formData, questions: initialquestions});    
             })
           .catch((error)=>console.log(error)); 
-    }
+    }, []);
 
-    handleChange(event) {   
-        switch(event.target.name){
-            case "question_statement":
-            {       
-                    console.log(event.target.value);
-                    this.state.questions.filter((question)=>
-                        {
-                             return(question.question_statement === event.target.value ? this.setState({questionid:question.id}):console.log(0))
-                        }
-                    );
-                    
-                    break;
-            }
-            case "choicestatement":
-            {
-                    this.setState({choicestatement: event.target.value});
-                    break;
-            }
-            case "choicedescription":
-            {
-                    this.setState({choicedescription: event.target.value});
-                    break;
-            }
-            case "weight":
-            {
-                    this.setState({weight: event.target.value});
-                    break;
-            }
-            case "isanswer":
-            {
-                    this.setState({isanswer: event.target.value});
-                    break;
-            }
-            default:
-            {
-                    console.log("Game Response");
-            }
-        }        
-        console.log(event.target.name);         
+    const handleChange = (event) => {   
+        setFormData({ ...formData, [event.target.name]: event.target.value });       
    }
 
-   handleSubmit(event) 
+   const handleSubmit = (event) => 
    {
        event.preventDefault();
-       console.log(JSON.stringify(this.state));
+       console.log(formData);
        
-       //const url ='/registergame';
        fetch('http://localhost:9000/addchoice', {
         method: 'POST',
         headers: {
             'Accept':'application/json',
             'Content-Type': 'application/json'          
         },
-        body: JSON.stringify(this.state)
+        body: JSON.stringify(formData)
       })
       .then(res=>res.json())
       .then((data)=>{
-         console.log('The '+ data+'  was successfully uploaded');
+         
+         alert('The choice was successfully added');
+         handleReset();
         })
       .catch((error)=>console.log(error));         
     }
            
-render() {
-
-      let optionItems = this.state.questions.map((question) =>
-            <option key={question.id}>{question.question_statement}</option>
+      let optionItems = formData.questions.map((question) =>
+            <option key={question.id} value={question.id}>{question.question_statement}</option>
       );
 
       return (
-      <div className="App">
-            <div>
-               <form className="questionForm" onSubmit={this.handleSubmit}>        
-                        <label>Question statement 
-                        <select name="question_statement" value={this.state.selectValue} onClick={this.handleChange}>
+        <div className=" container App">
+        <div className="row">
+            <div className="col-md-2"></div>
+            <div className="col-md-8">
+               <form className="text-center border border-light p-5" onSubmit={e => handleSubmit(e)}> 
+                    <div className="row">
+                        <div className="form-group col-md-12">
+                            <label className="form-label" >Question statement </label>
+                            <select className="form-control custom-select custom-select-sm" name="questionid" value={questionid} onChange={e => handleChange(e)} >
                             {optionItems}
-                        </select>
-                        <br/>
-                        </label>
-                        <label>Choice statement 
-                            <input type="text" name="choicestatement" value={this.state.choicestatement} onChange={this.handleChange}/> <br/>
-                        </label>
-                        <label>Choice description 
-                            <textarea type="text" name="choicedescription" value={this.state.choicedescription} onChange={this.handleChange}> 
-                            </textarea>
-                            <br/>
-                        </label>
-                        <label>Weight
-                            <input type="text" name="weight" value={this.state.weight} onChange={this.handleChange}/> <br/>
-                        </label> 
-                        <label>is it answer
-                            <input type="text" name="answer" value={this.state.isanswer} onChange={this.handleChange}/> <br/>
-                        </label> 
-                        <button type="submit">Save</button>
-                        <button type="button" onClick={this.handleReset}>Reset</button> 
-                                         
-              </form>
-            </div>            
-      </div>
-    );
-  }
-}
-    const mapStateToProps = (state) => ({
-        /*
-            player_given_name:state.authDetail.authDetail.player_given_name,
-            player_family_name:state.authDetail.authDetail.player_given_name,
-            player_picture:state.authDetail.authDetail.player_picture,
-            player_email:state.authDetail.authDetail.player_email,
-            player_username:state.authDetail.authDetail.player_username,
-            player_gender:state.authDetail.authDetail.player_gender,
-            player_dateOfBirth:state.authDetail.authDetail.player_dateOfBirth
-            gameData: state.gameData 
-        */
-        });
-        
-    //Dispatch action to fetch game data and scores.
-    const mapDispatchToProps = (dispatch) => {
-        return {
-    //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-    //		getScores: (scores) => dispatch(fetchScores(scores)),
-            setAuth:(authDetail) => dispatch(fetchAuthDetails(authDetail)),
-            clearAuth:(authDetail)=> dispatch(clearAuthDetails(authDetail)),
-        };
-    };
+                            </select>
+                        </div>
+                    </div>
 
-    AddChoices.propTypes = {
-    //	getGameData: PropTypes.func,
-    //	getScores: PropTypes.func,
-    //	gameData: PropTypes.object,
-        authDetail:PropTypes.object,
-    //	setAuth: PropTypes.func,
-    //	clearAuth: PropTypes.func
-    };
-export default connect(mapStateToProps, mapDispatchToProps) (AddChoices);
+                    <input className="form-control mb-1" placeholder="Choice statement" type="text" name="choicestatement" value={choicestatement} onChange={e => handleChange(e)}/> <br/>
+                    <textarea className="form-control mb-1" placeholder="Choice description" type="text" name="choicedescription" value={choicedescription} onChange={e => handleChange(e)}> 
+                    </textarea>
+                    <input className="form-control mb-1" placeholder="Weight" type="text" name="weight" value={weight} onChange={e => handleChange(e)}/> <br/>
+                    <input className="form-control mb-1" placeholder="Is it answer?" type="text" name="isanswer" value={isanswer} onChange={e => handleChange(e)}/> <br/>
+                    <div className="text-center mt-12">
+                        <button className="btn btn-info" type="submit">Save</button> | <button className="btn btn-warning" type="button" onClick={e => handleReset(e)}>Reset</button>
+                    </div>
+              </form>
+            </div>
+        </div>            
+        </div>
+    );
+}
+    
+export default connect(null, {}) (AddChoices);

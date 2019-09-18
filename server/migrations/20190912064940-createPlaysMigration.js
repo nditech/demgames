@@ -15,8 +15,9 @@ module.exports = {
           allowNull: false,
           references:{
             model: 'Players',
-            key: 'id'
-          },
+            key: 'id',
+            unique: true
+          }, 
           onDelete: 'cascade'
       },
       game_id:{
@@ -24,9 +25,19 @@ module.exports = {
           allowNull: false,
           references:{
             model: 'Games',
-            key: 'id' 
+            key: 'id',
+            unique: true 
           }, 
           onDelete: 'cascade'
+      },
+      cohort_id:{
+        type: Sequelize.INTEGER,
+        allowNull:true,
+        references:{
+          model: 'Cohorts',
+          key: 'id',
+          unique: true 
+        }
       },
       playdate:{
           type: Sequelize.DATE

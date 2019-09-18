@@ -15,7 +15,6 @@ import Auth from '../../Auth';
 import {bindActionCreators} from 'redux';
 //import {connect} from 'react-redux';
 import profile from '../../components/ProfileInfo';
-import list from '../../components/List/List';
 import admin from '../../components/admin/admin';
 import UpdatePlayer from '../../components/Update/UpdateProfile';
 import { fetchScoreDetail } from '../../components/ProfileInfo/action';

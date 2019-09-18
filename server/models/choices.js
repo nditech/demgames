@@ -1,16 +1,3 @@
-// Create Table Choices(
-//     id integer not null auto_increment,
-//     questionid integer,
-//     choicestatement varchar(300),
-//     choicedescription text(2000),
-//     weight float(2),
-//     answer TINYINT(2),
-//     primary key(id),
-//     constraint questions_id_fk_questions foreign key(questionid)
-//     references Questions(id) on delete cascade
-    
-//     );
-
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('Choices', {
         id:{
@@ -40,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, 
     {
+        timestamps: false,
         freezeTableName: true
     });
 }

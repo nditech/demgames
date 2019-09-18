@@ -12,3 +12,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.pill-tabs.nav{
+  margin: 20px;
+  display: block;
+}
