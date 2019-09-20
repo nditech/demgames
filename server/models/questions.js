@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     }, 
     {
         timestamps: false,
-        freezeTableName: true
+        freezeTableName: true,
+        underscored: true
     });
 }

@@ -1,0 +1,78 @@
+.header-wrapper{
+    width:100%;
+    .header-container{
+        width:92%;
+        display: flex;
+        margin: auto;
+        padding-top: 10px;
+        .header-left{
+            flex:1;
+            display: flex;
+            .header-logo{
+                flex:1;
+            }
+            .header-buttons{
+                flex:1;
+                display: flex;
+               
+                
+                .header-button{
+                    margin-left: 15px;
+                    border-radius: 50px;
+                    color:white;
+                    padding:5px 30px;
+                    font-size: 12px;
+                    outline: 0px;
+                    border:0px;
+                    &.active{
+                        background-color:blue 
+                    }
+                }
+            }
+        }
+        .header-right{
+            flex:1;
+            display:flex;
+            .header-search{
+                flex:1.5;
+                display: flex;
+                justify-content: flex-end;
+                margin-right: 10px;
+                .header-searchbox{
+                    visibility: hidden;
+                    display: flex;
+                    width:50%;
+                    border:1px solid grey;
+                    align-items: center;
+                    .header-input{
+                        border: none;
+                        width: 100%;
+                        padding-left: 10px;  
+                    }
+                    .search-icon{
+                        padding-left:5px; 
+                    }
+                }
+                
+            }
+            .header-toolbar{
+                flex:1;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                .header-options{
+                    visibility: hidden;
+                    flex:1;
+                    border-right: 1px solid grey;
+                }
+                .header-profile-info{
+                    flex:1;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-left:20px;
+                }
+            }
+        }
+    }
+}
