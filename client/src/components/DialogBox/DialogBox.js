@@ -63,19 +63,10 @@ class DialogBox extends Component {
     const { data, id } = this.state;
     if (edit || create) {
       const value = [];
-      let error = false;
       data.map(item => {
-        if (isEmpty(item.value)) {
-          item["error"] = true;
-          error = true;
-        } else {
-          item["error"] = false;
-        }
         value[item.title] = item.value;
       });
-      if (!error) {
-        onConfirm(value, id);
-      }
+      onConfirm(value, id);
     } else {
       onConfirm();
     }

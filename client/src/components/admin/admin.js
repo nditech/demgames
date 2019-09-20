@@ -299,7 +299,9 @@ class Admin extends Component {
       messageBox: false,
       edit: false,
       create: false,
-      removeMessage: "Are you sure you want to delete question Q1 from level 1?"
+      removeMessage:
+        "Are you sure you want to delete question Q1 from level 1?",
+      onDelete: null
     });
   };
   remove = () => {
