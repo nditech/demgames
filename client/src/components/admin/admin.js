@@ -23,6 +23,7 @@ import Auth from "../../Auth";
 import Callback from "../../pages/LandingPage/callback";
 import DialogBox from "../DialogBox/DialogBox";
 import { Header } from "../Header";
+// import ListQuestions from '../List/ListQuestions';
 import ListChoices from "../List/ListChoices";
 import ListGames from "../List/ListGames";
 import ListPlayers from "../List/ListPlayers";
@@ -403,54 +404,6 @@ class Admin extends Component {
                                             <NavItem>
                                                 <NavLink className={classnames({ active: this.state.activeGameTab === 'addNew' })} onClick={() => { this.toggleGame('addNew'); }} > Add New Game </NavLink>
                                             </NavItem> */}
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activePlayerTab === "popup"
-                          })}
-                          onClick={() => {
-                            this.editPopup();
-                          }}
-                        >
-                          Edit Item
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activePlayerTab === "popup"
-                          })}
-                          onClick={() => {
-                            this.addItemPopup();
-                          }}
-                        >
-                          add Item
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activePlayerTab === "popup"
-                          })}
-                          onClick={() => {
-                            this.viewPopup();
-                          }}
-                        >
-                          View Item
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activePlayerTab === "popup"
-                          })}
-                          onClick={() => {
-                            this.removePopup();
-                          }}
-                        >
-                          Delete Item
-                        </NavLink>
-                      </NavItem>
                     </Nav>
                     <TabContent activeTab={this.state.activeGameTab}>
                       <TabPane tabId="list">
@@ -501,6 +454,54 @@ class Admin extends Component {
                           Add New Player{" "}
                         </NavLink>
                       </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "popup"
+                          })}
+                          onClick={() => {
+                            this.editPopup();
+                          }}
+                        >
+                          Edit Item
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "popup"
+                          })}
+                          onClick={() => {
+                            this.addItemPopup();
+                          }}
+                        >
+                          add Item
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "popup"
+                          })}
+                          onClick={() => {
+                            this.viewPopup();
+                          }}
+                        >
+                          View Item
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "popup"
+                          })}
+                          onClick={() => {
+                            this.removePopup();
+                          }}
+                        >
+                          Delete Item
+                        </NavLink>
+                      </NavItem>
                     </Nav>
                     <TabContent activeTab={this.state.activePlayerTab}>
                       <TabPane tabId="list">
@@ -521,56 +522,36 @@ class Admin extends Component {
                   </Col>
                 </Row>
               </TabPane>
-              <TabPane tabId="questions">
-                <Row>
-                  <Col sm="12">
-                    <Nav pills className="float-right pill-tabs">
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activeQuestionTab === "list"
-                          })}
-                          onClick={() => {
-                            this.toggleQuestion("list");
-                          }}
-                        >
-                          {" "}
-                          List Questions{" "}
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activeQuestionTab === "addNew"
-                          })}
-                          onClick={() => {
-                            this.toggleQuestion("addNew");
-                          }}
-                        >
-                          {" "}
-                          Add New Question{" "}
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
-                    <TabContent activeTab={this.state.activeQuestionTab}>
-                      <TabPane tabId="list">
-                        <Row>
-                          <Col sm="12">
-                            <ListQuestions />
-                          </Col>
-                        </Row>
-                      </TabPane>
-                      <TabPane tabId="addNew">
-                        <Row>
-                          <Col sm="12">
-                            <AddQuestion />
-                          </Col>
-                        </Row>
-                      </TabPane>
-                    </TabContent>
-                  </Col>
-                </Row>
-              </TabPane>
+              {/* <TabPane tabId="questions">
+                                <Row>
+                                    <Col sm="12">
+                                        <Nav pills className="float-right pill-tabs">
+                                            <NavItem>
+                                                <NavLink className={classnames({ active: this.state.activeQuestionTab === 'list' })} onClick={() => { this.toggleQuestion('list'); }} > List Questions </NavLink>
+                                            </NavItem>
+                                            <NavItem>
+                                                <NavLink className={classnames({ active: this.state.activeQuestionTab === 'addNew' })} onClick={() => { this.toggleQuestion('addNew'); }} > Add New Question </NavLink>
+                                            </NavItem>
+                                        </Nav>
+                                        <TabContent activeTab={this.state.activeQuestionTab}>
+                                            <TabPane tabId="list">
+                                                <Row>
+                                                    <Col sm="12">
+                                                        <ListQuestions />
+                                                    </Col>
+                                                </Row>
+                                            </TabPane>
+                                            <TabPane tabId="addNew">
+                                                <Row>
+                                                    <Col sm="12">
+                                                        <AddQuestion />
+                                                    </Col>
+                                                </Row>
+                                            </TabPane>
+                                        </TabContent>
+                                    </Col>
+                                </Row>
+                            </TabPane> */}
               <TabPane tabId="choices">
                 <Row>
                   <Col sm="12">
@@ -622,6 +603,7 @@ class Admin extends Component {
                 </Row>
               </TabPane>
             </TabContent>
+
             {/* <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
                             <ul className="navbar-nav">
                                 <li className="nav-item"><Link className="nav-link" to="/list">List players</Link> </li>
