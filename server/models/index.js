@@ -25,11 +25,18 @@ fs
     db[model.name] = model;
   });
 
+db.Questions.belongsTo(db.Games, {foreignKey: 'game_id'});
+db.Games.hasMany(db.Questions, {referenceKey: 'game_id'});
+db.Questions.hasMany(db.Choices, {foreignKey: 'questionid'});
+db.Choices.belongsTo(db.Questions, {referenceKey: 'questionid'});
+
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
 });
+
+
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

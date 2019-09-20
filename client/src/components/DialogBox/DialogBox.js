@@ -82,20 +82,21 @@ class DialogBox extends Component {
   };
   valueChange = (value, title, index = 0) => {
     const { data } = this.state;
-    let confirmButtonDisable = false;
     data.map(item => {
-      console.log(item.value);
-      if (isEmpty(item.value) && item.title !== "Chooce new choice") {
-        console.log(item);
-        confirmButtonDisable = true;
-      }
       if (item.title === title) {
         item.type === "options"
           ? (item.value[index] = value)
           : (item.value = value);
+        if (isEmpty(value)) {
+          item.type === "options"
+            ? (item["error"] = true)
+            : (item["error"] = true);
+        } else {
+          item["error"] = false;
+        }
       }
     });
-    this.setState({ data, confirmButtonDisable });
+    this.setState({ data, confirmButtonDisable: isEmpty(value) });
   };
   render() {
     const {
@@ -289,7 +290,7 @@ class DialogBox extends Component {
                 {confirmButtonValue}
               </Button>
             )}
-            {!create && !edit && !removeMessage && (
+            {onDelete && (
               <Button className="dialog-btn confirm" onClick={onDelete}>
                 Remove Question
               </Button>

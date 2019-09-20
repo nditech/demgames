@@ -22,6 +22,7 @@ import Auth from "../../Auth";
 //import notfound from './NotFound';
 import Callback from "../../pages/LandingPage/callback";
 import DialogBox from "../DialogBox/DialogBox";
+import { Header } from "../Header";
 import ListChoices from "../List/ListChoices";
 import ListGames from "../List/ListGames";
 import ListPlayers from "../List/ListPlayers";
@@ -39,7 +40,7 @@ import removequestion from "../Remove/RemoveQuestion";
 //import NotFound from '../../pages/Landin';
 
 const auth = new Auth();
-
+const headerTabs = ["games", "players", "questions", "choices"];
 class Admin extends Component {
   constructor(props) {
     super(props);
@@ -324,6 +325,7 @@ class Admin extends Component {
       removeMessage: false
     });
   };
+
   render() {
     const {
       showMessage,
@@ -341,107 +343,66 @@ class Admin extends Component {
       onDelete,
       removeMessage
     } = this.state;
+
     return (
       <Router>
         <Fragment>
+          <DialogBox
+            confirmButtonValue={confirmButtonValue}
+            showMessage={showMessage}
+            messageTitle={messageTitle}
+            messageDescription={messageDescription}
+            onConfirm={onConfirm}
+            isConfirmation={isConfirmation}
+            onCancel={this.onCancel}
+            title={title}
+            data={create ? fields : data}
+            messageBox={messageBox}
+            edit={edit}
+            create={create}
+            onDelete={onDelete}
+            removeMessage={removeMessage}
+          />
+          <Header
+            headerTabs={headerTabs}
+            activeTab={this.state.activeTab}
+            toggleTab={this.toggle.bind(this)}
+          />
+
           <div className="container">
-            <DialogBox
-              confirmButtonValue={confirmButtonValue}
-              showMessage={showMessage}
-              messageTitle={messageTitle}
-              messageDescription={messageDescription}
-              onConfirm={onConfirm}
-              isConfirmation={isConfirmation}
-              onCancel={this.onCancel}
-              title={title}
-              data={create ? fields : data}
-              messageBox={messageBox}
-              edit={edit}
-              create={create}
-              onDelete={onDelete}
-              removeMessage={removeMessage}
-            />
-            <Nav tabs>
-              <NavItem>
-                <NavLink
-                  className={classnames({
-                    active: this.state.activeTab === "games"
-                  })}
-                  onClick={() => {
-                    this.toggle("games");
-                  }}
-                >
-                  Games
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  className={classnames({
-                    active: this.state.activeTab === "players"
-                  })}
-                  onClick={() => {
-                    this.toggle("players");
-                  }}
-                >
-                  Players
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  className={classnames({
-                    active: this.state.activeTab === "questions"
-                  })}
-                  onClick={() => {
-                    this.toggle("questions");
-                  }}
-                >
-                  Questions
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  className={classnames({
-                    active: this.state.activeTab === "choices"
-                  })}
-                  onClick={() => {
-                    this.toggle("choices");
-                  }}
-                >
-                  Choices
-                </NavLink>
-              </NavItem>
-            </Nav>
+            {/* <Nav tabs>
+                            <NavItem>
+                                <NavLink className={classnames({ active: this.state.activeTab === 'games' })} onClick={() => { this.toggle('games'); }} >
+                                    Games
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink className={classnames({ active: this.state.activeTab === 'players' })} onClick={() => { this.toggle('players'); }} >
+                                    Players
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink className={classnames({ active: this.state.activeTab === 'questions' })} onClick={() => { this.toggle('questions'); }} >
+                                    Questions
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink className={classnames({ active: this.state.activeTab === 'choices' })} onClick={() => { this.toggle('choices'); }} >
+                                    Choices
+                                </NavLink>
+                            </NavItem>
+                        </Nav> */}
             <TabContent activeTab={this.state.activeTab}>
               <TabPane tabId="games">
                 <Row>
                   <Col sm="12">
                     <Nav pills className="float-right pill-tabs">
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activeGameTab === "list"
-                          })}
-                          onClick={() => {
-                            this.toggleGame("list");
-                          }}
-                        >
-                          {" "}
-                          List Games{" "}
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activeGameTab === "addNew"
-                          })}
-                          onClick={() => {
-                            this.toggleGame("addNew");
-                          }}
-                        >
-                          {" "}
-                          Add New Game{" "}
-                        </NavLink>
-                      </NavItem>
+                      {/* <NavItem>
+                                                <NavLink className={classnames({ active: this.state.activeGameTab === 'list' })} onClick={() => { this.toggleGame('list'); }} > List Games </NavLink>
+                                            </NavItem>
+                                            <NavItem>
+                                                <NavLink className={classnames({ active: this.state.activeGameTab === 'addNew' })} onClick={() => { this.toggleGame('addNew'); }} > Add New Game </NavLink>
+                                            </NavItem> */}
                       <NavItem>
                         <NavLink
                           className={classnames({
@@ -661,7 +622,6 @@ class Admin extends Component {
                 </Row>
               </TabPane>
             </TabContent>
-
             {/* <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
                             <ul className="navbar-nav">
                                 <li className="nav-item"><Link className="nav-link" to="/list">List players</Link> </li>

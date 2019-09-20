@@ -1,0 +1,16 @@
+.details-container{
+    width:100%;
+    .details-box{
+        padding:20px;
+        display:flex;
+        .details-key{
+            flex:1;
+        }
+        .details-value{
+            flex:2;
+        }
+    }
+}
+
+
+

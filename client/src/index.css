@@ -17,3 +17,39 @@ code {
   margin: 20px;
   display: block;
 }
+
+div.rdt_TableRow {
+  border: #daeffa solid 1px;
+  border-radius: 7px;
+  margin-bottom: 10px;
+}
+div.hLrWNh {
+  font-size: 16px;
+}
+
+div.inhAeF {
+  font-size: 16px;
+}
+
+.iMLKlc div:first-child {
+  font-size: 16px; 
+  font-weight: 600;
+  color: #707070;
+}
+
+.dt-btn.btn:focus{
+  box-shadow:none;
+}
+
+#root .list-games-wrapper .list-games-container .gamebox.active {
+  background-color: #7c2a82;
+  box-shadow: none;
+  border-bottom: none !important;
+}
+
+#root .list-games-wrapper .list-games-container .gamebox .game-title {
+  left: 16px;
+  right: auto;
+  font-weight: 600;
+  font-size: 18px;
+}
