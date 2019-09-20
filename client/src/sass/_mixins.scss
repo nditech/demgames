@@ -1,0 +1,12 @@
+@mixin flexbox() {
+  display: flex;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+}
+@mixin box-shadow($shadow-orientation) {
+  -webkit-box-shadow: $shadow-orientation;
+  -moz-box-shadow: $shadow-orientation;
+  box-shadow: $shadow-orientation;
+}
