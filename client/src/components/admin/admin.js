@@ -25,10 +25,11 @@ import classnames from 'classnames';
 import Auth from '../../Auth';
 //import notfound from './NotFound';
 import Callback from '../../pages/LandingPage/callback';
+import { Header } from '../Header';
 
 
 const auth = new Auth();
-
+const headerTabs=["games","players","questions","choices"];
 class Admin extends Component {
     constructor(props) {
         super(props);
@@ -125,6 +126,7 @@ class Admin extends Component {
     }
 
     toggle(tab) {
+        console.log(tab);
         if (this.state.activeTab !== tab) {
             this.setState({
                 activeTab: tab
@@ -165,8 +167,11 @@ class Admin extends Component {
         return (
             <Router>
                 <Fragment>
+                <Header headerTabs={headerTabs} activeTab={this.state.activeTab} toggleTab={this.toggle.bind(this)}/>
+                
                     <div className="container">
-                        <Nav tabs>
+                        
+                        {/* <Nav tabs>
                             <NavItem>
                                 <NavLink className={classnames({ active: this.state.activeTab === 'games' })} onClick={() => { this.toggle('games'); }} >
                                     Games
@@ -187,18 +192,18 @@ class Admin extends Component {
                                     Choices
                                 </NavLink>
                             </NavItem>
-                        </Nav>
+                        </Nav> */}
                         <TabContent activeTab={this.state.activeTab}>
                             <TabPane tabId="games">
                                 <Row>
                                     <Col sm="12">
                                         <Nav pills className="float-right pill-tabs">
-                                            <NavItem>
+                                            {/* <NavItem>
                                                 <NavLink className={classnames({ active: this.state.activeGameTab === 'list' })} onClick={() => { this.toggleGame('list'); }} > List Games </NavLink>
                                             </NavItem>
                                             <NavItem>
                                                 <NavLink className={classnames({ active: this.state.activeGameTab === 'addNew' })} onClick={() => { this.toggleGame('addNew'); }} > Add New Game </NavLink>
-                                            </NavItem>
+                                            </NavItem> */}
                                         </Nav>
                                         <TabContent activeTab={this.state.activeGameTab}>
                                             <TabPane tabId="list">
