@@ -6,7 +6,7 @@ import Register from '../Add/Register';
 import AddGame from '../Add/AddGame';
 import AddChoices from '../Add/AddChoices';
 import AddQuestion from '../Add/AddQuestion';
-import ListQuestions from '../List/ListQuestions';
+// import ListQuestions from '../List/ListQuestions';
 import ListChoices from '../List/ListChoices';
 import ListGames from '../List/ListGames';
 import RemovePlayer from '../Remove/RemovePlayer';
@@ -254,7 +254,7 @@ class Admin extends Component {
                                     </Col>
                                 </Row>
                             </TabPane>
-                            <TabPane tabId="questions">
+                            {/* <TabPane tabId="questions">
                                 <Row>
                                     <Col sm="12">
                                         <Nav pills className="float-right pill-tabs">
@@ -283,7 +283,7 @@ class Admin extends Component {
                                         </TabContent>
                                     </Col>
                                 </Row>
-                            </TabPane>
+                            </TabPane> */}
                             <TabPane tabId="choices">
                                 <Row>
                                     <Col sm="12">
