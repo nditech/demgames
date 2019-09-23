@@ -134,6 +134,7 @@ class Admin extends Component {
         }
     }
     toggleGame(tab) {
+        // debugger;
         if (this.state.activeGameTab !== tab) {
             this.setState({
                 activeGameTab: tab
@@ -209,7 +210,7 @@ class Admin extends Component {
                                             <TabPane tabId="list">
                                                 <Row>
                                                     <Col sm="12">
-                                                        <ListGames />
+                                                        <ListGames toggleGame={this.toggleGame.bind(this)}/>
                                                     </Col>
                                                 </Row>
                                             </TabPane>

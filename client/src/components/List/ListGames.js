@@ -83,7 +83,7 @@ class ListGames extends Component {
 
         return (
             <>
-            <Gamebox games={this.state.games} activeGame={this.state.activeGame} handleGameBoxClick={this.handleGameBoxClick}/>
+            <Gamebox games={this.state.games} activeGame={this.state.activeGame} handleGameBoxClick={this.handleGameBoxClick} addGame={this.props.toggleGame}/>
             {/* <DataTable
                 title="List of Games"
                 columns={columns}

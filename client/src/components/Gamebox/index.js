@@ -11,18 +11,23 @@ const settings = {
     slidesToShow: 3,
     slidesToScroll: 1,
   };
-export const Gamebox=({games,activeGame,handleGameBoxClick})=>{
-    console.log(games);
+export const Gamebox=({games,activeGame,handleGameBoxClick,addGame})=>{
+    console.log(games,"games");
     return (
     <div className="list-games-wrapper">
         <div className="list-games-container">
         <Slider {...settings}>
-            {games.map(({caption,id},index)=>
+            {games.length>1?games.map(({caption,id},index)=>
                 <div className={`gamebox ${activeGame===id?"active":""}`} onClick={()=>handleGameBoxClick(index)}>
                     <div className="game-title">{caption}</div>
                 </div>
-            )}
-      </Slider>
+            )
+            :
+            <div className={'gamebox'} onClick={()=>addGame('addNew')}>
+                <div className="game-title">Add New Game</div>
+            </div>
+            }
+        </Slider>
         </div>
     </div>
     );
