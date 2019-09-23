@@ -85,7 +85,9 @@ class ListGames extends Component {
         {this.state.activeTab === 1 && (
           <Details data={this.state.activeGameDetails} />
         )}
-        {this.state.activeTab === 2 && <ListQuestion />}
+        {this.state.activeTab === 2 && (
+          <ListQuestion activeGame={this.state.activeGame} />
+        )}
       </Fragment>
     );
   }
