@@ -41,7 +41,7 @@ import removequestion from "../Remove/RemoveQuestion";
 //import NotFound from '../../pages/Landin';
 
 const auth = new Auth();
-const headerTabs = ["games", "players", "questions", "choices"];
+const headerTabs = ["games", "players", "choices"];
 class Admin extends Component {
   constructor(props) {
     super(props);
@@ -299,9 +299,7 @@ class Admin extends Component {
       messageBox: false,
       edit: false,
       create: false,
-      removeMessage:
-        "Are you sure you want to delete question Q1 from level 1?",
-      onDelete: null
+      removeMessage: "Are you sure you want to delete question Q1 from level 1?"
     });
   };
   remove = () => {
@@ -406,57 +404,125 @@ class Admin extends Component {
                                             <NavItem>
                                                 <NavLink className={classnames({ active: this.state.activeGameTab === 'addNew' })} onClick={() => { this.toggleGame('addNew'); }} > Add New Game </NavLink>
                                             </NavItem> */}
-                                        </Nav>
-                                        <TabContent activeTab={this.state.activeGameTab}>
-                                            <TabPane tabId="list">
-                                                <Row>
-                                                    <Col sm="12">
-                                                        <ListGames toggleGame={this.toggleGame.bind(this)}/>
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                            <TabPane tabId="addNew">
-                                                <Row>
-                                                    <Col sm="12">
-                                                        <AddGame />
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                        </TabContent>
-                                    </Col>
-                                </Row>
-                            </TabPane>
-                            <TabPane tabId="players">
-                                <Row>
-                                    <Col sm="12">
-                                        <Nav pills className="float-right pill-tabs">
-                                            <NavItem>
-                                                <NavLink className={classnames({ active: this.state.activePlayerTab === 'list' })} onClick={() => { this.togglePlayer('list'); }} > List Players </NavLink>
-                                            </NavItem>
-                                            <NavItem>
-                                                <NavLink className={classnames({ active: this.state.activePlayerTab === 'addNew' })} onClick={() => { this.togglePlayer('addNew'); }} > Add New Player </NavLink>
-                                            </NavItem>
-                                        </Nav>
-                                        <TabContent activeTab={this.state.activePlayerTab}>
-                                            <TabPane tabId="list">
-                                                <Row>
-                                                    <Col sm="12">
-                                                        <ListPlayers />
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                            <TabPane tabId="addNew">
-                                                <Row>
-                                                    <Col sm="12">
-                                                        <Register />
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                        </TabContent>
-                                    </Col>
-                                </Row>
-                            </TabPane>
-                            <TabPane tabId="questions">
+                    </Nav>
+                    <TabContent activeTab={this.state.activeGameTab}>
+                      <TabPane tabId="list">
+                        <Row>
+                          <Col sm="12">
+                            <ListGames />
+                          </Col>
+                        </Row>
+                      </TabPane>
+                      <TabPane tabId="addNew">
+                        <Row>
+                          <Col sm="12">
+                            <AddGame />
+                          </Col>
+                        </Row>
+                      </TabPane>
+                    </TabContent>
+                  </Col>
+                </Row>
+              </TabPane>
+              <TabPane tabId="players">
+                <Row>
+                  <Col sm="12">
+                    <Nav pills className="float-right pill-tabs">
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "list"
+                          })}
+                          onClick={() => {
+                            this.togglePlayer("list");
+                          }}
+                        >
+                          {" "}
+                          List Players{" "}
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "addNew"
+                          })}
+                          onClick={() => {
+                            this.togglePlayer("addNew");
+                          }}
+                        >
+                          {" "}
+                          Add New Player{" "}
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "popup"
+                          })}
+                          onClick={() => {
+                            this.editPopup();
+                          }}
+                        >
+                          Edit Item
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "popup"
+                          })}
+                          onClick={() => {
+                            this.addItemPopup();
+                          }}
+                        >
+                          add Item
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "popup"
+                          })}
+                          onClick={() => {
+                            this.viewPopup();
+                          }}
+                        >
+                          View Item
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "popup"
+                          })}
+                          onClick={() => {
+                            this.removePopup();
+                          }}
+                        >
+                          Delete Item
+                        </NavLink>
+                      </NavItem>
+                    </Nav>
+                    <TabContent activeTab={this.state.activePlayerTab}>
+                      <TabPane tabId="list">
+                        <Row>
+                          <Col sm="12">
+                            <ListPlayers />
+                          </Col>
+                        </Row>
+                      </TabPane>
+                      <TabPane tabId="addNew">
+                        <Row>
+                          <Col sm="12">
+                            <Register />
+                          </Col>
+                        </Row>
+                      </TabPane>
+                    </TabContent>
+                  </Col>
+                </Row>
+              </TabPane>
+              {/* <TabPane tabId="questions">
                                 <Row>
                                     <Col sm="12">
                                         <Nav pills className="float-right pill-tabs">
