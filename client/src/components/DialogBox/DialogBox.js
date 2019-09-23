@@ -116,7 +116,6 @@ class DialogBox extends Component {
   };
   render() {
     const {
-        cancelButtonType,
         cancelButtonValue,
         confirmButtonValue,
         isConfirmation,
@@ -129,7 +128,8 @@ class DialogBox extends Component {
         messageBox,
         create,
         onDelete,
-        removeMessage
+        removeMessage,
+        isRemove
       } = this.props,
       { data, edit, confirmButtonDisable } = this.state;
     return (
@@ -327,7 +327,9 @@ class DialogBox extends Component {
           <Modal.Footer className="dialog-footer">
             {!isEmpty(confirmButtonValue) && (
               <Button
-                className="dialog-btn btn-success"
+                className={`dialog-btn ${
+                  isRemove ? "btn-danger" : "btn-success"
+                }`}
                 disabled={confirmButtonDisable}
                 onClick={this.onConfirm}
               >

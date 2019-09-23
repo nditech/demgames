@@ -249,7 +249,8 @@ class Admin extends Component {
       edit: true,
       create: false,
       onDelete: null,
-      removeMessage: false
+      removeMessage: false,
+      isRemove: false
     });
   };
   saveQuestion = (data = "") => {
@@ -269,7 +270,8 @@ class Admin extends Component {
       edit: false,
       create: true,
       onDelete: null,
-      removeMessage: false
+      removeMessage: false,
+      isRemove: false
     });
   };
   viewPopup = () => {
@@ -285,7 +287,8 @@ class Admin extends Component {
       edit: false,
       create: false,
       onDelete: this.onDelete,
-      removeMessage: false
+      removeMessage: false,
+      isRemove: false
     });
   };
   onDelete = () => {
@@ -300,7 +303,9 @@ class Admin extends Component {
       messageBox: false,
       edit: false,
       create: false,
-      removeMessage: "Are you sure you want to delete question Q1 from level 1?"
+      removeMessage:
+        "Are you sure you want to delete question Q1 from level 1?",
+      isRemove: true
     });
   };
   remove = () => {
@@ -324,7 +329,8 @@ class Admin extends Component {
       edit: false,
       create: false,
       onDelete: null,
-      removeMessage: false
+      removeMessage: false,
+      isRemove: true
     });
   };
 
@@ -343,7 +349,8 @@ class Admin extends Component {
       create,
       fields,
       onDelete,
-      removeMessage
+      removeMessage,
+      isRemove
     } = this.state;
     return (
       <Router>
@@ -363,6 +370,7 @@ class Admin extends Component {
             create={create}
             onDelete={onDelete}
             removeMessage={removeMessage}
+            isRemove={isRemove}
           />
           <Header
             headerTabs={headerTabs}
