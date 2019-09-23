@@ -14,6 +14,7 @@
     }
     .modal-content {
       @include flexbox();
+      background-color: lightgrey;
       flex-direction: column;
       justify-content: center;
       min-width: $fixed-width-modal;
@@ -24,12 +25,25 @@
         color: $black;
         font-size: $font-size-larger;
         font-weight: bold;
+        background-color: white;
         div {
           display: inline;
         }
       }
       .dialog-body {
         text-align: center;
+        .item-title {
+          display: inline;
+          text-align: left;
+        }
+        .item-separator {
+          margin: 5px;
+          display: inline;
+        }
+        .item-value {
+          display: inline;
+          text-align: left;
+        }
         .dialog-title {
           color: $black;
           font-size: $font-size-larger;
@@ -42,9 +56,10 @@
           .dialog-multiline-text {
             resize: none;
           }
-          .dialog-options {
-            background-color: lightgray;
-          }
+        }
+        .dialog-options {
+          background-color: white;
+          @include box-shadow(2px);
         }
         .choices {
           display: inline;

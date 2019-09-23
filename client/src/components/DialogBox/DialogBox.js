@@ -165,34 +165,39 @@ class DialogBox extends Component {
                             className="dialog-content dialog-options"
                           >
                             <div>
-                              <div>Choice/Option</div>
+                              <div className="item-title">Choice/Option</div>
                             </div>
                             <div>
                               {object.value.map((option, option_index) => {
                                 return (
                                   <div key={option_index}>
-                                    {this.convertChoice(option_index)} :
+                                    <div className="item-title option-title">
+                                      {this.convertChoice(option_index)}
+                                    </div>
+                                    <div className="item-separator">: </div>
                                     {create || edit ? (
-                                      <input
-                                        type="text"
-                                        name=""
-                                        className={
-                                          object.error &&
-                                          object.error[option_index]
-                                            ? "error"
-                                            : ""
-                                        }
-                                        value={option}
-                                        onChange={e =>
-                                          this.valueChange(
-                                            e.target.value,
-                                            object.title,
-                                            option_index
-                                          )
-                                        }
-                                      />
+                                      <div className="item-value">
+                                        <input
+                                          type="text"
+                                          name=""
+                                          className={
+                                            object.error &&
+                                            object.error[option_index]
+                                              ? "error"
+                                              : ""
+                                          }
+                                          value={option}
+                                          onChange={e =>
+                                            this.valueChange(
+                                              e.target.value,
+                                              object.title,
+                                              option_index
+                                            )
+                                          }
+                                        />
+                                      </div>
                                     ) : (
-                                      <div>{option}</div>
+                                      <div className="item-value">{option}</div>
                                     )}
                                   </div>
                                 );
@@ -204,8 +209,11 @@ class DialogBox extends Component {
                         return (
                           <div key={index}>
                             <div className="dialog-content">
-                              {object.title} :
-                              <div className="choices">
+                              <div className="item-title option-title">
+                                {object.title}
+                              </div>
+                              <div className="item-separator">:</div>
+                              <div className="choices item-value">
                                 <div
                                   className={
                                     object.value === "A"
@@ -265,35 +273,53 @@ class DialogBox extends Component {
                       case "text":
                         return (edit || create) && object.editable ? (
                           <div key={index} className="dialog-content">
-                            {object.title} :
+                            <div className="item-title option-title">
+                              {object.title}
+                            </div>
+                            <div className="item-separator">:</div>
+
                             {object.multiline ? (
-                              <textarea
-                                name={object.title}
-                                className={
-                                  object.error
-                                    ? "error dialog-multiline-text"
-                                    : "dialog-multiline-text"
-                                }
-                                value={object.value}
-                                onChange={e =>
-                                  this.valueChange(e.target.value, object.title)
-                                }
-                              />
+                              <div className="item-value">
+                                <textarea
+                                  name={object.title}
+                                  className={
+                                    object.error
+                                      ? "error dialog-multiline-text"
+                                      : "dialog-multiline-text"
+                                  }
+                                  value={object.value}
+                                  onChange={e =>
+                                    this.valueChange(
+                                      e.target.value,
+                                      object.title
+                                    )
+                                  }
+                                />
+                              </div>
                             ) : (
-                              <input
-                                type="text"
-                                name="object.title"
-                                value={object.value}
-                                className={object.error ? "error" : ""}
-                                onChange={e =>
-                                  this.valueChange(e.target.value, object.title)
-                                }
-                              />
+                              <div className="item-value">
+                                <input
+                                  type="text"
+                                  name="object.title"
+                                  value={object.value}
+                                  className={object.error ? "error" : ""}
+                                  onChange={e =>
+                                    this.valueChange(
+                                      e.target.value,
+                                      object.title
+                                    )
+                                  }
+                                />
+                              </div>
                             )}
                           </div>
                         ) : (
                           <div key={index} className="dialog-content">
-                            {object.title} : {object.value}
+                            <div className="item-title option-title">
+                              {object.title}
+                            </div>
+                            <div className="item-separator">:</div>
+                            <div className="item-value">{object.value}</div>
                           </div>
                         );
                       default:
@@ -314,7 +340,7 @@ class DialogBox extends Component {
                 {confirmButtonValue}
               </Button>
             )}
-            {onDelete && (
+            {onDelete && !removeMessage && (
               <Button className="dialog-btn confirm" onClick={onDelete}>
                 Remove Question
               </Button>
