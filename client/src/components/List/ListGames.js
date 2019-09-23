@@ -1,32 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Gamebox } from '../Gamebox';
-import DataTable from 'react-data-table-component';
 import { Details } from '../Details';
 import ListQuestion from '../List/ListQuestions';
 import './styles.scss';
 
-const columns = [
-    {
-        name: 'Id',
-        selector: 'id',
-        sortable: true,
-    },
-    {
-        name: 'Caption',
-        selector: 'caption',
-        sortable: true,
-    },
-    {
-        name: 'Description',
-        selector: 'gamedescription',
-        sortable: true,
-    },
-    {
-        name: 'Type',
-        selector: 'gametype',
-        sortable: true,
-    }
-];
+
 
 class ListGames extends Component {
     constructor(props) {
@@ -36,6 +14,7 @@ class ListGames extends Component {
             }],
             activeGame:null,
             activeTab:1,
+            loadQuestionsComponent: false
         };
         this.simpleTable = this.simpleTable.bind(this);
     }
@@ -84,22 +63,16 @@ class ListGames extends Component {
         return (
             <>
             <Gamebox games={this.state.games} activeGame={this.state.activeGame} handleGameBoxClick={this.handleGameBoxClick} addGame={this.props.toggleGame}/>
-            {/* <DataTable
-                title="List of Games"
-                columns={columns}
-                data={this.state.games}
-                pagination
-            /> */}
             <div className="tab-container">
                 <div className={`tab ${this.state.activeTab===1?"active":""}`} onClick={()=>this.setState({activeTab:1})}>
                     Game Details
                 </div>
-                <div className={`tab ${this.state.activeTab===2?"active":""}`} onClick={()=>this.setState({activeTab:2})}>
+                <div className={`tab ${this.state.activeTab===2?"active":""}`} onClick={()=>this.setState({activeTab:2, loadQuestionsComponent: true})}>
                     Questions
                 </div>
             </div>
-            
-            {this.state.activeTab===1?<Details data={this.state.activeGameDetails}/>:<ListQuestion />}
+            { this.state.activeTab===1 && <Details data={this.state.activeGameDetails}/>}
+            { this.state.activeTab===2 && <ListQuestion />}
             </>
             
         );

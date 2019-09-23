@@ -1,33 +1,7 @@
-import React, { Fragment, useEffect, useState } from 'react';
-
-import DataTable from 'react-data-table-component';
+import React, { useEffect, useState } from 'react';
+import ListTable from '../ListTable';
 
 const ListQuestions = () => {
-
-    const deleteClickHandle = (choiceId) => {
-        console.log('choice id ------------> ', choiceId);
-        if(window.confirm("Are you sure you want to delete the game")){
-            console.log('question will be deleted');
-        } else {
-            console.log('will not be deleted');
-        }
-
-    }
-    const editClickHandle = (choiceId) => {
-        
-    }
-
-    const EditButton = (props) => (
-        <button type="button" onClick={e=> editClickHandle(props.row.id)} data-id={props.row.id} data-question-id={props.row.questionid} data-row={JSON.stringify(props)} className="dt-btn btn btn-info mr-1">
-            <i className="fa fa-edit"></i>
-        </button>
-    );
-
-    const DeleteButton = (props) => (
-        <button type="button" onClick={e=> deleteClickHandle(props.row.id)} data-id={props.row.id} data-question-id={props.row.questionid} className="dt-btn btn btn-danger">
-            <i className="fa fa-trash"></i>
-        </button>
-    );
 
     const columns = [
         {
@@ -59,17 +33,8 @@ const ListQuestions = () => {
             name: 'Explanation',
             selector: 'explanation',
             sortable: true,
-        },
-        {
-            name: 'Is it Media',
-            selector: 'isitmedia',
-            sortable: true,
-        },
-        {
-            name: 'Actions',
-            button: true,
-            cell: (row) => <Fragment><EditButton row={row} /> <DeleteButton row={row} /></Fragment>,
         }
+
     ];
 
     const [questionsData, setQuestionsData] = useState({ questions: [{}] });
@@ -98,25 +63,17 @@ const ListQuestions = () => {
         getQuestions();
     }, []);
 
-    const simpleTable = () => {
-
-        return (
-            <DataTable
-                title="List of Questions"
-                columns={columns}
-                data={questions}
-                pagination
-            />
-
-        );
-    }
     return (
-        <div className="App">
-            <div>
-                {simpleTable()}
-            </div>
-        </div>
+        <ListTable tableData={{
+            columns: columns,
+            title: 'List of Questions',
+            confirmMsg: 'Are you sure you want to delete the question',
+            hasActionBtns: true,
+            data: questions,
+            callbackAfterDelete: getQuestions
+        }} />
     );
+
 }
 
 export default ListQuestions;
