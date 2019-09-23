@@ -327,7 +327,7 @@ class DialogBox extends Component {
           <Modal.Footer className="dialog-footer">
             {!isEmpty(confirmButtonValue) && (
               <Button
-                className="dialog-btn confirm"
+                className="dialog-btn btn-success"
                 disabled={confirmButtonDisable}
                 onClick={this.onConfirm}
               >
@@ -335,15 +335,12 @@ class DialogBox extends Component {
               </Button>
             )}
             {onDelete && !removeMessage && (
-              <Button className="dialog-btn confirm" onClick={onDelete}>
+              <Button className="dialog-btn btn-danger" onClick={onDelete}>
                 Remove Question
               </Button>
             )}
             {isConfirmation && (
-              <Button
-                className={`dialog-btn cancel ${cancelButtonType}`}
-                onClick={onCancel}
-              >
+              <Button className={`dialog-btn cancel`} onClick={onCancel}>
                 {cancelButtonValue}
               </Button>
             )}
@@ -356,7 +353,6 @@ class DialogBox extends Component {
 
 DialogBox.propTypes = {
   data: PropTypes.object,
-  cancelButtonType: PropTypes.string,
   cancelButtonValue: PropTypes.string,
   confirmButtonValue: PropTypes.string.isRequired,
   isConfirmation: PropTypes.bool,
@@ -370,7 +366,6 @@ DialogBox.propTypes = {
 };
 
 DialogBox.defaultProps = {
-  cancelButtonType: "",
   cancelButtonValue: "CANCEL",
   data: {},
   confirmButtonValue: "",

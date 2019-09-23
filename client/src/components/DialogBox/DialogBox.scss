@@ -4,7 +4,6 @@
 .message-dialog {
   .modal-dialog {
     @include flexbox();
-    @include box-shadow(2px);
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -14,15 +13,16 @@
     }
     .modal-content {
       @include flexbox();
-      background-color: lightgrey;
+      background-color: #fcfcfc;
       flex-direction: column;
       justify-content: center;
       min-width: $fixed-width-modal;
       border-radius: $border-normal * 4;
+      color: #707070;
+      @include box-shadow(0 0 20px 0 rgba(0, 0, 0, 0.16));
       .dialog-header {
-        @include box-shadow(2px);
+        @include box-shadow(0px 0px 20px 0px #eff3f5);
         @include flexbox();
-        color: $black;
         font-size: $font-size-larger;
         font-weight: bold;
         background-color: white;
@@ -38,6 +38,8 @@
           text-align: left;
           padding-left: 15px;
           vertical-align: top;
+          font-size: 16px;
+          font-weight: normal;
         }
         .item-separator {
           margin: 0px 30px 0px 15px;
@@ -47,9 +49,12 @@
         .item-value {
           display: inline-block;
           text-align: left;
+          font-size: 16px;
+          font-weight: bold;
         }
         .option-title {
           text-align: right;
+          font-weight: bold;
         }
         .dialog-title {
           color: $black;
@@ -66,7 +71,7 @@
         }
         .dialog-options {
           background-color: white;
-          @include box-shadow(2px);
+          @include box-shadow(0px 0px 15px 0px rgba(0, 0, 0, 0.07));
           margin: 15px 0px 30px 0px;
         }
         .option-value {
@@ -141,33 +146,22 @@
         justify-content: center;
         padding-top: 0;
         .dialog-btn {
-          background: $dialog-dark-button;
+          // background: $dialog-dark-button;
           color: $dialog-dark-button-text-color;
           border-radius: $border-normal * 2;
-          padding: $padding;
-          min-width: $dialog-btn-width;
+          padding: $padding/3 $padding;
           margin-left: $base-margin;
           margin-right: $base-margin;
           font-family: $Simplo-Demi;
+
           &.cancel {
             background-color: $clear;
             color: $white;
+            border-color: $clear;
           }
-          &.confirm {
-            background-color: $green;
-            color: $white;
-          }
-          &.primary {
-            background-color: $purple;
-            color: $white;
-          }
-          &.success {
-            background-color: $green;
-            color: $white;
-          }
-          &.warning {
-            background-color: $red;
-            color: $white;
+          &.cancel:hover {
+            background-color: #638499;
+            border-color: #638499;
           }
         }
       }
