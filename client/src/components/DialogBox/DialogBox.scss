@@ -27,22 +27,29 @@
         font-weight: bold;
         background-color: white;
         div {
-          display: inline;
+          display: inline-block;
         }
       }
       .dialog-body {
         text-align: center;
         .item-title {
-          display: inline;
+          width: 40%;
+          display: inline-block;
           text-align: left;
+          padding-left: 15px;
+          vertical-align: top;
         }
         .item-separator {
-          margin: 5px;
-          display: inline;
+          margin: 0px 30px 0px 15px;
+          display: inline-block;
+          vertical-align: top;
         }
         .item-value {
-          display: inline;
+          display: inline-block;
           text-align: left;
+        }
+        .option-title {
+          text-align: right;
         }
         .dialog-title {
           color: $black;
@@ -52,7 +59,7 @@
           font-weight: bold;
         }
         .dialog-content {
-          padding: $padding;
+          padding: $padding / 3;
           .dialog-multiline-text {
             resize: none;
           }
@@ -60,14 +67,19 @@
         .dialog-options {
           background-color: white;
           @include box-shadow(2px);
+          margin: 15px 0px 30px 0px;
+        }
+        .option-value {
+          margin: 5px 0px;
         }
         .choices {
-          display: inline;
+          margin-left: 15px;
+          display: inline-block;
           div {
-            display: inline;
-            padding: 10px;
-
+            display: inline-block;
+            padding: 5px 10px;
             margin: 5px;
+            border-radius: 5px;
             color: white;
           }
           .unselected {

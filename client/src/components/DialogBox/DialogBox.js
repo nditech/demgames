@@ -52,6 +52,7 @@ class DialogBox extends Component {
   };
   clearPrevious = data => {
     data.map(item => {
+      if (item.type == "text" && !item.editable) return;
       item.value = item.type === "options" ? ["", "", "", ""] : "";
     });
   };
@@ -176,7 +177,7 @@ class DialogBox extends Component {
                                     </div>
                                     <div className="item-separator">: </div>
                                     {create || edit ? (
-                                      <div className="item-value">
+                                      <div className="item-value option-value">
                                         <input
                                           type="text"
                                           name=""
@@ -209,9 +210,7 @@ class DialogBox extends Component {
                         return (
                           <div key={index}>
                             <div className="dialog-content">
-                              <div className="item-title option-title">
-                                {object.title}
-                              </div>
+                              <div className="item-title">{object.title}</div>
                               <div className="item-separator">:</div>
                               <div className="choices item-value">
                                 <div
@@ -273,11 +272,8 @@ class DialogBox extends Component {
                       case "text":
                         return (edit || create) && object.editable ? (
                           <div key={index} className="dialog-content">
-                            <div className="item-title option-title">
-                              {object.title}
-                            </div>
+                            <div className="item-title">{object.title}</div>
                             <div className="item-separator">:</div>
-
                             {object.multiline ? (
                               <div className="item-value">
                                 <textarea
@@ -315,9 +311,7 @@ class DialogBox extends Component {
                           </div>
                         ) : (
                           <div key={index} className="dialog-content">
-                            <div className="item-title option-title">
-                              {object.title}
-                            </div>
+                            <div className="item-title">{object.title}</div>
                             <div className="item-separator">:</div>
                             <div className="item-value">{object.value}</div>
                           </div>
