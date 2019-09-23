@@ -146,7 +146,8 @@ class Admin extends Component {
           type: "text",
           title: "Question",
           multiline: true,
-          editable: true
+          editable: true,
+          value: ""
         },
         {
           type: "options",
@@ -346,7 +347,6 @@ class Admin extends Component {
       onDelete,
       removeMessage
     } = this.state;
-
     return (
       <Router>
         <Fragment>

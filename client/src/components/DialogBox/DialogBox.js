@@ -31,22 +31,29 @@ class DialogBox extends Component {
   }
   initialState = props => {
     const { data, edit, create } = props;
-
-    const values = create ? data : data.values,
+    let val = data.values ? data.values : [];
+    const values = create ? [...data] : [...val],
       id = data.id;
     let confirmButtonDisable = false;
     if (create) {
       confirmButtonDisable = true;
+      this.clearPrevious(values);
     }
     if (edit) {
       values.push({
         type: "choice",
         title: "Chooce new choice",
         value: "",
-        editable: true
+        editable: true,
+        optional: true
       });
     }
     this.setState({ data: values, edit, id, confirmButtonDisable });
+  };
+  clearPrevious = data => {
+    data.map(item => {
+      item.value = item.type === "options" ? ["", "", "", ""] : "";
+    });
   };
   componentDidMount = () => {
     this.initialState(this.props);
@@ -71,27 +78,43 @@ class DialogBox extends Component {
       onConfirm();
     }
   };
+  validateValues = () => {
+    const { data } = this.state;
+    let confirmButtonDisable = false;
+    data.map(item => {
+      if (item.optional) {
+        return;
+      }
+      if (item.type === "options") {
+        item.value.map(arr => {
+          if (arr.trim() === "") confirmButtonDisable = true;
+        });
+      } else {
+        if (item.value.trim() === "") confirmButtonDisable = true;
+      }
+    });
+    return confirmButtonDisable;
+  };
   valueChange = (value, title, index = 0) => {
     const { data } = this.state;
+
     data.map(item => {
       if (item.title === title) {
-        item.type === "options"
-          ? (item.value[index] = value)
-          : (item.value = value);
-        if (isEmpty(value)) {
-          item.type === "options"
-            ? (item["error"] = true)
-            : (item["error"] = true);
+        if (item.type === "options") {
+          item.value[index] = value;
+          item.error = item.error ? item.error : [false, false, false, false];
+          item.error[index] = isEmpty(value) ? true : false;
         } else {
-          item["error"] = false;
+          item.value = value;
+          item["error"] = isEmpty(value) ? true : false;
         }
       }
     });
-    this.setState({ data, confirmButtonDisable: isEmpty(value) });
+    // const confirmButtonDisable = this.validateValues();
+    this.setState({ data, confirmButtonDisable: this.validateValues() });
   };
   render() {
     const {
-        bsSize,
         cancelButtonType,
         cancelButtonValue,
         confirmButtonValue,
@@ -114,7 +137,6 @@ class DialogBox extends Component {
           show={showMessage}
           style={modalStyles}
           className="message-dialog"
-          bsSize={bsSize}
         >
           <Modal.Header className="dialog-header">
             <div>{title}</div>
@@ -154,6 +176,12 @@ class DialogBox extends Component {
                                       <input
                                         type="text"
                                         name=""
+                                        className={
+                                          object.error &&
+                                          object.error[option_index]
+                                            ? "error"
+                                            : ""
+                                        }
                                         value={option}
                                         onChange={e =>
                                           this.valueChange(
@@ -241,7 +269,11 @@ class DialogBox extends Component {
                             {object.multiline ? (
                               <textarea
                                 name={object.title}
-                                className="dialog-multiline-text"
+                                className={
+                                  object.error
+                                    ? "error dialog-multiline-text"
+                                    : "dialog-multiline-text"
+                                }
                                 value={object.value}
                                 onChange={e =>
                                   this.valueChange(e.target.value, object.title)
@@ -252,6 +284,7 @@ class DialogBox extends Component {
                                 type="text"
                                 name="object.title"
                                 value={object.value}
+                                className={object.error ? "error" : ""}
                                 onChange={e =>
                                   this.valueChange(e.target.value, object.title)
                                 }
@@ -302,7 +335,6 @@ class DialogBox extends Component {
 }
 
 DialogBox.propTypes = {
-  bsSize: PropTypes.string,
   data: PropTypes.object,
   cancelButtonType: PropTypes.string,
   cancelButtonValue: PropTypes.string,
@@ -318,7 +350,6 @@ DialogBox.propTypes = {
 };
 
 DialogBox.defaultProps = {
-  bsSize: "sm",
   cancelButtonType: "",
   cancelButtonValue: "CANCEL",
   data: {},

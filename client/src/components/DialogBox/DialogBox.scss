@@ -9,6 +9,9 @@
     justify-content: center;
     align-items: center;
     font-family: $Avenir-Medium;
+    .error {
+      border-color: red;
+    }
     .modal-content {
       @include flexbox();
       flex-direction: column;
