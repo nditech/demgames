@@ -41,7 +41,7 @@ import removequestion from "../Remove/RemoveQuestion";
 //import NotFound from '../../pages/Landin';
 
 const auth = new Auth();
-const headerTabs = ["games", "players", "questions", "choices"];
+const headerTabs = ["games", "players", "choices"];
 class Admin extends Component {
   constructor(props) {
     super(props);
@@ -300,9 +300,7 @@ class Admin extends Component {
       messageBox: false,
       edit: false,
       create: false,
-      removeMessage:
-        "Are you sure you want to delete question Q1 from level 1?",
-      onDelete: null
+      removeMessage: "Are you sure you want to delete question Q1 from level 1?"
     });
   };
   remove = () => {
