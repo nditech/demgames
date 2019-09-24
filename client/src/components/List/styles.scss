@@ -1,11 +1,23 @@
 .tab-container{
     width:100%;
+    position: relative;
     .tab{
         display: inline-block;
         padding:20px;
         &.active{
             border-bottom: 2px solid grey;
         }
-        
     }
+    .tab-option{
+        display: inline-block;
+        position: absolute;
+        right:10px;
+        text-align: right;
+        padding: 20px;
+        .tab-icons{
+            display: inline-block;
+            margin-right: 30px;
+        }
+    }
+        
 }

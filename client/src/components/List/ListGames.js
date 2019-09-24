@@ -3,12 +3,14 @@ import { Gamebox } from "../Gamebox";
 import { Details } from "../Details";
 import ListQuestion from "../List/ListQuestions";
 import "./styles.scss";
+import Icon from "@material-ui/core/Icon";
 
 class ListGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
       games: [{}],
+      activeGameDetails:[],
       activeGame: null,
       activeTab: 1,
       loadQuestionsComponent: false
@@ -81,6 +83,10 @@ class ListGames extends Component {
           >
             Questions
           </div>
+          {this.state.activeTab===1&&<div className='tab-option'>
+            <Icon color="primary" className="tab-icons" onClick={()=>this.props.copyGameCb(this.state.activeGame)}>file_copy</Icon>
+            <Icon color="primary" onClick={()=>this.props.editGame(this.state.activeGameDetails,this.state.activeGame)}>edit</Icon>
+          </div>}
         </div>
         {this.state.activeTab === 1 && (
           <Details data={this.state.activeGameDetails} />

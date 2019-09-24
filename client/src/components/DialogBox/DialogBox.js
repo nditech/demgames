@@ -31,7 +31,7 @@ class DialogBox extends Component {
   }
   initialState = props => {
     const { data, edit, create } = props;
-
+    console.log(data,create,edit);
     const values = create ? data : data.values,
       id = data.id;
     let confirmButtonDisable = false;

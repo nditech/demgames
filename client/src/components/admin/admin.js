@@ -37,6 +37,7 @@ import UpdatePlayer from "../../components/Update/UpdateProfile";
 import UpdateQuestion from "../Update/UpdateQuestion";
 import classnames from "classnames";
 import removequestion from "../Remove/RemoveQuestion";
+import Icon from "@material-ui/core/Icon";
 
 //import NotFound from '../../pages/Landin';
 
@@ -46,6 +47,8 @@ class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      openAddGameModal:false,
+      gameData:{},
       score: 0,
       email: this.props.email || null,
       id: null,
@@ -203,11 +206,129 @@ class Admin extends Component {
     }
   }
   toggleGame(tab) {
+    const fields =[
+        {
+          type: "text",
+          title: "Title",
+          value: "",
+          editable:true
+        },
+        {
+          type: "text",
+          title: "Description",
+          value: "",
+          multiline: true,
+          editable: true
+        },
+        {
+          type: "choice",
+          title: "Type",
+          value: "A",
+          editable: true
+        },
+      ];
+  this.setState({ fields,
+    // showMessage:true,
+    confirmButtonValue:"ADD",
+    messageTitle:"",
+    messageDescription: "",
+    onConfirm: this.addGameCb,
+    isConfirmation: true,
+    title: "ADD GAME",
+    messageBox: false,
+    edit: false,
+    create: true,
+    onDelete: null,
+    removeMessage: false},()=>{
     if (this.state.activeGameTab !== tab) {
       this.setState({
-        activeGameTab: tab
+        // activeGameTab:tab
+        showMessage: true
       });
     }
+  });
+    
+  }
+  addGameCb = (data = "") => {
+    const addGameForm={caption:data.Title,gamedescription:data.Description,gametype:data.Type}
+    console.log(data);
+    console.log("game added. ",data);
+    const url = 'http://localhost:9000/registergame';
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(addGameForm)
+        })
+            .then(res => res.json())
+            .then((data) => {
+              this.setState({showMessage:false});
+                alert(data.message);
+            })
+            .catch((error) => console.log(error));
+  };
+  editGame=(game,id)=>{
+    console.log(game,id);
+    const data ={
+      id,
+      values:[
+      {
+        type: "text",
+        title: "Title",
+        value: game[0].value,
+        editable:true
+      },
+      {
+        type: "text",
+        title: "Description",
+        value: game[1].value,
+        multiline: true,
+        editable: true
+      },
+    ]};
+    this.setState({ data,
+      // showMessage:true,
+      confirmButtonValue:"UPDATE",
+      messageTitle:"",
+      messageDescription: "",
+      onConfirm: this.editGameCb,
+      isConfirmation: true,
+      title: "EDIT GAME",
+      messageBox: false,
+      edit: true,
+      create: false,
+      onDelete: null,
+      removeMessage: false},()=>{
+        this.setState({
+          // activeGameTab:tab
+          showMessage: true
+        });
+    });
+  }
+  editGameCb = (data = "") => {
+    // const addGameForm={caption:data.Title,gamedescription:data.Description,gametype:data.Type}
+    console.log(data);
+    console.log("game edited. ",data);
+    // const url = 'http://localhost:9000/registergame';
+    //     fetch(url, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify(addGameForm)
+    //     })
+    //         .then(res => res.json())
+    //         .then((data) => {
+    //           this.setState({showMessage:false});
+    //             alert(data.message);
+    //         })
+    //         .catch((error) => console.log(error));
+  };
+  copyGameCb=(id)=>{
+    console.log(id);
   }
   togglePlayer(tab) {
     if (this.state.activePlayerTab !== tab) {
@@ -371,6 +492,10 @@ class Admin extends Component {
           />
 
           <div className="container">
+            <div style={{margin:"20px 0px",textAlign:"right",paddingRight:"30px"}}>
+              <Icon color="primary" onClick={() => this.toggleGame('addNew')}>add_box</Icon>
+            </div>
+            
             {/* <Nav tabs>
                             <NavItem>
                                 <NavLink className={classnames({ active: this.state.activeTab === 'games' })} onClick={() => { this.toggle('games'); }} >
@@ -394,22 +519,23 @@ class Admin extends Component {
                             </NavItem>
                         </Nav> */}
             <TabContent activeTab={this.state.activeTab}>
+              <ListGames editGame={this.editGame} copyGameCb={this.copyGameCb}/>
               <TabPane tabId="games">
-                <Row>
+                {/* <Row>
                   <Col sm="12">
                     <Nav pills className="float-right pill-tabs">
-                      {/* <NavItem>
+                      <NavItem>
                                                 <NavLink className={classnames({ active: this.state.activeGameTab === 'list' })} onClick={() => { this.toggleGame('list'); }} > List Games </NavLink>
                                             </NavItem>
                                             <NavItem>
                                                 <NavLink className={classnames({ active: this.state.activeGameTab === 'addNew' })} onClick={() => { this.toggleGame('addNew'); }} > Add New Game </NavLink>
-                                            </NavItem> */}
+                                            </NavItem>
                     </Nav>
                     <TabContent activeTab={this.state.activeGameTab}>
                       <TabPane tabId="list">
                         <Row>
                           <Col sm="12">
-                            <ListGames />
+                            <ListGames editGame={this.editGame} copyGameCb={this.copyGameCb}/>
                           </Col>
                         </Row>
                       </TabPane>
@@ -422,7 +548,7 @@ class Admin extends Component {
                       </TabPane>
                     </TabContent>
                   </Col>
-                </Row>
+                </Row> */}
               </TabPane>
               <TabPane tabId="players">
                 <Row>
