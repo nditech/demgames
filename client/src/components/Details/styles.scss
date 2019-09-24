@@ -1,13 +1,28 @@
 .details-container{
     width:100%;
     .details-box{
-        padding:20px;
+        
         display:flex;
+        font-family: Roboto;
+  font-size: 16px;
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 2.81;
+  letter-spacing: normal;
+  text-align: left;
+  color: #707070;
         .details-key{
+            padding:19px 0px 2px 43px;
             flex:1;
         }
+        .details-seprator{
+            padding:19px 0px 2px 0px;
+        }
         .details-value{
-            flex:2;
+            flex:5;
+            padding:19px 0px 2px 80px;
+
         }
     }
 }

@@ -17,20 +17,18 @@ export const Gamebox = ({ games, activeGame, handleGameBoxClick, addGame }) => {
     <div className="list-games-wrapper">
       <div className="list-games-container">
         <Slider {...settings}>
-          {games.length > 1 ? (
+          {games.length > 0 ? (
             games.map(({ caption, id }, index) => (
+              <div className={`gamebox-wrapper ${activeGame === id ? "active" : ""}`}>
               <div
                 className={`gamebox ${activeGame === id ? "active" : ""}`}
                 onClick={() => handleGameBoxClick(index)}
               >
                 <div className="game-title">{caption}</div>
               </div>
+              </div>
             ))
-          ) : (
-            <div className={"gamebox"} onClick={() => addGame("addNew")}>
-              <div className="game-title">Add New Game</div>
-            </div>
-          )}
+          ) :null}
         </Slider>
       </div>
     </div>

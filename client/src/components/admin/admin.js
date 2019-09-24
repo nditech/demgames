@@ -490,11 +490,9 @@ class Admin extends Component {
             activeTab={this.state.activeTab}
             toggleTab={this.toggle.bind(this)}
           />
-
-          <div className="container">
-            <div style={{margin:"20px 0px",textAlign:"right",paddingRight:"30px"}}>
-              <Icon color="primary" onClick={() => this.toggleGame('addNew')}>add_box</Icon>
-            </div>
+          <div style={{backgroundColor:"#f7f7f7", padding:"20px 50px"}}>
+          <div className="containers">
+            
             
             {/* <Nav tabs>
                             <NavItem>
@@ -519,8 +517,28 @@ class Admin extends Component {
                             </NavItem>
                         </Nav> */}
             <TabContent activeTab={this.state.activeTab}>
-              <ListGames editGame={this.editGame} copyGameCb={this.copyGameCb}/>
+              
               <TabPane tabId="games">
+              <div style={{display:"flex"}}>
+              <div style={{flex:1,fontFamily: "Roboto",
+                      fontSize: "18px",
+                      fontWeight: "normal",
+                      fontStyle: "normal",
+                      fontStretch: "normal",
+                      lineHeight: 1.33,
+                      letterSpacing: "normal",
+                      textAlign: "left",
+                      color: "#707070",}}>All Games</div>
+              <div style={{flex:1,textAlign:"right"}}>
+                <Icon color="primary" onClick={() => this.toggleGame('addNew')}>add_box</Icon>
+                <span style={{verticalAlign:"super",paddingLeft:"20px",fontFamily: "Roboto", fontSize: "13px",fontWeight: 300,fontStyle: "normal",fontStretch: "normal",
+  lineHeight: 1.38,
+  letterSpacing: "normal",
+  textAlign: "right",
+  color: "#707070"}}>Add Game</span>
+              </div>
+            </div>
+              <ListGames editGame={this.editGame} copyGameCb={this.copyGameCb}/>
                 {/* <Row>
                   <Col sm="12">
                     <Nav pills className="float-right pill-tabs">
@@ -553,8 +571,8 @@ class Admin extends Component {
               <TabPane tabId="players">
                 <Row>
                   <Col sm="12">
-                    <Nav pills className="float-right pill-tabs">
-                      <NavItem>
+                    {/* <Nav pills className="float-right pill-tabs"> */}
+                      {/* <NavItem>
                         <NavLink
                           className={classnames({
                             active: this.state.activePlayerTab === "list"
@@ -628,7 +646,7 @@ class Admin extends Component {
                           Delete Item
                         </NavLink>
                       </NavItem>
-                    </Nav>
+                    </Nav> */}
                     <TabContent activeTab={this.state.activePlayerTab}>
                       <TabPane tabId="list">
                         <Row>
@@ -766,6 +784,7 @@ class Admin extends Component {
                             <Route path="/updatequestion" component={UpdateQuestion} />
                             <Route path="/updatechoice" component={UpdateChoice} />
                         </Switch> */}
+          </div>
           </div>
         </Fragment>
       </Router>

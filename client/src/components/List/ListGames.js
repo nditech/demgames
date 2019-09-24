@@ -67,33 +67,34 @@ class ListGames extends Component {
           activeGame={this.state.activeGame}
           handleGameBoxClick={this.handleGameBoxClick}
         />
-
-        <div className="tab-container">
-          <div
-            className={`tab ${this.state.activeTab === 1 ? "active" : ""}`}
-            onClick={() => this.setState({ activeTab: 1 })}
-          >
-            Game Details
+        <div className="detail-box">
+          <div className="tab-container">
+            <div
+              className={`tab ${this.state.activeTab === 1 ? "active" : ""}`}
+              onClick={() => this.setState({ activeTab: 1 })}
+            >
+              Game Details
+            </div>
+            <div
+              className={`tab ${this.state.activeTab === 2 ? "active" : ""}`}
+              onClick={() =>
+                this.setState({ activeTab: 2, loadQuestionsComponent: true })
+              }
+            >
+              Questions
+            </div>
+            {this.state.activeTab===1&&<div className='tab-option'>
+              <Icon color="primary" className="tab-icons" onClick={()=>this.props.copyGameCb(this.state.activeGame)}>file_copy</Icon>
+              <Icon color="primary" onClick={()=>this.props.editGame(this.state.activeGameDetails,this.state.activeGame)}>edit</Icon>
+            </div>}
           </div>
-          <div
-            className={`tab ${this.state.activeTab === 2 ? "active" : ""}`}
-            onClick={() =>
-              this.setState({ activeTab: 2, loadQuestionsComponent: true })
-            }
-          >
-            Questions
-          </div>
-          {this.state.activeTab===1&&<div className='tab-option'>
-            <Icon color="primary" className="tab-icons" onClick={()=>this.props.copyGameCb(this.state.activeGame)}>file_copy</Icon>
-            <Icon color="primary" onClick={()=>this.props.editGame(this.state.activeGameDetails,this.state.activeGame)}>edit</Icon>
-          </div>}
+          {this.state.activeTab === 1 && (
+           <Details data={this.state.activeGameDetails} />
+          )}
+          {this.state.activeTab === 2 && (
+            <ListQuestion activeGame={this.state.activeGame} />
+          )}
         </div>
-        {this.state.activeTab === 1 && (
-          <Details data={this.state.activeGameDetails} />
-        )}
-        {this.state.activeTab === 2 && (
-          <ListQuestion activeGame={this.state.activeGame} />
-        )}
       </Fragment>
     );
   }

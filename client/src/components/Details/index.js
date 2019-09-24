@@ -11,7 +11,7 @@ export const Details=({data})=>{
                     <div className="details-key">
                         {d.key}
                     </div>
-                    
+                    <div className="details-seprator">:</div>
                     <div className="details-value">
                         {d.value}
                     </div>
