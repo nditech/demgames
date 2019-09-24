@@ -1,4 +1,5 @@
-$Avenir-Medium: AvenirLTStd-Medium;
+@import "./fonts";
+
 $fixed-width-modal: 650px;
 $border-normal: 1px;
 $base-padding: 10px;
@@ -21,7 +22,6 @@ $dialog-dark-button-text-color: #ffffff;
 
 $dialog-btn-width: 100px;
 $base-margin: 15px;
-$Simplo-Demi: AvenirLTStd-Heavy;
 $clear: #86a9c1;
 
 $white: #ffffff;
@@ -30,3 +30,9 @@ $green: #40cc76;
 $orange: #fa750a;
 $red: #ff5057;
 $full-width: 100%;
+$font-family-bold: Roboto-Bold;
+$font-family-medium: Roboto-Medium;
+$font-family-black: Roboto-Black;
+$font-family-light: Roboto-Light;
+$font-family-regular: Roboto-Regular;
+$font-family-thin: Roboto-Thin;

@@ -115,7 +115,8 @@ class Admin extends Component {
           {
             type: "text",
             title: "Question",
-            value: "text question",
+            value:
+              "text question ihsihds ajsijacif njhkf i jhf sjjah hhi dwkhbci  hiuhi onhsiubdhi h ih huho",
             multiline: true,
             editable: true
           },
@@ -127,7 +128,8 @@ class Admin extends Component {
           {
             type: "choice",
             title: "Current choice",
-            value: "A"
+            value: "B",
+            key: "answers"
           }
         ]
       },
@@ -158,7 +160,8 @@ class Admin extends Component {
           type: "choice",
           title: "Correct choice",
           value: "",
-          editable: true
+          editable: true,
+          key: "answers"
         }
       ];
     this.setState({ data, fields });
