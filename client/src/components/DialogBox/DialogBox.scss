@@ -44,6 +44,7 @@
       .dialog-body {
         text-align: center;
         .item-title {
+          font-family: $font-family-regular;
           width: 40%;
           display: inline-block;
           text-align: left;
@@ -62,6 +63,7 @@
           font-size: 16px;
           font-weight: bold;
           color: #707070;
+          font-family: $font-family-regular;
         }
         .item-value {
           display: inline-block;
