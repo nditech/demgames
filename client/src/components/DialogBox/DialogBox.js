@@ -41,8 +41,9 @@ class DialogBox extends Component {
     }
     if (edit) {
       values.push({
+        key: "new_choice",
         type: "choice",
-        title: "Chooce new choice",
+        title: "Choose new choice",
         value: "",
         editable: true,
         optional: true
@@ -70,9 +71,9 @@ class DialogBox extends Component {
     const { edit, create, onConfirm } = this.props;
     const { data, id } = this.state;
     if (edit || create) {
-      const value = [];
+      const value = {};
       data.map(item => {
-        value[item.title] = item.value;
+        value[item.key] = item.value;
       });
       onConfirm(value, id);
     } else {
@@ -91,7 +92,7 @@ class DialogBox extends Component {
           if (arr.trim() === "") confirmButtonDisable = true;
         });
       } else {
-        if (item.value.trim() === "") confirmButtonDisable = true;
+        if (item.value.toString().trim() === "") confirmButtonDisable = true;
       }
     });
     return confirmButtonDisable;

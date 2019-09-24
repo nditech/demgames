@@ -14,6 +14,7 @@ class ListGames extends Component {
       loadQuestionsComponent: false
     };
     this.simpleTable = this.simpleTable.bind(this);
+    this.handleGameBoxClick = this.handleGameBoxClick.bind(this);
   }
 
   pool() {
@@ -86,13 +87,15 @@ class ListGames extends Component {
           <Details data={this.state.activeGameDetails} />
         )}
         {this.state.activeTab === 2 && (
-          <ListQuestion activeGame={this.state.activeGame} />
+          <ListQuestion
+            activeGameDetails={this.state.activeGameDetails}
+            activeGame={this.state.activeGame}
+          />
         )}
       </Fragment>
     );
   }
   render() {
-    console.log(this.state.activeGame, this.state.activeGameDetails, "DSfsd");
     return (
       <div className="App">
         <div>{this.simpleTable()}</div>
