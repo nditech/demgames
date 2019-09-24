@@ -8,6 +8,8 @@ const players = models.Players;
 const questions = models.Questions;
 const games = models.Games;
 const choices = models.Choices;
+const cohort_game = models.Cohort_Game;
+const cohort_question = models.Cohort_Question;
 // JWT
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
@@ -54,6 +56,96 @@ app.get('/api/game', (req, res) => {
   // to the API (e.g. in case you use sessions)
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.json({ gameData });
+});
+
+app.get('/listcohort_game', (req, res) => {
+  console.log("GET /listcohort_game -----api ---called")
+  cohort_game.findAll().then(result => {
+    res.send(JSON.stringify(result));
+    console.log(result);
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send('Server Error');
+  });
+});
+
+app.get('/listcohort_question', (req, res) => {
+  console.log("GET /listcohort_question -----api ---called");
+  cohort_question.findAll().then(result => {
+    res.send(JSON.stringify(result));
+    console.log(result);
+  }).catch(err => {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  });
+ 
+});
+
+app.post('/linkcohort_game', 
+  [
+    check('game_id', 'question id is required').isNumeric(),
+    check('cohort_id', 'cohort id is required').isNumeric()
+  ],
+  async (req, res) => {
+    console.log("POST /linkcohort_game -----api ---called");
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { game_id, cohort_id} = req.body;
+
+    try{
+      let cohortToGame = await cohort_game.findOne({ where: { game_id: game_id, cohort_id:cohort_id} });
+
+      if (cohortToGame) {
+        return res.status(400).json({ errors: [{ msg: 'cohort to game mapping already exists' }] });
+      }
+
+      await cohort_game.create({
+        game_id: game_id,
+        cohort_id: cohort_id,
+      });
+      res.send('cohort to game linked');
+      console.log("cohort to game linked successfully");
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Server Error');
+    }
+});
+
+app.post('/linkcohort_question',
+  [
+    check('question_id', 'question id is required').isNumeric(),
+    check('cohort_id', 'cohort id is required').isNumeric()
+  ],
+  async (req, res) => {
+    console.log("POST /linkcohort_question -----api ---called");
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { question_id, cohort_id} = req.body;
+    try{
+
+      let cohortToQuestion = await cohort_question.findOne({ where: { question_id: question_id, cohort_id:cohort_id} });
+
+      if (cohortToQuestion) {
+        return res.status(400).json({ errors: [{ msg: 'cohort to question mapping already exists' }] });
+      }
+      await cohort_question.create({
+        question_id: question_id,
+        cohort_id: cohort_id
+      });
+      res.send('cohort to question linked');
+      console.log("cohort to question linked successfully");
+    } catch(error) {
+      console.error(error.message);
+      res.status(500).send('Server Error');
+    }
 });
 
 // @route   POST /updateplayer
