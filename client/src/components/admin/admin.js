@@ -1,172 +1,385 @@
-import React, { Component, Fragment } from 'react';
-import { Route, Switch, Link, BrowserRouter as Router } from "react-router-dom";
-import ListPlayers from '../List/ListPlayers';
-import UpdatePlayer from '../../components/Update/UpdateProfile';
-import Register from '../Add/Register';
-import AddGame from '../Add/AddGame';
-import AddChoices from '../Add/AddChoices';
-import AddQuestion from '../Add/AddQuestion';
-import ListQuestions from '../List/ListQuestions';
-import ListChoices from '../List/ListChoices';
-import ListGames from '../List/ListGames';
-import RemovePlayer from '../Remove/RemovePlayer';
-import removequestion from '../Remove/RemoveQuestion';
-import RemoveChoice from '../Remove/RemoveChoice';
-import UpdateGame from '../Update/UpdateGame';
-import UpdateQuestion from '../Update/UpdateQuestion';
-import UpdateChoice from '../Update/UpdateChoice';
 // Bootstrap
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
-import classnames from 'classnames';
+import {
+  Button,
+  Card,
+  CardText,
+  CardTitle,
+  Col,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+  TabContent,
+  TabPane
+} from "reactstrap";
+import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import React, { Component, Fragment } from "react";
+
+import AddChoices from "../Add/AddChoices";
+import AddGame from "../Add/AddGame";
+import AddQuestion from "../Add/AddQuestion";
+import Auth from "../../Auth";
+//import notfound from './NotFound';
+import Callback from "../../pages/LandingPage/callback";
+import DialogBox from "../DialogBox/DialogBox";
+import { Header } from "../Header";
+// import ListQuestions from '../List/ListQuestions';
+import ListChoices from "../List/ListChoices";
+import ListGames from "../List/ListGames";
+import ListPlayers from "../List/ListPlayers";
+import ListQuestions from "../List/ListQuestions";
+import Register from "../Add/Register";
+import RemoveChoice from "../Remove/RemoveChoice";
+import RemovePlayer from "../Remove/RemovePlayer";
+import UpdateChoice from "../Update/UpdateChoice";
+import UpdateGame from "../Update/UpdateGame";
+import UpdatePlayer from "../../components/Update/UpdateProfile";
+import UpdateQuestion from "../Update/UpdateQuestion";
+import classnames from "classnames";
+import removequestion from "../Remove/RemoveQuestion";
+
 //import NotFound from '../../pages/Landin';
 
-
-
-import Auth from '../../Auth';
-//import notfound from './NotFound';
-import Callback from '../../pages/LandingPage/callback';
-
-
 const auth = new Auth();
-
+const headerTabs = ["games", "players", "choices"];
 class Admin extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            score: 0,
-            email: this.props.email || null,
-            id: null,
-            given_name: this.props.given_name,
-            family_name: this.props.family_name,
-            picture: this.props.picture,
-            gender: this.props.gender,
-            total: 0,
-            program_rank: null,
-            total_rank: null,
-            activeTab: 'games',
-            activeGameTab: 'list',
-            activePlayerTab: 'list',
-            activeQuestionTab: 'list',
-            activeChoiceTab: 'list'
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      score: 0,
+      email: this.props.email || null,
+      id: null,
+      given_name: this.props.given_name,
+      family_name: this.props.family_name,
+      picture: this.props.picture,
+      gender: this.props.gender,
+      total: 0,
+      program_rank: null,
+      total_rank: null,
+      activeTab: "games",
+      activeGameTab: "list",
+      activePlayerTab: "list",
+      activeQuestionTab: "list",
+      activeChoiceTab: "list"
+    };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-    componentDidMount() {
-        if (this.props.email !== null) {
-            const encodedValue = encodeURIComponent(this.state.email);
-            fetch(`http://localhost:9000/selectPlayerProfile`, {
-                method: 'post',
-                headers: {
-                    "Content-Type": "Application/json",
-                    "Accept": "application/json"
-                },
-                body: JSON.stringify(this.state)
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data);
-                    this.setState({
-                        play_id: data[0].play_id,
-                        player_id: data[0].player_id,
-                        game_id: data[0].game_id,
-                        username: data[0].username,
-                        score: data[0].score,
-                        total: data[0].total,
-                        gender: data[0].gender,
-                        city: data[0].city,
-                        country: data[0].country,
-                        program: data[0].program,
-                        program_rank: data[0].program_rank,
-                        total_rank: data[0].total_rank,
-                        email: data[0].email
-                    });
-                })
-                .catch((error) => console.log(error))
-        }
-    }
-
-    handleChange(e) {
-        e.preventDefault();
-        const sc = e.target.value;
-        this.setState({
-            score: sc
-        }
-        );
-    }
-
-
-    handleSubmit(e) {
-        e.preventDefault();
-
-        this.setState({
-            total: Number(this.state.score) + Number(this.state.total)
-        }
-        );
-
-        const url = "http://localhost:9000/updateplayerscore";
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "Application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify(this.state),
-            mode: 'cors'
+  componentDidMount() {
+    if (this.props.email !== null) {
+      const encodedValue = encodeURIComponent(this.state.email);
+      fetch(`http://localhost:9000/selectPlayerProfile`, {
+        method: "post",
+        headers: {
+          "Content-Type": "Application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(this.state)
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          this.setState({
+            play_id: data[0].play_id,
+            player_id: data[0].player_id,
+            game_id: data[0].game_id,
+            username: data[0].username,
+            score: data[0].score,
+            total: data[0].total,
+            gender: data[0].gender,
+            city: data[0].city,
+            country: data[0].country,
+            program: data[0].program,
+            program_rank: data[0].program_rank,
+            total_rank: data[0].total_rank,
+            email: data[0].email
+          });
         })
-            .then((res) => res.json())
-            .then((data) => {
+        .catch(error => console.log(error));
+    }
+    const data = {
+        id: "1",
+        values: [
+          {
+            type: "text",
+            title: "Game",
+            value: "Desiging a argument"
+          },
+          {
+            type: "text",
+            title: "Level",
+            value: "1"
+          },
+          {
+            type: "text",
+            title: "Question",
+            value: "text question",
+            multiline: true,
+            editable: true
+          },
+          {
+            type: "options",
+            title: "answers",
+            value: ["test1", "test2", "test3", "test4"]
+          },
+          {
+            type: "choice",
+            title: "Current choice",
+            value: "A"
+          }
+        ]
+      },
+      fields = [
+        {
+          type: "text",
+          title: "Game",
+          value: "Desiging a argument"
+        },
+        {
+          type: "text",
+          title: "Level",
+          value: "1"
+        },
+        {
+          type: "text",
+          title: "Question",
+          multiline: true,
+          editable: true,
+          value: ""
+        },
+        {
+          type: "options",
+          title: "answers",
+          value: ["", "", "", ""]
+        },
+        {
+          type: "choice",
+          title: "Correct choice",
+          value: "",
+          editable: true
+        }
+      ];
+    this.setState({ data, fields });
+  }
 
-                console.log(data)
-            })
-            .catch((error) => console.log(error))
-    }
+  handleChange(e) {
+    e.preventDefault();
+    const sc = e.target.value;
+    this.setState({
+      score: sc
+    });
+  }
 
-    toggle(tab) {
-        if (this.state.activeTab !== tab) {
-            this.setState({
-                activeTab: tab
-            });
-        }
-    }
-    toggleGame(tab) {
-        if (this.state.activeGameTab !== tab) {
-            this.setState({
-                activeGameTab: tab
-            });
-        }
-    }
-    togglePlayer(tab) {
-        if (this.state.activePlayerTab !== tab) {
-            this.setState({
-                activePlayerTab: tab
-            });
-        }
-    }
-    toggleQuestion(tab) {
-        if (this.state.activeQuestionTab !== tab) {
-            this.setState({
-                activeQuestionTab: tab
-            });
-        }
-    }
-    toggleChoice(tab) {
-        if (this.state.activeChoiceTab !== tab) {
-            this.setState({
-                activeChoiceTab: tab
-            });
-        }
-    }
+  handleSubmit(e) {
+    e.preventDefault();
 
-    render() {
-        ;
-        return (
-            <Router>
-                <Fragment>
-                    <div className="container">
-                        <Nav tabs>
+    this.setState({
+      total: Number(this.state.score) + Number(this.state.total)
+    });
+
+    const url = "http://localhost:9000/updateplayerscore";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(this.state),
+      mode: "cors"
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => console.log(error));
+  }
+
+  toggle(tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      });
+    }
+  }
+  toggleGame(tab) {
+    if (this.state.activeGameTab !== tab) {
+      this.setState({
+        activeGameTab: tab
+      });
+    }
+  }
+  togglePlayer(tab) {
+    if (this.state.activePlayerTab !== tab) {
+      this.setState({
+        activePlayerTab: tab
+      });
+    }
+  }
+  toggleQuestion(tab) {
+    if (this.state.activeQuestionTab !== tab) {
+      this.setState({
+        activeQuestionTab: tab
+      });
+    }
+  }
+  toggleChoice(tab) {
+    if (this.state.activeChoiceTab !== tab) {
+      this.setState({
+        activeChoiceTab: tab
+      });
+    }
+  }
+
+  editQuestion = (data = "", id) => {
+    console.log(data);
+    console.log("Question saved successfully. " + data + " " + id);
+  };
+  editPopup = () => {
+    this.setState({
+      showMessage: true,
+      confirmButtonValue: "Update",
+      messageTitle: "",
+      messageDescription: "",
+      onConfirm: this.editQuestion,
+      isConfirmation: true,
+      title: "Question detail",
+      messageBox: false,
+      edit: true,
+      create: false,
+      onDelete: null,
+      removeMessage: false,
+      isRemove: false
+    });
+  };
+  saveQuestion = (data = "") => {
+    console.log(data);
+    console.log("Question saved successfully. " + data);
+  };
+  addItemPopup = () => {
+    this.setState({
+      showMessage: true,
+      confirmButtonValue: "Save",
+      messageTitle: "",
+      messageDescription: "",
+      onConfirm: this.saveQuestion,
+      isConfirmation: true,
+      title: "Question detail",
+      messageBox: false,
+      edit: false,
+      create: true,
+      onDelete: null,
+      removeMessage: false,
+      isRemove: false
+    });
+  };
+  viewPopup = () => {
+    this.setState({
+      showMessage: true,
+      confirmButtonValue: "Edit",
+      messageTitle: "",
+      messageDescription: "",
+      onConfirm: this.editPopup,
+      isConfirmation: true,
+      title: "Question detail",
+      messageBox: false,
+      edit: false,
+      create: false,
+      onDelete: this.onDelete,
+      removeMessage: false,
+      isRemove: false
+    });
+  };
+  onDelete = () => {
+    this.setState({
+      showMessage: true,
+      confirmButtonValue: "Remove",
+      messageTitle: "",
+      messageDescription: "",
+      onConfirm: this.remove,
+      isConfirmation: true,
+      title: "Question detail",
+      messageBox: false,
+      edit: false,
+      create: false,
+      removeMessage:
+        "Are you sure you want to delete question Q1 from level 1?",
+      isRemove: true
+    });
+  };
+  remove = () => {
+    const { id } = this.state.data;
+    console.log("Remove data " + id);
+  };
+  onCancel = () => {
+    this.setState({ showMessage: false });
+  };
+  removePopup = () => {
+    this.setState({
+      showMessage: true,
+      confirmButtonValue: "Remove",
+      messageTitle: "",
+      messageDescription:
+        "Are you sure you want to delete question Q1 from level 1?",
+      onConfirm: this.remove,
+      isConfirmation: true,
+      title: "Remove Question",
+      messageBox: true,
+      edit: false,
+      create: false,
+      onDelete: null,
+      removeMessage: false,
+      isRemove: true
+    });
+  };
+
+  render() {
+    const {
+      showMessage,
+      confirmButtonValue,
+      messageTitle,
+      messageDescription,
+      onConfirm,
+      isConfirmation,
+      title,
+      data,
+      messageBox,
+      edit,
+      create,
+      fields,
+      onDelete,
+      removeMessage,
+      isRemove
+    } = this.state;
+    return (
+      <Router>
+        <Fragment>
+          <DialogBox
+            confirmButtonValue={confirmButtonValue}
+            showMessage={showMessage}
+            messageTitle={messageTitle}
+            messageDescription={messageDescription}
+            onConfirm={onConfirm}
+            isConfirmation={isConfirmation}
+            onCancel={this.onCancel}
+            title={title}
+            data={create ? fields : data}
+            messageBox={messageBox}
+            edit={edit}
+            create={create}
+            onDelete={onDelete}
+            removeMessage={removeMessage}
+            isRemove={isRemove}
+          />
+          <Header
+            headerTabs={headerTabs}
+            activeTab={this.state.activeTab}
+            toggleTab={this.toggle.bind(this)}
+          />
+
+          <div className="container">
+            {/* <Nav tabs>
                             <NavItem>
                                 <NavLink className={classnames({ active: this.state.activeTab === 'games' })} onClick={() => { this.toggle('games'); }} >
                                     Games
@@ -187,69 +400,137 @@ class Admin extends Component {
                                     Choices
                                 </NavLink>
                             </NavItem>
-                        </Nav>
-                        <TabContent activeTab={this.state.activeTab}>
-                            <TabPane tabId="games">
-                                <Row>
-                                    <Col sm="12">
-                                        <Nav pills className="float-right pill-tabs">
-                                            <NavItem>
+                        </Nav> */}
+            <TabContent activeTab={this.state.activeTab}>
+              <TabPane tabId="games">
+                <Row>
+                  <Col sm="12">
+                    <Nav pills className="float-right pill-tabs">
+                      {/* <NavItem>
                                                 <NavLink className={classnames({ active: this.state.activeGameTab === 'list' })} onClick={() => { this.toggleGame('list'); }} > List Games </NavLink>
                                             </NavItem>
                                             <NavItem>
                                                 <NavLink className={classnames({ active: this.state.activeGameTab === 'addNew' })} onClick={() => { this.toggleGame('addNew'); }} > Add New Game </NavLink>
-                                            </NavItem>
-                                        </Nav>
-                                        <TabContent activeTab={this.state.activeGameTab}>
-                                            <TabPane tabId="list">
-                                                <Row>
-                                                    <Col sm="12">
-                                                        <ListGames />
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                            <TabPane tabId="addNew">
-                                                <Row>
-                                                    <Col sm="12">
-                                                        <AddGame />
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                        </TabContent>
-                                    </Col>
-                                </Row>
-                            </TabPane>
-                            <TabPane tabId="players">
-                                <Row>
-                                    <Col sm="12">
-                                        <Nav pills className="float-right pill-tabs">
-                                            <NavItem>
-                                                <NavLink className={classnames({ active: this.state.activePlayerTab === 'list' })} onClick={() => { this.togglePlayer('list'); }} > List Players </NavLink>
-                                            </NavItem>
-                                            <NavItem>
-                                                <NavLink className={classnames({ active: this.state.activePlayerTab === 'addNew' })} onClick={() => { this.togglePlayer('addNew'); }} > Add New Player </NavLink>
-                                            </NavItem>
-                                        </Nav>
-                                        <TabContent activeTab={this.state.activePlayerTab}>
-                                            <TabPane tabId="list">
-                                                <Row>
-                                                    <Col sm="12">
-                                                        <ListPlayers />
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                            <TabPane tabId="addNew">
-                                                <Row>
-                                                    <Col sm="12">
-                                                        <Register />
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                        </TabContent>
-                                    </Col>
-                                </Row>
-                            </TabPane>
-                            <TabPane tabId="questions">
+                                            </NavItem> */}
+                    </Nav>
+                    <TabContent activeTab={this.state.activeGameTab}>
+                      <TabPane tabId="list">
+                        <Row>
+                          <Col sm="12">
+                            <ListGames />
+                          </Col>
+                        </Row>
+                      </TabPane>
+                      <TabPane tabId="addNew">
+                        <Row>
+                          <Col sm="12">
+                            <AddGame />
+                          </Col>
+                        </Row>
+                      </TabPane>
+                    </TabContent>
+                  </Col>
+                </Row>
+              </TabPane>
+              <TabPane tabId="players">
+                <Row>
+                  <Col sm="12">
+                    <Nav pills className="float-right pill-tabs">
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "list"
+                          })}
+                          onClick={() => {
+                            this.togglePlayer("list");
+                          }}
+                        >
+                          {" "}
+                          List Players{" "}
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "addNew"
+                          })}
+                          onClick={() => {
+                            this.togglePlayer("addNew");
+                          }}
+                        >
+                          {" "}
+                          Add New Player{" "}
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "popup"
+                          })}
+                          onClick={() => {
+                            this.editPopup();
+                          }}
+                        >
+                          Edit Item
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "popup"
+                          })}
+                          onClick={() => {
+                            this.addItemPopup();
+                          }}
+                        >
+                          add Item
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "popup"
+                          })}
+                          onClick={() => {
+                            this.viewPopup();
+                          }}
+                        >
+                          View Item
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activePlayerTab === "popup"
+                          })}
+                          onClick={() => {
+                            this.removePopup();
+                          }}
+                        >
+                          Delete Item
+                        </NavLink>
+                      </NavItem>
+                    </Nav>
+                    <TabContent activeTab={this.state.activePlayerTab}>
+                      <TabPane tabId="list">
+                        <Row>
+                          <Col sm="12">
+                            <ListPlayers />
+                          </Col>
+                        </Row>
+                      </TabPane>
+                      <TabPane tabId="addNew">
+                        <Row>
+                          <Col sm="12">
+                            <Register />
+                          </Col>
+                        </Row>
+                      </TabPane>
+                    </TabContent>
+                  </Col>
+                </Row>
+              </TabPane>
+              {/* <TabPane tabId="questions">
                                 <Row>
                                     <Col sm="12">
                                         <Nav pills className="float-right pill-tabs">
@@ -278,40 +559,60 @@ class Admin extends Component {
                                         </TabContent>
                                     </Col>
                                 </Row>
-                            </TabPane>
-                            <TabPane tabId="choices">
-                                <Row>
-                                    <Col sm="12">
-                                        <Nav pills className="float-right pill-tabs">
-                                            <NavItem>
-                                                <NavLink className={classnames({ active: this.state.activeChoiceTab === 'list' })} onClick={() => { this.toggleChoice('list'); }} > List Choices </NavLink>
-                                            </NavItem>
-                                            <NavItem>
-                                                <NavLink className={classnames({ active: this.state.activeChoiceTab === 'addNew' })} onClick={() => { this.toggleChoice('addNew'); }} > Add New Choice </NavLink>
-                                            </NavItem>
-                                        </Nav>
-                                        <TabContent activeTab={this.state.activeChoiceTab}>
-                                            <TabPane tabId="list">
-                                                <Row>
-                                                    <Col sm="12">
-                                                        <ListChoices />
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                            <TabPane tabId="addNew">
-                                                <Row>
-                                                    <Col sm="12">
-                                                        <AddChoices />
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                        </TabContent>
-                                    </Col>
-                                </Row>
-                            </TabPane>
-                        </TabContent>
+                            </TabPane> */}
+              <TabPane tabId="choices">
+                <Row>
+                  <Col sm="12">
+                    <Nav pills className="float-right pill-tabs">
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activeChoiceTab === "list"
+                          })}
+                          onClick={() => {
+                            this.toggleChoice("list");
+                          }}
+                        >
+                          {" "}
+                          List Choices{" "}
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activeChoiceTab === "addNew"
+                          })}
+                          onClick={() => {
+                            this.toggleChoice("addNew");
+                          }}
+                        >
+                          {" "}
+                          Add New Choice{" "}
+                        </NavLink>
+                      </NavItem>
+                    </Nav>
+                    <TabContent activeTab={this.state.activeChoiceTab}>
+                      <TabPane tabId="list">
+                        <Row>
+                          <Col sm="12">
+                            <ListChoices />
+                          </Col>
+                        </Row>
+                      </TabPane>
+                      <TabPane tabId="addNew">
+                        <Row>
+                          <Col sm="12">
+                            <AddChoices />
+                          </Col>
+                        </Row>
+                      </TabPane>
+                    </TabContent>
+                  </Col>
+                </Row>
+              </TabPane>
+            </TabContent>
 
-                        {/* <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
+            {/* <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
                             <ul className="navbar-nav">
                                 <li className="nav-item"><Link className="nav-link" to="/list">List players</Link> </li>
                                 <li className="nav-item"><Link className="nav-link" to="/listgames">List games</Link> </li>
@@ -347,11 +648,11 @@ class Admin extends Component {
                             <Route path="/updatequestion" component={UpdateQuestion} />
                             <Route path="/updatechoice" component={UpdateChoice} />
                         </Switch> */}
-                    </div>
-                </Fragment>
-            </Router>
-        )
-    }
+          </div>
+        </Fragment>
+      </Router>
+    );
+  }
 }
 
 export default Admin;

@@ -1,55 +1,47 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
+import ListTable from '../ListTable';
 
-import DataTable from 'react-data-table-component';
+const ListPlayers = () =>  {
 
-import Auth from '../../Auth';
+    const columns = [
+        {
+            name: 'Id',
+            selector: 'id',
+            sortable: true,
+        },
+        {
+            name: 'Last Name',
+            selector: 'lastname',
+            sortable: true,
+        },
+        {
+            name: 'First Name',
+            selector: 'firstname',
+            sortable: true,
+        },
+        {
+            name: 'Gender',
+            selector: 'gender',
+            sortable: true,
+        },
+        {
+            name: 'Country',
+            selector: 'country',
+            sortable: true,
+        },
+        {
+            name: 'Program',
+            selector: 'program',
+            sortable: true,
+        }
+    ];
 
-const columns = [
-    {
-        name: 'Id',
-        selector: 'id',
-        sortable: true,
-    },
-    {
-        name: 'Last Name',
-        selector: 'lastname',
-        sortable: true,
-    },
-    {
-        name: 'First Name',
-        selector: 'firstname',
-        sortable: true,
-    },
-    {
-        name: 'Gender',
-        selector: 'gender',
-        sortable: true,
-    },
-    {
-        name: 'Country',
-        selector: 'country',
-        sortable: true,
-    },
-    {
-        name: 'Program',
-        selector: 'program',
-        sortable: true,
-    },
-];
+    const [playersData, setPlayersData] = useState({ user: [{}] });
 
-class ListPlayers extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: [{
-                
-            }]
-        };
-        this.simpleTable = this.simpleTable.bind(this);
-    }
+    const { user } = playersData;
 
-    pool() {
-        console.log(this.props.auth);
+    const getPlayers = () => {
+        // console.log(this.props.auth);
         const url = 'http://localhost:9000/users';
         fetch(url, {
             method: 'get',
@@ -62,38 +54,27 @@ class ListPlayers extends Component {
             .then((res) => res.json())
             .then((data) => {
                 console.log('api data -->', JSON.stringify(data))
-                this.setState({user: data});
+                setPlayersData({user: data});
             })
             .catch(err => console.log(err));
-        console.log(this.state.user);
-    }
-    componentDidMount() {
-        this.pool();
-    }
+        console.log(user);
+    };
 
-    simpleTable() {
+    useEffect(()=>{
+        getPlayers();
+    }, []);
 
-        return (
-            <DataTable
-                title="List of Players"
-                columns={columns}
-                data={this.state.user}
-                pagination
-            />
-            
-        );
-    }
-    render() {
-        return (
-            <div className="App">
-                <div>
-
-                    {this.simpleTable()}
-
-                </div>
-            </div>
-        );
-    }
+    return (
+        <ListTable tableData={{
+            columns: columns,
+            title: 'List of Players',
+            confirmMsg: 'Are you sure you want to delete the player',
+            hasActionBtns: true,
+            data: user,
+            callbackAfterDelete: getPlayers
+        }} 
+        />
+    );
 }
 
 export default ListPlayers;

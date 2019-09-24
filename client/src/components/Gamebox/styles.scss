@@ -1,0 +1,33 @@
+.list-games-wrapper{
+    width:100%;
+    .list-games-container{
+        margin:auto;
+        padding-top:30px;
+        .gamebox{
+            height:150px !important;
+            width:80% !important;
+            padding-bottom: 20px;
+            border-radius: 5px;
+            background-image: url('../../images/clip.png');
+            background-color: grey;
+            cursor: pointer;
+            position: relative;
+            &.active{
+                background-color: blue;
+                box-shadow: 5px 10px #ADD8E6;
+                border-bottom: 3px solid blue !important;
+            }
+            .game-title{
+                display: inline-block;
+                position:absolute;
+                bottom:10px;
+                right:30px;
+                color:white;
+            }
+        }
+    }
+}
+
+.slick-slide{
+    padding-bottom: 20px;
+}

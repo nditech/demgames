@@ -1,4 +1,5 @@
-const gameData = require('../data/Module/moduleData.json');
+const _ = require('underscore');
+// const gameData = require('../data/Module/moduleData.json');
 const express = require('express');
 const app = express();
 const { check, validationResult } = require('express-validator');
@@ -42,20 +43,131 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/api/game', (req, res) => {
-  if (!gameData) res.status(404).send('No data found');
-  res.setHeader('Access-Control-Allow-Origin', '*');
+app.get('/api/game', async (req, res) => {
+  // if (!gameData) res.status(404).send('No data found');
 
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  console.log("GET /api/game -----api");
 
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  try {
+    const gameData = [];
 
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.json({ gameData });
+    const gameList = await games.findAll({
+      include: [{
+        model: questions,
+        include: [{
+          model: choices
+        }]
+      }]
+    });
+
+    if (!gameList) {
+      return res.status(400).send('No data found!');
+    }
+
+    gameList.forEach(async element => {
+      let gameObj = {};
+      let questions = element.Questions;
+      gameObj.id = element.id;
+      gameObj.name = element.caption;
+      gameObj.type = element.gametype;
+      gameObj.style = 'blue';
+
+      let diffLevelGroup = _.groupBy(questions, function (value) {
+        return value.difficulty_level;
+      });
+
+      for (let i in diffLevelGroup) {
+
+        let quesArr = [];
+        group.forEach(function (ques) {
+
+          // Find the collection of correct answer(s)
+          let options = ques.Choices;
+          let answerArr = [];
+          options.forEach(function (option, index) { if (option.answer === 1) { answerArr.push(index) } });
+
+          quesArr.push({
+            id: ques.id,
+            question: ques.question_statement,
+            options: ques.Choices.map(option => option.choicestatement),
+            correct_answer: answerArr
+          });
+
+        });
+
+      }
+
+      console.log('game LIST------START-------> ');
+      console.log(JSON.stringify(diffLevelGroup));
+      console.log('game LIST-------------> ');
+
+      let data = _.map(diffLevelGroup, function (group, index) {
+
+        //     console.log('game LIST------group-------> '); 
+        // console.log(JSON.stringify(group));
+        // console.log('game LIST-------------> '); 
+
+        let quesArr = [];
+        group.forEach(function (ques) {
+
+          // Find the collection of correct answer(s)
+          let options = ques.Choices;
+          let answerArr = [];
+          options.forEach(function (option, index) { if (option.answer === 1) { answerArr.push(index) } });
+
+          quesArr.push({
+            id: ques.id,
+            question: ques.question_statement,
+            options: ques.Choices.map(option => option.choicestatement),
+            correct_answer: answerArr
+          });
+
+        });
+
+
+        // Choices Array
+
+        return {
+          id: parseInt(index),
+          desc: element.gamedescription,
+          linked_level: group[0].difficulty_level,
+          questions: quesArr
+        }
+      });
+
+      gameObj.levels = data;
+
+      gameData.push(gameObj);
+
+    });
+    // console.log('game LIST------START-------> '); 
+    // console.log(JSON.stringify(gameData));
+    // console.log('game LIST-------------> '); 
+
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    res.json({ gameData });
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+  // games.findAll().then(result => {
+  //   res.send(JSON.stringify(result));
+  //   console.log(result);
+  // }).catch(err => {
+  //   console.log(err);
+  // });
+
+
 });
 
 app.get('/listcohort_game', (req, res) => {
@@ -287,7 +399,7 @@ app.post('/selectPlayerProfile', (req, res) => {
 
 // @route   POST /registerplayer
 // @desc    Create a new player
-app.post(   
+app.post(
   '/registerplayer',
   [
     check('firstName', 'First Name is required').not().isEmpty(),
@@ -338,23 +450,23 @@ app.post('/registergame', async (req, res) => {
 
   console.log('POST /registergame  -------api');
 
-    const { caption, gamedescription, gametype} = req.body;
+  const { caption, gamedescription, gametype } = req.body;
 
-    try {
-      
-      await games.create({
-        caption: caption,
-        gamedescription: gamedescription,
-        gametype: gametype
-      });
+  try {
 
-      res.send({message:'game successfully added'});
+    await games.create({
+      caption: caption,
+      gamedescription: gamedescription,
+      gametype: gametype
+    });
+
+    res.send({ message: 'game successfully added' });
 
 
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).send({ message: 'Server Error'});
-    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send({ message: 'Server Error' });
+  }
 });
 
 // @route   GET /listchoices
@@ -397,25 +509,25 @@ app.post('/addchoice', async (req, res) => {
 
   console.log('POST /addchoice  -------api');
 
-    const { choicedescription, choicestatement, isanswer, questionid, weight} = req.body;
+  const { choicedescription, choicestatement, isanswer, questionid, weight } = req.body;
 
-    try {
-      
-      await choices.create({
-        choicedescription: choicedescription,
-        choicestatement: choicestatement,
-        answer: isanswer,
-        questionid: questionid,
-        weight: weight
-      });
+  try {
 
-      res.send({message:'choice successfully added'});
+    await choices.create({
+      choicedescription: choicedescription,
+      choicestatement: choicestatement,
+      answer: isanswer,
+      questionid: questionid,
+      weight: weight
+    });
+
+    res.send({ message: 'choice successfully added' });
 
 
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).send({ message: 'Server Error'});
-    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send({ message: 'Server Error' });
+  }
 
   //   var data=req.body;
   //   console.log(data);
@@ -469,36 +581,36 @@ app.post('/addquestion',
   ],
 
   async (req, res) => {
-  
+
     console.log('POST /addquestion -- api')
-    var data=req.body;
+    var data = req.body;
     console.log(data);
 
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        return res.status(400).json({errors: errors.array()});
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    const {difficulty_level, explanation, gameid, gametype, isitmedia, question_statement, weight} = req.body;
+    const { difficulty_level, explanation, gameid, gametype, isitmedia, question_statement, weight } = req.body;
 
     try {
-      
+
       await questions.create({
         game_id: gameid,
         difficulty_level: difficulty_level,
         question_statement: question_statement,
         weight: weight,
         explanation: explanation,
-        isitmedia: isitmedia 
+        isitmedia: isitmedia
       });
-      
-      res.send({message:'question successfully added'});
 
-  } catch (error) {
+      res.send({ message: 'question successfully added' });
+
+    } catch (error) {
       console.error(error.message);
-      res.status(500).send({ message: 'Server Error'});
-  }               
-});
+      res.status(500).send({ message: 'Server Error' });
+    }
+  });
 
 // @route   GET /listquestions
 // @desc    Get list of all questions from db
@@ -804,5 +916,95 @@ app.post('/updatechoice', (req, res) => {
   //            res.status(200).send({message:'updated successfully'});              
   //           }); 
 })
+
+app.get('/listcohort_game', (req, res) => {
+  console.log("GET /listcohort_game -----api ---called")
+  cohort_game.findAll().then(result => {
+    res.send(JSON.stringify(result));
+    console.log(result);
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send('Server Error');
+  });
+});
+
+app.get('/listcohort_question', (req, res) => {
+  console.log("GET /listcohort_question -----api ---called");
+  cohort_question.findAll().then(result => {
+    res.send(JSON.stringify(result));
+    console.log(result);
+  }).catch(err => {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  });
+ 
+});
+
+app.post('/linkcohort_game', 
+  [
+    check('game_id', 'question id is required').isNumeric(),
+    check('cohort_id', 'cohort id is required').isNumeric()
+  ],
+  async (req, res) => {
+    console.log("POST /linkcohort_game -----api ---called");
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { game_id, cohort_id} = req.body;
+
+    try{
+      let cohortToGame = await cohort_game.findOne({ where: { game_id: game_id, cohort_id:cohort_id} });
+
+      if (cohortToGame) {
+        return res.status(400).json({ errors: [{ msg: 'cohort to game mapping already exists' }] });
+      }
+
+      await cohort_game.create({
+        game_id: game_id,
+        cohort_id: cohort_id,
+      });
+      res.send('cohort to game linked');
+      console.log("cohort to game linked successfully");
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Server Error');
+    }
+});
+
+app.post('/linkcohort_question',
+  [
+    check('question_id', 'question id is required').isNumeric(),
+    check('cohort_id', 'cohort id is required').isNumeric()
+  ],
+  async (req, res) => {
+    console.log("POST /linkcohort_question -----api ---called");
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { question_id, cohort_id} = req.body;
+    try{
+
+      let cohortToQuestion = await cohort_question.findOne({ where: { question_id: question_id, cohort_id:cohort_id} });
+
+      if (cohortToQuestion) {
+        return res.status(400).json({ errors: [{ msg: 'cohort to question mapping already exists' }] });
+      }
+      await cohort_question.create({
+        question_id: question_id,
+        cohort_id: cohort_id
+      });
+      res.send('cohort to question linked');
+      console.log("cohort to question linked successfully");
+    } catch(error) {
+      console.error(error.message);
+      res.status(500).send('Server Error');
+    }
+});
 
 app.listen(9000, () => console.log('listening'));

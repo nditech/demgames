@@ -1,0 +1,11 @@
+.tab-container{
+    width:100%;
+    .tab{
+        display: inline-block;
+        padding:20px;
+        &.active{
+            border-bottom: 2px solid grey;
+        }
+        
+    }
+}
