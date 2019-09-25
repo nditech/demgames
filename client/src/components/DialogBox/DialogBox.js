@@ -334,7 +334,12 @@ class DialogBox extends Component {
                                         />
                                       </div>
                                     ) : (
-                                      <div className="item-value">{option}</div>
+                                      <div
+                                        key={`options_content_${option_index}`}
+                                        className="item-value"
+                                      >
+                                        {option}
+                                      </div>
                                     )}
                                   </div>
                                 );
@@ -354,7 +359,7 @@ class DialogBox extends Component {
                                     (choice, chice_index) => {
                                       return (
                                         <div
-                                          kay={`choice_content-${chice_index}${choice}`}
+                                          key={`choice_content-${chice_index}${choice}`}
                                           className={
                                             object.value ===
                                             this.convertChoice(chice_index)
@@ -403,7 +408,10 @@ class DialogBox extends Component {
                                 />
                               </div>
                             ) : (
-                              <div className="item-value">
+                              <div
+                                key={`textbox_${index}`}
+                                className="item-value"
+                              >
                                 <input
                                   type="text"
                                   name="object.title"
@@ -430,7 +438,7 @@ class DialogBox extends Component {
                           </div>
                         );
                       default:
-                        return <div></div>;
+                        return <div key={`default_${index}`}></div>;
                     }
                   })}
                 {removeMessage && (
@@ -484,7 +492,7 @@ DialogBox.propTypes = {
   messageBox: PropTypes.bool,
   edit: PropTypes.bool,
   create: PropTypes.bool,
-  removeMessage: "",
+  removeMessage: PropTypes.string,
   isRemove: PropTypes.bool
 };
 
