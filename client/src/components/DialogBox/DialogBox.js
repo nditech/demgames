@@ -127,31 +127,32 @@ class DialogBox extends Component {
     const values = create ? [...data] : [...val],
       id = data.id;
     let confirmButtonDisable = false;
-    this.clearPrevious(values, create);
+    this.clearPrevious(values, create, edit);
     if (create) {
       confirmButtonDisable = true;
     }
-    if (edit) {
-      values.push({
-        key: "new_choice",
-        type: "choice",
-        title: "Choose new choice",
-        value: "",
-        editable: true,
-        optional: true,
-        key: "answers"
-      });
-    }
-    this.setState({ data: values, edit, id, confirmButtonDisable });
+
+    this.setState({ edit, id, confirmButtonDisable });
   };
-  clearPrevious = (data, createMethod) => {
+  clearPrevious = (data, createMethod, edit) => {
     let choices = {},
       choiceLength = 1;
+    let values = data;
     data.map(item => {
       if (item.type === "text" && !item.editable) return;
       if (item.type === "options") {
         choiceLength = item.value.length;
         choices[item.title] = Array(choiceLength).fill("");
+        if (edit) {
+          values.push({
+            type: "choice",
+            title: "Choose new choice",
+            value: "",
+            editable: true,
+            optional: true,
+            key: item.title
+          });
+        }
       }
       if (createMethod) {
         item.value =
@@ -160,7 +161,7 @@ class DialogBox extends Component {
           item.type === "options" ? Array(choiceLength).fill(false) : false;
       }
     });
-    this.setState({ choices });
+    this.setState({ choices, data: values });
   };
   componentDidMount = () => {
     this.initialState(this.props);
