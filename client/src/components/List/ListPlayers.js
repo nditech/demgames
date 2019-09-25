@@ -103,10 +103,19 @@ const ListPlayers = () =>  {
                   Cohort Leadership
                 </div>
                 <div className='tab-option'>
-                  <Icon color="primary">add_box</Icon>
-                  {/* <span>Add Player</span> */}
+                  <Icon color="primary" style={{color:"#0d9eea"}}>add_box</Icon>
+                  <span className="tab-icons-details">Add Player</span>
                 </div>
                 <div className="listing-players">
+                   {activeTab===3&& <div className="cohort-dropdown">
+                        <span className="cohort-dropdown-title">Choose Cohort</span>
+                        <select className="cohort-dropdown-value">
+                            <option value="volvo">Volvo</option>
+                            <option value="saab">Saab</option>
+                            <option value="mercedes">Mercedes</option>
+                            <option value="audi">Audi</option>
+                        </select>
+                    </div>}
                         <ListTable tableData={{
                         columns: columns,
                         confirmMsg: 'Are you sure you want to delete the player',

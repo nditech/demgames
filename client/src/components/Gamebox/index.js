@@ -1,6 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 import "./styles.scss";
+import SliderArrow from "./SliderArrow";
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
 
@@ -9,7 +10,9 @@ const settings = {
   infinite: false,
   speed: 500,
   slidesToShow: 3,
-  slidesToScroll: 1
+  slidesToScroll: 1,
+  prevArrow: <SliderArrow to="prev" />,
+  nextArrow: <SliderArrow to="next" />,
 };
 export const Gamebox = ({ games, activeGame, handleGameBoxClick, addGame }) => {
   console.log(games, "games");
@@ -26,6 +29,7 @@ export const Gamebox = ({ games, activeGame, handleGameBoxClick, addGame }) => {
               >
                 <div className="game-title">{caption}</div>
               </div>
+              {activeGame === id && <hr />}
               </div>
             ))
           ) :null}

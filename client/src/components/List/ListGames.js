@@ -84,8 +84,10 @@ class ListGames extends Component {
               Questions
             </div>
             {this.state.activeTab===1&&<div className='tab-option'>
-              <Icon color="primary" className="tab-icons" onClick={()=>this.props.copyGameCb(this.state.activeGame)}>file_copy</Icon>
-              <Icon color="primary" onClick={()=>this.props.editGame(this.state.activeGameDetails,this.state.activeGame)}>edit</Icon>
+              <Icon color="primary" className="tab-icons" onClick={()=>this.props.copyGameCb(this.state.activeGame)} style={{color:"#0d9eea"}}>file_copy</Icon>
+              <span className="tab-icons-details">Duplicate Game</span>
+              <Icon color="primary" onClick={()=>this.props.editGame(this.state.activeGameDetails,this.state.activeGame)} style={{color:"#0d9eea"}}>edit</Icon>
+              <span className="tab-icons-details">Edit Game details</span>
             </div>}
           </div>
           {this.state.activeTab === 1 && (

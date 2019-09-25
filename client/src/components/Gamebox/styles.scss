@@ -5,10 +5,11 @@
         padding-top:20px;
         padding-bottom: 21px;
         .gamebox-wrapper{
-            padding-bottom:21px;
-            padding-right:64px;
-            &.active{
-                border-bottom: 4px solid #cee0f4;
+            padding-left:30px;
+            padding-right: 30px;
+            hr {
+                border: 2px solid #cee0f4;
+                border-radius: 5px;
             }
         
             .gamebox{

@@ -31,11 +31,45 @@
             padding: 20px;
             .tab-icons{
                 display: inline-block;
-                margin-right: 30px;
+                // margin-right: 30px;
+            }
+            .tab-icons-details{
+                font-family: Roboto;
+                font-size: 13px;
+                font-weight: 300;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.36;
+                letter-spacing: normal;
+                text-align: left;
+                color: #707070;
+                vertical-align: super;
+                padding:0px 20px 0px 10px;
             }
         }
         .listing-players{
             padding:0px 38px;
+            .cohort-dropdown{
+                padding-top:50px;
+                .cohort-dropdown-title{
+                    font-family: Roboto;
+                    font-size: 18px;
+                    font-weight: 300;
+                    font-style: normal;
+                    font-stretch: normal;
+                    line-height: 1.33;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: #707070;
+                    padding-right:23px;
+                }
+                .cohort-dropdown-value{
+                    border-radius: 5px;
+                    border: solid 1px #d3e1eb;
+                    background-color: #ffffff;
+                    width:150px;
+                }
+            }
         }
 
     }

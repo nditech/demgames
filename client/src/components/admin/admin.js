@@ -490,7 +490,7 @@ class Admin extends Component {
             activeTab={this.state.activeTab}
             toggleTab={this.toggle.bind(this)}
           />
-          <div style={{backgroundColor:"#f7f7f7", padding:"20px 50px"}}>
+          <div style={{backgroundColor:"#f7f7f7", padding:"20px 50px 50px 50px"}}>
           <div className="containers">
             
             
@@ -530,12 +530,12 @@ class Admin extends Component {
                       textAlign: "left",
                       color: "#707070",}}>All Games</div>
               <div style={{flex:1,textAlign:"right"}}>
-                <Icon color="primary" onClick={() => this.toggleGame('addNew')}>add_box</Icon>
+                <Icon color="primary" onClick={() => this.toggleGame('addNew')} style={{color:"#0d9eea"}}>add_box</Icon>
                 <span style={{verticalAlign:"super",paddingLeft:"20px",fontFamily: "Roboto", fontSize: "13px",fontWeight: 300,fontStyle: "normal",fontStretch: "normal",
-  lineHeight: 1.38,
-  letterSpacing: "normal",
-  textAlign: "right",
-  color: "#707070"}}>Add Game</span>
+                              lineHeight: 1.38,
+                              letterSpacing: "normal",
+                              textAlign: "right",
+                              color: "#707070"}}>Add Game</span>
               </div>
             </div>
               <ListGames editGame={this.editGame} copyGameCb={this.copyGameCb}/>
