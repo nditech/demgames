@@ -308,7 +308,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       key: "level",
       type: "text",
       title: "Level",
-      value: questionDetail.difficulty_level
+      editable: true,
+      value: ""
     },
     {
       key: "question",
