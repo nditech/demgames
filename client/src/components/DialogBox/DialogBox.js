@@ -29,6 +29,78 @@ const modalStyles = {
  *    onDelete: Function to call on click on the remove button,
  *    removeMessage: Error message for remove.
  *    isRemove: true if it is delete in CRUD operation.
+ *    cancelButtonValue: Cancel button text value
+ *    messageNote: Detail message for messagebox
+ *    onCancel: Func to call on cancel button
+ *    data: Data for CRUD operation. xample is given below.
+ *
+ * example of data value for edit, view for MCQ question
+ *    {
+ *      id: "1",
+ *      values: [
+ *        {
+ *          type: "text",
+ *          title: "Game",
+ *          value: "Desiging a argument"
+ *        },
+ *        {
+ *          type: "text",
+ *          title: "Level",
+ *          value: "1"
+ *        },
+ *        {
+ *          type: "text",
+ *          title: "Question",
+ *          value: "text question",
+ *          multiline: true,
+ *          editable: true
+ *        },
+ *        {
+ *          type: "options",
+ *          title: "answers",
+ *          value: ["test1", "test2", "test3", "test4"]
+ *        },
+ *        {
+ *          type: "choice",
+ *          title: "Current choice",
+ *          value: "B",
+ *          key: "answers" // same as options title
+ *        }
+ *      ]
+ *    }
+ * example of data value to add MCQ question
+ *    fields = [
+ *      {
+ *        type: "text",
+ *        title: "Game",
+ *        value: "Desiging a argument"
+ *      },
+ *      {
+ *        type: "text",
+ *        title: "Level",
+ *        value: "1"
+ *      },
+ *      {
+ *        type: "text",
+ *        title: "Question",
+ *        multiline: true,
+ *        editable: true,
+ *        value: ""
+ *      },
+ *      {
+ *        type: "options",
+ *        title: "answers",
+ *        value: ["", "", "", ""]
+ *      },
+ *      {
+ *        type: "choice",
+ *        title: "Correct choice",
+ *        value: "",
+ *        editable: true,
+ *        key: "answers" // same as options title
+ *      }
+ *    ];
+ *
  */
 
 /**
@@ -97,6 +169,9 @@ class DialogBox extends Component {
     this.initialState(props);
   };
 
+  /**
+   * Covert index value to alphabets. A B C etc.
+   */
   convertChoice = value => {
     return String.fromCharCode(value + 65);
   };
@@ -113,6 +188,7 @@ class DialogBox extends Component {
       onConfirm();
     }
   };
+
   validateValues = () => {
     const { data } = this.state;
     let confirmButtonDisable = false;
@@ -130,6 +206,7 @@ class DialogBox extends Component {
     });
     return confirmButtonDisable;
   };
+
   valueChange = (value, title, index = 0) => {
     const { data } = this.state;
 
@@ -145,7 +222,6 @@ class DialogBox extends Component {
         }
       }
     });
-    // const confirmButtonDisable = this.validateValues();
     this.setState({ data, confirmButtonDisable: this.validateValues() });
   };
 
@@ -398,7 +474,6 @@ DialogBox.propTypes = {
   confirmButtonValue: PropTypes.string.isRequired,
   isConfirmation: PropTypes.bool,
   messageDescription: PropTypes.string,
-  messageHeader: PropTypes.string,
   messageNote: PropTypes.string,
   messageTitle: PropTypes.string,
   onCancel: PropTypes.func,
@@ -419,7 +494,6 @@ DialogBox.defaultProps = {
   confirmButtonValue: "",
   isConfirmation: false,
   messageDescription: "",
-  messageHeader: "",
   messageNote: "",
   messageTitle: "",
   showMessage: false,
