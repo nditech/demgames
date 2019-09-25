@@ -3,12 +3,14 @@ import { Gamebox } from "../Gamebox";
 import { Details } from "../Details";
 import ListQuestion from "../List/ListQuestions";
 import "./styles.scss";
+import Icon from "@material-ui/core/Icon";
 
 class ListGames extends Component {
   constructor(props) {
     super(props);
     this.state = {
       games: [{}],
+      activeGameDetails:[],
       activeGame: null,
       activeTab: 1,
       loadQuestionsComponent: false
@@ -66,32 +68,36 @@ class ListGames extends Component {
           activeGame={this.state.activeGame}
           handleGameBoxClick={this.handleGameBoxClick}
         />
-
-        <div className="tab-container">
-          <div
-            className={`tab ${this.state.activeTab === 1 ? "active" : ""}`}
-            onClick={() => this.setState({ activeTab: 1 })}
-          >
-            Game Details
+        <div className="detail-box">
+          <div className="tab-container">
+            <div
+              className={`tab ${this.state.activeTab === 1 ? "active" : ""}`}
+              onClick={() => this.setState({ activeTab: 1 })}
+            >
+              Game Details
+            </div>
+            <div
+              className={`tab ${this.state.activeTab === 2 ? "active" : ""}`}
+              onClick={() =>
+                this.setState({ activeTab: 2, loadQuestionsComponent: true })
+              }
+            >
+              Questions
+            </div>
+            {this.state.activeTab===1&&<div className='tab-option'>
+              <Icon color="primary" className="tab-icons" onClick={()=>this.props.copyGameCb(this.state.activeGame)} style={{color:"#0d9eea"}}>file_copy</Icon>
+              <span className="tab-icons-details">Duplicate Game</span>
+              <Icon color="primary" onClick={()=>this.props.editGame(this.state.activeGameDetails,this.state.activeGame)} style={{color:"#0d9eea"}}>edit</Icon>
+              <span className="tab-icons-details">Edit Game details</span>
+            </div>}
           </div>
-          <div
-            className={`tab ${this.state.activeTab === 2 ? "active" : ""}`}
-            onClick={() =>
-              this.setState({ activeTab: 2, loadQuestionsComponent: true })
-            }
-          >
-            Questions
-          </div>
+          {this.state.activeTab === 1 && (
+           <Details data={this.state.activeGameDetails} />
+          )}
+          {this.state.activeTab === 2 && (
+            <ListQuestion activeGame={this.state.activeGame} />
+          )}
         </div>
-        {this.state.activeTab === 1 && (
-          <Details data={this.state.activeGameDetails} />
-        )}
-        {this.state.activeTab === 2 && (
-          <ListQuestion
-            activeGameDetails={this.state.activeGameDetails}
-            activeGame={this.state.activeGame}
-          />
-        )}
       </Fragment>
     );
   }

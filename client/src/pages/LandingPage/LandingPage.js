@@ -18,6 +18,7 @@ import profile from '../../components/ProfileInfo';
 import admin from '../../components/admin/admin';
 import UpdatePlayer from '../../components/Update/UpdateProfile';
 import { fetchScoreDetail } from '../../components/ProfileInfo/action';
+import { da } from 'date-fns/locale';
 
 const auth0=new Auth();
 
@@ -94,6 +95,50 @@ class LandingPage extends React.Component {
 			console.log(auth0.getProfile());
 			
 			this.props.setAuth(authDetail);
+
+
+			fetch('http://localhost:9000/user/findOne/' + authDetail.player_email,{
+				method: 'get',        
+				headers: {
+						"authorization": "Bearer "+auth0.getAccessToken(),
+						"Content-Type": "Application/json",
+						"Accept":"application/json"
+				}
+			}).then(res=>res.json()).then((data)=>{					
+				console.log("user data from api below --V");
+				console.log(data);
+
+				if(!data.email) {
+
+					console.log("email not found --V");
+
+
+					fetch('http://localhost:9000/registerplayer',{
+						method: 'POST',        
+						headers: {
+							authorization: "Bearer "+auth0.getAccessToken(),
+							"Content-Type": "Application/json",
+							Accept:"application/json"
+						},
+						body:JSON.stringify({
+							firstName: authDetail.player_username,
+							email: authDetail.player_email,
+							userName: authDetail.player_username
+						})
+					}).then(res=>res.json()).then((data)=>{	
+						console.log("new player registered  ---V");
+						console.log(data);
+					}).catch((error)=>{		
+						console.log(error);	
+					});;
+
+				}
+				
+				
+				
+			}).catch((error)=>{		
+				console.log(error);	
+			});
 
 		}
 		else{

@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
         indexes: [
             {
                 unique: true,
-                fields: ['player_id', 'game_id','score']
+                fields: ['player_id', 'game_id','cohort_id','score']
             }
         ]
     });
@@ -67,6 +67,10 @@ module.exports = (sequelize, DataTypes) => {
 
     Plays.associate = function(models) {
         Plays.belongsTo(models.Games, {foreignKey: 'game_id', as: 'game'})
+    };
+
+    Plays.associate = function(models) {
+        Plays.belongsTo(models.Cohorts, {foreignKey: 'cohort_id', as: 'cohort'})
     };
 
     return Plays;

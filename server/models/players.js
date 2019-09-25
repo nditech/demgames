@@ -50,6 +50,7 @@ module.exports = (sequelize, DataTypes) => {
                 await sequelize.models.Plays.create({
                     player_id: player.id,
                     game_id: 1,
+                    cohort_id:1,
                     score: 0,
                     total: 0,
                     program_rank: 0,

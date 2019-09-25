@@ -11,6 +11,8 @@ const games = models.Games;
 const choices = models.Choices;
 const cohort_game = models.Cohort_Game;
 const cohort_question = models.Cohort_Question;
+const cohort = models.Cohorts;
+const plays = models.Plays;
 // JWT
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
@@ -432,7 +434,7 @@ app.post(
     const { firstName, middleName, lastName, userName, email, dateOfBirth, gender, country, city, program } = req.body;
 
     try {
-      let user = await players.findOne({ where: { username: userName } });
+      let user = await players.findOne({ where: { email: email } });
 
       if (user) {
         return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
@@ -958,6 +960,17 @@ app.post('/updatechoice', (req, res) => {
   //           }); 
 })
 
+app.get('/listCohort', (req, res) => {
+  console.log("GET /listCohort -----api ---called")
+  cohort.findAll().then(result => {
+    res.send(JSON.stringify(result));
+    console.log(JSON.stringify(result));
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send('Server Error');
+  });
+});
+
 app.get('/listcohort_game', (req, res) => {
   console.log("GET /listcohort_game -----api ---called")
   cohort_game.findAll().then(result => {
@@ -1143,7 +1156,7 @@ app.post('/duplicatGame',
 
       await transaction.commit()
       console.log("game duplicated successfully");
-      res.status(200).send("game duplicated successfully");
+      res.status(200).send(JSON.stringify(newGame));
 
       } catch (err) {
         // Rollback transaction only if the transaction object is defined
@@ -1158,5 +1171,56 @@ app.post('/duplicatGame',
       res.status(500).send('Server Error while finding game');
     }
   });
+
+  app.get('/list_leaderBoard', (req, res) => {
+    console.log("GET /list_leaderBoard -----api ---called");
+    plays.findAll().then(result => {
+      console.log
+      res.send(JSON.stringify(result));
+      console.log(JSON.stringify(result));
+    }).catch(err => {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    });
+   
+  });
+
+  app.get('/list_cohort_leaderBoard/:cohort_id', (req, res) => {
+    console.log("GET /list_cohort_leaderBoard -----api ---called");
+
+    console.log(req.params.cohort_id);
+
+    let cohort_id = req.params.cohort_id;
+
+    if(!cohort_id) {
+      cohort_id = 1;
+    }
+
+    plays.findAll({where:{cohort_id:cohort_id}}).then(result => {
+      console.log
+      res.send(JSON.stringify(result));
+      console.log(JSON.stringify(result));
+    }).catch(err => {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    });
+   
+  });
+
+  app.get('/user/findOne/:email', async (req, res) => {
+    console.log("GET /user/findOne/   -----api ---called" + req.params.email);
+    let email = req.params.email;
+
+    if(!email) {
+      res.status(400).send("email not found on request");
+    }
+    let player = await players.findOne({ where: { email: email }, raw:true });
+    if(player){
+      res.send(player);
+    } else {
+      res.status(200).send({message:"not found"});
+    }
+  });
+  
 
 app.listen(9000, () => console.log('listening'));

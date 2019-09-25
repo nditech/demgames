@@ -1,11 +1,112 @@
-.tab-container{
-    width:100%;
-    .tab{
-        display: inline-block;
-        padding:20px;
-        &.active{
-            border-bottom: 2px solid grey;
+.detail-box{
+    background-color: white;
+    border-radius: 5px;
+    .tab-container{
+        width:100%;
+        position: relative;
+        .tab{
+            display: inline-block;
+            margin:21px 20px 0px 20px;
+            padding-bottom:6px;
+            font-family: Roboto;
+            font-size: 20px;
+            font-weight: bold;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.3;
+            letter-spacing: normal;
+            text-align: left;
+            color: #d3d3d3;
+            cursor: pointer;
+            &.active{
+                border-bottom: 2px solid #1667bc;
+                color:#1667bc;
+            }
         }
-        
+        .tab-option{
+            display: inline-block;
+            position: absolute;
+            right:10px;
+            text-align: right;
+            padding: 20px;
+            .tab-icons{
+                display: inline-block;
+                // margin-right: 30px;
+            }
+            .tab-icons-details{
+                font-family: Roboto;
+                font-size: 13px;
+                font-weight: 300;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 1.36;
+                letter-spacing: normal;
+                text-align: left;
+                color: #707070;
+                vertical-align: super;
+                padding:0px 20px 0px 10px;
+            }
+        }
+        .listing-players{
+            padding:0px 38px;
+            .cohort-dropdown{
+                padding-top:50px;
+                .cohort-dropdown-title{
+                    font-family: Roboto;
+                    font-size: 18px;
+                    font-weight: 300;
+                    font-style: normal;
+                    font-stretch: normal;
+                    line-height: 1.33;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: #707070;
+                    padding-right:23px;
+                }
+                .cohort-dropdown-value{
+                    border-radius: 5px;
+                    border: solid 1px #d3e1eb;
+                    background-color: #ffffff;
+                    width:150px;
+                }
+            }
+        }
+
+    }
+}
+.player-header{
+    display: flex;
+    padding-bottom: 20px;
+    .playerbox-wrapper{
+        flex:2;
+        border-radius: 10px;
+        box-shadow: 0 0 10px 0 rgba(52, 146, 245, 0.23);
+        background-color: #daeffa;
+        .playerbox{
+            display: flex;
+            flex-direction: column;
+            padding: 15px 25px;
+            .playerbox-title{
+                flex:1;
+                font-family: Roboto;
+                font-size: 24px;
+                font-weight: 300;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: 3;
+                letter-spacing: normal;
+                text-align: center;
+                color: #0d9eea;
+            }
+            .playerbox-value{
+                flex:1;
+                font-size: 54px;
+                font-weight: bold;
+                color: #0d9eea;
+                text-align: center;
+            }
+        }
+    }.graph{
+        flex:5;
     }
 }

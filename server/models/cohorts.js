@@ -8,7 +8,11 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true
     },
     name: DataTypes.STRING
-  }, {});
+  }, 
+  {
+    timestamps: false, 
+    freezeTableName: true
+  });
   cohort.associate = function(models) {
     // associations can be defined here
   };

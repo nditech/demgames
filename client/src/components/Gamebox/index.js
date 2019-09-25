@@ -1,6 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 import "./styles.scss";
+import SliderArrow from "./SliderArrow";
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
 
@@ -9,7 +10,9 @@ const settings = {
   infinite: false,
   speed: 500,
   slidesToShow: 3,
-  slidesToScroll: 1
+  slidesToScroll: 1,
+  prevArrow: <SliderArrow to="prev" />,
+  nextArrow: <SliderArrow to="next" />,
 };
 export const Gamebox = ({ games, activeGame, handleGameBoxClick, addGame }) => {
   console.log(games, "games");
@@ -17,20 +20,19 @@ export const Gamebox = ({ games, activeGame, handleGameBoxClick, addGame }) => {
     <div className="list-games-wrapper">
       <div className="list-games-container">
         <Slider {...settings}>
-          {games.length > 1 ? (
+          {games.length > 0 ? (
             games.map(({ caption, id }, index) => (
+              <div className={`gamebox-wrapper ${activeGame === id ? "active" : ""}`}>
               <div
                 className={`gamebox ${activeGame === id ? "active" : ""}`}
                 onClick={() => handleGameBoxClick(index)}
               >
                 <div className="game-title">{caption}</div>
               </div>
+              {activeGame === id && <hr />}
+              </div>
             ))
-          ) : (
-            <div className={"gamebox"} onClick={() => addGame("addNew")}>
-              <div className="game-title">Add New Game</div>
-            </div>
-          )}
+          ) :null}
         </Slider>
       </div>
     </div>

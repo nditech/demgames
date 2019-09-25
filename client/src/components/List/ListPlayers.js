@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ListTable from '../ListTable';
+import Icon from "@material-ui/core/Icon";
 
 const ListPlayers = () =>  {
 
@@ -37,6 +38,8 @@ const ListPlayers = () =>  {
     ];
 
     const [playersData, setPlayersData] = useState({ user: [{}] });
+    const [activeTab,setActiveTab]=useState(1);
+    // const []
 
     const { user } = playersData;
 
@@ -65,15 +68,68 @@ const ListPlayers = () =>  {
     }, []);
 
     return (
-        <ListTable tableData={{
-            columns: columns,
-            title: 'List of Players',
-            confirmMsg: 'Are you sure you want to delete the player',
-            hasActionBtns: true,
-            data: user,
-            callbackAfterDelete: getPlayers
-        }} 
-        />
+            <>
+            <div className="player-header">
+                <div className="playerbox-wrapper">
+                    <div className="playerbox">
+                        <div className="playerbox-title">Total Number of Player</div>
+                        <div className="playerbox-value">563</div>
+                    </div>
+                </div>
+                <div className="graph"></div>
+            </div>
+            <div className="detail-box">
+              <div className="tab-container">
+                <div
+                  className={`tab ${activeTab===1?"active":""}`}
+                  onClick={() => setActiveTab(1)}
+                >
+                  All Players
+                </div>
+                <div
+                  className={`tab ${activeTab===2?"active":""}`}
+                  onClick={() =>
+                    setActiveTab(2)
+                  }
+                >
+                  Global Leadership
+                </div>
+                <div
+                  className={`tab ${activeTab===3?"active":""}`}
+                  onClick={() =>
+                    setActiveTab(3)
+                  }
+                >
+                  Cohort Leadership
+                </div>
+                <div className='tab-option'>
+                  <Icon color="primary" style={{color:"#0d9eea"}}>add_box</Icon>
+                  <span className="tab-icons-details">Add Player</span>
+                </div>
+                <div className="listing-players">
+                   {activeTab===3&& <div className="cohort-dropdown">
+                        <span className="cohort-dropdown-title">Choose Cohort</span>
+                        <select className="cohort-dropdown-value">
+                            <option value="volvo">Volvo</option>
+                            <option value="saab">Saab</option>
+                            <option value="mercedes">Mercedes</option>
+                            <option value="audi">Audi</option>
+                        </select>
+                    </div>}
+                        <ListTable tableData={{
+                        columns: columns,
+                        confirmMsg: 'Are you sure you want to delete the player',
+                        hasActionBtns: true,
+                        data: user,
+                        callbackAfterDelete: getPlayers
+                        }} 
+                    />
+                </div>
+              </div>
+                
+            </div>
+        </>
+
     );
 }
 
