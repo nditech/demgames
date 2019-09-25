@@ -4,31 +4,27 @@ $fixed-width-modal: 650px;
 $border-normal: 1px;
 $base-padding: 10px;
 $padding-medium: 20px;
-$black: #000000;
 $font-size-larger: 18px;
-$font-weight-modal: 500;
-$light-grey: #597d95;
 $font-size-extra-large: 24px;
 $font-size-small: 13px;
-$dialog-message-color: #808080;
 $font-size-large: 16px;
-$padding-modal-data: 70px;
 
-$margin: 15px;
-$color-dark: #474747;
 $padding: 15px;
-$dialog-dark-button: #676666;
-$dialog-dark-button-text-color: #ffffff;
 
-$dialog-btn-width: 100px;
 $base-margin: 15px;
-$clear: #86a9c1;
 
+$clear: #86a9c1;
 $white: #ffffff;
-$purple: #4e2d7f;
-$green: #40cc76;
-$orange: #fa750a;
 $red: #ff5057;
+$light-grey: #f2f2f2;
+$white-grey: #fcfcfc;
+$color-dark: #707070;
+$light-blue: #0d9eea;
+$dark-blue: rgba(13, 138, 202, 0.5);
+$cancel-button-hover: #638499;
+$disable-button-color: #b5cee0;
+$confirm-button-hover: #028ad2;
+
 $full-width: 100%;
 $font-family-bold: Roboto-Bold;
 $font-family-medium: Roboto-Medium;
@@ -36,3 +32,11 @@ $font-family-black: Roboto-Black;
 $font-family-light: Roboto-Light;
 $font-family-regular: Roboto-Regular;
 $font-family-thin: Roboto-Thin;
+$modal-width-message-box: 400px;
+$modal-content-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.16);
+$dialog-header-box-shadow: 0px 0px 20px 0px #eff3f5;
+$dialog-options-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.07);
+$selected-options-box-sadow: 0 3px 6px 0 rgba(13, 158, 234, 0.5);
+
+$dialog-item-title: 40%;
+$max-item-value-width: 250px;

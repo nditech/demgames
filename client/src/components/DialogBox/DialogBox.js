@@ -10,6 +10,26 @@ const modalStyles = {
   display: "flex",
   alignItems: "center"
 };
+/**
+ * This component contains few features.
+ * 1. Allow to show message in popup
+ * 2. Allow CRUD operation in popup.
+ *
+ * Parameter and descriptions
+ *    showMessage: true if it is messagebox.
+ *    confirmButtonValue: Text value for confirmation.
+ *    messageTitle: Title for message box.
+ *    messageDescription: description for the message box.
+ *    onConfirm: Function to call on confirmation button click.
+ *    isConfirmation: Confirmation button is required or not. using this we can use as an alert box.
+ *    title: Title for CRUD operation.
+ *    messageBox: true if it is messagebox
+ *    edit: true if it is edit in CRUD operation.
+ *    create: true if it is create in CRUD operation.
+ *    onDelete: Function to call on click on the remove button,
+ *    removeMessage: Error message for remove.
+ *    isRemove: true if it is delete in CRUD operation.
+ */
 
 /**
  * Functional component to display user confirmation or
@@ -22,7 +42,6 @@ const modalStyles = {
  * @returns {JSX.Element} - Rendered Component
  */
 class DialogBox extends Component {
-  // const DialogBox = props => {
   constructor(props) {
     super(props);
     this.state = {
@@ -384,7 +403,14 @@ DialogBox.propTypes = {
   messageTitle: PropTypes.string,
   onCancel: PropTypes.func,
   onConfirm: PropTypes.func,
-  showMessage: PropTypes.bool
+  showMessage: PropTypes.bool,
+  onDelete: PropTypes.func,
+  title: PropTypes.string,
+  messageBox: PropTypes.bool,
+  edit: PropTypes.bool,
+  create: PropTypes.bool,
+  removeMessage: "",
+  isRemove: PropTypes.bool
 };
 
 DialogBox.defaultProps = {
@@ -396,7 +422,13 @@ DialogBox.defaultProps = {
   messageHeader: "",
   messageNote: "",
   messageTitle: "",
-  showMessage: false
+  showMessage: false,
+  title: "",
+  messageBox: false,
+  edit: false,
+  create: false,
+  removeMessage: "",
+  isRemove: false
 };
 
 export default DialogBox;
