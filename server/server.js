@@ -1,5 +1,5 @@
 const _ = require('underscore');
-// const gameData = require('../data/Module/moduleData.json');
+const gameData = require('../data/Module/moduleData.json');
 const express = require('express');
 const app = express();
 const { check, validationResult } = require('express-validator');
@@ -14,6 +14,8 @@ const cohort_question = models.Cohort_Question;
 // JWT
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
+
+const db = require('./models/index');
 
 var bodyParser = require('body-parser');
 
@@ -48,113 +50,125 @@ app.get('/api/game', async (req, res) => {
 
   console.log("GET /api/game -----api");
 
+
+  if (!gameData) res.status(404).send('No data found');
+	res.json({ gameData });
+
+
+
+
+
+
+
+
   try {
-    const gameData = [];
+  //   const gameData = [];
 
-    const gameList = await games.findAll({
-      include: [{
-        model: questions,
-        include: [{
-          model: choices
-        }]
-      }]
-    });
+  //   const gameList = await games.findAll({
+  //     include: [{
+  //       model: questions,
+  //       include: [{
+  //         model: choices
+  //       }]
+  //     }]
+  //   });
 
-    if (!gameList) {
-      return res.status(400).send('No data found!');
-    }
+  //   if (!gameList) {
+  //     return res.status(400).send('No data found!');
+  //   }
 
-    gameList.forEach(async element => {
-      let gameObj = {};
-      let questions = element.Questions;
-      gameObj.id = element.id;
-      gameObj.name = element.caption;
-      gameObj.type = element.gametype;
-      gameObj.style = 'blue';
+  //   gameList.forEach(async element => {
+  //     let gameObj = {};
+  //     let questions = element.Questions;
+  //     gameObj.id = element.id;
+  //     gameObj.name = element.caption;
+  //     gameObj.type = element.gametype;
+  //     gameObj.style = 'blue';
 
-      let diffLevelGroup = _.groupBy(questions, function (value) {
-        return value.difficulty_level;
-      });
+  //     let diffLevelGroup = _.groupBy(questions, function (value) {
+  //       return value.difficulty_level;
+  //     });
 
-      for (let i in diffLevelGroup) {
+  //     for (let i in diffLevelGroup) {
 
-        let quesArr = [];
-        group.forEach(function (ques) {
+  //       let quesArr = [];
+  //       group.forEach(function (ques) {
 
-          // Find the collection of correct answer(s)
-          let options = ques.Choices;
-          let answerArr = [];
-          options.forEach(function (option, index) { if (option.answer === 1) { answerArr.push(index) } });
+  //         // Find the collection of correct answer(s)
+  //         let options = ques.Choices;
+  //         let answerArr = [];
+  //         options.forEach(function (option, index) { if (option.answer === 1) { answerArr.push(index) } });
 
-          quesArr.push({
-            id: ques.id,
-            question: ques.question_statement,
-            options: ques.Choices.map(option => option.choicestatement),
-            correct_answer: answerArr
-          });
+  //         quesArr.push({
+  //           id: ques.id,
+  //           question: ques.question_statement,
+  //           options: ques.Choices.map(option => option.choicestatement),
+  //           correct_answer: answerArr
+  //         });
 
-        });
+  //       });
 
-      }
+  //     }
 
-      console.log('game LIST------START-------> ');
-      console.log(JSON.stringify(diffLevelGroup));
-      console.log('game LIST-------------> ');
+  //     console.log('game LIST------START-------> ');
+  //     console.log(JSON.stringify(diffLevelGroup));
+  //     console.log('game LIST-------------> ');
 
-      let data = _.map(diffLevelGroup, function (group, index) {
+  //     let data = _.map(diffLevelGroup, function (group, index) {
 
-        //     console.log('game LIST------group-------> '); 
-        // console.log(JSON.stringify(group));
-        // console.log('game LIST-------------> '); 
+  //       //     console.log('game LIST------group-------> '); 
+  //       // console.log(JSON.stringify(group));
+  //       // console.log('game LIST-------------> '); 
 
-        let quesArr = [];
-        group.forEach(function (ques) {
+  //       let quesArr = [];
+  //       group.forEach(function (ques) {
 
-          // Find the collection of correct answer(s)
-          let options = ques.Choices;
-          let answerArr = [];
-          options.forEach(function (option, index) { if (option.answer === 1) { answerArr.push(index) } });
+  //         // Find the collection of correct answer(s)
+  //         let options = ques.Choices;
+  //         let answerArr = [];
+  //         options.forEach(function (option, index) { if (option.answer === 1) { answerArr.push(index) } });
 
-          quesArr.push({
-            id: ques.id,
-            question: ques.question_statement,
-            options: ques.Choices.map(option => option.choicestatement),
-            correct_answer: answerArr
-          });
+  //         quesArr.push({
+  //           id: ques.id,
+  //           question: ques.question_statement,
+  //           options: ques.Choices.map(option => option.choicestatement),
+  //           correct_answer: answerArr
+  //         });
 
-        });
+  //       });
 
 
-        // Choices Array
+  //       // Choices Array
 
-        return {
-          id: parseInt(index),
-          desc: element.gamedescription,
-          linked_level: group[0].difficulty_level,
-          questions: quesArr
-        }
-      });
+  //       return {
+  //         id: parseInt(index),
+  //         desc: element.gamedescription,
+  //         linked_level: group[0].difficulty_level,
+  //         questions: quesArr
+  //       }
+  //     });
 
-      gameObj.levels = data;
+  //     gameObj.levels = data;
 
-      gameData.push(gameObj);
+  //     gameData.push(gameObj);
 
-    });
+  //   });
     // console.log('game LIST------START-------> '); 
     // console.log(JSON.stringify(gameData));
     // console.log('game LIST-------------> '); 
 
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // res.setHeader('Access-Control-Allow-Origin', '*');
     // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    // res.setHeader('Access-Control-Allow-Methods', 'GET');
     // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
+    // res.setHeader('Access-Control-Allow-Credentials', true);
 
-    res.json({ gameData });
+    // res.json({ gameData });
 
   } catch (error) {
     console.error(error.message);
@@ -462,12 +476,48 @@ app.post('/registergame', async (req, res) => {
 
     res.send({ message: 'game successfully added' });
 
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send({ message: 'Server Error' });
+  }
+});
+
+
+// @route   POST /registergame
+// @desc    Create a new game
+app.post('/Updategame', 
+[
+  check('id', 'First Name is required').isNumeric(),
+  check('caption', 'Caption is required').not().isEmpty(),
+  check('gamedescription', 'gamedescription is required').not().isEmpty()
+],
+
+async (req, res) => {
+
+  console.log('POST /Updategame  -------api');
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const {id, caption, gamedescription } = req.body;
+
+  try {
+    let updatedGame = await games.update(
+      { caption : caption, gamedescription : gamedescription },
+      { where : { id : id }, raw:true }
+    );
+
+    console.log(updatedGame);
+
+    res.send({ message: 'game updated successfully' });
 
   } catch (error) {
     console.error(error.message);
     res.status(500).send({ message: 'Server Error' });
   }
 });
+
 
 // @route   GET /listchoices
 // @desc    Get list of all choices from db
@@ -480,15 +530,6 @@ app.get('/listchoices', (req, res) => {
   }).catch(err => {
     console.log(err);
   });
-  // res.set('Content-Type', 'application/json');     
-  //    connectionMysql.query('select * from Choices',(err, data, fields)=>{
-  //      if(err){ 
-  //        console.log("Not Successful access to games");
-  //      }else{
-  //        console.log(JSON.stringify(data));
-  //        res.send(JSON.stringify(data));
-  //      }     
-  //  })
 })
 
 // @route   GET /listgames
@@ -1006,5 +1047,116 @@ app.post('/linkcohort_question',
       res.status(500).send('Server Error');
     }
 });
+
+// @route   POST /duplicatGame
+// @desc    Duplicate selected game
+app.post('/duplicatGame',
+  [
+    check('game_id', 'Game id is required').isNumeric()
+  ],
+
+  async (req, res) => {
+
+    console.log('POST /duplicatGame -- api')
+    var data = req.body;
+    console.log(data);
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const {game_id} = req.body;
+
+    // Find game based on game_id and throw error if not exist
+    try{
+      let originalGame = await games.findOne({ where: { id: game_id} });
+
+      if (!originalGame) {
+        return res.status(400).json({ errors: [{ msg: "game doesn't exists" }] });
+      }
+
+      // Find all questions based on game_id and throw error if not exist
+      let questionList = await questions.findAll({ where: { game_id: originalGame.id}, raw:true });
+
+      let questionIdList = questionList.map(item =>{
+        let test = item.id;
+        return test;
+      });
+
+      console.log(JSON.stringify(questionIdList));
+      
+      let choiceList = await choices.findAll({ where: { questionid: questionIdList}, raw:true })
+
+      console.log(JSON.stringify(choiceList));
+
+    //   res.send('game and questions finded');
+
+
+    let transaction;    
+
+    try {
+      // get transaction
+      transaction = await db.sequelize.transaction();
+
+      // step 1 - create new game
+      let newGame = await games.create({
+        caption: originalGame.caption,
+        gamedescription: originalGame.gamedescription,
+        gametype: originalGame.gametype
+      }, {transaction},{raw:true} );
+
+      console.log("newGame created successfully ---VVV  \n\n\n");
+      console.log(JSON.stringify(newGame));
+
+      // step 2 - create questions and choices from old question
+
+      for (const temp of questionList) {
+          let newQuestion = await questions.create({
+            game_id: newGame.id,
+            difficulty_level:temp.difficulty_level,
+            question_statement:temp.question_statement,
+            weight: temp.weight,
+            explanation: temp.explanation,
+            isitmedia: temp.isitmedia
+          },{transaction});
+       
+          console.log("\n\n\n  New Question created successfully ---");
+          console.log(JSON.stringify(newQuestion));
+
+          let oldchoices = await choices.findAll({ where: { questionid: temp.id}, raw:true });
+
+           oldchoices.map(choice => {
+            delete choice.id;
+            delete choice.QuestionId;
+            choice.questionid = newQuestion.id;
+            });
+
+          console.log("\n NEW choices for bulkCreate --- ");
+          console.log(JSON.stringify(oldchoices));
+
+          let newInsertedChoices = await choices.bulkCreate(oldchoices, {transaction},{raw:true});
+          console.log("\n\n\n New Inserted choices after bulkCreate --- ");
+          console.log(JSON.stringify(newInsertedChoices));
+
+      }
+
+      await transaction.commit()
+      console.log("game duplicated successfully");
+      res.status(200).send("game duplicated successfully");
+
+      } catch (err) {
+        // Rollback transaction only if the transaction object is defined
+        if (transaction) await transaction.rollback();
+
+        console.error(err.message);
+        res.status(500).send('Server Error while finding game');
+      }
+
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Server Error while finding game');
+    }
+  });
 
 app.listen(9000, () => console.log('listening'));

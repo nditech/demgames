@@ -33,7 +33,7 @@ import UpdateChoice from './components/Update/UpdateChoice';
     	<Router>
 	    	<div>
 		    	<Route path="/" exact component={App} />
-                <Route path="/landingpage" exact component={LandingPage} />
+                {/* <Route path="/landingpage" exact component={LandingPage} /> */}
 			    <Route path="/module/:moduleId/level/:levelId/questions/" exact component={QuestionsAnsPage} />
 			    <Route path="/module/:moduleId/levels" exact component={LevelsPage} />
 			    <Route path="/module/scenario/:moduleId/level/:levelId/questions" exact component={ScenarioQuesAns} />

@@ -60,8 +60,7 @@ const AddQuestion = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('form data---> ',formData);
-
+     
         fetch('http://localhost:9000/addquestion', {
             method: 'POST',
             headers: {

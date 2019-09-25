@@ -58,8 +58,14 @@ class LevelsPage extends React.Component {
 
 	//Get list of par scores for each level of a particular module.
 	getParScores = () => {
+		const { gameData } = this.props;
+		let parScores;
 		let moduleId = parseInt(this.props.match.params.moduleId);
-		const parScores = this.props.gameData.gameData[moduleId - 1].levels.map((level) => level.par_score);
+		if (gameData[gameData[moduleId - 1]])
+		{
+			parScores = gameData[moduleId - 1].levels.map((level) => level.par_score);
+		}
+
 		return parScores;
 	};
 
@@ -90,15 +96,21 @@ class LevelsPage extends React.Component {
 			}
 		};
 
-	render() {
+		render() {
 		const moduleNames = this.getModuleNames();
 		const { open } = this.state;
+		const { gameData } = this.props;
+		console.log("gameDatagameData", gameData)
 		const scores = this.getScores();
 		const parScores = this.getParScores();
 		const moduleId = parseInt(this.props.match.params.moduleId);
 		const moduleName = moduleNames[moduleId - 1];
-		let levels = this.props.gameData.gameData[moduleId - 1].levels;
-		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
+		let levels, moduleColor ;
+		if (gameData.gameData[moduleId - 1])
+		{
+			levels = gameData.gameData[moduleId - 1].levels;
+			moduleColor = this.props.gameData.gameData[moduleId - 1].style;
+		}
 
 		return (
 			<div className="landing-page-wrapper">
@@ -106,7 +118,7 @@ class LevelsPage extends React.Component {
 					<div className="top-section">
 						<div className="back-ndi-logo">
 							<button className="back-button">
-								<a href="/">
+								<a href="/	">
 									<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
 								</a>
 							</button>
@@ -142,7 +154,7 @@ class LevelsPage extends React.Component {
 									moduleId={moduleId}
 									prevLevelScore={data.id > 1 ? scores[data.id - 2] : 0}
 									currentScore={scores[data.id - 1]}
-									parScore={parScores[data.id - 1]}
+									parScore={parScores ? parScores[data.id - 1]: null}
 									linkedLevel={data.linked_level}
 									description={data.desc}
 									totalScore={data.total_score}
@@ -157,6 +169,7 @@ class LevelsPage extends React.Component {
 			</div>
 		);
 	}
+
 }
 
 const mapStateToProps = (state) => {
@@ -182,6 +195,6 @@ LevelsPage.propTypes = {
 	match: PropTypes.object
 };
 
-export default connect(mapStateToProps, null)(LevelsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LevelsPage);
 
 // export default LevelsPage;

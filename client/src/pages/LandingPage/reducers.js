@@ -9,8 +9,8 @@ const myReducer = (state = initialState, action) => {
 	
 	const newState = { ...state };
 	
-	console.log(newState);
 
+	
 	switch (action.type) {
 	
 		case FETCH_GAME_DATA: state = { ...state, gameData: action.val}
@@ -23,7 +23,6 @@ const myReducer = (state = initialState, action) => {
 			return newState;
 	}
 	
-	console.log(newState);
 };
 
 export default myReducer;

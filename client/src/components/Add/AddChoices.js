@@ -40,7 +40,6 @@ const AddChoices = () => {
           .then(res=>res.json())
           .then((data)=>
             {
-                console.log('questions list ----', data);
                 initialquestions = data.map((question) => {
                         return question
                 });

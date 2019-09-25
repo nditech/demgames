@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         question_statement:{
             type: DataTypes.STRING(300),
-            allowNull: false
+            allowNull: true
         },
         weight:{
             type: DataTypes.FLOAT(2)

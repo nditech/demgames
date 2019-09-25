@@ -7,16 +7,16 @@ import Auth from '../../Auth';
 import { connect } from 'react-redux';
 
 import './styles.scss';
-const auth0=new Auth();
+// const auth0=new Auth();
 
-const authDetail={
-				player_given_name:"",
-				player_family_name:"",
-				player_email:"",
-				player_username:"",
-				player_picture:"",
-				player_gender:""
-			};
+// const authDetail={
+// 				player_given_name:"",
+// 				player_family_name:"",
+// 				player_email:"",
+// 				player_username:"",
+// 				player_picture:"",
+// 				player_gender:""
+// 			};
 
 const scoreDetail={
 				current:0,
@@ -66,7 +66,8 @@ class ProfileInfo extends React.Component {
 
 	render() {
 		const { email, name } = this.state;
-		
+		alert(email);
+		alert(editUrl);
 
 		return (
 			<div className="profile-info-container">
@@ -198,7 +199,7 @@ const mapStateToProps = (state) => ({
 //Dispatch action to fetch game data and scores.
 const mapDispatchToProps = (dispatch) => {
 	return {
-		//getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+		// getGameData: (gameData) => dispatch(fetchGameData(gameData)),
 		getScores: (scores) => dispatch(fetchScores(scores)),
 		setAuth:(authDetail) => dispatch(fetchAuthDetails(authDetail)),
 		clearAuth:(authDetail)=> dispatch(clearAuthDetails(authDetail)),
@@ -207,5 +208,5 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
-//export default ProfileInfo;
+// export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
+export default ProfileInfo;

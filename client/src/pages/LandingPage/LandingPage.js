@@ -164,8 +164,7 @@ class LandingPage extends React.Component {
 	handleLogOut = () => {
 
 		if (auth0.isAuthenticated())
-		{
-				
+		{	
 			authDetail.player_given_name="";
 			authDetail.player_family_name="";
 			authDetail.player_email="";
@@ -219,7 +218,7 @@ class LandingPage extends React.Component {
 									moduleName={modules.name}
 									levels={modules.levels}
 									style={modules.style}
-									type={modules.type}
+									type={modules.type}									
 								/>
 							))}
 					</div>
