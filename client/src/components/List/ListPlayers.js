@@ -38,6 +38,7 @@ const ListPlayers = () =>  {
     ];
 
     const [playersData, setPlayersData] = useState({ user: [{}] });
+    const [cohort, setCohort] = useState(null);
     const [activeTab,setActiveTab]=useState(1);
     // const []
 
@@ -62,11 +63,31 @@ const ListPlayers = () =>  {
             .catch(err => console.log(err));
         console.log(user);
     };
+    const getCohort = () => {
+        // console.log(this.props.auth);
+        const url = 'http://localhost:9000/listCohort';
+        fetch(url, {
+            method: 'get',
+            headers: {
+                "authorization": "Bearer " + localStorage.getItem("access_token"),
+                "Content-Type": "Application/json",
+                "Accept": "application/json"
+            }
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log('api data -->', JSON.stringify(data))
+                setCohort(data);
+            })
+            .catch(err => console.log(err));
+        
+    };
 
     useEffect(()=>{
         getPlayers();
+        getCohort();
     }, []);
-
+    console.log(cohort,"suyash");
     return (
             <>
             <div className="player-header">
@@ -110,10 +131,10 @@ const ListPlayers = () =>  {
                    {activeTab===3&& <div className="cohort-dropdown">
                         <span className="cohort-dropdown-title">Choose Cohort</span>
                         <select className="cohort-dropdown-value">
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="mercedes">Mercedes</option>
-                            <option value="audi">Audi</option>
+                            {cohort.map(({id,name})=>
+                                <option key={id} value={name}>{name}</option>
+                            )}
+                            
                         </select>
                     </div>}
                         <ListTable tableData={{

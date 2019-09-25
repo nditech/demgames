@@ -11,9 +11,12 @@ const games = models.Games;
 const choices = models.Choices;
 const cohort_game = models.Cohort_Game;
 const cohort_question = models.Cohort_Question;
+const cohort = models.Cohorts;
 // JWT
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
+
+const db = require('./models/index')
 
 var bodyParser = require('body-parser');
 
@@ -793,22 +796,6 @@ app.post('/selectQuestionforDel', (req, res) => {
   // }
 });
 
-// @route   POST /updateGame
-// @desc    Update games
-app.post('/updateGame', (req, res) => {
-  //  console.log(req.body);
-  //  const sqlUpdateStatement='update Games set caption="'+req.body.caption+'", gamedescription="'+req.body.gamedescription+'", gametype="'+req.body.gametype+'" where id = "'+req.body.id+'"';
-
-  //          console.log(sqlUpdateStatement);
-  //          connectionMysql.query(sqlUpdateStatement, function (err, result, fields) {
-  //             if (err) throw err;
-  //             console.log(sqlUpdateStatement);
-  //             console.log("Number of rows affected : " + result.affectedRows);
-  //             console.log("Number of records affected with warning : " + result.warningCount);
-  //             console.log("Message from MySQL Server : " + result.message); 
-  //             res.status(200).send({message:'updated successfully'});              
-  //            }); 
-})
 
 // @route   POST /updatechoice
 // @desc    Update game choice
@@ -826,6 +813,17 @@ app.post('/updatechoice', (req, res) => {
   //            res.status(200).send({message:'updated successfully'});              
   //           }); 
 })
+
+app.get('/listCohort', (req, res) => {
+  console.log("GET /listCohort -----api ---called")
+  cohort.findAll().then(result => {
+    res.send(JSON.stringify(result));
+    console.log(JSON.stringify(result));
+  }).catch(err => {
+    console.log(err);
+    res.status(500).send('Server Error');
+  });
+});
 
 app.get('/listcohort_game', (req, res) => {
   console.log("GET /listcohort_game -----api ---called")
@@ -915,6 +913,152 @@ app.post('/linkcohort_question',
       console.error(error.message);
       res.status(500).send('Server Error');
     }
+});
+
+// @route   POST /duplicatGame
+// @desc    Duplicate selected game
+app.post('/duplicatGame',
+  [
+    check('game_id', 'Game id is required').isNumeric()
+  ],
+
+  async (req, res) => {
+
+    console.log('POST /duplicatGame -- api')
+    var data = req.body;
+    console.log(data);
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const {game_id} = req.body;
+
+    // Find game based on game_id and throw error if not exist
+    try{
+      let originalGame = await games.findOne({ where: { id: game_id} });
+
+      if (!originalGame) {
+        return res.status(400).json({ errors: [{ msg: "game doesn't exists" }] });
+      }
+
+      // Find all questions based on game_id and throw error if not exist
+      let questionList = await questions.findAll({ where: { game_id: originalGame.id}, raw:true });
+
+      let questionIdList = questionList.map(item =>{
+        let test = item.id;
+        return test;
+      });
+
+      console.log(JSON.stringify(questionIdList));
+      
+      let choiceList = await choices.findAll({ where: { questionid: questionIdList}, raw:true })
+
+      console.log(JSON.stringify(choiceList));
+
+    //   res.send('game and questions finded');
+
+
+    let transaction;    
+
+    try {
+      // get transaction
+      transaction = await db.sequelize.transaction();
+
+      // step 1 - create new game
+      let newGame = await games.create({
+        caption: originalGame.caption,
+        gamedescription: originalGame.gamedescription,
+        gametype: originalGame.gametype
+      }, {transaction},{raw:true} );
+
+      console.log("newGame created successfully ---VVV  \n\n\n");
+      console.log(JSON.stringify(newGame));
+
+      // step 2 - create questions and choices from old question
+
+      for (const temp of questionList) {
+          let newQuestion = await questions.create({
+            game_id: newGame.id,
+            difficulty_level:temp.difficulty_level,
+            question_statement:temp.question_statement,
+            weight: temp.weight,
+            explanation: temp.explanation,
+            isitmedia: temp.isitmedia
+          },{transaction});
+       
+          console.log("\n\n\n  New Question created successfully ---");
+          console.log(JSON.stringify(newQuestion));
+
+          let oldchoices = await choices.findAll({ where: { questionid: temp.id}, raw:true });
+
+           oldchoices.map(choice => {
+            delete choice.id;
+            delete choice.QuestionId;
+            choice.questionid = newQuestion.id;
+            });
+
+          console.log("\n NEW choices for bulkCreate --- ");
+          console.log(JSON.stringify(oldchoices));
+
+          let newInsertedChoices = await choices.bulkCreate(oldchoices, {transaction},{raw:true});
+          console.log("\n\n\n New Inserted choices after bulkCreate --- ");
+          console.log(JSON.stringify(newInsertedChoices));
+
+      }
+
+      await transaction.commit()
+      console.log("game duplicated successfully");
+      res.status(200).send(JSON.stringify(newGame));
+
+      } catch (err) {
+        // Rollback transaction only if the transaction object is defined
+        if (transaction) await transaction.rollback();
+
+        console.error(err.message);
+        res.status(500).send('Server Error while finding game');
+      }
+
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Server Error while finding game');
+    }
+  });
+
+
+  app.post('/Updategame', 
+[
+  check('id', 'First Name is required').isNumeric(),
+  check('caption', 'Caption is required').not().isEmpty(),
+  check('gamedescription', 'gamedescription is required').not().isEmpty()
+],
+
+async (req, res) => {
+
+  console.log('POST /Updategame  -------api');
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const {id, caption, gamedescription } = req.body;
+
+  try {
+    let updatedGame = await games.update(
+      { caption : caption, gamedescription : gamedescription },
+      { where : { id : id }, raw:true }
+    );
+
+    console.log('updating nowwwwwwwwww');
+    console.log(JSON.stringify(updatedGame));
+
+    res.send({ message: 'game updated successfully' });
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send({ message: 'Server Error' });
+  }
 });
 
 app.listen(9000, () => console.log('listening'));

@@ -180,6 +180,7 @@ class LandingPage extends React.Component {
 
 
 	render() {
+		console.log(this.props);
 		const gameData = this.props.gameData.gameData;
 		const { open } = this.state;
 		return (

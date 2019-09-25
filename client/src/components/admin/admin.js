@@ -12,6 +12,7 @@ import {
   TabContent,
   TabPane
 } from "reactstrap";
+import { connect } from 'react-redux';
 import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import React, { Component, Fragment } from "react";
 
@@ -42,7 +43,7 @@ import Icon from "@material-ui/core/Icon";
 //import NotFound from '../../pages/Landin';
 
 const auth = new Auth();
-const headerTabs = ["games", "players", "choices"];
+const headerTabs = ["games", "players"];
 class Admin extends Component {
   constructor(props) {
     super(props);
@@ -220,12 +221,6 @@ class Admin extends Component {
           multiline: true,
           editable: true
         },
-        {
-          type: "choice",
-          title: "Type",
-          value: "A",
-          editable: true
-        },
       ];
   this.setState({ fields,
     // showMessage:true,
@@ -307,29 +302,26 @@ class Admin extends Component {
         });
     });
   }
-  editGameCb = (data = "") => {
-    // const addGameForm={caption:data.Title,gamedescription:data.Description,gametype:data.Type}
-    console.log(data);
+  editGameCb = (data,id) => {
+    const editGameForm={id,caption:data.Title,gamedescription:data.Description};
+    console.log(editGameForm);
     console.log("game edited. ",data);
-    // const url = 'http://localhost:9000/registergame';
-    //     fetch(url, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(addGameForm)
-    //     })
-    //         .then(res => res.json())
-    //         .then((data) => {
-    //           this.setState({showMessage:false});
-    //             alert(data.message);
-    //         })
-    //         .catch((error) => console.log(error));
+    const url = 'http://localhost:9000/Updategame';
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(editGameForm)
+        })
+            .then(res => res.json())
+            .then((data) => {
+              this.setState({showMessage:false,editedDetals:editGameForm});
+            })
+            .catch((error) => console.log(error));
   };
-  copyGameCb=(id)=>{
-    console.log(id);
-  }
+  
   togglePlayer(tab) {
     if (this.state.activePlayerTab !== tab) {
       this.setState({
@@ -449,6 +441,7 @@ class Admin extends Component {
   };
 
   render() {
+    console.log(this.props,"PROPS");
     const {
       showMessage,
       confirmButtonValue,
@@ -489,6 +482,8 @@ class Admin extends Component {
             headerTabs={headerTabs}
             activeTab={this.state.activeTab}
             toggleTab={this.toggle.bind(this)}
+            name={this.props.player_given_name}
+            image={this.props.player_picture}
           />
           <div style={{backgroundColor:"#f7f7f7", padding:"20px 50px 50px 50px"}}>
           <div className="containers">
@@ -538,7 +533,7 @@ class Admin extends Component {
                               color: "#707070"}}>Add Game</span>
               </div>
             </div>
-              <ListGames editGame={this.editGame} copyGameCb={this.copyGameCb}/>
+              <ListGames editGame={this.editGame} editedDetals={this.state.editedDetals}/>
                 {/* <Row>
                   <Col sm="12">
                     <Nav pills className="float-right pill-tabs">
@@ -792,4 +787,13 @@ class Admin extends Component {
   }
 }
 
-export default Admin;
+const mapStateToProps = (state) =>{
+  console.log(state,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+}
+//  ({
+// 	player_given_name:state.authDetail.authDetail.player_given_name,
+// 	player_picture:state.authDetail.authDetail.player_picture,
+// 	gameData: state.gameData 
+// });
+
+export default connect(mapStateToProps)(Admin);
