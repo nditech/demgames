@@ -737,7 +737,7 @@ class Admin extends Component {
                       <TabPane tabId="list">
                         <Row>
                           <Col sm="12">
-                            <ListChoices />
+                            {/* <ListChoices /> */}
                           </Col>
                         </Row>
                       </TabPane>

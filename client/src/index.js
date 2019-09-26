@@ -18,7 +18,7 @@ import UpdatePlayer from './components/Update/UpdateProfile';
 import Register from './components/Add/Register';
 import AddGame from './components/Add/AddGame';
 import AddQuestion from './components/Add/AddQuestion';
-import AddChoices from './components/Add/AddChoices';
+// import AddChoices from './components/Add/AddChoices';
 import Auth from './Auth';
 import Callback from './pages/LandingPage/callback';
 import RemovePlayer from './components/Remove/RemovePlayer';
@@ -46,7 +46,7 @@ import UpdateChoice from './components/Update/UpdateChoice';
 				<Route path="/registerplayer" exact component={Register} />
 				<Route path="/addgame" exact component={AddGame} />
 				<Route path="/addquestion" exact component={AddQuestion} />
-				<Route path="/addchoices" exact component={AddChoices}/>
+				{/* <Route path="/addchoices" exact component={AddChoices}/> */}
 				<Route path="/removeplayer" exact component={RemovePlayer} />
 				<Route path="/removequestion" exact component={RemovePlayer} />
 				<Route path="/updatequestion" exact component={UpdatePlayer} />
