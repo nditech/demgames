@@ -1,9 +1,24 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import DataTable from "react-data-table-component";
 
 const ListTable = ({
-  tableData: { title, columns, data, hasActionBtns, deleteHandle, editHandle }
+  tableData: {
+    title,
+    columns,
+    data,
+    hasActionBtns,
+    deleteHandle,
+    editHandle,
+    minSearchLength = 3
+  }
 }) => {
+  const [listState, setListState] = useState({
+    filteredData: "",
+    searchText: ""
+  });
+
+  const { filteredData, searchText } = listState;
+
   const deleteClickHandle = choiceId => {
     deleteHandle(choiceId);
   };
@@ -46,10 +61,55 @@ const ListTable = ({
     });
   }
 
+  // Table Search
+  let rowdata = JSON.parse(JSON.stringify(data));
+  const handleSearch = e => {
+    let searchText = e.target.value;
+    let filterdata = [];
+    setListState({
+      ...listState,
+      searchText: searchText
+    });
+
+    window.filterDelay && clearTimeout(window.filterDelay);
+    window.filterDelay = setTimeout(() => {
+      rowdata.forEach(element => {
+        let valueString = "";
+        for (let lindex in element) {
+          valueString += " " + element[lindex];
+        }
+        if (
+          valueString.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
+        ) {
+          filterdata.push(element);
+        }
+      });
+
+      setListState({
+        ...listState,
+        filteredData: filterdata,
+        searchText: searchText
+      });
+    }, 300);
+    // clearTimeout(filterDelay);
+  };
+
   return (
     <div className="App">
       <div>
-        <DataTable title={title} columns={columns} data={data} pagination />
+        <input
+          type="text"
+          value={searchText}
+          placeholder="Search..."
+          className="tableSearchBox"
+          onChange={e => handleSearch(e)}
+        />
+        <DataTable
+          title={title}
+          columns={columns}
+          data={filteredData ? filteredData : data}
+          pagination
+        />
       </div>
     </div>
   );

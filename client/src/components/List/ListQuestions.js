@@ -3,6 +3,8 @@ import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
+  //   console.log("active game ----> ", activeGame);
+  //   console.log("active game details --- > ", activeGameDetails);
   // Set data table columns
   const columns = [
     // {
@@ -48,13 +50,15 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       question_statement: ""
     },
     choices: [],
-    choicesNameArray: []
+    choicesNameArray: [],
+    correctChoice: ""
   });
   const {
     questions,
     gameId,
     questionDetail,
     choices,
+    correctChoice,
     choicesNameArray,
     questionId
   } = questionsData;
@@ -119,8 +123,20 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     }
   };
 
+  const convertChoice = value => {
+    return String.fromCharCode(value + 65);
+  };
+
   const editQuestion = (data = "", id) => {
-    console.log(data);
+    console.log("dialogbox data", data);
+    let answers = [];
+    if (data) {
+      data.options.map((item, index) => {
+        answers.push({ option: convertChoice(index), value: item });
+      });
+    }
+    data.options = answers;
+    console.log("options data -----> ", data);
     let url = "http://localhost:9000/updatequestion/";
     fetch(url, {
       method: "POST",
@@ -203,16 +219,16 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         editable: true
       },
       {
-        key: "answers",
+        key: "options",
         type: "options",
         title: "answers",
         value: choicesNameArray
       },
       {
-        key: "current_choice",
+        key: "answers",
         type: "choice",
         title: "Current choice",
-        value: "A"
+        value: correctChoice
       }
     ]
   };
@@ -231,8 +247,13 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       .then(data => {
         console.log("choices data -->", JSON.stringify(data));
         let choicesName = [];
-        data.map(item => {
+        let correctChoice = "";
+        data.map((item, index) => {
+          item.option = convertChoice(index);
           choicesName.push(item.choicestatement);
+          if (item.answer === 1) {
+            correctChoice = convertChoice(index);
+          }
         });
 
         setQuestionsData({
@@ -240,7 +261,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           choices: data,
           choicesNameArray: choicesName,
           questionDetail: selectedQuestion,
-          questionId: selectedQuestion.id
+          questionId: selectedQuestion.id,
+          correctChoice: correctChoice
         });
       })
       .catch(err => console.log(err));
@@ -257,7 +279,107 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     });
     getChoices(id, selectedQuestion);
     // console.log("question detail selected", questionDetail);
-    setPopupState({ ...popupState, showMessage: true });
+    setPopupState({
+      showMessage: true,
+      confirmButtonValue: "Update",
+      messageTitle: "",
+      messageDescription: "",
+      onConfirm: editQuestion,
+      isConfirmation: true,
+      title: "Question detail",
+      messageBox: false,
+      edit: true,
+      create: false,
+      onDelete: null,
+      removeMessage: false
+    });
+  };
+
+  //   ADD A NEW QUESTION
+
+  const fields = [
+    {
+      key: "game",
+      type: "text",
+      title: "Game",
+      value: activeGameName
+    },
+    {
+      key: "level",
+      type: "text",
+      title: "Level",
+      editable: true,
+      value: ""
+    },
+    {
+      key: "question",
+      type: "text",
+      title: "Question",
+      multiline: true,
+      editable: true,
+      value: ""
+    },
+    {
+      key: "options",
+      type: "options",
+      title: "answers",
+      value: ["", "", "", ""]
+    },
+    {
+      type: "choice",
+      title: "Correct choice",
+      value: "",
+      editable: true,
+      key: "answers"
+    }
+  ];
+
+  const saveQuestion = (data = "") => {
+    let answers = [];
+    if (data) {
+      data.options.map((item, index) => {
+        answers.push({ option: convertChoice(index), value: item });
+      });
+    }
+    data.options = answers;
+    data.game_id = activeGame;
+    console.log("options data -----> ", data);
+    let url = "http://localhost:9000/addquestion/";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("access_token"),
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ data: data })
+    })
+      .then(res => res.json())
+      .then(data => {
+        alert(JSON.stringify(data));
+        setPopupState({ ...popupState, showMessage: false });
+        getQuestions();
+      })
+      .catch(error => console.log(error));
+  };
+
+  const addQuestionHandle = e => {
+    console.log("add question clicked ");
+    setPopupState({
+      showMessage: true,
+      confirmButtonValue: "Save",
+      messageTitle: "",
+      messageDescription: "",
+      onConfirm: saveQuestion,
+      isConfirmation: true,
+      title: "Question detail",
+      messageBox: false,
+      edit: false,
+      create: true,
+      onDelete: null,
+      removeMessage: false,
+      isRemove: false
+    });
   };
 
   return (
@@ -271,13 +393,19 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         isConfirmation={isConfirmation}
         onCancel={onCancel}
         title={title}
-        data={data}
+        data={create ? fields : data}
         messageBox={messageBox}
         edit={edit}
         create={create}
         onDelete={onDelete}
         removeMessage={removeMessage}
       />
+      <div className="float-right" onClick={e => addQuestionHandle(e)}>
+        <button className="btn btn-info btn-sm">
+          <i className="fa fa-plus"></i>
+        </button>
+        <span> Add Question</span>
+      </div>
       <ListTable
         tableData={{
           columns: columns,

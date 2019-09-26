@@ -53,3 +53,8 @@ div.inhAeF {
   font-weight: 600;
   font-size: 18px;
 }
+
+.tableSearchBox {
+  float: right;
+  margin-right: 10px;
+}

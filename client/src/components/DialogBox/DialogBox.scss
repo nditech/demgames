@@ -1,31 +1,42 @@
 @import "../../sass/variables";
 @import "../../sass/mixins";
 
+.message-dialog-message {
+  .modal-content {
+    width: $modal-width-message-box;
+  }
+}
+.message-dialog-data {
+  .modal-content {
+    width: $fixed-width-modal;
+  }
+}
+
 .message-dialog {
   .modal-dialog {
     @include flexbox();
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: $Avenir-Medium;
+    font-family: $font-family-bold;
     .error {
-      border-color: red;
+      border: $border-normal solid $red;
     }
     .modal-content {
       @include flexbox();
-      background-color: #fcfcfc;
+      background-color: $white-grey;
       flex-direction: column;
       justify-content: center;
-      min-width: $fixed-width-modal;
+      font-family: $font-family-bold;
       border-radius: $border-normal * 4;
-      color: #707070;
-      @include box-shadow(0 0 20px 0 rgba(0, 0, 0, 0.16));
+      color: $color-dark;
+      @include box-shadow($modal-content-box-shadow);
       .dialog-header {
-        @include box-shadow(0px 0px 20px 0px #eff3f5);
+        @include box-shadow($dialog-header-box-shadow);
         @include flexbox();
         font-size: $font-size-larger;
         font-weight: bold;
-        background-color: white;
+        background-color: $white;
         div {
           display: inline-block;
         }
@@ -33,33 +44,40 @@
       .dialog-body {
         text-align: center;
         .item-title {
-          width: 40%;
+          font-family: $font-family-regular;
+          width: $dialog-item-title;
           display: inline-block;
           text-align: left;
-          padding-left: 15px;
+          padding-left: $padding;
           vertical-align: top;
-          font-size: 16px;
+          font-size: $font-size-large;
           font-weight: normal;
         }
         .item-separator {
-          margin: 0px 30px 0px 15px;
+          margin: 0px ($base-margin * 2) 0px $base-margin;
           display: inline-block;
           vertical-align: top;
+        }
+        input,
+        textarea {
+          font-size: $font-size-large;
+          font-weight: bold;
+          color: $color-dark;
+          font-family: $font-family-regular;
         }
         .item-value {
           display: inline-block;
           text-align: left;
-          font-size: 16px;
+          font-size: $font-size-large;
           font-weight: bold;
+          max-width: $max-item-value-width;
         }
         .option-title {
           text-align: right;
           font-weight: bold;
         }
         .dialog-title {
-          color: $black;
           font-size: $font-size-larger;
-          font-weight: $font-weight-modal;
           line-height: 2;
           font-weight: bold;
         }
@@ -70,73 +88,56 @@
           }
         }
         .dialog-options {
-          background-color: white;
-          @include box-shadow(0px 0px 15px 0px rgba(0, 0, 0, 0.07));
-          margin: 15px 0px 30px 0px;
+          background-color: $white;
+          @include box-shadow($dialog-options-box-shadow);
+          margin: $base-margin 0px ($base-margin * 2) 0px;
         }
         .option-value {
-          margin: 5px 0px;
+          margin: ($base-margin / 3) 0px;
         }
         .choices {
-          margin-left: 15px;
+          margin-left: $base-margin;
           display: inline-block;
           div {
             display: inline-block;
-            padding: 5px 10px;
-            margin: 5px;
+            padding: ($base-margin / 3) ($base-margin / 3 * 2);
+            margin: $base-margin / 3;
             border-radius: 5px;
-            color: white;
+            color: $white;
           }
           .unselected {
-            background-color: grey;
+            background-color: $light-grey;
+            color: $choice-button-color;
           }
           .selected {
-            background-color: blue;
+            background-color: $light-blue;
+            color: $white;
+            @include box-shadow($selected-options-box-sadow);
           }
         }
+        .remove-message {
+          color: $color-dark;
+          font-size: $font-size-large;
+          font-weight: bold;
+          margin: ($base-margin * 2) $base-margin 0px $base-margin;
+          border-top: $border-normal solid $dark-blue;
+          padding: $padding;
+          display: inline-block;
+        }
         .dialog-message {
-          color: $light-grey;
-          font-size: $font-size-extra-large;
+          color: $color-dark;
+          font-size: $font-size-large;
           padding: $padding-medium;
           padding-top: 0;
-          max-width: 1000px;
-          max-height: 400px;
+          max-width: $modal-width-message-box;
           overflow: auto;
+          font-weight: bold;
         }
         .dialog-note {
           padding: $base-padding * 1.8;
           padding-top: 0;
-          color: $black;
           font-size: $font-size-small;
-        }
-        .modal-flex {
-          @include flexbox();
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: left;
-        }
-        .modal-column-flex {
-          @include flexbox();
-          flex-direction: column;
-          justify-content: space-between;
-        }
-        .modal-data-key {
-          color: $dialog-message-color;
-          font-size: $font-size-large;
-          padding-left: $padding-modal-data;
-        }
-        .modal-data-colon {
-          color: $dialog-message-color;
-          font-size: $font-size-large;
-          padding-left: $margin;
-        }
-        .modal-data-description {
-          text-align: left;
           color: $color-dark;
-          font-size: $font-size-large;
-          font-weight: bold;
-          padding-bottom: $padding;
-          font-weight: bold;
         }
       }
       .dialog-footer {
@@ -146,23 +147,36 @@
         justify-content: center;
         padding-top: 0;
         .dialog-btn {
-          // background: $dialog-dark-button;
-          color: $dialog-dark-button-text-color;
+          color: $white;
           border-radius: $border-normal * 2;
-          padding: $padding/3 $padding;
+          padding: ($padding / 3) $padding;
           margin-left: $base-margin;
           margin-right: $base-margin;
-          font-family: $Simplo-Demi;
-
+          font-size: $font-size-large;
+          font-weight: bold;
           &.cancel {
             background-color: $clear;
             color: $white;
             border-color: $clear;
           }
           &.cancel:hover {
-            background-color: #638499;
-            border-color: #638499;
+            background-color: $cancel-button-hover;
+            border-color: $cancel-button-hover;
           }
+          &.confirm {
+            background-color: $light-blue;
+            border-color: $light-blue;
+          }
+          &.confirm:hover {
+            background-color: $confirm-button-hover;
+            border-color: $confirm-button-hover;
+          }
+          :disabled {
+            color: $disable-button-color;
+          }
+        }
+        .dialog-btn:disabled {
+          color: $disable-button-color;
         }
       }
     }

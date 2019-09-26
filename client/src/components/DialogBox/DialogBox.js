@@ -10,6 +10,98 @@ const modalStyles = {
   display: "flex",
   alignItems: "center"
 };
+/**
+ * This component contains few features.
+ * 1. Allow to show message in popup
+ * 2. Allow CRUD operation in popup.
+ *
+ * Parameter and descriptions
+ *    showMessage: true if it is messagebox.
+ *    confirmButtonValue: Text value for confirmation.
+ *    messageTitle: Title for message box.
+ *    messageDescription: description for the message box.
+ *    onConfirm: Function to call on confirmation button click.
+ *    isConfirmation: Confirmation button is required or not. using this we can use as an alert box.
+ *    title: Title for CRUD operation.
+ *    messageBox: true if it is messagebox
+ *    edit: true if it is edit in CRUD operation.
+ *    create: true if it is create in CRUD operation.
+ *    onDelete: Function to call on click on the remove button,
+ *    removeMessage: Error message for remove.
+ *    isRemove: true if it is delete in CRUD operation.
+ *    cancelButtonValue: Cancel button text value
+ *    messageNote: Detail message for messagebox
+ *    onCancel: Func to call on cancel button
+ *    data: Data for CRUD operation. xample is given below.
+ *
+ * example of data value for edit, view for MCQ question
+ *    {
+ *      id: "1",
+ *      values: [
+ *        {
+ *          type: "text",
+ *          title: "Game",
+ *          value: "Desiging a argument"
+ *        },
+ *        {
+ *          type: "text",
+ *          title: "Level",
+ *          value: "1"
+ *        },
+ *        {
+ *          type: "text",
+ *          title: "Question",
+ *          value: "text question",
+ *          multiline: true,
+ *          editable: true
+ *        },
+ *        {
+ *          type: "options",
+ *          title: "answers",
+ *          value: ["test1", "test2", "test3", "test4"]
+ *        },
+ *        {
+ *          type: "choice",
+ *          title: "Current choice",
+ *          value: "B",
+ *          key: "answers" // same as options title
+ *        }
+ *      ]
+ *    }
+ * example of data value to add MCQ question
+ *    fields = [
+ *      {
+ *        type: "text",
+ *        title: "Game",
+ *        value: "Desiging a argument"
+ *      },
+ *      {
+ *        type: "text",
+ *        title: "Level",
+ *        value: "1"
+ *      },
+ *      {
+ *        type: "text",
+ *        title: "Question",
+ *        multiline: true,
+ *        editable: true,
+ *        value: ""
+ *      },
+ *      {
+ *        type: "options",
+ *        title: "answers",
+ *        value: ["", "", "", ""]
+ *      },
+ *      {
+ *        type: "choice",
+ *        title: "Correct choice",
+ *        value: "",
+ *        editable: true,
+ *        key: "answers" // same as options title
+ *      }
+ *    ];
+ *
+ */
 
 /**
  * Functional component to display user confirmation or
@@ -22,11 +114,11 @@ const modalStyles = {
  * @returns {JSX.Element} - Rendered Component
  */
 class DialogBox extends Component {
-  // const DialogBox = props => {
   constructor(props) {
     super(props);
     this.state = {
-      confirmButtonDisable: false
+      confirmButtonDisable: false,
+      choices: 1
     };
   }
   initialState = props => {
@@ -35,27 +127,41 @@ class DialogBox extends Component {
     const values = create ? data : data.values,
       id = data.id;
     let confirmButtonDisable = false;
+    this.clearPrevious(values, create, edit);
     if (create) {
       confirmButtonDisable = true;
-      this.clearPrevious(values);
     }
-    if (edit) {
-      values.push({
-        key: "new_choice",
-        type: "choice",
-        title: "Choose new choice",
-        value: "",
-        editable: true,
-        optional: true
-      });
-    }
-    this.setState({ data: values, edit, id, confirmButtonDisable });
+
+    this.setState({ edit, id, confirmButtonDisable });
   };
-  clearPrevious = data => {
+  clearPrevious = (data, createMethod, edit) => {
+    let choices = {},
+      choiceLength = 1;
+    let values = data;
     data.map(item => {
-      if (item.type == "text" && !item.editable) return;
-      item.value = item.type === "options" ? ["", "", "", ""] : "";
+      if (item.type === "text" && !item.editable) return;
+      if (item.type === "options") {
+        choiceLength = item.value.length;
+        choices[item.title] = Array(choiceLength).fill("");
+        if (edit) {
+          values.push({
+            type: "choice",
+            title: "Choose new choice",
+            value: "",
+            editable: true,
+            optional: true,
+            key: item.title
+          });
+        }
+      }
+      if (createMethod) {
+        item.value =
+          item.type === "options" ? Array(choiceLength).fill("") : "";
+        item.error =
+          item.type === "options" ? Array(choiceLength).fill(false) : false;
+      }
     });
+    this.setState({ choices, data: values });
   };
   componentDidMount = () => {
     this.initialState(this.props);
@@ -64,6 +170,9 @@ class DialogBox extends Component {
     this.initialState(props);
   };
 
+  /**
+   * Covert index value to alphabets. A B C etc.
+   */
   convertChoice = value => {
     return String.fromCharCode(value + 65);
   };
@@ -80,6 +189,7 @@ class DialogBox extends Component {
       onConfirm();
     }
   };
+
   validateValues = () => {
     const { data } = this.state;
     let confirmButtonDisable = false;
@@ -97,6 +207,7 @@ class DialogBox extends Component {
     });
     return confirmButtonDisable;
   };
+
   valueChange = (value, title, index = 0) => {
     const { data } = this.state;
 
@@ -112,9 +223,32 @@ class DialogBox extends Component {
         }
       }
     });
-    // const confirmButtonDisable = this.validateValues();
     this.setState({ data, confirmButtonDisable: this.validateValues() });
   };
+
+  // Add and remove choice functionality for future. Few edge cases need to be integrate
+  // addOption = title => {
+  //   const { data, choices } = this.state;
+  //   data.map(item => {
+  //     if (item.title === title) {
+  //       choices[item.title].push("");
+  //       item.value.push("");
+  //     }
+  //   });
+  //   this.setState({ data, choices });
+  //   console.log("Add item");
+  // };
+  // removeOption = (title, index) => {
+  //   const { data, choices } = this.state;
+  //   data.map(item => {
+  //     if (item.title === title) {
+  //       choices[item.title].splice(index, 1);
+  //       item.value.splice(index, 1);
+  //     }
+  //   });
+  //   this.setState({ data, choices });
+  //   console.log("Remove item" + index);
+  // };
   render() {
     const {
         cancelButtonValue,
@@ -132,13 +266,15 @@ class DialogBox extends Component {
         removeMessage,
         isRemove
       } = this.props,
-      { data, edit, confirmButtonDisable } = this.state;
+      { data, edit, confirmButtonDisable, choices } = this.state;
     return (
       <div data-test="component-message-dialog">
         <Modal
           show={showMessage}
           style={modalStyles}
-          className="message-dialog"
+          className={`message-dialog ${
+            messageBox ? "message-dialog-message" : "message-dialog-data"
+          }`}
         >
           <Modal.Header className="dialog-header">
             <div>{title}</div>
@@ -163,7 +299,7 @@ class DialogBox extends Component {
                       case "options":
                         return (
                           <div
-                            key={index}
+                            key={`options_${index}`}
                             className="dialog-content dialog-options"
                           >
                             <div>
@@ -172,7 +308,7 @@ class DialogBox extends Component {
                             <div>
                               {object.value.map((option, option_index) => {
                                 return (
-                                  <div key={option_index}>
+                                  <div key={`options_content_${option_index}`}>
                                     <div className="item-title option-title">
                                       {this.convertChoice(option_index)}
                                     </div>
@@ -199,7 +335,12 @@ class DialogBox extends Component {
                                         />
                                       </div>
                                     ) : (
-                                      <div className="item-value">{option}</div>
+                                      <div
+                                        key={`options_content_${option_index}`}
+                                        className="item-value"
+                                      >
+                                        {option}
+                                      </div>
                                     )}
                                   </div>
                                 );
@@ -209,75 +350,49 @@ class DialogBox extends Component {
                         );
                       case "choice":
                         return (
-                          <div key={index}>
+                          <div key={`choices_${index}`}>
                             <div className="dialog-content">
                               <div className="item-title">{object.title}</div>
                               <div className="item-separator">:</div>
                               <div className="choices item-value">
-                                <div
-                                  className={
-                                    object.value === "A"
-                                      ? "selected"
-                                      : "unselected"
-                                  }
-                                  onClick={() =>
-                                    object.editable &&
-                                    this.valueChange("A", object.title)
-                                  }
-                                >
-                                  A
-                                </div>
-                                <div
-                                  className={
-                                    object.value === "B"
-                                      ? "selected"
-                                      : "unselected"
-                                  }
-                                  onClick={() =>
-                                    object.editable &&
-                                    this.valueChange("B", object.title)
-                                  }
-                                >
-                                  B
-                                </div>
-                                <div
-                                  className={
-                                    object.value === "C"
-                                      ? "selected"
-                                      : "unselected"
-                                  }
-                                  onClick={() =>
-                                    object.editable &&
-                                    this.valueChange("C", object.title)
-                                  }
-                                >
-                                  C
-                                </div>
-                                <div
-                                  className={
-                                    object.value === "D"
-                                      ? "selected"
-                                      : "unselected"
-                                  }
-                                  onClick={() =>
-                                    object.editable &&
-                                    this.valueChange("D", object.title)
-                                  }
-                                >
-                                  D
-                                </div>
+                                {choices &&
+                                  choices[object.key].map(
+                                    (choice, chice_index) => {
+                                      return (
+                                        <div
+                                          key={`choice_content-${chice_index}${choice}`}
+                                          className={
+                                            object.value ===
+                                            this.convertChoice(chice_index)
+                                              ? "selected"
+                                              : "unselected"
+                                          }
+                                          onClick={() =>
+                                            object.editable &&
+                                            this.valueChange(
+                                              this.convertChoice(chice_index),
+                                              object.title
+                                            )
+                                          }
+                                        >
+                                          {this.convertChoice(chice_index)}
+                                        </div>
+                                      );
+                                    }
+                                  )}
                               </div>
                             </div>
                           </div>
                         );
                       case "text":
                         return (edit || create) && object.editable ? (
-                          <div key={index} className="dialog-content">
+                          <div key={`text_${index}`} className="dialog-content">
                             <div className="item-title">{object.title}</div>
                             <div className="item-separator">:</div>
                             {object.multiline ? (
                               <div className="item-value">
                                 <textarea
+                                  cols="30"
                                   name={object.title}
                                   className={
                                     object.error
@@ -294,7 +409,10 @@ class DialogBox extends Component {
                                 />
                               </div>
                             ) : (
-                              <div className="item-value">
+                              <div
+                                key={`textbox_${index}`}
+                                className="item-value"
+                              >
                                 <input
                                   type="text"
                                   name="object.title"
@@ -311,26 +429,31 @@ class DialogBox extends Component {
                             )}
                           </div>
                         ) : (
-                          <div key={index} className="dialog-content">
+                          <div
+                            key={`content_view_${index}`}
+                            className="dialog-content"
+                          >
                             <div className="item-title">{object.title}</div>
                             <div className="item-separator">:</div>
                             <div className="item-value">{object.value}</div>
                           </div>
                         );
                       default:
-                        return <div></div>;
+                        return <div key={`default_${index}`}></div>;
                     }
                   })}
-                {removeMessage && <div>{removeMessage}</div>}
+                {removeMessage && (
+                  <div>
+                    <p className="remove-message">{removeMessage}</p>
+                  </div>
+                )}
               </div>
             )}
           </Modal.Body>
           <Modal.Footer className="dialog-footer">
             {!isEmpty(confirmButtonValue) && (
               <Button
-                className={`dialog-btn ${
-                  isRemove ? "btn-danger" : "btn-success"
-                }`}
+                className={`dialog-btn ${isRemove ? "btn-danger" : "confirm"}`}
                 disabled={confirmButtonDisable}
                 onClick={this.onConfirm}
               >
@@ -360,12 +483,18 @@ DialogBox.propTypes = {
   confirmButtonValue: PropTypes.string.isRequired,
   isConfirmation: PropTypes.bool,
   messageDescription: PropTypes.string,
-  messageHeader: PropTypes.string,
   messageNote: PropTypes.string,
   messageTitle: PropTypes.string,
   onCancel: PropTypes.func,
   onConfirm: PropTypes.func,
-  showMessage: PropTypes.bool
+  showMessage: PropTypes.bool,
+  onDelete: PropTypes.func,
+  title: PropTypes.string,
+  messageBox: PropTypes.bool,
+  edit: PropTypes.bool,
+  create: PropTypes.bool,
+  removeMessage: PropTypes.string,
+  isRemove: PropTypes.bool
 };
 
 DialogBox.defaultProps = {
@@ -374,10 +503,15 @@ DialogBox.defaultProps = {
   confirmButtonValue: "",
   isConfirmation: false,
   messageDescription: "",
-  messageHeader: "",
   messageNote: "",
   messageTitle: "",
-  showMessage: false
+  showMessage: false,
+  title: "",
+  messageBox: false,
+  edit: false,
+  create: false,
+  removeMessage: "",
+  isRemove: false
 };
 
 export default DialogBox;
