@@ -42,7 +42,7 @@ export const Header = ({ headerTabs, toggleTab, activeTab, name, image }) => {
             <div className="header-profile-info">
               <div>{name}</div>
               <Icon>keyboard_arrow_down</Icon>
-              <img className="profile-icon" src={image||profileUrl} alt="Log out" />
+              <img style={{borderRadius:"100%"}} className="profile-icon" src={image||profileUrl} alt="Log out" />
             </div>
           </div>
         </div>

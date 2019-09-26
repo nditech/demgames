@@ -14,6 +14,7 @@ import * as jwtDecode from 'jwt-decode';
 import Auth from '../../Auth';
 import {bindActionCreators} from 'redux';
 //import {connect} from 'react-redux';
+import { Link } from 'react-router-dom';
 import profile from '../../components/ProfileInfo';
 import admin from '../../components/admin/admin';
 import UpdatePlayer from '../../components/Update/UpdateProfile';
@@ -199,8 +200,7 @@ class LandingPage extends React.Component {
 							{
 									auth0.isAuthenticated()&&
 									<div>
-										<a href="/profile">Profile</a> || 
-										<a href="/admin">Admin Page</a> || 
+										<a href="/profile">Profile</a> || <Link to="/admin"> Admin Page </Link> || 
 										<a onClick={this.handleLogOut}>									
 											<acronym title="Logout"> <img className="profile-icon" src={this.props.player_picture||profileUrl} alt="Log out" />
 											</acronym>

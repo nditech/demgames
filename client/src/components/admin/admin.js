@@ -787,13 +787,11 @@ class Admin extends Component {
   }
 }
 
-const mapStateToProps = (state) =>{
-  console.log(state,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-}
-//  ({
-// 	player_given_name:state.authDetail.authDetail.player_given_name,
-// 	player_picture:state.authDetail.authDetail.player_picture,
-// 	gameData: state.gameData 
-// });
+const mapStateToProps = (state) =>
+ ({
+	player_given_name:state.authDetail.authDetail.player_given_name,
+	player_picture:state.authDetail.authDetail.player_picture,
+	gameData: state.gameData 
+});
 
 export default connect(mapStateToProps)(Admin);

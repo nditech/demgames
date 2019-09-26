@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch, withRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -31,8 +31,9 @@ import UpdateChoice from './components/Update/UpdateChoice';
 
     const Routes = ()=> (
     	<Router>
-	    	<div>
-		    	<Route path="/" exact component={App} />
+	    	<Switch>
+			<Route path="/admin" exact component={admin}/>
+		    	<Route path="/" exact  component={LandingPage}/>
                 <Route path="/landingpage" exact component={LandingPage} />
 			    <Route path="/module/:moduleId/level/:levelId/questions/" exact component={QuestionsAnsPage} />
 			    <Route path="/module/:moduleId/levels" exact component={LevelsPage} />
@@ -41,7 +42,7 @@ import UpdateChoice from './components/Update/UpdateChoice';
                 <Route path="/callback" exact component={Callback} />
 			    <Route path="/info" exact component={CorrectAnswerInfo} />
 			    <Route path="/profile" exact component={ProfileInfo} />
-				<Route path="/admin" exact component={admin}/>
+				
 				<Route path="/UpdatePlayer" exact component={UpdatePlayer} />
 				<Route path="/registerplayer" exact component={Register} />
 				<Route path="/addgame" exact component={AddGame} />
@@ -52,7 +53,7 @@ import UpdateChoice from './components/Update/UpdateChoice';
 				<Route path="/updatequestion" exact component={UpdatePlayer} />
 				<Route path="/updategame" exact component={UpdateGame} />
 				<Route path="/updatechoice" exact component={UpdateChoice} />
-		    </div>
+		    </Switch>
 	    </Router>
     );
 
