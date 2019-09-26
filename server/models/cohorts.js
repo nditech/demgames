@@ -10,11 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING
   }, 
   {
-<<<<<<< HEAD
     timestamps: false, 
-=======
-    timestamps: false,
->>>>>>> c2f2b7b6b869f80e18defd786dfe433b6004a914
     freezeTableName: true
   });
   cohort.associate = function(models) {
