@@ -926,22 +926,6 @@ app.post('/selectQuestionforDel', (req, res) => {
   // }
 });
 
-// @route   POST /updateGame
-// @desc    Update games
-app.post('/updateGame', (req, res) => {
-  //  console.log(req.body);
-  //  const sqlUpdateStatement='update Games set caption="'+req.body.caption+'", gamedescription="'+req.body.gamedescription+'", gametype="'+req.body.gametype+'" where id = "'+req.body.id+'"';
-
-  //          console.log(sqlUpdateStatement);
-  //          connectionMysql.query(sqlUpdateStatement, function (err, result, fields) {
-  //             if (err) throw err;
-  //             console.log(sqlUpdateStatement);
-  //             console.log("Number of rows affected : " + result.affectedRows);
-  //             console.log("Number of records affected with warning : " + result.warningCount);
-  //             console.log("Message from MySQL Server : " + result.message); 
-  //             res.status(200).send({message:'updated successfully'});              
-  //            }); 
-})
 
 // @route   POST /updatechoice
 // @desc    Update game choice
@@ -1222,5 +1206,39 @@ app.post('/duplicatGame',
     }
   });
   
+
+  app.post('/Updategame', 
+[
+  check('id', 'First Name is required').isNumeric(),
+  check('caption', 'Caption is required').not().isEmpty(),
+  check('gamedescription', 'gamedescription is required').not().isEmpty()
+],
+
+async (req, res) => {
+
+  console.log('POST /Updategame  -------api');
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const {id, caption, gamedescription } = req.body;
+
+  try {
+    let updatedGame = await games.update(
+      { caption : caption, gamedescription : gamedescription },
+      { where : { id : id }, raw:true }
+    );
+
+    console.log('updating nowwwwwwwwww');
+    console.log(JSON.stringify(updatedGame));
+
+    res.send({ message: 'game updated successfully' });
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send({ message: 'Server Error' });
+  }
+});
 
 app.listen(9000, () => console.log('listening'));

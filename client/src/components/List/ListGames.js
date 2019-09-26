@@ -35,6 +35,7 @@ class ListGames extends Component {
         this.setState({
           games: data,
           activeGame: data[0].id,
+          activeIndex:0,
           activeGameDetails: [
             { key: "Name", value: data[0].caption },
             { key: "Description", value: data[0].gamedescription },
@@ -48,6 +49,43 @@ class ListGames extends Component {
   componentDidMount() {
     this.pool();
   }
+  // shouldComponentUpdate(nextProp,nextState){
+  //   if(nextProp.editedDetals.caption===this.state.activeGameDetails[0].value && nextProp.editedDetals.gamedescription===this.state.activeGameDetails[1].value)
+  //     return false;
+  //   else{
+  //     updateDetails(nextProp.editedDetals);
+  //     return true;
+  //   }
+  // }
+  
+  shouldComponentUpdate(nextProp, nextState){
+    if(nextProp.editedDetals)
+    {console.log(nextProp.editedDetals.caption!==this.state.activeGameDetails[0].value,nextProp.editedDetals.gamedescription!==this.state.activeGameDetails[1].value);
+    if(nextProp.editedDetals.caption!==this.state.activeGameDetails[0].value || nextProp.editedDetals.gamedescription!==this.state.activeGameDetails[1].value)
+    {this.updateDetails(nextProp.editedDetals);}
+    }
+    return true;
+      
+  }
+  copyGameCb=(id)=>{
+    console.log(id);
+    const url = 'http://localhost:9000/duplicatGame';
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({game_id:id})
+        })
+            .then(res => res.json())
+            .then((data) => {
+              const a=[...this.state.games,data];
+              console.log(a,"gaga");
+                this.setState({games:a});
+            })
+            .catch((error) => console.log(error));
+  }
 
   handleGameBoxClick = id => {
     this.setState({
@@ -56,9 +94,20 @@ class ListGames extends Component {
         { key: "Description", value: this.state.games[id].gamedescription },
         { key: "Game Type", value: this.state.games[id].gametype }
       ],
-      activeGame: this.state.games[id].id
+      activeGame: this.state.games[id].id,
+      activeIndex:id
     });
   };
+  updateDetails=(data)=>{
+    this.setState({
+      activeGameDetails: [
+        { key: "Name", value: data.caption },
+        { key: "Description", value: data.gamedescription },
+        { key: "Game Type", value: this.state.activeGameDetails[2].value }
+      ],
+      games:[...this.state.games,this.state.games[this.state.activeIndex]=data]
+    });
+  }
 
   simpleTable() {
     return (
@@ -85,9 +134,9 @@ class ListGames extends Component {
               Questions
             </div>
             {this.state.activeTab===1&&<div className='tab-option'>
-              <Icon color="primary" className="tab-icons" onClick={()=>this.props.copyGameCb(this.state.activeGame)} style={{color:"#0d9eea"}}>file_copy</Icon>
+              <Icon color="primary" className="tab-icons" onClick={()=>this.copyGameCb(this.state.activeGame)} style={{color:"#0d9eea",cursor:'pointer'}}>file_copy</Icon>
               <span className="tab-icons-details">Duplicate Game</span>
-              <Icon color="primary" onClick={()=>this.props.editGame(this.state.activeGameDetails,this.state.activeGame)} style={{color:"#0d9eea"}}>edit</Icon>
+              <Icon color="primary" onClick={()=>this.props.editGame(this.state.activeGameDetails,this.state.activeGame)} style={{color:"#0d9eea",cursor:'pointer'}}>edit</Icon>
               <span className="tab-icons-details">Edit Game details</span>
             </div>}
           </div>
