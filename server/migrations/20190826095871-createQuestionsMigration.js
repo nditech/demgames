@@ -24,7 +24,7 @@ module.exports = {
       },
       question_statement:{
           type: Sequelize.STRING(300),
-          allowNull: false
+          allowNull: true
       },
       weight:{
           type: Sequelize.FLOAT(2)

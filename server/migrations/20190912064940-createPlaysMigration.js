@@ -68,7 +68,7 @@ module.exports = {
       indexes: [
           {
               unique: true,
-              fields: ['player_id', 'game_id','score']
+              fields: ['player_id', 'game_id','cohort_id','score']
           }
       ]
   });
