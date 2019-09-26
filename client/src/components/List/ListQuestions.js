@@ -188,7 +188,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   } = popupState;
 
   let activeGameName;
-  activeGameDetails.map(item => {
+  activeGameDetails&&activeGameDetails.map(item => {
     if (item.key === "Name") {
       activeGameName = item.value;
     }

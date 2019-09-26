@@ -51,105 +51,105 @@ app.use(function(req, res, next) {
 });
 
 app.get("/api/game", async (req, res) => {
-  // if (!gameData) res.status(404).send('No data found');
+  if (!gameData) res.status(404).send('No data found');
 
   console.log("GET /api/game -----api");
 
   try {
-    const gameData = [];
+  //   const gameData = [];
 
-    const gameList = await games.findAll({
-      include: [
-        {
-          model: questions,
-          include: [
-            {
-              model: choices
-            }
-          ]
-        }
-      ]
-    });
+  //   const gameList = await games.findAll({
+  //     include: [
+  //       {
+  //         model: questions,
+  //         include: [
+  //           {
+  //             model: choices
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   });
 
-    if (!gameList) {
-      return res.status(400).send("No data found!");
-    }
+  //   if (!gameList) {
+  //     return res.status(400).send("No data found!");
+  //   }
 
-    gameList.forEach(async element => {
-      let gameObj = {};
-      let questions = element.Questions;
-      gameObj.id = element.id;
-      gameObj.name = element.caption;
-      gameObj.type = element.gametype;
-      gameObj.style = "blue";
+  //   gameList.forEach(async element => {
+  //     let gameObj = {};
+  //     let questions = element.Questions;
+  //     gameObj.id = element.id;
+  //     gameObj.name = element.caption;
+  //     gameObj.type = element.gametype;
+  //     gameObj.style = "blue";
 
-      let diffLevelGroup = _.groupBy(questions, function(value) {
-        return value.difficulty_level;
-      });
+  //     let diffLevelGroup = _.groupBy(questions, function(value) {
+  //       return value.difficulty_level;
+  //     });
 
-      for (let i in diffLevelGroup) {
-        let quesArr = [];
-        group.forEach(function(ques) {
-          // Find the collection of correct answer(s)
-          let options = ques.Choices;
-          let answerArr = [];
-          options.forEach(function(option, index) {
-            if (option.answer === 1) {
-              answerArr.push(index);
-            }
-          });
+  //     for (let i in diffLevelGroup) {
+  //       let quesArr = [];
+  //       group.forEach(function(ques) {
+  //         // Find the collection of correct answer(s)
+  //         let options = ques.Choices;
+  //         let answerArr = [];
+  //         options.forEach(function(option, index) {
+  //           if (option.answer === 1) {
+  //             answerArr.push(index);
+  //           }
+  //         });
 
-          quesArr.push({
-            id: ques.id,
-            question: ques.question_statement,
-            options: ques.Choices.map(option => option.choicestatement),
-            correct_answer: answerArr
-          });
-        });
-      }
+  //         quesArr.push({
+  //           id: ques.id,
+  //           question: ques.question_statement,
+  //           options: ques.Choices.map(option => option.choicestatement),
+  //           correct_answer: answerArr
+  //         });
+  //       });
+  //     }
 
-      console.log("game LIST------START-------> ");
-      console.log(JSON.stringify(diffLevelGroup));
-      console.log("game LIST-------------> ");
+  //     console.log("game LIST------START-------> ");
+  //     console.log(JSON.stringify(diffLevelGroup));
+  //     console.log("game LIST-------------> ");
 
-      let data = _.map(diffLevelGroup, function(group, index) {
-        //     console.log('game LIST------group-------> ');
-        // console.log(JSON.stringify(group));
-        // console.log('game LIST-------------> ');
+  //     let data = _.map(diffLevelGroup, function(group, index) {
+  //       //     console.log('game LIST------group-------> ');
+  //       // console.log(JSON.stringify(group));
+  //       // console.log('game LIST-------------> ');
 
-        let quesArr = [];
-        group.forEach(function(ques) {
-          // Find the collection of correct answer(s)
-          let options = ques.Choices;
-          let answerArr = [];
-          options.forEach(function(option, index) {
-            if (option.answer === 1) {
-              answerArr.push(index);
-            }
-          });
+  //       let quesArr = [];
+  //       group.forEach(function(ques) {
+  //         // Find the collection of correct answer(s)
+  //         let options = ques.Choices;
+  //         let answerArr = [];
+  //         options.forEach(function(option, index) {
+  //           if (option.answer === 1) {
+  //             answerArr.push(index);
+  //           }
+  //         });
 
-          quesArr.push({
-            id: ques.id,
-            question: ques.question_statement,
-            options: ques.Choices.map(option => option.choicestatement),
-            correct_answer: answerArr
-          });
-        });
-
-        // Choices Array
-
-        return {
-          id: parseInt(index),
-          desc: element.gamedescription,
-          linked_level: group[0].difficulty_level,
-          questions: quesArr
-        };
-      });
-
+  //         quesArr.push({
+  //           id: ques.id,
+  //           question: ques.question_statement,
+  //           options: ques.Choices.map(option => option.choicestatement),
+  //           correct_answer: answerArr
+  //         });
   //       });
 
-      gameData.push(gameObj);
-    });
+  //       // Choices Array
+
+  //       return {
+  //         id: parseInt(index),
+  //         desc: element.gamedescription,
+  //         linked_level: group[0].difficulty_level,
+  //         questions: quesArr
+  //       };
+  //     });
+
+  // //       });
+
+  //     gameData.push(gameObj);
+  //   });
     // console.log('game LIST------START-------> ');
     // console.log(JSON.stringify(gameData));
     // console.log('game LIST-------------> ');
@@ -1213,7 +1213,11 @@ app.post('/duplicatGame',
 
   app.get('/list_leaderBoard', (req, res) => {
     console.log("GET /list_leaderBoard -----api ---called");
-    plays.findAll().then(result => {
+    plays.findAll({
+      include: [{
+        model: players
+      }],
+    }).then(result => {
       console.log
       res.send(JSON.stringify(result));
       console.log(JSON.stringify(result));
@@ -1235,7 +1239,12 @@ app.post('/duplicatGame',
       cohort_id = 1;
     }
 
-    plays.findAll({where:{cohort_id:cohort_id}}).then(result => {
+    plays.findAll({
+      where:{cohort_id:cohort_id},
+      include: [{
+        model: players
+      }]
+    }).then(result => {
       console.log
       res.send(JSON.stringify(result));
       console.log(JSON.stringify(result));

@@ -213,12 +213,14 @@ class Admin extends Component {
   toggleGame(tab) {
     const fields =[
         {
+          key:"Title",
           type: "text",
           title: "Title",
           value: "",
           editable:true
         },
         {
+          key:"Description",
           type: "text",
           title: "Description",
           value: "",
@@ -249,7 +251,7 @@ class Admin extends Component {
     
   }
   addGameCb = (data = "") => {
-    const addGameForm={caption:data.Title,gamedescription:data.Description,gametype:data.Type}
+    const addGameForm={caption:data.Title,gamedescription:data.Description,gametype:"multiplechoice"}
     console.log(data);
     console.log("game added. ",data);
     const url = 'http://localhost:9000/registergame';
@@ -274,12 +276,14 @@ class Admin extends Component {
       id,
       values:[
       {
+        key:"Title",
         type: "text",
         title: "Title",
         value: game[0].value,
         editable:true
       },
       {
+        key:"Description",
         type: "text",
         title: "Description",
         value: game[1].value,
@@ -307,6 +311,7 @@ class Admin extends Component {
     });
   }
   editGameCb = (data,id) => {
+    // debugger;
     const editGameForm={id,caption:data.Title,gamedescription:data.Description};
     console.log(editGameForm);
     console.log("game edited. ",data);
@@ -431,24 +436,24 @@ class Admin extends Component {
   onCancel = () => {
     this.setState({ showMessage: false });
   };
-  removePopup = () => {
-    this.setState({
-      showMessage: true,
-      confirmButtonValue: "Remove",
-      messageTitle: "",
-      messageDescription:
-        "Are you sure you want to delete question Q1 from level 1?",
-      onConfirm: this.remove,
-      isConfirmation: true,
-      title: "Remove Question",
-      messageBox: true,
-      edit: false,
-      create: false,
-      onDelete: null,
-      removeMessage: false,
-      isRemove: true
-    });
-  };
+  // removePopup = () => {
+  //   this.setState({
+  //     showMessage: true,
+  //     confirmButtonValue: "Remove",
+  //     messageTitle: "",
+  //     messageDescription:
+  //       "Are you sure you want to delete question Q1 from level 1?",
+  //     onConfirm: this.remove,
+  //     isConfirmation: true,
+  //     title: "Remove Question",
+  //     messageBox: true,
+  //     edit: false,
+  //     create: false,
+  //     onDelete: null,
+  //     removeMessage: false,
+  //     isRemove: true
+  //   });
+  // };
 
   render() {
     console.log(this.props,"PROPS");

@@ -118,7 +118,8 @@ class DialogBox extends Component {
     super(props);
     this.state = {
       confirmButtonDisable: false,
-      choices: 1
+      choices: 1,
+      data:[],
     };
   }
   initialState = props => {
@@ -138,7 +139,7 @@ class DialogBox extends Component {
     let choices = {},
       choiceLength = 1;
     let values = data;
-    data.map(item => {
+    data&&data.map(item => {
       if (item.type === "text" && !item.editable) return;
       if (item.type === "options") {
         choiceLength = item.value.length;
@@ -267,6 +268,7 @@ class DialogBox extends Component {
         isRemove
       } = this.props,
       { data, edit, confirmButtonDisable, choices } = this.state;
+      console.log(data,"pankaj");
     return (
       <div data-test="component-message-dialog">
         <Modal
