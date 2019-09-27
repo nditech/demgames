@@ -59,9 +59,10 @@ class ListGames extends Component {
   // }
   
   shouldComponentUpdate(nextProp, nextState){
+    // debugger;
     if(nextProp.editedDetals)
-    {console.log(nextProp.editedDetals.caption!==this.state.activeGameDetails[0].value,nextProp.editedDetals.gamedescription!==this.state.activeGameDetails[1].value);
-    if(nextProp.editedDetals.caption!==this.state.activeGameDetails[0].value || nextProp.editedDetals.gamedescription!==this.state.activeGameDetails[1].value)
+    {console.log(nextProp.editedDetals.caption!==this.state.activeGameDetails[0].value||nextProp.editedDetals.gamedescription!==this.state.activeGameDetails[1].value,"..............................");
+    if(nextProp.editedDetals.caption!==nextState.activeGameDetails[0].value || nextProp.editedDetals.gamedescription!==nextState.activeGameDetails[1].value)
     {this.updateDetails(nextProp.editedDetals);}
     }
     return true;
@@ -99,6 +100,7 @@ class ListGames extends Component {
     });
   };
   updateDetails=(data)=>{
+    debugger;
     this.setState({
       activeGameDetails: [
         { key: "Name", value: data.caption },
@@ -106,7 +108,7 @@ class ListGames extends Component {
         { key: "Game Type", value: this.state.activeGameDetails[2].value }
       ],
       games:[...this.state.games,this.state.games[this.state.activeIndex]=data]
-    });
+    },()=>console.log(this.state.activeGameDetails,this.state.games,"..............................."));
   }
 
   simpleTable() {
@@ -144,7 +146,7 @@ class ListGames extends Component {
            <Details data={this.state.activeGameDetails} />
           )}
           {this.state.activeTab === 2 && (
-            <ListQuestion activeGame={this.state.activeGame} />
+            <ListQuestion activeGameDetails={this.state.activeGameDetails} activeGame={this.state.activeGame} />
           )}
         </div>
       </Fragment>
