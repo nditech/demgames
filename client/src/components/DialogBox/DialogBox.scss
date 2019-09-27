@@ -81,6 +81,13 @@
           line-height: 2;
           font-weight: bold;
         }
+        .dropdown-list {
+          min-width: $full-width;
+          color: $color-dark;
+          &:disabled {
+            color: $color-dark;
+          }
+        }
         .dialog-content {
           padding: $padding / 3;
           .dialog-multiline-text {

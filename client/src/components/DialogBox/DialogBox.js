@@ -218,7 +218,7 @@ class DialogBox extends Component {
           item.error = item.error ? item.error : [false, false, false, false];
           item.error[index] = isEmpty(value) ? true : false;
         } else {
-          item.value = value
+          item.value = value;
           item["error"] = isEmpty(value) ? true : false;
         }
       }
@@ -298,15 +298,19 @@ class DialogBox extends Component {
                     switch (object.type) {
                       case "dropdown":
                         return (
-                          <div key={`dropdown_${index}`}>
+                          <div
+                            key={`dropdown_${index}`}
+                            className="dialog-content"
+                          >
                             <div className="item-title">{object.title}</div>
                             <div className="item-separator">:</div>
-                            <div className="choices item-value">
+                            <div className="item-value">
                               <select
                                 value={object.value}
                                 disabled={
                                   !((edit || create) && object.editable)
                                 }
+                                className="dropdown-list"
                                 onChange={e =>
                                   (edit || create) &&
                                   object.editable &&

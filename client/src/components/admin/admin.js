@@ -129,7 +129,7 @@ class Admin extends Component {
             value: "test1",
             options: ["test1", "test2", "test3", "test4"],
             key: "dropdown",
-            editable:true
+            editable: true
           }
           // {
           //   type: "options",
