@@ -74,13 +74,14 @@ const ListPlayers = () =>  {
     const [playersData, setPlayersData] = useState({ 
         user: [{}],
         globalleadership: [{}],
-        cohortleadership: [{}]
+        cohortleadership: [{}],
+        noOfPlayers: 0
     });
     const [cohort, setCohort] = useState(null);
     const [activeTab,setActiveTab]=useState(1);
     // const []
 
-    const { user, globalleadership, cohortleadership } = playersData;
+    const { user, globalleadership, cohortleadership, noOfPlayers } = playersData;
 
     const getPlayers = () => {
         // console.log(this.props.auth);
@@ -95,11 +96,12 @@ const ListPlayers = () =>  {
         })
             .then((res) => res.json())
             .then((data) => {
+                let numberOfPlayers = data.length;
                 console.log('api data -->', JSON.stringify(data))
                 data.map((item,index) => {
                     item.sl = index+1;
                 });
-                setPlayersData({...playersData, user: data});
+                setPlayersData({...playersData, user: data, noOfPlayers:numberOfPlayers});
             })
             .catch(err => console.log(err));
         console.log(user);
@@ -201,8 +203,8 @@ const ListPlayers = () =>  {
             <div className="player-header">
                 <div className="playerbox-wrapper">
                     <div className="playerbox">
-                        <div className="playerbox-title">Total Number of Player</div>
-                        <div className="playerbox-value">563</div>
+                        <div className="playerbox-title">Total Number of Players</div>
+                        <div className="playerbox-value">{noOfPlayers}</div>
                     </div>
                 </div>
                 <div className="graph"></div>
@@ -231,10 +233,10 @@ const ListPlayers = () =>  {
                 >
                   Cohort Leadership
                 </div>
-                <div className='tab-option'>
+                {/* <div className='tab-option'>
                   <Icon color="primary" style={{color:"#0d9eea"}}>add_box</Icon>
                   <span className="tab-icons-details">Add Player</span>
-                </div>
+                </div> */}
                 <div className="listing-players">
                    {activeTab===3&& <div className="cohort-dropdown">
                         <span className="cohort-dropdown-title">Choose Cohort</span>
