@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch, withRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -18,7 +18,7 @@ import UpdatePlayer from './components/Update/UpdateProfile';
 import Register from './components/Add/Register';
 import AddGame from './components/Add/AddGame';
 import AddQuestion from './components/Add/AddQuestion';
-import AddChoices from './components/Add/AddChoices';
+// import AddChoices from './components/Add/AddChoices';
 import Auth from './Auth';
 import Callback from './pages/LandingPage/callback';
 import RemovePlayer from './components/Remove/RemovePlayer';
@@ -31,7 +31,7 @@ import UpdateChoice from './components/Update/UpdateChoice';
 
     const Routes = ()=> (
     	<Router>
-	    	<div>
+	    <>
 		    	<Route path="/" exact component={App} />
                 <Route path="/landingpage" exact component={LandingPage} />
 			    <Route path="/module/:moduleId/level/:levelId/questions/" exact component={QuestionsAnsPage} />
@@ -41,18 +41,18 @@ import UpdateChoice from './components/Update/UpdateChoice';
                 <Route path="/callback" exact component={Callback} />
 			    <Route path="/info" exact component={CorrectAnswerInfo} />
 			    <Route path="/profile" exact component={ProfileInfo} />
-				<Route path="/admin" exact component={admin}/>
+				<Route path="/admin" exact component={admin} />
 				<Route path="/UpdatePlayer" exact component={UpdatePlayer} />
 				<Route path="/registerplayer" exact component={Register} />
 				<Route path="/addgame" exact component={AddGame} />
 				<Route path="/addquestion" exact component={AddQuestion} />
-				<Route path="/addchoices" exact component={AddChoices}/>
+				{/* <Route path="/addchoices" exact component={AddChoices}/> */}
 				<Route path="/removeplayer" exact component={RemovePlayer} />
 				<Route path="/removequestion" exact component={RemovePlayer} />
 				<Route path="/updatequestion" exact component={UpdatePlayer} />
 				<Route path="/updategame" exact component={UpdateGame} />
 				<Route path="/updatechoice" exact component={UpdateChoice} />
-		    </div>
+		  </>
 	    </Router>
     );
 

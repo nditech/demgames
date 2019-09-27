@@ -14,10 +14,12 @@ import * as jwtDecode from 'jwt-decode';
 import Auth from '../../Auth';
 import {bindActionCreators} from 'redux';
 //import {connect} from 'react-redux';
+import { Link } from 'react-router-dom';
 import profile from '../../components/ProfileInfo';
 import admin from '../../components/admin/admin';
 import UpdatePlayer from '../../components/Update/UpdateProfile';
 import { fetchScoreDetail } from '../../components/ProfileInfo/action';
+import { da } from 'date-fns/locale';
 
 const auth0=new Auth();
 
@@ -95,6 +97,50 @@ class LandingPage extends React.Component {
 			
 			this.props.setAuth(authDetail);
 
+
+			fetch('http://localhost:9000/user/findOne/' + authDetail.player_email,{
+				method: 'get',        
+				headers: {
+						"authorization": "Bearer "+auth0.getAccessToken(),
+						"Content-Type": "Application/json",
+						"Accept":"application/json"
+				}
+			}).then(res=>res.json()).then((data)=>{					
+				console.log("user data from api below --V");
+				console.log(data);
+
+				if(!data.email) {
+
+					console.log("email not found --V");
+
+
+					fetch('http://localhost:9000/registerplayer',{
+						method: 'POST',        
+						headers: {
+							authorization: "Bearer "+auth0.getAccessToken(),
+							"Content-Type": "Application/json",
+							Accept:"application/json"
+						},
+						body:JSON.stringify({
+							firstName: authDetail.player_username,
+							email: authDetail.player_email,
+							userName: authDetail.player_username
+						})
+					}).then(res=>res.json()).then((data)=>{	
+						console.log("new player registered  ---V");
+						console.log(data);
+					}).catch((error)=>{		
+						console.log(error);	
+					});;
+
+				}
+				
+				
+				
+			}).catch((error)=>{		
+				console.log(error);	
+			});
+
 		}
 		else{
 			this.props.clearAuth(authDetail);
@@ -164,8 +210,7 @@ class LandingPage extends React.Component {
 	handleLogOut = () => {
 
 		if (auth0.isAuthenticated())
-		{
-				
+		{	
 			authDetail.player_given_name="";
 			authDetail.player_family_name="";
 			authDetail.player_email="";
@@ -180,6 +225,7 @@ class LandingPage extends React.Component {
 
 
 	render() {
+		console.log(this.props);
 		const gameData = this.props.gameData.gameData;
 		const { open } = this.state;
 		return (
@@ -198,8 +244,7 @@ class LandingPage extends React.Component {
 							{
 									auth0.isAuthenticated()&&
 									<div>
-										<a href="/profile">Profile</a> || 
-										<a href="/admin">Admin Page</a> || 
+										<a href="/profile">Profile</a> || <Link to="/admin"> Admin Page </Link> || 
 										<a onClick={this.handleLogOut}>									
 											<acronym title="Logout"> <img className="profile-icon" src={this.props.player_picture||profileUrl} alt="Log out" />
 											</acronym>
@@ -219,7 +264,7 @@ class LandingPage extends React.Component {
 									moduleName={modules.name}
 									levels={modules.levels}
 									style={modules.style}
-									type={modules.type}
+									type={modules.type}									
 								/>
 							))}
 					</div>

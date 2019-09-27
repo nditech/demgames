@@ -10,13 +10,9 @@ import store from './store';
 const App = () => {
 	return (
 		<Provider store={store}>
-			<Router>
 				<Fragment>
-					<div className="App">
-						<Route exact path='/' component={LandingPage} />
-					</div>
+					<LandingPage/>
 				</Fragment>
-			</Router>
 		</Provider>
 	);
 };

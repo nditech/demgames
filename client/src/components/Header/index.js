@@ -4,7 +4,8 @@ import "./styles.scss";
 import profileUrl from "../../images/profile.png";
 import Icon from "@material-ui/core/Icon";
 
-export const Header = ({ headerTabs, toggleTab, activeTab }) => {
+export const Header = ({ headerTabs, toggleTab, activeTab, name, image }) => {
+  console.log(name,image,"header");
   return (
     <div className="header-wrapper">
       <div className="header-container">
@@ -39,9 +40,9 @@ export const Header = ({ headerTabs, toggleTab, activeTab }) => {
               <Icon>notifications</Icon>
             </div>
             <div className="header-profile-info">
-              <div>Suyash</div>
+              <div>{name}</div>
               <Icon>keyboard_arrow_down</Icon>
-              <img className="profile-icon" src={profileUrl} alt="Log out" />
+              <img style={{borderRadius:"100%"}} className="profile-icon" src={image||profileUrl} alt="Log out" />
             </div>
           </div>
         </div>

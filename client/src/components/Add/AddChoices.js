@@ -28,29 +28,28 @@ const AddChoices = () => {
         setFormData({...formData, choicestatement: '', choicedescription: '', weight: '', isanswer: '', questionid: ''});
     };
 
-    useEffect(() => {
-        let initialquestions = [];
-        fetch('http://localhost:9000/listquestions', {
-            method: 'GET',
-            headers: {
-                'Accept':'application/json',
-                'Content-Type': 'application/json'          
-            },
-          })
-          .then(res=>res.json())
-          .then((data)=>
-            {
-                console.log('questions list ----', data);
-                initialquestions = data.map((question) => {
-                        return question
-                });
+    // useEffect(() => {
+    //     let initialquestions = [];
+    //     fetch('http://localhost:9000/listquestions', {
+    //         method: 'GET',
+    //         headers: {
+    //             'Accept':'application/json',
+    //             'Content-Type': 'application/json'          
+    //         },
+    //       })
+    //       .then(res=>res.json())
+    //       .then((data)=>
+    //         {
+    //             initialquestions = data.map((question) => {
+    //                     return question
+    //             });
 
-                //console.log(initialquestions);
+    //             //console.log(initialquestions);
                 
-                setFormData({ ...formData, questions: initialquestions});    
-            })
-          .catch((error)=>console.log(error)); 
-    }, []);
+    //             setFormData({ ...formData, questions: initialquestions});    
+    //         })
+    //       .catch((error)=>console.log(error)); 
+    // }, []);
 
     const handleChange = (event) => {   
         setFormData({ ...formData, [event.target.name]: event.target.value });       
