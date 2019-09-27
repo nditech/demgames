@@ -218,7 +218,7 @@ class DialogBox extends Component {
           item.error = item.error ? item.error : [false, false, false, false];
           item.error[index] = isEmpty(value) ? true : false;
         } else {
-          item.value = value;
+          item.value = value
           item["error"] = isEmpty(value) ? true : false;
         }
       }
@@ -296,6 +296,37 @@ class DialogBox extends Component {
                 {!isEmpty(data) &&
                   data.map((object, index) => {
                     switch (object.type) {
+                      case "dropdown":
+                        return (
+                          <div key={`dropdown_${index}`}>
+                            <div className="item-title">{object.title}</div>
+                            <div className="item-separator">:</div>
+                            <div className="choices item-value">
+                              <select
+                                value={object.value}
+                                disabled={
+                                  !((edit || create) && object.editable)
+                                }
+                                onChange={e =>
+                                  (edit || create) &&
+                                  object.editable &&
+                                  this.valueChange(e.target.value, object.title)
+                                }
+                              >
+                                {object.options.map((option, option_index) => {
+                                  return (
+                                    <option
+                                      key={option_index + option}
+                                      value={option}
+                                    >
+                                      {option}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                            </div>
+                          </div>
+                        );
                       case "options":
                         return (
                           <div
