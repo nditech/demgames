@@ -119,12 +119,12 @@ class DialogBox extends Component {
     this.state = {
       confirmButtonDisable: false,
       choices: 1,
-      data:[],
+      data: []
     };
   }
   initialState = props => {
     const { data, edit, create } = props;
-    console.log(data,create,edit);
+    console.log(data, create, edit);
     const values = create ? data : data.values,
       id = data.id;
     let confirmButtonDisable = false;
@@ -139,29 +139,30 @@ class DialogBox extends Component {
     let choices = {},
       choiceLength = 1;
     let values = data;
-    data&&data.map(item => {
-      if (item.type === "text" && !item.editable) return;
-      if (item.type === "options") {
-        choiceLength = item.value.length;
-        choices[item.title] = Array(choiceLength).fill("");
-        if (edit) {
-          values.push({
-            type: "choice",
-            title: "Choose new choice",
-            value: "",
-            editable: true,
-            optional: true,
-            key: item.title
-          });
+    data &&
+      data.map(item => {
+        if (item.type === "text" && !item.editable) return;
+        if (item.type === "options") {
+          choiceLength = item.value.length;
+          choices[item.title] = Array(choiceLength).fill("");
+          if (edit) {
+            values.push({
+              type: "choice",
+              title: "Choose new choice",
+              value: "",
+              editable: true,
+              optional: true,
+              key: item.title
+            });
+          }
         }
-      }
-      if (createMethod) {
-        item.value =
-          item.type === "options" ? Array(choiceLength).fill("") : "";
-        item.error =
-          item.type === "options" ? Array(choiceLength).fill(false) : false;
-      }
-    });
+        if (createMethod) {
+          item.value =
+            item.type === "options" ? Array(choiceLength).fill("") : "";
+          item.error =
+            item.type === "options" ? Array(choiceLength).fill(false) : false;
+        }
+      });
     this.setState({ choices, data: values });
   };
   componentDidMount = () => {
@@ -268,7 +269,6 @@ class DialogBox extends Component {
         isRemove
       } = this.props,
       { data, edit, confirmButtonDisable, choices } = this.state;
-      console.log(data,"pankaj");
     return (
       <div data-test="component-message-dialog">
         <Modal
@@ -298,6 +298,37 @@ class DialogBox extends Component {
                 {!isEmpty(data) &&
                   data.map((object, index) => {
                     switch (object.type) {
+                      case "dropdown":
+                        return (
+                          <div key={`dropdown_${index}`}>
+                            <div className="item-title">{object.title}</div>
+                            <div className="item-separator">:</div>
+                            <div className="choices item-value">
+                              <select
+                                value={object.value}
+                                disabled={
+                                  !((edit || create) && object.editable)
+                                }
+                                onChange={e =>
+                                  (edit || create) &&
+                                  object.editable &&
+                                  this.valueChange(e.target.value, object.title)
+                                }
+                              >
+                                {object.options.map((option, option_index) => {
+                                  return (
+                                    <option
+                                      key={option_index + option}
+                                      value={option}
+                                    >
+                                      {option}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                            </div>
+                          </div>
+                        );
                       case "options":
                         return (
                           <div

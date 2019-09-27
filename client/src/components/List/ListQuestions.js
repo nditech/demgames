@@ -188,14 +188,53 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   } = popupState;
 
   let activeGameName;
-  activeGameDetails&&activeGameDetails.map(item => {
-    if (item.key === "Name") {
-      activeGameName = item.value;
-    }
-  });
+  activeGameDetails &&
+    activeGameDetails.map(item => {
+      if (item.key === "Name") {
+        activeGameName = item.value;
+      }
+    });
 
   //   Pop up form data
   const data = {
+    id: questionId,
+    values: [
+      {
+        key: "game",
+        type: "text",
+        title: "Game",
+        value: activeGameName
+      },
+      {
+        key: "level",
+        type: "text",
+        title: "Level",
+        value: questionDetail.difficulty_level
+      },
+      {
+        key: "question",
+        type: "text",
+        title: "Question",
+        value: questionDetail.question_statement,
+        multiline: true,
+        editable: true
+      },
+      {
+        key: "options",
+        type: "options",
+        title: "answers",
+        value: choicesNameArray
+      },
+      {
+        key: "answers",
+        type: "choice",
+        title: "Current choice",
+        value: correctChoice
+      }
+    ]
+  };
+
+  const scenario_data = {
     id: questionId,
     values: [
       {
