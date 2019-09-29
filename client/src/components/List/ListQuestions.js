@@ -1,29 +1,28 @@
 import React, { useEffect, useState, Fragment } from "react";
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
+import {
+  getChoices,
+  getQuestions,
+  deleteQuestion,
+  updateQuestion,
+  addQuestion,
+  getChoiceLinkingQuestion
+} from "./utility";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
-  //   console.log("active game ----> ", activeGame);
-  //   console.log("active game details --- > ", activeGameDetails);
-  // Set data table columns
-  const columns = [
-    // {
-    //   name: "Id",
-    //   selector: "id",
-    //   sortable: true
-    // },
-
+  // Question Table Headers
+  const questionTableColumns = [
+    {
+      name: "Id",
+      selector: "id",
+      sortable: true
+    },
     {
       name: "Question",
       selector: "question_statement",
       sortable: true
     },
-    // {
-    //   name: "Game Id",
-    //   selector: "game_id",
-    //   sortable: true
-    // },
-
     {
       name: "Difficulty Level",
       selector: "difficulty_level",
@@ -51,8 +50,16 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     },
     choices: [],
     choicesNameArray: [],
-    correctChoice: ""
+    correctChoice: "",
+    scenarioFields: [],
+    scenarioEditFields: [],
+    previousQuestionText: "",
+    previousChoiceText: ""
   });
+
+  useEffect(() => {
+    refreshQuestionList();
+  }, []);
   const {
     questions,
     gameId,
@@ -60,75 +67,43 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     choices,
     correctChoice,
     choicesNameArray,
-    questionId
+    questionId,
+    scenarioFields,
+    scenarioEditFields,
+    previousQuestionText,
+    previousChoiceText
   } = questionsData;
 
   console.log(
     "question =----------------------------------------------------------detail....",
-    questionDetail
+    questions
   );
 
-  const getQuestions = () => {
-    const url = `http://localhost:9000/listquestions/${activeGame}`;
-    fetch(url, {
-      method: "get",
-      headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
-        "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log("api data -->", JSON.stringify(data));
-        data.map(obj =>
-          obj.isitmedia === 1 ? (obj.isitmedia = "yes") : (obj.isitmedia = "no")
-        );
-        setQuestionsData({
-          ...questionsData,
-          questions: data,
-          gameId: activeGame
-        });
-      })
-      .catch(err => console.log(err));
-    console.log(questions);
+  const populateQuestions = data => {
+    data.map(obj =>
+      obj.isitmedia === 1 ? (obj.isitmedia = "yes") : (obj.isitmedia = "no")
+    );
+    setQuestionsData({
+      ...questionsData,
+      questions: data,
+      gameId: activeGame
+    });
   };
-  useEffect(() => {
-    getQuestions();
-  }, []);
+
+  const refreshQuestionList = () => {
+    getQuestions(activeGame, populateQuestions);
+  };
 
   if (gameId !== activeGame) {
-    getQuestions();
+    refreshQuestionList();
   }
 
   const deleteHandle = questionId => {
-    console.log("choice id ------------> ", questionId);
-    if (window.confirm("Are you sure you want to delete the question")) {
-      let url = "http://localhost:9000/questions/" + questionId;
-      fetch(url, {
-        method: "POST",
-        headers: {
-          authorization: "Bearer " + localStorage.getItem("access_token"),
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ questionId: questionId })
-      })
-        .then(res => res.json())
-        .then(data => {
-          alert(JSON.stringify(data));
-          getQuestions();
-        })
-        .catch(error => console.log(error));
-    }
+    deleteQuestion(questionId, refreshQuestionList);
   };
 
-  const convertChoice = value => {
-    return String.fromCharCode(value + 65);
-  };
-
-  const editQuestion = (data = "", id) => {
-    console.log("dialogbox data", data);
+  const updateHandle = (data = "", id) => {
+    console.log("dialogbox data", id, data);
     let answers = [];
     if (data) {
       data.options.map((item, index) => {
@@ -137,23 +112,14 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     }
     data.options = answers;
     console.log("options data -----> ", data);
-    let url = "http://localhost:9000/updatequestion/";
-    fetch(url, {
-      method: "POST",
-      headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ data: data, id: id })
-    })
-      .then(res => res.json())
-      .then(data => {
-        alert(JSON.stringify(data));
-        setPopupState({ ...popupState, showMessage: false });
-        getQuestions();
-      })
-      .catch(error => console.log(error));
+    updateQuestion(data, id, function() {
+      setPopupState({ ...popupState, showMessage: false });
+      refreshQuestionList();
+    });
+  };
+
+  const convertChoice = value => {
+    return String.fromCharCode(value + 65);
   };
 
   //   Questions and choices
@@ -163,11 +129,11 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     confirmButtonValue: "Update",
     messageTitle: "",
     messageDescription: "",
-    onConfirm: editQuestion,
+    onConfirm: updateHandle,
     isConfirmation: true,
     title: "Question detail",
     messageBox: false,
-    edit: true,
+    edit: false,
     create: false,
     onDelete: null,
     removeMessage: false
@@ -188,14 +154,18 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   } = popupState;
 
   let activeGameName;
+  let activeGameType;
   activeGameDetails &&
     activeGameDetails.map(item => {
       if (item.key === "Name") {
         activeGameName = item.value;
       }
+      if (item.key === "Game Type") {
+        activeGameType = item.value;
+      }
     });
 
-  //   Pop up form data
+  //   Pop up form data - Edit Question
   const data = {
     id: questionId,
     values: [
@@ -234,96 +204,45 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     ]
   };
 
-  const scenario_data = {
-    id: questionId,
-    values: [
-      {
-        key: "game",
-        type: "text",
-        title: "Game",
-        value: activeGameName
-      },
-      {
-        key: "level",
-        type: "text",
-        title: "Level",
-        value: questionDetail.difficulty_level
-      },
-      {
-        key: "question",
-        type: "text",
-        title: "Question",
-        value: questionDetail.question_statement,
-        multiline: true,
-        editable: true
-      },
-      {
-        key: "options",
-        type: "options",
-        title: "answers",
-        value: choicesNameArray
-      },
-      {
-        key: "answers",
-        type: "choice",
-        title: "Current choice",
-        value: correctChoice
-      }
-    ]
-  };
-
-  const getChoices = (questionId, selectedQuestion) => {
-    const url = `http://localhost:9000/choices/${questionId}`;
-    fetch(url, {
-      method: "get",
-      headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
-        "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log("choices data -->", JSON.stringify(data));
-        let choicesName = [];
-        let correctChoice = "";
-        data.map((item, index) => {
-          item.option = convertChoice(index);
-          choicesName.push(item.choicestatement);
-          if (item.answer === 1) {
-            correctChoice = convertChoice(index);
-          }
-        });
-
-        setQuestionsData({
-          ...questionsData,
-          choices: data,
-          choicesNameArray: choicesName,
-          questionDetail: selectedQuestion,
-          questionId: selectedQuestion.id,
-          correctChoice: correctChoice
-        });
-      })
-      .catch(err => console.log(err));
-  };
-
   const onCancel = () => {
     setPopupState({ ...popupState, showMessage: false });
   };
 
+  const populateChoices = (data, selectedQuestion) => {
+    let choicesName = [];
+    let correctChoice = "";
+    data.map((item, index) => {
+      item.option = convertChoice(index);
+      choicesName.push(item.choicestatement);
+      if (item.answer === 1) {
+        correctChoice = convertChoice(index);
+      }
+    });
+
+    setQuestionsData({
+      ...questionsData,
+      choices: data,
+      choicesNameArray: choicesName,
+      questionDetail: selectedQuestion,
+      questionId: selectedQuestion.id,
+      correctChoice: correctChoice
+    });
+  };
+
   const editHandle = id => {
+    debugger;
     // console.log("id --- ", id);
     const selectedQuestion = questions.find(item => {
       return item.id === id;
     });
-    getChoices(id, selectedQuestion);
+    getChoices(id, selectedQuestion, populateChoices);
     // console.log("question detail selected", questionDetail);
     setPopupState({
       showMessage: true,
       confirmButtonValue: "Update",
       messageTitle: "",
       messageDescription: "",
-      onConfirm: editQuestion,
+      onConfirm: updateHandle,
       isConfirmation: true,
       title: "Question detail",
       messageBox: false,
@@ -373,7 +292,27 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     }
   ];
 
+  // const setChoicesForSelectedQuestion = choices => {
+  //   for (let i = 0; i < scenarioFields.length; i++) {
+  //     if (scenarioFields[i].key === "previous_question_choice") {
+  //       // Insert choices data
+  //       scenarioFields[i].options = choices.map(choice => {
+  //         return { id: choice.id, title: choice.choicestatement };
+  //       });
+  //     }
+  //   }
+  //   setQuestionsData({ ...questionsData, scenarioFields: scenarioFields });
+  // };
+
+  // const handleChangeQuestion = e => {
+  //   let questionId = e.target.value;
+  //   console.log("questionId", questionId);
+  //   getChoices(questionId, null, setChoicesForSelectedQuestion);
+  // };
+
   const saveQuestion = (data = "") => {
+    console.log(data);
+    // return;
     let answers = [];
     if (data) {
       data.options.map((item, index) => {
@@ -382,28 +321,72 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     }
     data.options = answers;
     data.game_id = activeGame;
+    console.log("final data: ", data);
+    // return;
+    addQuestion(data, function() {
+      setPopupState({ ...popupState, showMessage: false });
+      refreshQuestionList();
+    });
     console.log("options data -----> ", data);
-    let url = "http://localhost:9000/addquestion/";
-    fetch(url, {
-      method: "POST",
-      headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ data: data })
-    })
-      .then(res => res.json())
-      .then(data => {
-        alert(JSON.stringify(data));
-        setPopupState({ ...popupState, showMessage: false });
-        getQuestions();
-      })
-      .catch(error => console.log(error));
   };
 
+  let previousQuestions = questions.map(item => {
+    return { id: item.id, title: item.question_statement };
+  });
+  previousQuestions.unshift({ id: "", title: "Select Question" });
+
   const addQuestionHandle = e => {
-    console.log("add question clicked ");
+    if (activeGameType === "scenario") {
+      const scenario_data = [
+        {
+          key: "game",
+          type: "text",
+          title: "Game",
+          value: activeGameName
+        },
+        {
+          key: "previous_question",
+          type: "dropdown",
+          title: "Select Previous Question",
+          options: previousQuestions,
+          value: "",
+          editable: true
+        },
+        {
+          key: "previous_question_choice",
+          type: "dropdown",
+          title: "Select Previous Question Choice",
+          options: [{ id: "", title: "Select Previous Question First" }],
+          value: "",
+          editable: true
+        },
+        {
+          key: "level",
+          type: "text",
+          title: "Level",
+          editable: true,
+          value: ""
+        },
+        {
+          key: "question",
+          type: "text",
+          title: "Question",
+          multiline: true,
+          editable: true,
+          value: ""
+        },
+        {
+          key: "options",
+          type: "options",
+          title: "answers",
+          value: ["", ""]
+        }
+      ];
+
+      console.log("add question clicked ");
+      setQuestionsData({ ...questionsData, scenarioFields: scenario_data });
+    }
+
     setPopupState({
       showMessage: true,
       confirmButtonValue: "Save",
@@ -421,24 +404,179 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     });
   };
 
+  const scenario_edit_data = {
+    id: questionId,
+    values: [
+      {
+        key: "game",
+        type: "text",
+        title: "Game",
+        value: activeGameName
+      },
+      {
+        key: "previous_question",
+        type: "text",
+        title: "Previous Question",
+        value: previousQuestionText
+      },
+      {
+        key: "previous_question_choice",
+        type: "text",
+        title: "Previous Question Choice",
+        value: previousChoiceText
+      },
+      {
+        key: "level",
+        type: "text",
+        title: "Level",
+        value: questionDetail.difficulty_level
+      },
+      {
+        key: "question",
+        type: "text",
+        title: "Question",
+        value: questionDetail.question_statement,
+        multiline: true,
+        editable: true
+      },
+      {
+        key: "options",
+        type: "options",
+        title: "answers",
+        value: choicesNameArray
+      }
+    ]
+  };
+
+  let choice_linked;
+  let choice_name;
+  let selected_question;
+
+  const getQuestionLinkedToChoice = choice => {
+    let previousQuestionId = choice[0].QuestionId;
+    let previousQuestion = questions.find(question => {
+      return question.id === previousQuestionId;
+    });
+
+    setQuestionsData({
+      ...questionsData,
+      choices: choice_linked,
+      choicesNameArray: choice_name,
+      questionDetail: selected_question,
+      questionId: selected_question.id,
+      previousChoiceText: choice[0].choicestatement,
+      previousQuestionText: previousQuestion.question_statement
+    });
+    // setQuestionsData({
+    //   ...questionsData,
+
+    // });
+  };
+
+  const getChoiceLinkedToQuestion = (
+    choices,
+    choicesName,
+    selectedQuestion
+  ) => {
+    choice_linked = choices[0];
+    choice_name = choicesName;
+    selected_question = selectedQuestion;
+    getChoiceLinkingQuestion(selectedQuestion.id, getQuestionLinkedToChoice);
+  };
+
+  const populateScenarioChoices = (data, selectedQuestion) => {
+    // return;
+    let choicesName = [];
+    // let correctChoice = "";
+    data.map((item, index) => {
+      item.option = convertChoice(index);
+      choicesName.push(item.choicestatement);
+      // if (item.answer === 1) {
+      //   correctChoice = convertChoice(index);
+      // }
+    });
+
+    getChoiceLinkedToQuestion(data, choicesName, selectedQuestion);
+  };
+
+  const editScenarioHandle = id => {
+    try {
+      if (activeGameType === "scenario") {
+        let previousQuestions = questions.map(item => {
+          return { id: item.id, title: item.question_statement };
+        });
+        previousQuestions.unshift({ id: "", title: "Select Question" });
+        const selectedQuestion = questions.find(item => {
+          return item.id === id;
+        });
+        getChoices(id, selectedQuestion, populateScenarioChoices);
+
+        setQuestionsData({
+          ...questionsData,
+          scenarioEditFields: scenario_edit_data
+        });
+      }
+      setPopupState({
+        showMessage: true,
+        confirmButtonValue: "Update",
+        messageTitle: "",
+        messageDescription: "",
+        onConfirm: updateHandle,
+        isConfirmation: true,
+        title: "Question detail",
+        messageBox: false,
+        edit: true,
+        create: false,
+        onDelete: null,
+        removeMessage: false
+      });
+    } catch (error) {
+      console.error("Problem", error);
+    }
+  };
+
+  let hasChoices = true;
+  const dialogboxData = () => {
+    if (create) {
+      if (activeGameType === "scenario") {
+        return scenarioFields;
+      } else {
+        return fields;
+      }
+    } else if (edit) {
+      if (activeGameType === "scenario") {
+        hasChoices = false;
+        // return scenarioEditFields;
+        return scenario_edit_data;
+      } else {
+        return data;
+      }
+    }
+    // create ? (activeGameType === "scenario" ? scenarioFields : fields) : data;
+  };
+
   return (
     <Fragment>
-      <DialogBox
-        confirmButtonValue={confirmButtonValue}
-        showMessage={showMessage}
-        messageTitle={messageTitle}
-        messageDescription={messageDescription}
-        onConfirm={onConfirm}
-        isConfirmation={isConfirmation}
-        onCancel={onCancel}
-        title={title}
-        data={create ? fields : data}
-        messageBox={messageBox}
-        edit={edit}
-        create={create}
-        onDelete={onDelete}
-        removeMessage={removeMessage}
-      />
+      {(edit || create) && (
+        <DialogBox
+          confirmButtonValue={confirmButtonValue}
+          showMessage={showMessage}
+          messageTitle={messageTitle}
+          messageDescription={messageDescription}
+          onConfirm={onConfirm}
+          isConfirmation={isConfirmation}
+          onCancel={onCancel}
+          title={title}
+          data={dialogboxData()}
+          // data={create ? scenarioFields : data}
+          messageBox={messageBox}
+          edit={edit}
+          create={create}
+          onDelete={onDelete}
+          removeMessage={removeMessage}
+          hasChoices={hasChoices}
+        />
+      )}
       <div className="float-right" onClick={e => addQuestionHandle(e)}>
         <button className="btn btn-info btn-sm">
           <i className="fa fa-plus"></i>
@@ -447,12 +585,13 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       </div>
       <ListTable
         tableData={{
-          columns: columns,
+          columns: questionTableColumns,
           title: "List of Questions",
           hasActionBtns: true,
           data: questions,
           deleteHandle: deleteHandle,
-          editHandle: editHandle
+          editHandle:
+            activeGameType === "scenario" ? editScenarioHandle : editHandle
         }}
       />
     </Fragment>
