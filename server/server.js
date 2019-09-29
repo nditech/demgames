@@ -694,15 +694,17 @@ app.post("/addquestion", async (req, res) => {
       isitmedia: 0
     });
 
-    if (data.previous_question_choice) {
+    if ("previous_question_choice" in data) {
       console.log("inside previous question");
-      const updateChoice = await choices.update(
-        { linked_question: question.id },
-        {
-          where: { id: data.previous_question_choice }
-        }
-      );
-      console.log("updated linked questions", updateChoice);
+      if (data.previous_question_choice) {
+        const updateChoice = await choices.update(
+          { linked_question: question.id },
+          {
+            where: { id: data.previous_question_choice }
+          }
+        );
+        console.log("updated linked questions", updateChoice);
+      }
       data.options.map(async choice => {
         await choices.create({
           choicedescription: "",
