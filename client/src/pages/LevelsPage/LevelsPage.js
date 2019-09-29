@@ -104,6 +104,7 @@ class LevelsPage extends React.Component {
 		const scores = this.getScores();
 		const parScores = this.getParScores();
 		const moduleId = parseInt(this.props.match.params.moduleId);
+		console.log("player_email ---test\n\n", JSON.stringify(this.props.player_email));
 		const moduleName = moduleNames[moduleId - 1];
 		let levels, moduleColor ;
 		if (gameData.gameData[moduleId - 1])
@@ -161,6 +162,7 @@ class LevelsPage extends React.Component {
 									questions={data.questions}
 									moduleName={moduleName}
 									moduleColor={moduleColor}
+									player_email={this.props.player_email == null ? "default":this.props.player_email }
 								/>
 							))}
 					</div>
@@ -176,6 +178,7 @@ const mapStateToProps = (state) => {
 	return { 
 		player_given_name:state.authDetail.authDetail.player_given_name,
 		player_picture:state.authDetail.authDetail.player_picture,
+		player_email:state.authDetail.authDetail.player_email,
 		gameData: state.gameData 
 	};
 };

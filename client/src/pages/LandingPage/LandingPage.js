@@ -58,7 +58,7 @@ class LandingPage extends React.Component {
 	componentWillMount() {
 
 		// fetch('./moduleData.json')
-                fetch(config.baseUrl + '/api/game',{
+                fetch(config.baseUrl + '/api/v2/game',{
                     method: 'get',
                     headers: {
                             "authorization": "Bearer "+auth0.getAccessToken(),
@@ -264,7 +264,8 @@ class LandingPage extends React.Component {
 									moduleName={modules.name}
 									levels={modules.levels}
 									style={modules.style}
-									type={modules.type}									
+									type={modules.type}	
+									player_email = {this.props.player_email === null ?"default" : this.props.player_email}								
 								/>
 							))}
 					</div>
@@ -278,6 +279,7 @@ class LandingPage extends React.Component {
 const mapStateToProps = (state) => ({
 	player_given_name:state.authDetail.authDetail.player_given_name,
 	player_picture:state.authDetail.authDetail.player_picture,
+	player_email:state.authDetail.authDetail.player_email,
 	gameData: state.gameData 
 });
 

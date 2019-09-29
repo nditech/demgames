@@ -10,6 +10,10 @@ class LevelCard extends Component {
 		this.state = {};
 	}
 
+	componentDidMount(){
+		alert(this.props.player_email);
+	}
+
 	render() {
 		const {
 			level,
@@ -21,7 +25,8 @@ class LevelCard extends Component {
 			moduleId,
 			prevLevelScore,
 			moduleName,
-			moduleColor
+			moduleColor,
+			player_email
 		} = this.props;
 		const lock = level > 1 && prevLevelScore < parScore;
 		return (
