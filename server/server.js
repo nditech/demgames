@@ -1,6 +1,6 @@
 const _ = require('underscore');
 // const gameData = require('../data/Module/moduleData.json');
-const gameData = require('../data/Module/tempData.json');
+// const gameData = require('../data/Module/tempData.json');
 const express = require('express');
 const app = express();
 const { check, validationResult } = require("express-validator");
