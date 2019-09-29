@@ -12,7 +12,7 @@ import {
   TabContent,
   TabPane
 } from "reactstrap";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import React, { Component, Fragment } from "react";
 
@@ -48,8 +48,8 @@ class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openAddGameModal:false,
-      gameData:{},
+      openAddGameModal: false,
+      gameData: {},
       score: 0,
       email: this.props.email || null,
       id: null,
@@ -211,126 +211,156 @@ class Admin extends Component {
     }
   }
   toggleGame(tab) {
-    const fields =[
-        {
-          key:"Title",
-          type: "text",
-          title: "Title",
-          value: "",
-          editable:true
-        },
-        {
-          key:"Description",
-          type: "text",
-          title: "Description",
-          value: "",
-          multiline: true,
-          editable: true
-        },
-      ];
-  this.setState({ fields,
-    // showMessage:true,
-    confirmButtonValue:"ADD",
-    messageTitle:"",
-    messageDescription: "",
-    onConfirm: this.addGameCb,
-    isConfirmation: true,
-    title: "ADD GAME",
-    messageBox: false,
-    edit: false,
-    create: true,
-    onDelete: null,
-    removeMessage: false},()=>{
-    if (this.state.activeGameTab !== tab) {
-      this.setState({
-        // activeGameTab:tab
-        showMessage: true
-      });
-    }
-  });
-    
-  }
-  addGameCb = (data = "") => {
-    const addGameForm={caption:data.Title,gamedescription:data.Description,gametype:"multiplechoice"}
-    console.log(data);
-    console.log("game added. ",data);
-    const url = 'http://localhost:9000/registergame';
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(addGameForm)
-        })
-            .then(res => res.json())
-            .then((data) => {
-              this.setState({showMessage:false});
-                alert(data.message);
-            })
-            .catch((error) => console.log(error));
-  };
-  editGame=(game,id)=>{
-    console.log(game,id);
-    const data ={
-      id,
-      values:[
+    const fields = [
       {
-        key:"Title",
+        key: "Title",
         type: "text",
         title: "Title",
-        value: game[0].value,
-        editable:true
+        value: "",
+        editable: true
       },
       {
-        key:"Description",
+        key: "Description",
         type: "text",
         title: "Description",
-        value: game[1].value,
+        value: "",
         multiline: true,
         editable: true
       },
-    ]};
-    this.setState({ data,
-      // showMessage:true,
-      confirmButtonValue:"UPDATE",
-      messageTitle:"",
-      messageDescription: "",
-      onConfirm: this.editGameCb,
-      isConfirmation: true,
-      title: "EDIT GAME",
-      messageBox: false,
-      edit: true,
-      create: false,
-      onDelete: null,
-      removeMessage: false},()=>{
+      {
+        key: "gametype",
+        type: "dropdown",
+        title: "Game Type",
+        options: [
+          { id: "", title: "Select Game Type" },
+          { id: "multiplechoice", title: "Multiple Choice" },
+          { id: "scenario", title: "Scenario" }
+        ],
+        value: "",
+        editable: true
+      }
+    ];
+    this.setState(
+      {
+        fields,
+        // showMessage:true,
+        confirmButtonValue: "ADD",
+        messageTitle: "",
+        messageDescription: "",
+        onConfirm: this.addGameCb,
+        isConfirmation: true,
+        title: "ADD GAME",
+        messageBox: false,
+        edit: false,
+        create: true,
+        onDelete: null,
+        removeMessage: false
+      },
+      () => {
+        if (this.state.activeGameTab !== tab) {
+          this.setState({
+            // activeGameTab:tab
+            showMessage: true
+          });
+        }
+      }
+    );
+  }
+  addGameCb = (data = "") => {
+    const addGameForm = {
+      caption: data.Title,
+      gamedescription: data.Description,
+      gametype: data.gametype
+    };
+    console.log(data);
+    console.log("game added. ", data);
+    const url = "http://localhost:9000/registergame";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(addGameForm)
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ showMessage: false });
+        alert(data.message);
+      })
+      .catch(error => console.log(error));
+  };
+  editGame = (game, id) => {
+    console.log(game, id);
+    const data = {
+      id,
+      values: [
+        {
+          key: "Title",
+          type: "text",
+          title: "Title",
+          value: game[0].value,
+          editable: true
+        },
+        {
+          key: "Description",
+          type: "text",
+          title: "Description",
+          value: game[1].value,
+          multiline: true,
+          editable: true
+        }
+      ]
+    };
+    this.setState(
+      {
+        data,
+        // showMessage:true,
+        confirmButtonValue: "UPDATE",
+        messageTitle: "",
+        messageDescription: "",
+        onConfirm: this.editGameCb,
+        isConfirmation: true,
+        title: "EDIT GAME",
+        messageBox: false,
+        edit: true,
+        create: false,
+        onDelete: null,
+        removeMessage: false
+      },
+      () => {
         this.setState({
           // activeGameTab:tab
           showMessage: true
         });
-    });
-  }
-  editGameCb = (data,id) => {
-    // debugger;
-    const editGameForm={id,caption:data.Title,gamedescription:data.Description};
-    console.log(editGameForm);
-    console.log("game edited. ",data);
-    const url = 'http://localhost:9000/Updategame';
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(editGameForm)
-        })
-            .then(res => res.json())
-            .then((data) => {
-              this.setState({showMessage:false,editedDetals:editGameForm});
-            })
-            .catch((error) => console.log(error));
+      }
+    );
   };
-  
+  editGameCb = (data, id) => {
+    // debugger;
+    const editGameForm = {
+      id,
+      caption: data.Title,
+      gamedescription: data.Description
+    };
+    console.log(editGameForm);
+    console.log("game edited. ", data);
+    const url = "http://localhost:9000/Updategame";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(editGameForm)
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ showMessage: false, editedDetals: editGameForm });
+      })
+      .catch(error => console.log(error));
+  };
+
   togglePlayer(tab) {
     if (this.state.activePlayerTab !== tab) {
       this.setState({
@@ -456,7 +486,7 @@ class Admin extends Component {
   // };
 
   render() {
-    console.log(this.props,"PROPS");
+    console.log(this.props, "PROPS");
     const {
       showMessage,
       confirmButtonValue,
@@ -501,11 +531,14 @@ class Admin extends Component {
             name={this.props.player_given_name}
             image={this.props.player_picture}
           />
-          <div style={{backgroundColor:"#f7f7f7", padding:"20px 50px 50px 50px"}}>
-          <div className="containers">
-            
-            
-            {/* <Nav tabs>
+          <div
+            style={{
+              backgroundColor: "#f7f7f7",
+              padding: "20px 50px 50px 50px"
+            }}
+          >
+            <div className="containers">
+              {/* <Nav tabs>
                             <NavItem>
                                 <NavLink className={classnames({ active: this.state.activeTab === 'games' })} onClick={() => { this.toggle('games'); }} >
                                     Games
@@ -527,30 +560,57 @@ class Admin extends Component {
                                 </NavLink>
                             </NavItem>
                         </Nav> */}
-            <TabContent activeTab={this.state.activeTab}>
-              
-              <TabPane tabId="games">
-              <div style={{display:"flex"}}>
-              <div style={{flex:1,fontFamily: "Roboto",
-                      fontSize: "18px",
-                      fontWeight: "normal",
-                      fontStyle: "normal",
-                      fontStretch: "normal",
-                      lineHeight: 1.33,
-                      letterSpacing: "normal",
-                      textAlign: "left",
-                      color: "#707070",}}>All Games</div>
-              <div style={{flex:1,textAlign:"right"}}>
-                <Icon color="primary" onClick={() => this.toggleGame('addNew')} style={{color:"#0d9eea"}}>add_box</Icon>
-                <span style={{verticalAlign:"super",paddingLeft:"20px",fontFamily: "Roboto", fontSize: "13px",fontWeight: 300,fontStyle: "normal",fontStretch: "normal",
-                              lineHeight: 1.38,
-                              letterSpacing: "normal",
-                              textAlign: "right",
-                              color: "#707070"}}>Add Game</span>
-              </div>
-            </div>
-              <ListGames editGame={this.editGame} editedDetals={this.state.editedDetals}/>
-                {/* <Row>
+              <TabContent activeTab={this.state.activeTab}>
+                <TabPane tabId="games">
+                  <div style={{ display: "flex" }}>
+                    <div
+                      style={{
+                        flex: 1,
+                        fontFamily: "Roboto",
+                        fontSize: "18px",
+                        fontWeight: "normal",
+                        fontStyle: "normal",
+                        fontStretch: "normal",
+                        lineHeight: 1.33,
+                        letterSpacing: "normal",
+                        textAlign: "left",
+                        color: "#707070"
+                      }}
+                    >
+                      All Games
+                    </div>
+                    <div style={{ flex: 1, textAlign: "right" }}>
+                      <Icon
+                        color="primary"
+                        onClick={() => this.toggleGame("addNew")}
+                        style={{ color: "#0d9eea" }}
+                      >
+                        add_box
+                      </Icon>
+                      <span
+                        style={{
+                          verticalAlign: "super",
+                          paddingLeft: "20px",
+                          fontFamily: "Roboto",
+                          fontSize: "13px",
+                          fontWeight: 300,
+                          fontStyle: "normal",
+                          fontStretch: "normal",
+                          lineHeight: 1.38,
+                          letterSpacing: "normal",
+                          textAlign: "right",
+                          color: "#707070"
+                        }}
+                      >
+                        Add Game
+                      </span>
+                    </div>
+                  </div>
+                  <ListGames
+                    editGame={this.editGame}
+                    editedDetals={this.state.editedDetals}
+                  />
+                  {/* <Row>
                   <Col sm="12">
                     <Nav pills className="float-right pill-tabs">
                       <NavItem>
@@ -578,11 +638,11 @@ class Admin extends Component {
                     </TabContent>
                   </Col>
                 </Row> */}
-              </TabPane>
-              <TabPane tabId="players">
-                <Row>
-                  <Col sm="12">
-                    {/* <Nav pills className="float-right pill-tabs"> */}
+                </TabPane>
+                <TabPane tabId="players">
+                  <Row>
+                    <Col sm="12">
+                      {/* <Nav pills className="float-right pill-tabs"> */}
                       {/* <NavItem>
                         <NavLink
                           className={classnames({
@@ -658,26 +718,26 @@ class Admin extends Component {
                         </NavLink>
                       </NavItem>
                     </Nav> */}
-                    <TabContent activeTab={this.state.activePlayerTab}>
-                      <TabPane tabId="list">
-                        <Row>
-                          <Col sm="12">
-                            <ListPlayers />
-                          </Col>
-                        </Row>
-                      </TabPane>
-                      <TabPane tabId="addNew">
-                        <Row>
-                          <Col sm="12">
-                            <Register />
-                          </Col>
-                        </Row>
-                      </TabPane>
-                    </TabContent>
-                  </Col>
-                </Row>
-              </TabPane>
-              {/* <TabPane tabId="questions">
+                      <TabContent activeTab={this.state.activePlayerTab}>
+                        <TabPane tabId="list">
+                          <Row>
+                            <Col sm="12">
+                              <ListPlayers />
+                            </Col>
+                          </Row>
+                        </TabPane>
+                        <TabPane tabId="addNew">
+                          <Row>
+                            <Col sm="12">
+                              <Register />
+                            </Col>
+                          </Row>
+                        </TabPane>
+                      </TabContent>
+                    </Col>
+                  </Row>
+                </TabPane>
+                {/* <TabPane tabId="questions">
                                 <Row>
                                     <Col sm="12">
                                         <Nav pills className="float-right pill-tabs">
@@ -707,59 +767,57 @@ class Admin extends Component {
                                     </Col>
                                 </Row>
                             </TabPane> */}
-              <TabPane tabId="choices">
-                <Row>
-                  <Col sm="12">
-                    <Nav pills className="float-right pill-tabs">
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activeChoiceTab === "list"
-                          })}
-                          onClick={() => {
-                            this.toggleChoice("list");
-                          }}
-                        >
-                          {" "}
-                          List Choices{" "}
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activeChoiceTab === "addNew"
-                          })}
-                          onClick={() => {
-                            this.toggleChoice("addNew");
-                          }}
-                        >
-                          {" "}
-                          Add New Choice{" "}
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
-                    <TabContent activeTab={this.state.activeChoiceTab}>
-                      <TabPane tabId="list">
-                        <Row>
-                          <Col sm="12">
-                            {/* <ListChoices /> */}
-                          </Col>
-                        </Row>
-                      </TabPane>
-                      <TabPane tabId="addNew">
-                        <Row>
-                          <Col sm="12">
-                            <AddChoices />
-                          </Col>
-                        </Row>
-                      </TabPane>
-                    </TabContent>
-                  </Col>
-                </Row>
-              </TabPane>
-            </TabContent>
+                <TabPane tabId="choices">
+                  <Row>
+                    <Col sm="12">
+                      <Nav pills className="float-right pill-tabs">
+                        <NavItem>
+                          <NavLink
+                            className={classnames({
+                              active: this.state.activeChoiceTab === "list"
+                            })}
+                            onClick={() => {
+                              this.toggleChoice("list");
+                            }}
+                          >
+                            {" "}
+                            List Choices{" "}
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={classnames({
+                              active: this.state.activeChoiceTab === "addNew"
+                            })}
+                            onClick={() => {
+                              this.toggleChoice("addNew");
+                            }}
+                          >
+                            {" "}
+                            Add New Choice{" "}
+                          </NavLink>
+                        </NavItem>
+                      </Nav>
+                      <TabContent activeTab={this.state.activeChoiceTab}>
+                        <TabPane tabId="list">
+                          <Row>
+                            <Col sm="12">{/* <ListChoices /> */}</Col>
+                          </Row>
+                        </TabPane>
+                        <TabPane tabId="addNew">
+                          <Row>
+                            <Col sm="12">
+                              <AddChoices />
+                            </Col>
+                          </Row>
+                        </TabPane>
+                      </TabContent>
+                    </Col>
+                  </Row>
+                </TabPane>
+              </TabContent>
 
-            {/* <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
+              {/* <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
                             <ul className="navbar-nav">
                                 <li className="nav-item"><Link className="nav-link" to="/list">List players</Link> </li>
                                 <li className="nav-item"><Link className="nav-link" to="/listgames">List games</Link> </li>
@@ -795,7 +853,7 @@ class Admin extends Component {
                             <Route path="/updatequestion" component={UpdateQuestion} />
                             <Route path="/updatechoice" component={UpdateChoice} />
                         </Switch> */}
-          </div>
+            </div>
           </div>
         </Fragment>
       </Router>
@@ -803,11 +861,10 @@ class Admin extends Component {
   }
 }
 
-const mapStateToProps = (state) =>
- ({
-	player_given_name:state.authDetail.authDetail.player_given_name,
-	player_picture:state.authDetail.authDetail.player_picture,
-	gameData: state.gameData 
+const mapStateToProps = state => ({
+  player_given_name: state.authDetail.authDetail.player_given_name,
+  player_picture: state.authDetail.authDetail.player_picture,
+  gameData: state.gameData
 });
 
 export default connect(mapStateToProps)(Admin);
