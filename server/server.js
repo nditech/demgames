@@ -601,28 +601,25 @@ app.post("/questions/:id",
     }
 });
 
-// @route   POST api/addquestion
+/ @route   POST api/addquestion
 // @desc    Add a new question
 // @access  Private
-app.post("/addquestion", 
-  checkJwt,
-  verifyToken,
-  async (req, res) => {
+app.post("/addquestion", async (req, res) => {
+  const data = req.body.data;
 
-    const data = req.body.data;
+  try {
+    const question = await questions.create({
+      game_id: data.game_id,
+      difficulty_level: data.level,
+      question_statement: data.question,
+      weight: 0,
+      explanation: "explanation",
+      isitmedia: 0
+    });
 
-    try {
-      const question = await questions.create({
-        game_id: data.game_id,
-        difficulty_level: data.level,
-        question_statement: data.question,
-        weight: 0,
-        explanation: "explanation",
-        isitmedia: 0
-      });
-
+    if ("previous_question_choice" in data) {
+      console.log("inside previous question");
       if (data.previous_question_choice) {
-        console.log("inside previous question");
         const updateChoice = await choices.update(
           { linked_question: question.id },
           {
@@ -630,40 +627,41 @@ app.post("/addquestion",
           }
         );
         console.log("updated linked questions", updateChoice);
-        data.options.map(async choice => {
-          await choices.create({
-            choicedescription: "",
-            choicestatement: choice.value,
-            answer: 0,
-            questionid: question.id,
-            weight: 0
-          });
-        });
-        console.log("updated opitons --------------------");
-      } else {
-        // Add choices
-        console.log("inside else");
-        data.options.map(async choice => {
-          let isAnswer =
-            choice.option.toString() === data.answers.toString() ? 1 : 0;
-          await choices.create({
-            choicedescription: "",
-            choicestatement: choice.value,
-            answer: isAnswer,
-            questionid: question.id,
-            weight: 0
-          });
-        });
       }
-
-      res.json({ msg: "Question Added Successfully" });
-    } catch (err) {
-      console.error(err);
-      if (err.kind === "ObjectId") {
-        return res.status(404).json({ msg: "Question not found" });
-      }
-      res.status(500).send("Server Error");
+      data.options.map(async choice => {
+        await choices.create({
+          choicedescription: "",
+          choicestatement: choice.value,
+          answer: 0,
+          questionid: question.id,
+          weight: 0
+        });
+      });
+      console.log("updated opitons --------------------");
+    } else {
+      // Add choices
+      console.log("inside else");
+      data.options.map(async choice => {
+        let isAnswer =
+          choice.option.toString() === data.answers.toString() ? 1 : 0;
+        await choices.create({
+          choicedescription: "",
+          choicestatement: choice.value,
+          answer: isAnswer,
+          questionid: question.id,
+          weight: 0
+        });
+      });
     }
+
+    res.json({ msg: "Question Added Successfully" });
+  } catch (err) {
+    console.error(err);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Question not found" });
+    }
+    res.status(500).send("Server Error");
+  }
 });
 
 // @route   POST api/updatequestion/

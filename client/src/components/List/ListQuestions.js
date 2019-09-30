@@ -453,24 +453,32 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   let selected_question;
 
   const getQuestionLinkedToChoice = choice => {
-    let previousQuestionId = choice[0].QuestionId;
-    let previousQuestion = questions.find(question => {
-      return question.id === previousQuestionId;
-    });
+    if (choice.length > 0) {
+      let previousQuestionId = choice[0].QuestionId;
+      let previousQuestion = questions.find(question => {
+        return question.id === previousQuestionId;
+      });
 
-    setQuestionsData({
-      ...questionsData,
-      choices: choice_linked,
-      choicesNameArray: choice_name,
-      questionDetail: selected_question,
-      questionId: selected_question.id,
-      previousChoiceText: choice[0].choicestatement,
-      previousQuestionText: previousQuestion.question_statement
-    });
-    // setQuestionsData({
-    //   ...questionsData,
-
-    // });
+      setQuestionsData({
+        ...questionsData,
+        choices: choice_linked,
+        choicesNameArray: choice_name,
+        questionDetail: selected_question,
+        questionId: selected_question.id,
+        previousChoiceText: choice[0].choicestatement,
+        previousQuestionText: previousQuestion.question_statement
+      });
+    } else {
+      setQuestionsData({
+        ...questionsData,
+        choices: choice_linked,
+        choicesNameArray: choice_name,
+        questionDetail: selected_question,
+        questionId: selected_question.id,
+        previousChoiceText: "NA",
+        previousQuestionText: "No Linked Question Found"
+      });
+    }
   };
 
   const getChoiceLinkedToQuestion = (
