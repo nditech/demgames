@@ -11,7 +11,7 @@ class LevelCard extends Component {
 	}
 
 	componentDidMount(){
-		alert(this.props.player_email);
+		console.log(this.props.type);
 	}
 
 	render() {
@@ -26,14 +26,15 @@ class LevelCard extends Component {
 			prevLevelScore,
 			moduleName,
 			moduleColor,
-			player_email
+			player_email,
+			moduleType
 		} = this.props;
 		const lock = level > 1 && prevLevelScore < parScore;
 		return (
 			<Link
 				className={`link-lock link-lock-${lock}`}
 				to={{
-					pathname: `/module/${moduleName === 'Finding flaws in Argument'
+					pathname: `/module/${moduleType === 'scenario'
 						? 'scenario/'
 						: ''}${moduleId}/level/${level}/questions/`
 				}}
@@ -75,7 +76,8 @@ LevelCard.propTypes = {
 	totalScore: PropTypes.number,
 	moduleId: PropTypes.number,
 	prevLevelScore: PropTypes.number,
-	moduleColor: PropTypes.string
+	moduleColor: PropTypes.string,
+	moduleType: PropTypes.string
 };
 
 export default LevelCard;

@@ -6,6 +6,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
 
+import { getChoices } from "../List/utility";
+
 const modalStyles = {
   display: "flex",
   alignItems: "center"
@@ -119,32 +121,33 @@ class DialogBox extends Component {
     this.state = {
       confirmButtonDisable: false,
       choices: 1,
-      data:[],
+      data: []
     };
   }
   initialState = props => {
-    const { data, edit, create } = props;
-    console.log(data,create,edit);
-    const values = create ? data : data.values,
+    // debugger;
+    const { data, edit, create, hasChoices = true } = props;
+    let val = data.values ? data.values : [];
+    const values = create ? [...data] : [...val],
       id = data.id;
     let confirmButtonDisable = false;
-    this.clearPrevious(values, create, edit);
+    this.clearPrevious(values, create, edit, hasChoices);
     if (create) {
       confirmButtonDisable = true;
     }
 
-    this.setState({ edit, id, confirmButtonDisable });
+    this.setState({ edit, id, confirmButtonDisable, hasChoices });
   };
-  clearPrevious = (data, createMethod, edit) => {
+  clearPrevious = (data, createMethod, edit, hasChoices = true) => {
     let choices = {},
       choiceLength = 1;
     let values = data;
-    data&&data.map(item => {
+    data.map(item => {
       if (item.type === "text" && !item.editable) return;
       if (item.type === "options") {
         choiceLength = item.value.length;
         choices[item.title] = Array(choiceLength).fill("");
-        if (edit) {
+        if (edit && hasChoices) {
           values.push({
             type: "choice",
             title: "Choose new choice",
@@ -250,6 +253,32 @@ class DialogBox extends Component {
   //   this.setState({ data, choices });
   //   console.log("Remove item" + index);
   // };
+
+  // Add Scenario Based Question
+
+  setChoicesForSelectedQuestion = choices => {
+    const { data } = this.state;
+
+    data.map(item => {
+      if (item.key === "previous_question_choice") {
+        item.options = choices.map(choice => {
+          return { id: choice.id, title: choice.choicestatement };
+        });
+        item.options.unshift({ id: "", title: "Select Choice" });
+      }
+    });
+    this.setState({ data });
+  };
+
+  handleChangeQuestion(e) {
+    let fieldName = e.target.name;
+    if (fieldName === "previous_question") {
+      let questionId = e.target.value;
+      getChoices(questionId, null, this.setChoicesForSelectedQuestion);
+    }
+  }
+  // --Add Scenario Based Question
+
   render() {
     const {
         cancelButtonValue,
@@ -268,7 +297,6 @@ class DialogBox extends Component {
         isRemove
       } = this.props,
       { data, edit, confirmButtonDisable, choices } = this.state;
-      console.log(data,"pankaj");
     return (
       <div data-test="component-message-dialog">
         <Modal
@@ -298,6 +326,46 @@ class DialogBox extends Component {
                 {!isEmpty(data) &&
                   data.map((object, index) => {
                     switch (object.type) {
+                      case "dropdown":
+                        return (
+                          <div
+                            key={`dropdown_${index}`}
+                            className="dialog-content"
+                          >
+                            <div className="item-title">{object.title}</div>
+                            <div className="item-separator">:</div>
+                            <div className="item-value">
+                              <select
+                                value={object.value}
+                                name={object.key}
+                                disabled={
+                                  !((edit || create) && object.editable)
+                                }
+                                className="dropdown-list"
+                                onChange={e => {
+                                  (edit || create) &&
+                                    object.editable &&
+                                    this.valueChange(
+                                      e.target.value,
+                                      object.title
+                                    );
+                                  this.handleChangeQuestion(e);
+                                }}
+                              >
+                                {object.options.map((option, option_index) => {
+                                  return (
+                                    <option
+                                      key={option_index + option}
+                                      value={option.id}
+                                    >
+                                      {option.title}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                            </div>
+                          </div>
+                        );
                       case "options":
                         return (
                           <div
@@ -456,7 +524,7 @@ class DialogBox extends Component {
             {!isEmpty(confirmButtonValue) && (
               <Button
                 className={`dialog-btn ${isRemove ? "btn-danger" : "confirm"}`}
-                disabled={confirmButtonDisable}
+                // disabled={confirmButtonDisable}
                 onClick={this.onConfirm}
               >
                 {confirmButtonValue}

@@ -5,6 +5,8 @@ import { setAlert } from '../../actions/alert';
 import DatePicker from 'react-datepicker';
 import { countryList } from './countryList';
 //import "react-datepicker/dist/react-datepicker.css";
+import Auth from '../../Auth';
+const auth0=new Auth();
 
 const Register = ({ setAlert }) => {
 
@@ -51,6 +53,7 @@ const Register = ({ setAlert }) => {
             fetch(url, {
                 method: 'POST',
                 headers: {
+                    authorization: "Bearer "+auth0.getAccessToken(),
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },

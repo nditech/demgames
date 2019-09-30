@@ -5,6 +5,8 @@ import ListQuestion from "../List/ListQuestions";
 import "./styles.scss";
 import DialogBox from "../DialogBox/DialogBox";
 import Icon from "@material-ui/core/Icon";
+import Auth from '../../Auth';
+const auth0=new Auth();
 
 class ListGames extends Component {
   constructor(props) {
@@ -75,6 +77,7 @@ class ListGames extends Component {
         fetch(url, {
             method: 'POST',
             headers: {
+              authorization: "Bearer "+auth0.getAccessToken(),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
@@ -196,6 +199,7 @@ class ListGames extends Component {
         fetch(url, {
             method: 'POST',
             headers: {
+                authorization: "Bearer "+auth0.getAccessToken(),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },

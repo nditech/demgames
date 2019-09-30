@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ListTable from '../ListTable';
 import Icon from "@material-ui/core/Icon";
+import Auth from '../../Auth';
+const auth0=new Auth();
 
 const ListPlayers = () =>  {
 

@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import Auth from "../../Auth";
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
+import Auth from '../../Auth';
+const auth0=new Auth();
 
 class UpdateQuestion extends Component{
    constructor(props){
@@ -110,6 +111,7 @@ class UpdateQuestion extends Component{
         fetch(`http://localhost:9000/selectQuestionforDel`, {
         method: 'post',        
         headers: {
+                "authorization": "Bearer "+auth0.getAccessToken(),
                 "Content-Type": "Application/json",
                 "Accept":"application/json"
         },
@@ -147,6 +149,7 @@ class UpdateQuestion extends Component{
       fetch(url, {
             method: 'POST',
             headers: {
+                    "authorization": "Bearer "+auth0.getAccessToken(),
                     "Content-Type": "Application/json",
                     "Accept":"application/json"
             },

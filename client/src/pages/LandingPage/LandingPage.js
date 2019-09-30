@@ -11,7 +11,7 @@ import { fetchGameData, fetchScores,fetchAuthDetails, clearAuthDetails } from '.
 import PropTypes from 'prop-types';
 import GameInfo from '../../components/GameInfo';
 import * as jwtDecode from 'jwt-decode';
-import Auth from '../../Auth';
+
 import {bindActionCreators} from 'redux';
 //import {connect} from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -20,7 +20,7 @@ import admin from '../../components/admin/admin';
 import UpdatePlayer from '../../components/Update/UpdateProfile';
 import { fetchScoreDetail } from '../../components/ProfileInfo/action';
 import { da } from 'date-fns/locale';
-
+import Auth from '../../Auth';
 const auth0=new Auth();
 
 const authDetail={
@@ -150,6 +150,7 @@ class LandingPage extends React.Component {
 			fetch('http://localhost:9000/selectPlayerProfile',{
 				method: 'post',        
 				headers: {
+						"authorization": "Bearer "+auth0.getAccessToken(),
 						"Content-Type": "Application/json",
 						"Accept":"application/json"
 				},
@@ -258,13 +259,14 @@ class LandingPage extends React.Component {
 					<div className="game-type-card-container">
 						{gameData.length > 0 &&
 							gameData.map((modules, key) => (
+								
 								<ModuleCard
 									key={modules.id}
 									moduleId={modules.id}
 									moduleName={modules.name}
 									levels={modules.levels}
 									style={modules.style}
-									type={modules.type}	
+									moduleType={modules.type}	
 									player_email = {this.props.player_email === null ?"default" : this.props.player_email}								
 								/>
 							))}

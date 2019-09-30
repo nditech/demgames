@@ -34,6 +34,10 @@ class LevelsPage extends React.Component {
 		this.setState({ open: true });
 	};
 
+	componentDidMount(){
+		// console.log(this.props);
+	}
+
 	//Handle info dialog box close.
 	handleClose = () => {
 		this.setState({ open: false });
@@ -106,11 +110,12 @@ class LevelsPage extends React.Component {
 		const moduleId = parseInt(this.props.match.params.moduleId);
 		console.log("player_email ---test\n\n", JSON.stringify(this.props.player_email));
 		const moduleName = moduleNames[moduleId - 1];
-		let levels, moduleColor ;
+		let levels, moduleColor,moduleType ;
 		if (gameData.gameData[moduleId - 1])
 		{
 			levels = gameData.gameData[moduleId - 1].levels;
 			moduleColor = this.props.gameData.gameData[moduleId - 1].style;
+			moduleType = gameData.gameData[moduleId - 1].type;
 		}
 
 		return (
@@ -161,6 +166,7 @@ class LevelsPage extends React.Component {
 									totalScore={data.total_score}
 									questions={data.questions}
 									moduleName={moduleName}
+									moduleType={moduleType}
 									moduleColor={moduleColor}
 									player_email={this.props.player_email == null ? "default":this.props.player_email }
 								/>
