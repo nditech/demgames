@@ -1144,4 +1144,38 @@ async (req, res) => {
 
 });
 
+app.post(
+  "/DeleteGame",
+  [
+    check("game_id", "game id is required").isNumeric(),
+  ],
+  checkJwt,
+  verifyToken,
+  async (req, res) => {
+    console.log("POST /DeleteGame  -------api");
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    console.log('updating ');
+    // console.log(JSON.stringify(updatedGame));
+    const { game_id } = req.body;
+
+    try {
+      let deletedGame = await games.destroy(
+        { where: { id: game_id }, raw: true }
+      );
+
+      console.log("deleted game below --- ");
+      console.log(JSON.stringify(deletedGame));
+
+      res.send({ message: "game deleted successfully" });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send({ message: "Server Error" });
+    }
+  }
+);
+
 app.listen(9000, () => console.log('listening'));

@@ -49,6 +49,7 @@ class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      gameAdded:false,
       openAddGameModal: false,
       gameData: {},
       score: 0,
@@ -290,7 +291,7 @@ class Admin extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        this.setState({ showMessage: false });
+        this.setState({ showMessage: false, gameAdded:true });
         alert(data.message);
       })
       .catch(error => console.log(error));
@@ -490,6 +491,9 @@ class Admin extends Component {
   //     isRemove: true
   //   });
   // };
+  handleGameStatus=()=>{
+    this.setState({gameAdded:false});
+  }
 
   render() {
     console.log(this.props, "PROPS");
@@ -614,7 +618,8 @@ class Admin extends Component {
                   </div>
                   <ListGames
                     editGame={this.editGame}
-                    editedDetals={this.state.editedDetals}
+                    gameAdded={this.state.gameAdded}
+                    handleGameStatus={this.handleGameStatus}
                   />
                   {/* <Row>
                   <Col sm="12">

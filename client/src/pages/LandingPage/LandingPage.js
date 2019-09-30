@@ -91,7 +91,6 @@ class LandingPage extends React.Component {
 			authDetail.player_gender=auth0.getProfile().gender;
 			console.log('auth details below: ----------------- ');
 			console.log(auth0.getProfile());
-			console.log(auth0.getProfile()['http://demozero.net/roles']);
 			console.log(authDetail);
 			console.log(auth0.getProfile());
 			
@@ -226,7 +225,7 @@ class LandingPage extends React.Component {
 
 
 	render() {
-		console.log(this.props);
+		// console.log(auth0.getProfile()["http://demGames.net/roles"]&&auth0.getProfile()["http://demGames.net/roles"][0]==="admin");
 		const gameData = this.props.gameData.gameData;
 		const { open } = this.state;
 		return (
@@ -245,7 +244,7 @@ class LandingPage extends React.Component {
 							{
 									auth0.isAuthenticated()&&
 									<div>
-										<a href="/profile">Profile</a> || <Link to="/admin"> Admin Page </Link> || 
+										<a href="/profile">Profile</a>|| {auth0.getProfile()&&auth0.getProfile()["http://demGames.net/roles"]&&auth0.getProfile()["http://demGames.net/roles"][0]==="admin"&& <Link to="/admin"> Admin Page ||</Link>}
 										<a onClick={this.handleLogOut}>									
 											<acronym title="Logout"> <img className="profile-icon" src={this.props.player_picture||profileUrl} alt="Log out" />
 											</acronym>

@@ -69,9 +69,12 @@
                 flex:1;
                 display: flex;
                 justify-content: space-between;
-                align-items: flex-end;
+                align-items: center;
+                
                 .header-options{
-                    visibility: hidden;
+                    // visibility: hidden;
+                    padding-right: 10px; 
+                    text-align: right;
                     flex:1;
                     border-right: 1px solid grey;
                 }
