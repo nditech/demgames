@@ -1253,4 +1253,102 @@ app.post(
   }
 );
 
+app.get("/level_by_game/:gameid",
+  // checkJwt,
+  // verifyToken,
+  async (req, res) => {
+
+    console.log("GET /level_by_game/:gameid ");
+    if (!req.params.gameid) {
+      return res.status(404).json({ msg: "Game Id not found" });
+    }
+    
+    let maxLevel =await questions.findAll(
+      {where : {game_id:req.params.gameid}, 
+      raw:true,
+      attributes: [
+        db.sequelize.fn('max', db.sequelize.col('difficulty_level'))
+     ]
+    }); 
+
+    // var levels = [];
+    var length = maxLevel[0]['max(`difficulty_level`)'];
+
+    console.log('\n\n\n');
+    console.log(length);
+    return res.status(200).send({length:length});
+});
+
+app.get("/initial_scenario_question/:gameid/:levelid",
+  // checkJwt,
+  // verifyToken,
+  async (req, res) => {
+
+    console.log("GET /initial_scenario_question/:gameid/:levelid ");
+    if (!req.params.gameid ) {
+      return res.status(404).json({ msg: "Game Id not found" });
+    } else if(!req.params.levelid) {
+      return res.status(404).json({ msg: "level Id not found" });
+    }
+    
+    let initialQuestion =await questions.findOne(
+      {where : {
+        game_id:req.params.gameid,
+        difficulty_level:req.params.levelid
+      }, 
+      raw:true,
+    }); 
+
+    if(!initialQuestion){
+      return res.status(404).send({message:"not found"});
+    }
+
+    let options = await choices.findAll({
+      where: {questionid:initialQuestion.id},
+      raw : true
+    });
+
+    initialQuestion.options = options;
+
+    console.log('\n\n\n');
+    console.log(JSON.stringify(initialQuestion));
+    return res.status(200).send(initialQuestion);
+
+});
+
+
+app.get("/scenario_question/:questionId",
+  // checkJwt,
+  // verifyToken,
+  async (req, res) => {
+
+    console.log("GET /scenario_question /:questionId ");
+    if (!req.params.questionId) {
+      return res.status(404).json({ msg: "questionId not found" });
+    }
+    
+    let newQuestion =await questions.findOne(
+      {where : {
+        id:req.params.questionId
+      }, 
+      raw:true,
+    }); 
+
+    if(!newQuestion){
+      return res.status(404).send({message:"not found"});
+    }
+
+    let options = await choices.findAll({
+      where: {questionid:newQuestion.id},
+      raw : true
+    });
+
+    newQuestion.options = options;
+
+    console.log('\n\n\n');
+    console.log(JSON.stringify(newQuestion));
+    return res.status(200).send(newQuestion);
+
+});
+
 app.listen(9000, () => console.log('listening'));
