@@ -1208,7 +1208,7 @@ app.post(
         { name : name}
       );
 
-      console.log("deleted game below --- ");
+      console.log("Cohort added successfully --- ");
       console.log(JSON.stringify(addedCohort));
 
       return res.send({ message: "cohort added successfully" });
@@ -1222,7 +1222,7 @@ app.post(
 app.post(
   "/DeleteCohort",
   [
-    check("name", "name id is required").isString(),
+    check("cohort_id", "name id is required").isNumeric(),
   ],
   checkJwt,
   verifyToken,
@@ -1232,23 +1232,23 @@ app.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
-    console.log('adding cohort ');
   
-    const { name } = req.body;
+    const { cohort_id } = req.body;
 
     try {
-      let addedCohort = await cohort.create(
-        { name : name}
+      let deletedCohort = await cohort.destroy(
+        { where :{
+          id:cohort_id
+        }}
       );
 
-      console.log("deleted game below --- ");
-      console.log(JSON.stringify(addedCohort));
+      console.log("deleted cohort below --- ");
+      console.log(JSON.stringify(deletedCohort));
 
-      return res.send({ message: "cohort added successfully" });
+      return res.status(200).send({ message: "cohort deleted successfully" });
     } catch (error) {
       console.error(error.message);
-      res.status(500).send({ message: "Server Error" });
+      return res.status(500).send({ message: "Server Error" });
     }
   }
 );
