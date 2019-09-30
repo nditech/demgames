@@ -160,3 +160,23 @@ export const deleteCohort = (cohort_id, callbackFunction) => {
     })
     .catch(error => console.log(error));
 };
+
+// Update Cohort
+export const updateCohort = (name = "", id, callbackFunction) => {
+  let url = "http://localhost:9000/updatecohort/";
+  fetch(url, {
+    method: "POST",
+    headers: {
+      authorization: "Bearer " + localStorage.getItem("access_token"),
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name: name, id: id })
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(JSON.stringify(data));
+      callbackFunction();
+    })
+    .catch(error => console.log(error));
+};

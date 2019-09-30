@@ -3,7 +3,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 
-import { addCohort, deleteCohort } from "./utility";
+import { addCohort, deleteCohort, updateCohort } from "./utility";
 
 const ListCohorts = () => {
   const columns = [
@@ -62,9 +62,25 @@ const ListCohorts = () => {
     removeMessage
   } = popupState;
 
-  const [cohortData, setCohortData] = useState({ cohort: [{}] });
+  const [cohortData, setCohortData] = useState({
+    cohort: [{}],
+    selectedCohort: { id: "", name: "" }
+  });
 
-  const { cohort } = cohortData;
+  const { cohort, selectedCohort } = cohortData;
+
+  const editCohortFields = {
+    id: selectedCohort.id,
+    values: [
+      {
+        key: "name",
+        type: "text",
+        title: "Title",
+        value: selectedCohort.name,
+        editable: true
+      }
+    ]
+  };
 
   const getCohort = () => {
     const url = "http://localhost:9000/listCohort";
@@ -79,7 +95,7 @@ const ListCohorts = () => {
       .then(res => res.json())
       .then(data => {
         console.log("cohort api data -->", JSON.stringify(data));
-        setCohortData({ cohort: data });
+        setCohortData({ ...cohortData, cohort: data });
       })
       .catch(err => console.log(err));
   };
@@ -102,28 +118,34 @@ const ListCohorts = () => {
     }
   };
 
+  const editCohort = (data = "", id) => {
+    console.log("dialogbox data", id, data);
+    // return;
+    updateCohort(data.name, id, function() {
+      setPopupState({ ...popupState, showMessage: false });
+      getCohort();
+    });
+  };
   const editHandle = id => {
     // debugger;
-    // // console.log("id --- ", id);
-    // const selectedQuestion = questions.find(item => {
-    //   return item.id === id;
-    // });
-    // getChoices(id, selectedQuestion, populateChoices);
-    // // console.log("question detail selected", questionDetail);
-    // setPopupState({
-    //   showMessage: true,
-    //   confirmButtonValue: "Update",
-    //   messageTitle: "",
-    //   messageDescription: "",
-    //   onConfirm: updateHandle,
-    //   isConfirmation: true,
-    //   title: "Question detail",
-    //   messageBox: false,
-    //   edit: true,
-    //   create: false,
-    //   onDelete: null,
-    //   removeMessage: false
-    // });
+    const selected_cohort = cohort.find(item => {
+      return item.id === id;
+    });
+    setCohortData({ ...cohortData, selectedCohort: selected_cohort });
+    setPopupState({
+      showMessage: true,
+      confirmButtonValue: "Update",
+      messageTitle: "",
+      messageDescription: "",
+      onConfirm: editCohort,
+      isConfirmation: true,
+      title: "Cohort detail",
+      messageBox: false,
+      edit: true,
+      create: false,
+      onDelete: null,
+      removeMessage: false
+    });
   };
 
   const saveCohort = (data = "") => {
@@ -168,7 +190,7 @@ const ListCohorts = () => {
         isConfirmation={isConfirmation}
         onCancel={onCancel}
         title={title}
-        data={create ? addCohortFields : ""}
+        data={create ? addCohortFields : editCohortFields}
         // data={create ? scenarioFields : data}
         messageBox={messageBox}
         edit={edit}

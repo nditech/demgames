@@ -1202,4 +1202,25 @@ app.post(
   }
 );
 
+app.post("/updatecohort", checkJwt, verifyToken, async (req, res) => {
+  console.log("POST /updatecohort  -------api");
+
+  const { id, name } = req.body;
+
+  try {
+    let updatedGame = await cohort.update(
+      { name: name },
+      { where: { id: id } }
+    );
+
+    console.log("updating nowwwwwwwwww");
+    console.log(JSON.stringify(updatedGame));
+
+    return res.send({ message: "cohort updated successfully" });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).send({ message: "Server Error" });
+  }
+});
+
 app.listen(9000, () => console.log("listening"));
