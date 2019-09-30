@@ -95,11 +95,11 @@ app.get("/api/game", async (req, res) => {
     res.setHeader("Access-Control-Allow-Credentials", true);
 
     // res.json({gameData});
-    res.json({ gameData });
+    return res.json({ gameData });
     // res.json({ newGameData });
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
   // games.findAll().then(result => {
   //   res.send(JSON.stringify(result));
@@ -216,11 +216,11 @@ app.get("/api/v2/game", async (req, res) => {
       gameData.push(modifiedGame);   
     }
 
-    res.json({gameData});
+    return res.json({gameData});
    
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
   // games.findAll().then(result => {
   //   res.send(JSON.stringify(result));
@@ -234,11 +234,11 @@ app.get("/api/v2/game", async (req, res) => {
 app.get('/listcohort_game', checkJwt,verifyToken,(req, res) => {
   console.log("GET /listcohort_game -----api ---called")
   cohort_game.findAll().then(result => {
-    res.send(JSON.stringify(result));
+    return res.send(JSON.stringify(result));
     // console.log(result);
   }).catch(err => {
     console.log(err);
-    res.status(500).send('Server Error');
+    return res.status(500).send('Server Error');
   });
 });
 
@@ -247,12 +247,12 @@ app.get("/listcohort_question",checkJwt, (req, res) => {
   cohort_question
     .findAll()
     .then(result => {
-      res.send(JSON.stringify(result));
+      return res.send(JSON.stringify(result));
       // console.log(result);
     })
     .catch(err => {
       console.error(error.message);
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     });
 });
 
@@ -289,11 +289,11 @@ app.post(
         game_id: game_id,
         cohort_id: cohort_id
       });
-      res.send("cohort to game linked");
+      return res.send("cohort to game linked");
       console.log("cohort to game linked successfully");
     } catch (error) {
       console.error(error.message);
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     }
   }
 );
@@ -329,11 +329,11 @@ app.post(
         question_id: question_id,
         cohort_id: cohort_id
       });
-      res.send("cohort to question linked");
-      console.log("cohort to question linked successfully");
+      return res.send("cohort to question linked");
+      
     } catch (error) {
       console.error(error.message);
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     }
   }
 );
@@ -345,10 +345,11 @@ app.get("/users", checkJwt, verifyToken, (req, res) => {
   players
     .findAll()
     .then(result => {
-      res.send(JSON.stringify(result));
+      return res.status(200).send(JSON.stringify(result));
     })
     .catch(err => {
-      console.log(err);
+      console.log("server error");
+      return res.status(500).send({message:"error occured"});
     });
 });
 
@@ -407,10 +408,10 @@ app.post(
         program: program
       });
 
-      res.send("Player Registered");
+      return res.send("Player Registered");
     } catch (error) {
       console.error(error.message);
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     }
   }
 );
@@ -432,10 +433,10 @@ app.post("/registergame",
         gametype: gametype
       });
 
-      res.send({ message: "game successfully added" });
+      return res.send({ message: "game successfully added" });
     } catch (error) {
       console.error(error.message);
-      res.status(500).send({ message: "Server Error" });
+      return res.status(500).send({ message: "Server Error" });
     }
 });
 
@@ -449,7 +450,7 @@ app.get("/listchoices",
   choices
     .findAll()
     .then(result => {
-      res.send(JSON.stringify(result));
+      return res.send(JSON.stringify(result));
       console.log(result);
     })
     .catch(err => {
@@ -465,7 +466,7 @@ app.get("/listgames",checkJwt,verifyToken, (req, res) => {
   games
     .findAll()
     .then(result => {
-      res.send(JSON.stringify(result));
+      return res.send(JSON.stringify(result));
     })
     .catch(err => {
       console.log(err);
@@ -497,10 +498,10 @@ app.post("/addchoice",
       weight: weight
     });
 
-    res.send({ message: "choice successfully added" });
+    return res.send({ message: "choice successfully added" });
   } catch (error) {
     console.error(error.message);
-    res.status(500).send({ message: "Server Error" });
+    return res.status(500).send({ message: "Server Error" });
   }
 
   
@@ -522,7 +523,7 @@ app.get("/listquestions/:gameid",
         where: { game_id: req.params.gameid }
       })
       .then(result => {
-        res.send(JSON.stringify(result));
+        return res.send(JSON.stringify(result));
         console.log(result);
       })
       .catch(err => {
@@ -545,7 +546,7 @@ app.get("/choices/:questionid",
         where: { questionid: req.params.questionid }
       })
       .then(result => {
-        res.send(JSON.stringify(result));
+        return res.send(JSON.stringify(result));
         console.log(result);
       })
       .catch(err => {
@@ -597,7 +598,7 @@ app.post("/questions/:id",
       if (err.kind === "ObjectId") {
         return res.status(404).json({ msg: "Question not found" });
       }
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     }
 });
 
@@ -654,13 +655,13 @@ app.post("/addquestion", async (req, res) => {
       });
     }
 
-    res.json({ msg: "Question Added Successfully" });
+    return res.json({ msg: "Question Added Successfully" });
   } catch (err) {
     console.error(err);
     if (err.kind === "ObjectId") {
       return res.status(404).json({ msg: "Question not found" });
     }
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
 });
 
@@ -708,13 +709,13 @@ app.post("/updatequestion",
       });
     });
 
-    res.json({ msg: "Question Updated" });
+    return res.json({ msg: "Question Updated" });
   } catch (err) {
     console.error(err);
     if (err.kind === "ObjectId") {
       return res.status(404).json({ msg: "Question not found" });
     }
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
 });
 
@@ -728,12 +729,12 @@ app.get("/listCohort",
   cohort
     .findAll()
     .then(result => {
-      res.send(JSON.stringify(result));
+      return res.send(JSON.stringify(result));
       // console.log(JSON.stringify(result));
     })
     .catch(err => {
       console.log(err);
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     });
 });
 
@@ -745,12 +746,12 @@ app.get("/listcohort_game",
   cohort_game
     .findAll()
     .then(result => {
-      res.send(JSON.stringify(result));
+      return res.send(JSON.stringify(result));
       // console.log(result);
     })
     .catch(err => {
       console.log(err);
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     });
 });
 
@@ -762,12 +763,12 @@ app.get("/listcohort_question",
   cohort_question
     .findAll()
     .then(result => {
-      res.send(JSON.stringify(result));
+      return res.send(JSON.stringify(result));
       // console.log(result);
     })
     .catch(err => {
       console.error(error.message);
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     });
 });
 
@@ -804,11 +805,11 @@ app.post(
         game_id: game_id,
         cohort_id: cohort_id
       });
-      res.send("cohort to game linked");
+      return res.send("cohort to game linked");
       console.log("cohort to game linked successfully");
     } catch (error) {
       console.error(error.message);
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     }
   }
 );
@@ -844,11 +845,11 @@ app.post(
         question_id: question_id,
         cohort_id: cohort_id
       });
-      res.send("cohort to question linked");
+      return res.send("cohort to question linked");
       console.log("cohort to question linked successfully");
     } catch (error) {
       console.error(error.message);
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     }
   }
 );
@@ -967,17 +968,17 @@ app.post(
 
         await transaction.commit();
         console.log("game duplicated successfully");
-        res.status(200).send(JSON.stringify(newGame));
+        return res.status(200).send(JSON.stringify(newGame));
       } catch (err) {
         // Rollback transaction only if the transaction object is defined
         if (transaction) await transaction.rollback();
 
         console.error(err.message);
-        res.status(500).send("Server Error while finding game");
+        return res.status(500).send("Server Error while finding game");
       }
     } catch (error) {
       console.error(error.message);
-      res.status(500).send("Server Error while finding game");
+      return res.status(500).send("Server Error while finding game");
     }
   }
 );
@@ -1000,12 +1001,12 @@ app.get("/list_leaderBoard",
       .then(result => {
         console.log(JSON.stringify(result));
 
-        res.status(200).send(JSON.stringify(result));
+        return res.status(200).send(JSON.stringify(result));
         
       })
       .catch(err => {
         console.error(err.message);
-        res.status(500).send("Server Error");
+        return res.status(500).send("Server Error");
       });
 });
 
@@ -1031,11 +1032,11 @@ app.get("/list_cohort_leaderBoard/:cohort_id",
       group: ['player_id']
     })
     .then(result => {
-      res.status(200).send(JSON.stringify(result));    
+      return res.status(200).send(JSON.stringify(result));    
     })
     .catch(err => {
       console.error(err.message);
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     });
 });
 
@@ -1047,13 +1048,13 @@ app.get("/user/findOne/:email",
     let email = req.params.email;
 
     if (!email) {
-      res.status(400).send("email not found on request");
+      return res.status(400).send("email not found on request");
     }
     let player = await players.findOne({ where: { email: email }, raw: true });
     if (player) {
       res.send(player);
     } else {
-      res.status(200).send({ message: "not found" });
+      return res.status(200).send({ message: "not found" });
     }
 });
 
@@ -1090,10 +1091,10 @@ app.post(
       console.log("updating nowwwwwwwwww");
       console.log(JSON.stringify(updatedGame));
 
-      res.send({ message: "game updated successfully" });
+      return res.send({ message: "game updated successfully" });
     } catch (error) {
       console.error(error.message);
-      res.status(500).send({ message: "Server Error" });
+      return res.status(500).send({ message: "Server Error" });
     }
   }
 );
@@ -1136,12 +1137,120 @@ async (req, res) => {
       playstartdate: new Date
     })
 
-    res.status(200).send({message : "new play created for :" + user.email});
+    return res.status(200).send({message : "new play created for :" + user.email});
   } catch(error){
     console.error(error.message);
-    res.status(500).send({ message: 'Server Error' });
+    return res.status(500).send({ message: 'Server Error' });
   }
 
 });
+
+app.post(
+  "/DeleteGame",
+  [
+    check("game_id", "game id is required").isNumeric(),
+  ],
+  checkJwt,
+  verifyToken,
+  async (req, res) => {
+    console.log("POST /DeleteGame  -------api");
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    console.log('updating ');
+    // console.log(JSON.stringify(updatedGame));
+    const { game_id } = req.body;
+
+    try {
+      let deletedGame = await games.destroy(
+        { where: { id: game_id }, raw: true }
+      );
+
+      console.log("deleted game below --- ");
+      console.log(JSON.stringify(deletedGame));
+
+      return res.send({ message: "game deleted successfully" });
+    } catch (error) {
+      console.error(error.message);
+      return res.status(500).send({ message: "Server Error" });
+    }
+  }
+);
+
+app.post(
+  "/AddCohort",
+  [
+    check("name", "name id is required").isString(),
+  ],
+  checkJwt,
+  verifyToken,
+  async (req, res) => {
+    console.log("POST /AddCohort  -------api");
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    console.log('adding cohort ');
+  
+    const { name } = req.body;
+
+    let oldCohort = cohort.findOne({where:{name:name}});
+
+    if(oldCohort){
+      return res.status(404).send({message:"cohort with the same name exist"})
+    }
+
+    try {
+      let addedCohort = await cohort.create(
+        { name : name}
+      );
+
+      console.log("deleted game below --- ");
+      console.log(JSON.stringify(addedCohort));
+
+      return res.send({ message: "cohort added successfully" });
+    } catch (error) {
+      console.error(error.message);
+      return res.status(500).send({ message: "Server Error" });
+    }
+  }
+);
+
+app.post(
+  "/DeleteCohort",
+  [
+    check("name", "name id is required").isString(),
+  ],
+  checkJwt,
+  verifyToken,
+  async (req, res) => {
+    console.log("POST /DeleteCohort  -------api");
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    console.log('adding cohort ');
+  
+    const { name } = req.body;
+
+    try {
+      let addedCohort = await cohort.create(
+        { name : name}
+      );
+
+      console.log("deleted game below --- ");
+      console.log(JSON.stringify(addedCohort));
+
+      return res.send({ message: "cohort added successfully" });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send({ message: "Server Error" });
+    }
+  }
+);
 
 app.listen(9000, () => console.log('listening'));
