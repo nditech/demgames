@@ -1,105 +1,128 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 //import '../App.css';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 const AddGame = () => {
+  const initialState = {
+    caption: "",
+    gamedescription: "",
+    gametype: "multiplechoice"
+  };
 
-    const initialState = {
-        caption: "",
-        gamedescription: "",
-        gametype: "multiplechoice"
-    };
+  const [formData, setFormData] = useState(initialState);
 
-    const [formData, setFormData] = useState(initialState);
+  const { caption, gamedescription, gametype } = formData;
 
-    const {
-        caption,
-        gamedescription,
-        gametype
-    } = formData;
+  const handleReset = event => {
+    event.preventDefault();
+    setFormData(initialState);
+  };
 
-    const handleReset = (event) => {
-        event.preventDefault();
-        setFormData(initialState);
+  const handleChange = event => {
+    const val = event.target.value;
+    const fieldName = event.target.name;
+
+    if (fieldName === "gametype") {
+      if (val === "multiplechoice") {
+        setFormData({ ...formData, gametype: val });
+      }
+      if (val === "matching") {
+        setFormData({ ...formData, gametype: val });
+      }
+      if (val === "truefalse") {
+        setFormData({ ...formData, gametype: val });
+      }
+      if (val === "fillin") {
+        setFormData({ ...formData, gametype: val });
+      }
+    } else {
+      setFormData({ ...formData, [fieldName]: val });
     }
+  };
 
-    const handleChange = (event) => {
+  const handleSubmit = event => {
+    console.log(formData);
+    event.preventDefault();
+    // console.log(formData);
 
-        const val = event.target.value;
-        const fieldName = event.target.name;
+    // const url = 'http://localhost:9000/registergame';
+    // fetch(url, {
+    //     method: 'POST',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(formData)
+    // })
+    //     .then(res => res.json())
+    //     .then((data) => {
+    //         alert(data.message);
+    //     })
+    //     .catch((error) => console.log(error));
+  };
 
-        if (fieldName === 'gametype') {
-            if (val === 'multiplechoice') {
-                setFormData({ ...formData, gametype: val });
-            }
-            if (val === 'matching') {
-                setFormData({ ...formData, gametype: val });
-            }
-            if (val === 'truefalse') {
-                setFormData({ ...formData, gametype: val });
-            }
-            if (val === 'fillin') {
-                setFormData({ ...formData, gametype: val });
-            }
-        } else {
-            setFormData({ ...formData, [fieldName]: val });
-        }
-
-    }
-
-    const handleSubmit = (event) => {
-        console.log(formData);
-        event.preventDefault();
-        // console.log(formData);
-
-        // const url = 'http://localhost:9000/registergame';
-        // fetch(url, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(formData)
-        // })
-        //     .then(res => res.json())
-        //     .then((data) => {
-        //         alert(data.message);
-        //     })
-        //     .catch((error) => console.log(error));
-    }
-
-    return (
-        <div className="container App">
+  return (
+    <div className="container App">
+      <div className="row">
+        <div className="col-md-2"></div>
+        <div className="col-md-8">
+          <form className="mt-5" onSubmit={e => handleSubmit(e)}>
+            <input
+              className="form-control mb-1"
+              placeholder="Caption"
+              type="text"
+              name="caption"
+              value={caption}
+              onChange={e => handleChange(e)}
+            />{" "}
+            <br />
+            <textarea
+              className="form-control mb-1"
+              placeholder="Game Description"
+              type="text"
+              name="gamedescription"
+              value={gamedescription}
+              onChange={e => handleChange(e)}
+            ></textarea>
             <div className="row">
-                <div className="col-md-2"></div>
-                <div className="col-md-8">
-                    <form className="mt-5" onSubmit={e => handleSubmit(e)}>
-                        <input className="form-control mb-1" placeholder="Caption" type="text" name="caption" value={caption} onChange={e => handleChange(e)} /> <br />
-                        <textarea className="form-control mb-1" placeholder="Game Description" type="text" name="gamedescription" value={gamedescription} onChange={e => handleChange(e)}>
-                        </textarea>
-
-                        <div className="row">
-                            <div className="form-group col-md-12">
-                                <label className="form-label" >Game type</label>
-                                <select className="form-control custom-select custom-select-sm" name="gametype" value={gametype} onChange={e => handleChange(e)} >
-                                    <option value="multiplechoice">Multiple choice</option>
-                                    <option value="matching">Matching</option>
-                                    <option value="truefalse">True or False</option>
-                                    <option value="fillin">Fill in</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div className="text-center mt-12">
-                            <button className="btn btn-info" type="submit">Save</button> | <button className="btn btn-warning" type="button" onClick={e => handleReset(e)}>Reset</button>
-                        </div>
-
-                    </form>
-                </div>
-                <div className="col-md-2"></div>
+              <div className="form-group col-md-12">
+                <label className="form-label">Game type</label>
+                <select
+                  className="form-control custom-select custom-select-sm"
+                  name="gametype"
+                  value={gametype}
+                  onChange={e => handleChange(e)}
+                >
+                  <option value="multiplechoice">Multiple choice</option>
+                  <option value="matching">Matching</option>
+                  <option value="truefalse">True or False</option>
+                  <option value="fillin">Fill in</option>
+                </select>
+              </div>
             </div>
+            <div className="text-center mt-12">
+              <button className="btn btn-info" type="submit">
+                Save
+              </button>{" "}
+              |{" "}
+              <button
+                className="btn btn-warning"
+                type="button"
+                onClick={e => handleReset(e)}
+              >
+                Reset
+              </button>
+            </div>
+          </form>
         </div>
-    );
-}
+        <div className="col-md-2"></div>
+      </div>
+    </div>
+  );
+};
 
-export default connect(null, {})(AddGame);
+export default connect(
+  null,
+  {}
+)(AddGame);
