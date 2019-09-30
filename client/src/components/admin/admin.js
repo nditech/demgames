@@ -112,12 +112,14 @@ class Admin extends Component {
           {
             type: "text",
             title: "Game",
-            value: "Desiging a argument"
+            value: "Desiging a argument",
+            key: "Game"
           },
           {
             type: "text",
             title: "Level",
-            value: "1"
+            value: "1",
+            key: "Level"
           },
           {
             type: "text",
@@ -125,19 +127,28 @@ class Admin extends Component {
             value:
               "text question ihsihds ajsijacif njhkf i jhf sjjah hhi dwkhbci  hiuhi onhsiubdhi h ih huho",
             multiline: true,
+            editable: true,
+            key: "Question"
+          },
+          {
+            type: "dropdown",
+            title: "Dropdown",
+            value: "test1",
+            options: ["test1", "test2", "test3", "test4"],
+            key: "dropdown",
             editable: true
-          },
-          {
-            type: "options",
-            title: "answers",
-            value: ["test1", "test2", "test3", "test4"]
-          },
-          {
-            type: "choice",
-            title: "Current choice",
-            value: "B",
-            key: "answers"
           }
+          // {
+          //   type: "options",
+          //   title: "answers",
+          //   value: ["test1", "test2", "test3", "test4"]
+          // },
+          // {
+          //   type: "choice",
+          //   title: "Current choice",
+          //   value: "B",
+          //   key: "answers"
+          // }
         ]
       },
       fields = [
@@ -406,7 +417,7 @@ class Admin extends Component {
       edit: true,
       create: false,
       onDelete: null,
-      removeMessage: false,
+      removeMessage: "",
       isRemove: false
     });
   };
@@ -427,7 +438,7 @@ class Admin extends Component {
       edit: false,
       create: true,
       onDelete: null,
-      removeMessage: false,
+      removeMessage: "",
       isRemove: false
     });
   };
@@ -444,7 +455,7 @@ class Admin extends Component {
       edit: false,
       create: false,
       onDelete: this.onDelete,
-      removeMessage: false,
+      removeMessage: "",
       isRemove: false
     });
   };
@@ -472,24 +483,24 @@ class Admin extends Component {
   onCancel = () => {
     this.setState({ showMessage: false });
   };
-  // removePopup = () => {
-  //   this.setState({
-  //     showMessage: true,
-  //     confirmButtonValue: "Remove",
-  //     messageTitle: "",
-  //     messageDescription:
-  //       "Are you sure you want to delete question Q1 from level 1?",
-  //     onConfirm: this.remove,
-  //     isConfirmation: true,
-  //     title: "Remove Question",
-  //     messageBox: true,
-  //     edit: false,
-  //     create: false,
-  //     onDelete: null,
-  //     removeMessage: false,
-  //     isRemove: true
-  //   });
-  // };
+  removePopup = () => {
+    this.setState({
+      showMessage: true,
+      confirmButtonValue: "Remove",
+      messageTitle: "",
+      messageDescription:
+        "Are you sure you want to delete question Q1 from level 1?",
+      onConfirm: this.remove,
+      isConfirmation: true,
+      title: "Remove Question",
+      messageBox: true,
+      edit: false,
+      create: false,
+      onDelete: null,
+      removeMessage: "",
+      isRemove: true
+    });
+  };
 
   render() {
     console.log(this.props, "PROPS");

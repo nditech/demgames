@@ -337,28 +337,23 @@ class DialogBox extends Component {
                             <div className="item-value">
                               <select
                                 value={object.value}
-                                name={object.key}
                                 disabled={
                                   !((edit || create) && object.editable)
                                 }
                                 className="dropdown-list"
-                                onChange={e => {
+                                onChange={e =>
                                   (edit || create) &&
-                                    object.editable &&
-                                    this.valueChange(
-                                      e.target.value,
-                                      object.title
-                                    );
-                                  this.handleChangeQuestion(e);
-                                }}
+                                  object.editable &&
+                                  this.valueChange(e.target.value, object.title)
+                                }
                               >
                                 {object.options.map((option, option_index) => {
                                   return (
                                     <option
                                       key={option_index + option}
-                                      value={option.id}
+                                      value={option}
                                     >
-                                      {option.title}
+                                      {option}
                                     </option>
                                   );
                                 })}
