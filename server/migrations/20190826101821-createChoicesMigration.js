@@ -30,7 +30,11 @@ module.exports = {
         },
         answer:{
             type: Sequelize.INTEGER
+        },
+        linked_question:{
+          type : Sequelize.INTEGER
         }
+
     }, 
     {
         freezeTableName: true
