@@ -28,6 +28,7 @@ import { Header } from "../Header";
 import ListChoices from "../List/ListChoices";
 import ListGames from "../List/ListGames";
 import ListPlayers from "../List/ListPlayers";
+import ListCohorts from "../List/ListCohorts";
 import ListQuestions from "../List/ListQuestions";
 import Register from "../Add/Register";
 import RemoveChoice from "../Remove/RemoveChoice";
@@ -43,7 +44,7 @@ import Icon from "@material-ui/core/Icon";
 //import NotFound from '../../pages/Landin';
 
 const auth = new Auth();
-const headerTabs = ["games", "players"];
+const headerTabs = ["games", "players", "cohort"];
 class Admin extends Component {
   constructor(props) {
     super(props);
@@ -723,6 +724,28 @@ class Admin extends Component {
                           <Row>
                             <Col sm="12">
                               <ListPlayers />
+                            </Col>
+                          </Row>
+                        </TabPane>
+                        <TabPane tabId="addNew">
+                          <Row>
+                            <Col sm="12">
+                              <Register />
+                            </Col>
+                          </Row>
+                        </TabPane>
+                      </TabContent>
+                    </Col>
+                  </Row>
+                </TabPane>
+                <TabPane tabId="cohort">
+                  <Row>
+                    <Col sm="12">
+                      <TabContent activeTab={this.state.activePlayerTab}>
+                        <TabPane tabId="list">
+                          <Row>
+                            <Col sm="12">
+                              <ListCohorts />
                             </Col>
                           </Row>
                         </TabPane>

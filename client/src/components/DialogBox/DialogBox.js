@@ -125,7 +125,7 @@ class DialogBox extends Component {
     };
   }
   initialState = props => {
-    debugger;
+    // debugger;
     const { data, edit, create, hasChoices = true } = props;
     let val = data.values ? data.values : [];
     const values = create ? [...data] : [...val],
