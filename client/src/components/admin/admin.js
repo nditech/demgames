@@ -41,6 +41,8 @@ import classnames from "classnames";
 import removequestion from "../Remove/RemoveQuestion";
 import Icon from "@material-ui/core/Icon";
 
+const auth0=new Auth();
+
 //import NotFound from '../../pages/Landin';
 
 const auth = new Auth();
@@ -75,9 +77,11 @@ class Admin extends Component {
   componentDidMount() {
     if (this.props.email !== null) {
       const encodedValue = encodeURIComponent(this.state.email);
+      console.log("auth ------------------",auth0.getAccessToken());
       fetch(`http://localhost:9000/selectPlayerProfile`, {
         method: "post",
         headers: {
+          authorization: "Bearer "+auth0.getAccessToken(),
           "Content-Type": "Application/json",
           Accept: "application/json"
         },
@@ -191,6 +195,7 @@ class Admin extends Component {
     fetch(url, {
       method: "POST",
       headers: {
+        authorization: "Bearer "+auth0.getAccessToken(),
         "Content-Type": "Application/json",
         Accept: "application/json"
       },
@@ -279,6 +284,7 @@ class Admin extends Component {
     fetch(url, {
       method: "POST",
       headers: {
+        authorization: "Bearer "+auth0.getAccessToken(),
         Accept: "application/json",
         "Content-Type": "application/json"
       },
@@ -350,6 +356,7 @@ class Admin extends Component {
     fetch(url, {
       method: "POST",
       headers: {
+        authorization: "Bearer "+auth0.getAccessToken(),
         Accept: "application/json",
         "Content-Type": "application/json"
       },

@@ -69,6 +69,7 @@ class Admin extends Component {
       fetch(`http://localhost:9000/selectPlayerProfile`, {
         method: "post",
         headers: {
+          authorization: "Bearer "+auth0.getAccessToken(),
           "Content-Type": "Application/json",
           Accept: "application/json"
         },
@@ -116,6 +117,7 @@ class Admin extends Component {
     fetch(url, {
       method: "POST",
       headers: {
+        authorization: "Bearer "+auth0.getAccessToken(),
         "Content-Type": "Application/json",
         Accept: "application/json"
       },

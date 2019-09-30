@@ -9,7 +9,7 @@
 //     isitmedia TINYINT(2),
 //     primary key(id),
 //     constraint game_id_fk_questions foreign key(gameid) references
-
+    
 //     Games(id) on delete cascade
 //     );
 // 'use strict';

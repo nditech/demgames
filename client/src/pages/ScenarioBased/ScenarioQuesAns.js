@@ -238,7 +238,9 @@ export class ScenarioQuesAns extends React.Component {
 		const parScores = this.getParScores();
 		const backUrl = `/module/${moduleId}/levels`;
 		const questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1].questions;
+
 		const emptyOption = questionId !== null && questions[questionId - 1].options[0].option === '';
+		
 		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
 		const totalScore = this.props.gameData.gameData[moduleId - 1].levels[level - 1].total_score;
 

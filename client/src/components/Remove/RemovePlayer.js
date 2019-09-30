@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
+const auth0=new Auth();
 
 
 
@@ -113,6 +114,7 @@ class RemovePlayer extends Component{
       fetch(url, {
             method: 'POST',
             headers: {
+                authorization: "Bearer "+auth0.getAccessToken(),
                 "Content-Type": "Application/json",
                 "Accept":"application/json"
             },
@@ -175,6 +177,7 @@ class RemovePlayer extends Component{
         fetch(`http://localhost:9000/selectProfileforDel`, {
         method: 'post',        
         headers: {
+           authorization: "Bearer "+auth0.getAccessToken(),
           "Content-Type": "Application/json",
           "Accept":"application/json"
         },

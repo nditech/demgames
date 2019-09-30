@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Auth from '../../Auth';
+const auth0=new Auth();
 
 const AddQuestion = () => {
 
@@ -64,6 +66,7 @@ const AddQuestion = () => {
         fetch('http://localhost:9000/addquestion', {
             method: 'POST',
             headers: {
+                authorization: "Bearer "+auth0.getAccessToken(),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },

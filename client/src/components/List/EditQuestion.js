@@ -1,5 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import DialogBox from "../DialogBox/DialogBox";
+import Auth from '../../Auth';
+const auth0=new Auth();
 
 const EditQuestion = ({
   id,

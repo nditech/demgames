@@ -332,6 +332,7 @@ export class QuestionsAnsPage extends React.Component {
 								to={{
 									pathname: '/results',
 									state: {
+										player_email: this.props.player_email,
 										moduleId: moduleId,
 										parScoreStatus: parScoreStatus,
 										totalScore: totalScore,
@@ -454,6 +455,7 @@ const mapStateToProps = (state) => {
 	return { 
 				player_given_name:state.authDetail.authDetail.player_given_name,
 				player_picture:state.authDetail.authDetail.player_picture,
+				player_email:state.authDetail.authDetail.player_email,
 				gameData: state.gameData 
 		   };
 };

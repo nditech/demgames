@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import '../App.css';
 import {connect} from 'react-redux';
+import Auth from '../../Auth';
+const auth0=new Auth();
+
 
 const AddChoices = () => {
 
@@ -63,6 +66,7 @@ const AddChoices = () => {
        fetch('http://localhost:9000/addchoice', {
         method: 'POST',
         headers: {
+             authorization: "Bearer "+auth0.getAccessToken(),
             'Accept':'application/json',
             'Content-Type': 'application/json'          
         },
