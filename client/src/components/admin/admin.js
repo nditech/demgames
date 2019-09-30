@@ -282,6 +282,7 @@ class Admin extends Component {
     fetch(url, {
       method: "POST",
       headers: {
+        authorization: "Bearer "+auth0.getAccessToken(),
         Accept: "application/json",
         "Content-Type": "application/json"
       },
@@ -353,6 +354,7 @@ class Admin extends Component {
     fetch(url, {
       method: "POST",
       headers: {
+        authorization: "Bearer "+auth0.getAccessToken(),
         Accept: "application/json",
         "Content-Type": "application/json"
       },

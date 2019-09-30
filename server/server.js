@@ -601,7 +601,7 @@ app.post("/questions/:id",
     }
 });
 
-/ @route   POST api/addquestion
+// @route   POST api/addquestion
 // @desc    Add a new question
 // @access  Private
 app.post("/addquestion", async (req, res) => {
