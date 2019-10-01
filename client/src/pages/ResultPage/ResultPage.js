@@ -16,9 +16,19 @@ class ResultPage extends Component {
 
 	componentDidMount(){
 		console.log(JSON.stringify(this.props.location.state.totalScore));
-		const game_id = this.props.gameData.gameData[0].game_id;
-		console.log(typeof game_id);
-		console.log(typeof this.props.location.state.totalScore);
+		
+		console.log(this.props.location.state.moduleId);
+
+		console.log(this.props.gameData.gameData);
+		
+		var game_id = 1;
+
+		for(var game of this.props.gameData.gameData){
+			console.log(game.game_id + "  ----  " + game.id);
+			if(game.id === this.props.location.state.moduleId){
+				game_id = game.game_id;
+			}
+		}
 
 		fetch('http://localhost:9000' + '/updatePlay',{
 			method: 'post',
@@ -29,7 +39,7 @@ class ResultPage extends Component {
 			},
 			body:JSON.stringify({
 				player_email:this.props.player_email,
-				game_id:this.props.gameData.gameData[0].game_id,
+				game_id:game_id,
 				score:this.props.location.state.totalScore
 			})
 		})
