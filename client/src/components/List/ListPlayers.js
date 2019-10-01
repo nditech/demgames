@@ -18,18 +18,28 @@ const ListPlayers = () =>  {
             sortable: true,
         },
         {
-            name: 'Email',
-            selector: 'email',
+            name: 'Last Name',
+            selector: 'lastname',
             sortable: true,
         },
         {
-            name: 'Name',
+            name: 'First Name',
             selector: 'firstname',
+            sortable: true,
+        },
+        {
+            name: 'Gender',
+            selector: 'gender',
             sortable: true,
         },
         {
             name: 'Country',
             selector: 'country',
+            sortable: true,
+        },
+        {
+            name: 'Program',
+            selector: 'program',
             sortable: true,
         }
     ];

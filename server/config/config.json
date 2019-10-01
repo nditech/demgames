@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "Hasher@123",
-    "database": "DemGamesDbTest",
+    "database": "DemGamesTest",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "operatorsAliases": false

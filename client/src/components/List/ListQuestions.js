@@ -99,12 +99,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   }
 
   const deleteHandle = questionId => {
-    var r = window.confirm("Are you sure you want to delete the Question ?");
-    if (r === true) {
-      deleteQuestion(questionId, refreshQuestionList);
-    } else {
-      return;
-    }
+    deleteQuestion(questionId, refreshQuestionList);
   };
 
   const updateHandle = (data = "", id) => {

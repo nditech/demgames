@@ -256,7 +256,8 @@ class LandingPage extends React.Component {
 								
 								<ModuleCard
 									key={modules.id}
-									moduleId={modules.id}
+                  moduleId={modules.id}
+                  gameId={modules.game_id}
 									moduleName={modules.name}
 									levels={modules.levels}
 									style={modules.style}
