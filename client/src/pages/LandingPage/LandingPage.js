@@ -62,7 +62,7 @@ class LandingPage extends React.Component {
   //Fetch complete game data.
   componentWillMount() {
     // fetch('./moduleData.json')
-    fetch(config.baseUrl + "/api/game", {
+    fetch(config.baseUrl + "/api/v2/game", {
       method: "get",
       headers: {
         authorization: "Bearer " + auth0.getAccessToken(),
@@ -256,7 +256,8 @@ class LandingPage extends React.Component {
 								
 								<ModuleCard
 									key={modules.id}
-									moduleId={modules.id}
+                  moduleId={modules.id}
+                  gameId={modules.game_id}
 									moduleName={modules.name}
 									levels={modules.levels}
 									style={modules.style}

@@ -1178,4 +1178,31 @@ app.post(
   }
 );
 
+app.get("/level_by_game/:gameid",
+  // checkJwt,
+  // verifyToken,
+  async (req, res) => {
+
+    console.log("GET /level_by_game/:gameid ");
+    if (!req.params.gameid) {
+      return res.status(404).json({ msg: "Game Id not found" });
+    }
+    
+    let maxLevel =await questions.findAll(
+      {where : {game_id:req.params.gameid}, 
+      raw:true,
+      attributes: [
+        db.sequelize.fn('max', db.sequelize.col('difficulty_level'))
+     ]
+    }); 
+
+    // var levels = [];
+    var length = maxLevel[0]['max(`difficulty_level`)'];
+
+    console.log('\n\n\n');
+    console.log(length);
+    return res.status(200).send({length:length});
+
+});
+
 app.listen(9000, () => console.log('listening'));
