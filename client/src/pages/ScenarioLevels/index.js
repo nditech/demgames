@@ -23,7 +23,7 @@ const authDetail=
 					player_gender:""
 		};
 class ScenarioLevels extends React.Component{
-    state={levels:0};
+    state={levels:0,game:{}};
     componentDidMount(){
         const url = `http://localhost:9000/level_by_game/${this.props.match.params.moduleId}`;
         fetch(url, {
@@ -36,7 +36,7 @@ class ScenarioLevels extends React.Component{
         })
             .then(res => res.json())
             .then((data) => {
-                this.setState({levels:data.length});
+                this.setState({levels:data.length,game:data.game});
               console.log('level data',data);
             })
             .catch((error) => console.log(error));
@@ -97,7 +97,7 @@ class ScenarioLevels extends React.Component{
 		    					}
 		    			</div>
 		    		</div>
-		    		<p className="game-title"> {}</p>
+		    		<p className="game-title"> {this.state.game.caption}</p>
 		    		<div className="game-type-card-container">
 		    			{/* {levels &&
 		    				levels.length > 0 &&

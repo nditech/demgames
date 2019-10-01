@@ -14,7 +14,13 @@ class ResultPage extends Component {
 		this.state = {};
 	}
 
+	componentWillMount(){
+		console.log('results props --> ',this.props);
+		debugger;
+	};
+
 	componentDidMount(){
+		
 		console.log(JSON.stringify(this.props.location.state.totalScore));
 		const game_id = this.props.gameData.gameData[0].game_id;
 		console.log(typeof game_id);
@@ -57,7 +63,7 @@ class ResultPage extends Component {
 			expression
 		} = this.props.location.state;
 
-		const totalLevels = this.props.gameData.gameData[moduleId - 1].levels.length;
+		// const totalLevels = this.props.gameData.gameData[moduleId - 1].levels.length;
 		const backToLevelUrl = `/module/${moduleId}/levels`;
 		const retryLevelUrl = `/module/${moduleScenario ? 'scenario/' : ''}${moduleId}/level/${level}/questions`;
 		const nextLevelUrl = `/module/${moduleScenario ? 'scenario/' : ''}${moduleId}/level/${level + 1}/questions`;
