@@ -364,7 +364,6 @@ app.post(
     check("userName", "Username is required").isLength({ min: 3 })
   ],
   checkJwt,
-  verifyToken,
   async (req, res) => {
     console.log("POST /registerplayer  -------api");
     const errors = validationResult(req);
@@ -1004,7 +1003,7 @@ app.get(
   }
 );
 
-app.get("/user/findOne/:email", checkJwt, verifyToken, async (req, res) => {
+app.get("/user/findOne/:email", checkJwt, async (req, res) => {
   console.log("GET /user/findOne/   -----api ---called" + req.params.email);
   let email = req.params.email;
 
@@ -1211,9 +1210,19 @@ app.get("/level_by_game/:gameid",
     if (!req.params.gameid) {
       return res.status(404).json({ msg: "Game Id not found" });
     }
+
+    const game_id = req.params.gameid;
+
+    let currentGame = await games.findOne({ where:{
+      id:game_id
+    }});
+
+    if(!currentGame) {
+      return res.status(404).json({ msg: "Game not found" });
+    }
     
     let maxLevel =await questions.findAll(
-      {where : {game_id:req.params.gameid}, 
+      {where : {game_id:game_id}, 
       raw:true,
       attributes: [
         db.sequelize.fn('max', db.sequelize.col('difficulty_level'))
@@ -1225,7 +1234,9 @@ app.get("/level_by_game/:gameid",
 
     console.log('\n\n\n');
     console.log(length);
-    return res.status(200).send({length:length});
+    return res.status(200).send({
+      game:currentGame,
+      length:length});
 });
 
 app.get("/initial_scenario_question/:gameid/:levelid",
