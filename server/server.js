@@ -979,8 +979,13 @@ app.get("/list_leaderBoard",
     })
     .then(result => {
       var myOrderedArray = _.sortBy(result, o => o.score);
-      console.log(JSON.stringify(myOrderedArray.reverse()));
-      return res.status(200).send(JSON.stringify(myOrderedArray));
+      var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()))
+      let mm = sortedArray.map((item, index) => {
+        item.rank = index+1;
+        return item;
+      });
+      console.log(mm);
+      return res.status(200).send(JSON.stringify(mm));
     })
     .catch(err => {
       console.error(err.message);
@@ -1012,9 +1017,14 @@ app.get(
         group: ["player_id"]
       })
       .then(result => {
-        var myOrderedArray = _.sortBy(result, o => o.score);;
-        console.log(JSON.stringify(myOrderedArray.reverse()));
-        return res.status(200).send(JSON.stringify(myOrderedArray));
+        var myOrderedArray = _.sortBy(result, o => o.score);
+        var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()))
+        let arrayWithRanking = sortedArray.map((item, index) => {
+          item.rank = index+1;
+          return item;
+        });
+        
+        return res.status(200).send(JSON.stringify(arrayWithRanking));
       })
       .catch(err => {
         console.error(err.message);

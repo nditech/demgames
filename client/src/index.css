@@ -83,7 +83,7 @@ div.inhAeF {
 }
 
 .main-header .profile-header {
-  min-width: 130px;
+  min-width: 160px;
   z-index: 9999999;
 }
 
@@ -93,4 +93,8 @@ div.inhAeF {
 
 .header-wrapper .header-container .header-left .header-buttons {
   justify-content: center;
+}
+
+.header-wrapper .header-container .header-left .header-button {
+  outline: none;
 }
