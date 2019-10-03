@@ -137,8 +137,8 @@ export class ScenarioQuesAns extends React.Component {
                     moduleScenario: true,
                     totalScore: this.state.totalScore,
                     open: true,
-					level: this.state.levelId,
-					image:hurreyUrl
+                    level: this.state.levelId,
+                    image: hurreyUrl
                   }
                 }}
               />
