@@ -351,7 +351,11 @@ class DialogBox extends Component {
                                 disabled={
                                   !((edit || create) && object.editable)
                                 }
-                                className="dropdown-list"
+                                className={
+                                  object.error
+                                    ? "error dropdown-list"
+                                    : "dropdown-list"
+                                }
                                 onChange={e =>
                                   (edit || create) &&
                                   object.editable &&

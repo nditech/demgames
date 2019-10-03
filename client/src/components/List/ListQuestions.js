@@ -307,8 +307,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     //   type: "dropdown",
     //   title: "dropdown",
     //   value: "",
-    //   options: ["A", "B", "C", "D"],
-    //   default: "A",
+    //   options: ["select value", "B", "C", "D"],
+    //   default: "select value",
     //   editable: true,
     //   manadatory: true
     // }

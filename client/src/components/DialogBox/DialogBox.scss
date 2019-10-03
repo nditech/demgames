@@ -20,10 +20,10 @@
     align-items: center;
     font-family: $font-family-bold;
     .error {
-      border: $border-normal * 2 solid $red;
-    }
-    textarea.error {
       border: $border-normal solid $red;
+    }
+    input.error {
+      border: $border-normal * 2 solid $red;
     }
     .modal-content {
       @include flexbox();
