@@ -1363,7 +1363,7 @@ app.post("/updatecohort", checkJwt, verifyToken, async (req, res) => {
   }
 });
 
-app.get("/user/get_profile/:email", checkJwt, async (req, res) => {
+app.get("/user/get_profile/:email", async (req, res) => {
   console.log("GET /user/findOne/   -----api ---called" + req.params.email);
   let email = req.params.email;
 
