@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import profileUrl from "../../images/profile.png";
+import Icon from "@material-ui/core/Icon";
 import arrowBackUrl from "../../images/back.png";
 import editUrl from "../../images/edit.png";
 import changePassUrl from "../../images/changePass.svg";
@@ -15,9 +16,7 @@ const ProfileInfo = props => {
   return (
     <Fragment>
       <div className="profile-page">
-        <div className="profile-header">
-          <ProfileHeader />
-        </div>
+        <ProfileHeader />
         <div className="container profile-content">
           <div className="row">
             <div className="col-md-4">
@@ -66,6 +65,78 @@ const ProfileInfo = props => {
                         <td>20pts</td>
                         <td>13542</td>
                         <td>43487</td>
+                      </tr>
+                      <tr>
+                        <td>Mary</td>
+                        <td>60pts</td>
+                        <td>87542</td>
+                        <td>64387</td>
+                      </tr>
+                      <tr>
+                        <td>July</td>
+                        <td>140pts</td>
+                        <td>67542</td>
+                        <td>98487</td>
+                      </tr>
+                      <tr>
+                        <td>July</td>
+                        <td>140pts</td>
+                        <td>67542</td>
+                        <td>98487</td>
+                      </tr>
+                      <tr>
+                        <td>July</td>
+                        <td>140pts</td>
+                        <td>67542</td>
+                        <td>98487</td>
+                      </tr>
+                      <tr>
+                        <td>Mary</td>
+                        <td>60pts</td>
+                        <td>87542</td>
+                        <td>64387</td>
+                      </tr>
+                      <tr>
+                        <td>July</td>
+                        <td>140pts</td>
+                        <td>67542</td>
+                        <td>98487</td>
+                      </tr>
+                      <tr>
+                        <td>July</td>
+                        <td>140pts</td>
+                        <td>67542</td>
+                        <td>98487</td>
+                      </tr>
+                      <tr>
+                        <td>July</td>
+                        <td>140pts</td>
+                        <td>67542</td>
+                        <td>98487</td>
+                      </tr>
+                      <tr>
+                        <td>Mary</td>
+                        <td>60pts</td>
+                        <td>87542</td>
+                        <td>64387</td>
+                      </tr>
+                      <tr>
+                        <td>July</td>
+                        <td>140pts</td>
+                        <td>67542</td>
+                        <td>98487</td>
+                      </tr>
+                      <tr>
+                        <td>July</td>
+                        <td>140pts</td>
+                        <td>67542</td>
+                        <td>98487</td>
+                      </tr>
+                      <tr>
+                        <td>July</td>
+                        <td>140pts</td>
+                        <td>67542</td>
+                        <td>98487</td>
                       </tr>
                       <tr>
                         <td>Mary</td>

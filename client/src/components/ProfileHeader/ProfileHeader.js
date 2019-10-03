@@ -103,12 +103,14 @@ const ProfileHeader = props => {
     ];
   }
   return (
-    <Dropdown
-      trigger={trigger}
-      options={options}
-      pointing="top left"
-      icon={null}
-    />
+    <div className="profile-header">
+      <Dropdown
+        trigger={trigger}
+        options={options}
+        pointing="top left"
+        icon={null}
+      />
+    </div>
   );
 };
 

@@ -79,6 +79,10 @@ div.inhAeF {
 .profile-page .profile-header {
   float: right;
   margin: 18px;
+  min-width: 130px;
+}
+.profile-header {
+  min-width: 130px;
 }
 
 .profile-page .profile-content {
