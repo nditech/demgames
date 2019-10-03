@@ -31,6 +31,8 @@ db.Questions.hasMany(db.Choices, {foreignKey: 'questionid'});
 db.Choices.belongsTo(db.Questions, {referenceKey: 'questionid'});
 db.Plays.belongsTo(db.Players, {foreignKey: 'player_id'});
 db.Players.hasMany(db.Plays, {referenceKey: 'player_id'});
+db.Plays.belongsTo(db.Games, {referenceKey: 'game_id'});
+db.Plays.hasMany(db.Cohorts, {foreignKey: 'id'});
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

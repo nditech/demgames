@@ -74,7 +74,7 @@ class ResultPage extends Component {
 		} = this.props.location.state;
 
 		const totalLevels = this.props.gameData.gameData[moduleId - 1].levels.length;
-		const backToLevelUrl = `/module/${moduleId}/levels`;
+		const backToLevelUrl = `/module/${moduleScenario?'scenario/':""}${moduleId}/levels`;
 		const retryLevelUrl = `/module/${moduleScenario ? 'scenario/' : ''}${moduleId}/level/${level}/questions`;
 		const nextLevelUrl = `/module/${moduleScenario ? 'scenario/' : ''}${moduleId}/level/${level + 1}/questions`;
 		return (

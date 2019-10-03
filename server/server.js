@@ -1012,7 +1012,7 @@ app.get("/user/findOne/:email", checkJwt, async (req, res) => {
   }
   let player = await players.findOne({ where: { email: email }, raw: true });
   if (player) {
-    res.send(player);
+    return res.status(200).send(player);
   } else {
     return res.status(200).send({ message: "not found" });
   }
@@ -1329,6 +1329,36 @@ app.post("/updatecohort", checkJwt, verifyToken, async (req, res) => {
   } catch (error) {
     console.error(error.message);
     return res.status(500).send({ message: "Server Error" });
+  }
+});
+
+app.get("/user/get_profile/:email", checkJwt, async (req, res) => {
+  console.log("GET /user/findOne/   -----api ---called" + req.params.email);
+  let email = req.params.email;
+
+  if (!email) {
+    return res.status(400).send("email not found on request");
+  }
+  let player = await players.findOne({ where: { email: email }, raw: true });
+  if (player) {
+    let allPlays = await plays.findAll({
+      where :{player_id:player.id},
+      include: [
+        {
+          model: cohort,
+        },
+        {
+          model: games,
+        }
+      ],
+      raw:true
+    });
+    console.log(JSON.stringify(allPlays));
+
+    return res.status(200).send(JSON.stringify(allPlays));
+
+  } else {
+    return res.status(200).send({ message: "not found" });
   }
 });
 
