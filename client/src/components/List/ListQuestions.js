@@ -1,14 +1,16 @@
-import React, { useEffect, useState, Fragment } from "react";
-import ListTable from "../ListTable";
-import DialogBox from "../DialogBox/DialogBox";
+import React, { Fragment, useEffect, useState } from "react";
 import {
+  addQuestion,
+  deleteQuestion,
+  getChoiceLinkingQuestion,
   getChoices,
   getQuestions,
-  deleteQuestion,
-  updateQuestion,
-  addQuestion,
-  getChoiceLinkingQuestion
+  updateQuestion
 } from "./utility";
+
+import DialogBox from "../DialogBox/DialogBox";
+import ListTable from "../ListTable";
+import { NUMBER_REGEX } from "../DialogBox/Constant";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
   // Question Table Headers
@@ -272,7 +274,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       type: "text",
       title: "Level",
       editable: true,
-      value: ""
+      value: "",
+      manadatory: true,
+      regEx: NUMBER_REGEX
     },
     {
       key: "question",
@@ -280,21 +284,34 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       title: "Question",
       multiline: true,
       editable: true,
-      value: ""
+      value: "",
+      manadatory: true
     },
     {
       key: "options",
       type: "options",
       title: "answers",
-      value: ["", "", "", ""]
+      value: ["", "", "", ""],
+      manadatory: true
     },
     {
       type: "choice",
       title: "Correct choice",
       value: "",
       editable: true,
-      key: "answers"
+      key: "answers",
+      manadatory: true
     }
+    // {
+    //   key: "dropdown",
+    //   type: "dropdown",
+    //   title: "dropdown",
+    //   value: "",
+    //   options: ["A", "B", "C", "D"],
+    //   default: "A",
+    //   editable: true,
+    //   manadatory: true
+    // }
   ];
 
   // const setChoicesForSelectedQuestion = choices => {

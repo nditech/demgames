@@ -4,9 +4,8 @@ import { Button, Modal } from "react-bootstrap";
 import React, { Component } from "react";
 
 import PropTypes from "prop-types";
-import { isEmpty } from "lodash";
-
 import { getChoices } from "../List/utility";
+import { isEmpty } from "lodash";
 
 const modalStyles = {
   display: "flex",
@@ -203,10 +202,15 @@ class DialogBox extends Component {
       }
       if (item.type === "options") {
         item.value.map(arr => {
-          if (arr.trim() === "") confirmButtonDisable = true;
+          if (item.manadatory && arr.trim() === "") confirmButtonDisable = true;
         });
       } else {
-        if (item.value.toString().trim() === "") confirmButtonDisable = true;
+        if (
+          item.manadatory &&
+          (item.value.toString().trim() === "" ||
+            (item.type === "dropdown" && item.value === item.default))
+        )
+          confirmButtonDisable = true;
       }
     });
     return confirmButtonDisable;
@@ -216,14 +220,21 @@ class DialogBox extends Component {
     const { data } = this.state;
 
     data.map(item => {
-      if (item.title === title) {
+      if (
+        item.title === title &&
+        (!item.regEx || item.regEx.test(value) || isEmpty(value))
+      ) {
         if (item.type === "options") {
           item.value[index] = value;
           item.error = item.error ? item.error : [false, false, false, false];
-          item.error[index] = isEmpty(value) ? true : false;
+          item.error[index] = item.manadatory && isEmpty(value) ? true : false;
+        } else if (item.type === "dropdown") {
+          item.value = value;
+          item["error"] =
+            item.manadatory && value === item.default ? true : false;
         } else {
           item.value = value;
-          item["error"] = isEmpty(value) ? true : false;
+          item["error"] = item.manadatory && isEmpty(value) ? true : false;
         }
       }
     });
@@ -519,7 +530,7 @@ class DialogBox extends Component {
             {!isEmpty(confirmButtonValue) && (
               <Button
                 className={`dialog-btn ${isRemove ? "btn-danger" : "confirm"}`}
-                // disabled={confirmButtonDisable}
+                disabled={confirmButtonDisable}
                 onClick={this.onConfirm}
               >
                 {confirmButtonValue}
