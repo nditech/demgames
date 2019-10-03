@@ -946,7 +946,10 @@ app.post(
   }
 );
 
-app.get("/list_leaderBoard", checkJwt, verifyToken, (req, res) => {
+app.get("/list_leaderBoard", 
+  // checkJwt, 
+  // verifyToken, 
+  (req, res) => {
   console.log("GET /list_leaderBoard -----api ---called");
 
   plays
@@ -960,9 +963,9 @@ app.get("/list_leaderBoard", checkJwt, verifyToken, (req, res) => {
       group: ["player_id"]
     })
     .then(result => {
-      console.log(JSON.stringify(result));
-
-      return res.status(200).send(JSON.stringify(result));
+      var myOrderedArray = _.sortBy(result, o => o.score);
+      console.log(JSON.stringify(myOrderedArray.reverse()));
+      return res.status(200).send(JSON.stringify(myOrderedArray));
     })
     .catch(err => {
       console.error(err.message);
@@ -972,8 +975,8 @@ app.get("/list_leaderBoard", checkJwt, verifyToken, (req, res) => {
 
 app.get(
   "/list_cohort_leaderBoard/:cohort_id",
-  checkJwt,
-  verifyToken,
+  // checkJwt,
+  // verifyToken,
   (req, res) => {
     console.log("GET /list_cohort_leaderBoard -----api ---called");
     let cohort_id = req.params.cohort_id;
@@ -994,7 +997,9 @@ app.get(
         group: ["player_id"]
       })
       .then(result => {
-        return res.status(200).send(JSON.stringify(result));
+        var myOrderedArray = _.sortBy(result, o => o.score);;
+        console.log(JSON.stringify(myOrderedArray.reverse()));
+        return res.status(200).send(JSON.stringify(myOrderedArray));
       })
       .catch(err => {
         console.error(err.message);
@@ -1340,6 +1345,7 @@ app.get("/user/get_profile/:email", checkJwt, async (req, res) => {
     return res.status(400).send("email not found on request");
   }
   let player = await players.findOne({ where: { email: email }, raw: true });
+
   if (player) {
     let allPlays = await plays.findAll({
       where :{player_id:player.id},
@@ -1353,13 +1359,15 @@ app.get("/user/get_profile/:email", checkJwt, async (req, res) => {
       ],
       raw:true
     });
-    console.log(JSON.stringify(allPlays));
 
-    return res.status(200).send(JSON.stringify(allPlays));
+    const myOrderedArray = _.sortBy(allPlays, o => o.score);
+    console.log(JSON.stringify(myOrderedArray));
 
+    return res.status(200).send(JSON.stringify(myOrderedArray));
   } else {
     return res.status(200).send({ message: "not found" });
   }
+
 });
 
 app.listen(9000, () => console.log("listening"));
