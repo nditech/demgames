@@ -1,11 +1,61 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import profileUrl from "../../images/profile.png";
 import { connect } from "react-redux";
+import moment from "moment";
 
 import "./styles.scss";
 
 const ProfileInfo = props => {
+  console.log("player email", props.player.player_email);
+  let userEmail = props.player.player_email;
+
+  const [profileData, setProfileData] = useState({
+    progressData: []
+  });
+
+  const { progressData } = profileData;
+
+  const getPlayerProfile = async (email, callbackFunction) => {
+    const url = `http://localhost:9000/user/get_profile/${email}`;
+    await fetch(url, {
+      method: "get",
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("access_token"),
+        "Content-Type": "Application/json",
+        Accept: "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("profile data -->", JSON.stringify(data));
+        callbackFunction(data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const setPlayerProgress = data => {
+    let filteredData = data.map(item => {
+      return {
+        gameName: item["Game.caption"],
+        score: item.score,
+        cohort: item["Cohort.name"],
+        cohort_id: item["Cohort.id"],
+        playdate: item.playstartdate
+      };
+    });
+    console.log("fil data", filteredData);
+    setProfileData({ ...profileData, progressData: filteredData });
+  };
+
+  useEffect(() => {
+    getPlayerProfile(userEmail, setPlayerProgress);
+  }, []);
+
+  const filterProgressData = data => {};
+
+  console.log("progress data", progressData);
+
   return (
     <Fragment>
       <div className="profile-page">
@@ -47,113 +97,26 @@ const ProfileInfo = props => {
                       <tr>
                         <th>Game</th>
                         <th>Score</th>
-                        <th>Cohort Rank</th>
-                        <th>Global Rank</th>
+                        <th>Cohort</th>
+                        <th>Play Date</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>John</td>
-                        <td>20pts</td>
-                        <td>13542</td>
-                        <td>43487</td>
-                      </tr>
-                      <tr>
-                        <td>Mary</td>
-                        <td>60pts</td>
-                        <td>87542</td>
-                        <td>64387</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>140pts</td>
-                        <td>67542</td>
-                        <td>98487</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>140pts</td>
-                        <td>67542</td>
-                        <td>98487</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>140pts</td>
-                        <td>67542</td>
-                        <td>98487</td>
-                      </tr>
-                      <tr>
-                        <td>Mary</td>
-                        <td>60pts</td>
-                        <td>87542</td>
-                        <td>64387</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>140pts</td>
-                        <td>67542</td>
-                        <td>98487</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>140pts</td>
-                        <td>67542</td>
-                        <td>98487</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>140pts</td>
-                        <td>67542</td>
-                        <td>98487</td>
-                      </tr>
-                      <tr>
-                        <td>Mary</td>
-                        <td>60pts</td>
-                        <td>87542</td>
-                        <td>64387</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>140pts</td>
-                        <td>67542</td>
-                        <td>98487</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>140pts</td>
-                        <td>67542</td>
-                        <td>98487</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>140pts</td>
-                        <td>67542</td>
-                        <td>98487</td>
-                      </tr>
-                      <tr>
-                        <td>Mary</td>
-                        <td>60pts</td>
-                        <td>87542</td>
-                        <td>64387</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>140pts</td>
-                        <td>67542</td>
-                        <td>98487</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>140pts</td>
-                        <td>67542</td>
-                        <td>98487</td>
-                      </tr>
-                      <tr>
-                        <td>July</td>
-                        <td>140pts</td>
-                        <td>67542</td>
-                        <td>98487</td>
-                      </tr>
+                      {progressData &&
+                        progressData.map((item, index) => {
+                          return (
+                            <tr key={index}>
+                              <td>{item.gameName}</td>
+                              <td>{item.score}</td>
+                              <td>{item.cohort}</td>
+                              <td>
+                                {moment(item.playdate).format(
+                                  "Do MMM YYYY, h:mm:ss a"
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                 </div>
