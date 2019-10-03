@@ -227,52 +227,6 @@ class LandingPage extends React.Component {
     return (
       <div className="landing-page-wrapper">
         <div className="landing-page-container">
-          <div className="header-icon">
-            <img className="company-logo" src={NdiLogoUrl} alt="ndi-logo" />
-            <p className="welcome" align="left">
-              Welcome {this.props.player_given_name}
-            </p>
-            <ProfileHeader
-              handleLogOut={this.handleLogOut}
-              handleLogIn={this.handleLogIn}
-            />
-            {/* <div className="info-profile-icon-container">
-              <img
-                className="info-icon"
-                src={infoUrl}
-                alt="info-icon"
-                onClick={this.handleClickOpen}
-              />
-              {!auth0.isAuthenticated() && (
-                <a onClick={this.handleLogIn}>
-                  <img
-                    className="profile-icon"
-                    src={this.props.player_given_name || profileUrl}
-                    alt="Log out"
-                  />
-                </a>
-              )}
-              {auth0.isAuthenticated() && (
-                <div>
-                  <a href="/profile">Profile</a>||{" "}
-                  {auth0.getProfile() &&
-                    auth0.getProfile()["http://demGames.net/roles"] &&
-                    auth0.getProfile()["http://demGames.net/roles"][0] ===
-                      "admin" && <Link to="/admin"> Admin Page ||</Link>}
-                  <a onClick={this.handleLogOut}>
-                    <acronym title="Logout">
-                      {" "}
-                      <img
-                        className="profile-icon"
-                        src={this.props.player_picture || profileUrl}
-                        alt="Log out"
-                      />
-                    </acronym>
-                  </a>
-                </div>
-              )}
-            </div> */}
-          </div>
           <p className="game-title">DemGames - Demo</p>
           <div className="game-type-card-container">
             {gameData.length > 0 &&

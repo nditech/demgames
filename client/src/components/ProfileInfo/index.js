@@ -1,14 +1,7 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import profileUrl from "../../images/profile.png";
-import Icon from "@material-ui/core/Icon";
-import arrowBackUrl from "../../images/back.png";
-import editUrl from "../../images/edit.png";
-import changePassUrl from "../../images/changePass.svg";
-import PropTypes from "prop-types";
-import Auth from "../../Auth";
 import { connect } from "react-redux";
-import ProfileHeader from "../../components/ProfileHeader/ProfileHeader";
 
 import "./styles.scss";
 
@@ -16,7 +9,6 @@ const ProfileInfo = props => {
   return (
     <Fragment>
       <div className="profile-page">
-        <ProfileHeader />
         <div className="container profile-content">
           <div className="row">
             <div className="col-md-4">

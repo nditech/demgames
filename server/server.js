@@ -587,16 +587,16 @@ app.post("/addquestion", async (req, res) => {
   const data = req.body.data;
 
   try {
-    const question = await questions.create({
-      game_id: data.game_id,
-      difficulty_level: data.level,
-      question_statement: data.question,
-      weight: 0,
-      explanation: "explanation",
-      isitmedia: 0
-    });
-
     if ("previous_question_choice" in data) {
+      const question = await questions.create({
+        game_id: data.game_id,
+        difficulty_level: data.level,
+        question_statement: data.question,
+        weight: 0,
+        explanation: "explanation",
+        isitmedia: 0
+      });
+
       console.log("inside previous question");
       if (data.previous_question_choice) {
         const updateChoice = await choices.update(
@@ -613,13 +613,28 @@ app.post("/addquestion", async (req, res) => {
           choicestatement: choice.value,
           answer: 0,
           questionid: question.id,
-          weight: 0
+          weight:
+            choice.option === "A"
+              ? data.first_weight
+                ? data.first_weight
+                : 0
+              : data.second_weight
+              ? data.second_weight
+              : 0
         });
       });
       console.log("updated opitons --------------------");
     } else {
+      const question = await questions.create({
+        game_id: data.game_id,
+        difficulty_level: data.level,
+        question_statement: data.question,
+        weight: data.weight,
+        explanation: "explanation",
+        isitmedia: 0
+      });
       // Add choices
-      console.log("inside else");
+      console.log("inside else", data);
       data.options.map(async choice => {
         let isAnswer =
           choice.option.toString() === data.answers.toString() ? 1 : 0;
@@ -628,7 +643,7 @@ app.post("/addquestion", async (req, res) => {
           choicestatement: choice.value,
           answer: isAnswer,
           questionid: question.id,
-          weight: 0
+          weight: isAnswer === 1 ? data.weight : 0
         });
       });
     }
@@ -1201,11 +1216,11 @@ app.post(
   }
 );
 
-app.get("/level_by_game/:gameid",
+app.get(
+  "/level_by_game/:gameid",
   // checkJwt,
   // verifyToken,
   async (req, res) => {
-
     console.log("GET /level_by_game/:gameid ");
     if (!req.params.gameid) {
       return res.status(404).json({ msg: "Game Id not found" });
@@ -1213,103 +1228,104 @@ app.get("/level_by_game/:gameid",
 
     const game_id = req.params.gameid;
 
-    let currentGame = await games.findOne({ where:{
-      id:game_id
-    }});
+    let currentGame = await games.findOne({
+      where: {
+        id: game_id
+      }
+    });
 
-    if(!currentGame) {
+    if (!currentGame) {
       return res.status(404).json({ msg: "Game not found" });
     }
-    
-    let maxLevel =await questions.findAll(
-      {where : {game_id:game_id}, 
-      raw:true,
-      attributes: [
-        db.sequelize.fn('max', db.sequelize.col('difficulty_level'))
-     ]
-    }); 
+
+    let maxLevel = await questions.findAll({
+      where: { game_id: game_id },
+      raw: true,
+      attributes: [db.sequelize.fn("max", db.sequelize.col("difficulty_level"))]
+    });
 
     // var levels = [];
-    var length = maxLevel[0]['max(`difficulty_level`)'];
+    var length = maxLevel[0]["max(`difficulty_level`)"];
 
-    console.log('\n\n\n');
+    console.log("\n\n\n");
     console.log(length);
     return res.status(200).send({
-      game:currentGame,
-      length:length});
-});
+      game: currentGame,
+      length: length
+    });
+  }
+);
 
-app.get("/initial_scenario_question/:gameid/:levelid",
+app.get(
+  "/initial_scenario_question/:gameid/:levelid",
   // checkJwt,
   // verifyToken,
   async (req, res) => {
-
     console.log("GET /initial_scenario_question/:gameid/:levelid ");
-    if (!req.params.gameid ) {
+    if (!req.params.gameid) {
       return res.status(404).json({ msg: "Game Id not found" });
-    } else if(!req.params.levelid) {
+    } else if (!req.params.levelid) {
       return res.status(404).json({ msg: "level Id not found" });
     }
-    
-    let initialQuestion =await questions.findOne(
-      {where : {
-        game_id:req.params.gameid,
-        difficulty_level:req.params.levelid
-      }, 
-      raw:true,
-    }); 
 
-    if(!initialQuestion){
-      return res.status(404).send({message:"not found"});
+    let initialQuestion = await questions.findOne({
+      where: {
+        game_id: req.params.gameid,
+        difficulty_level: req.params.levelid
+      },
+      raw: true
+    });
+
+    if (!initialQuestion) {
+      return res.status(404).send({ message: "not found" });
     }
 
     let options = await choices.findAll({
-      where: {questionid:initialQuestion.id},
-      raw : true
+      where: { questionid: initialQuestion.id },
+      raw: true
     });
 
     initialQuestion.options = options;
 
-    console.log('\n\n\n');
+    console.log("\n\n\n");
     console.log(JSON.stringify(initialQuestion));
     return res.status(200).send(initialQuestion);
+  }
+);
 
-});
-
-
-app.get("/scenario_question/:questionId",
+app.get(
+  "/scenario_question/:questionId",
   // checkJwt,
   // verifyToken,
   async (req, res) => {
-
     console.log("GET /scenario_question /:questionId ");
     if (!req.params.questionId) {
       return res.status(404).json({ msg: "questionId not found" });
     }
-    
-    let newQuestion =await questions.findOne(
-      {where : {
-        id:req.params.questionId
-      }, 
-      raw:true,
-    }); 
 
-    if(!newQuestion){
-      return res.status(404).send({message:"not found"});
+    let newQuestion = await questions.findOne({
+      where: {
+        id: req.params.questionId
+      },
+      raw: true
+    });
+
+    if (!newQuestion) {
+      return res.status(404).send({ message: "not found" });
     }
 
     let options = await choices.findAll({
-      where: {questionid:newQuestion.id},
-      raw : true
+      where: { questionid: newQuestion.id },
+      raw: true
     });
 
     newQuestion.options = options;
 
-    console.log('\n\n\n');
+    console.log("\n\n\n");
     console.log(JSON.stringify(newQuestion));
     return res.status(200).send(newQuestion);
-
-});
+  }
+);
 
 app.post("/updatecohort", checkJwt, verifyToken, async (req, res) => {
   console.log("POST /updatecohort  -------api");
