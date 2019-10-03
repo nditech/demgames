@@ -978,7 +978,7 @@ app.get("/list_leaderBoard",
       group: ["player_id"]
     })
     .then(result => {
-      var myOrderedArray = _.sortBy(result, o => o.score);
+      var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
       var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()))
       let mm = sortedArray.map((item, index) => {
         item.rank = index+1;
@@ -1017,7 +1017,7 @@ app.get(
         group: ["player_id"]
       })
       .then(result => {
-        var myOrderedArray = _.sortBy(result, o => o.score);
+        var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
         var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()))
         let arrayWithRanking = sortedArray.map((item, index) => {
           item.rank = index+1;
@@ -1113,7 +1113,7 @@ app.post(
 
     let default_cohort_id = 1;
 
-    if (typeof cohort_id == "number") {
+    if (cohort_id) {
       default_cohort_id = cohort_id;
     }
 
@@ -1364,7 +1364,7 @@ app.post("/updatecohort", checkJwt, verifyToken, async (req, res) => {
 });
 
 app.get("/user/get_profile/:email", async (req, res) => {
-  console.log("GET /user/findOne/   -----api ---called" + req.params.email);
+  console.log("GET /user/get_profile/:email  -----api ---called" + req.params.email);
   let email = req.params.email;
 
   if (!email) {
@@ -1386,14 +1386,63 @@ app.get("/user/get_profile/:email", async (req, res) => {
       raw:true
     });
 
-    const myOrderedArray = _.sortBy(allPlays, o => o.score);
+    const myOrderedArray = _.sortBy(allPlays, o => parseInt(o.score));
     console.log(JSON.stringify(myOrderedArray));
 
     return res.status(200).send(JSON.stringify(myOrderedArray));
   } else {
-    return res.status(200).send({ message: "not found" });
+    return res.status(500).send({ message: "not found" });
+  }
+});
+
+app.get("/get_cohort_rank/:email/:cohort_id", 
+  // checkJwt, 
+  // verifyToken, 
+  async (req, res) => {
+  console.log("GET /get_cohort_rank -----api ---called");
+  if (!req.params.email) {
+    return res.status(404).json({ msg: "email not found" });
+  }
+  let player = await players.findOne({ where: { email: req.params.email }, raw: true });
+
+  if (player) {
+    plays.findAll({
+      where: { cohort_id: req.params.cohort_id},
+      attributes: [
+        [db.sequelize.literal("COALESCE(SUM(score), 0)"), "score"]
+      ],
+      include: [
+        {
+          model: players
+        }
+      ],
+      group: ["player_id"]
+    })
+    .then(result => {
+
+      var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
+      console.log(JSON.stringify(myOrderedArray));
+      console.log("\n\n\n\n");
+
+      var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()));
+      console.log("sortedArray array ");
+      console.log(JSON.stringify(sortedArray));
+
+      let index = sortedArray.findIndex(x => x.Player.email === req.params.email);
+      index = index + 1;
+      console.log("rank == " + index);
+      return res.status(200).send({ rank:index});
+    })
+    .catch(err => {
+      console.error(err.message);
+      return res.status(500).send("Server Error");
+    });
+
+  } else {
+    return res.status(500).send({ message: "not found" });
   }
 
 });
+
 
 app.listen(9000, () => console.log("listening"));
