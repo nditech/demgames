@@ -25,7 +25,6 @@
                 &.active{
                     background-image: url('../../images/clip.png'),linear-gradient(253deg, #0d9eea, #9839ea);
                     box-shadow: 0 10px 20px 0 rgba(52, 146, 245, 0.23);
-
                         .game-title{
                             display: inline-block;
                             position:absolute;
@@ -43,6 +42,11 @@
                             color: #ffffff;
                         }
                     
+                }
+                .game-delete{
+                    position: absolute;
+                    top:5px;
+                    right:10px;
                 }
                 .game-title{
                     display: inline-block;

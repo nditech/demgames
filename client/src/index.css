@@ -58,3 +58,29 @@ div.inhAeF {
   float: right;
   margin-right: 10px;
 }
+
+.ui.dropdown .menu .active.item{
+  font-weight: normal;
+}
+
+.profile-page .jumbotron {
+  padding: 2rem 2rem;
+}
+.profile-page .progress-status {
+  height: 575px;
+}
+
+.profile-page .table-responsive {
+  height: 415px;
+  overflow-y: scroll;
+  overflow: auto;
+}
+
+.profile-page .profile-header {
+  float: right;
+  margin: 18px;
+}
+
+.profile-page .profile-content {
+  clear: both;
+}

@@ -12,7 +12,6 @@ import {
   TabContent,
   TabPane
 } from "reactstrap";
-import { connect } from "react-redux";
 import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import React, { Component, Fragment } from "react";
 
@@ -24,8 +23,10 @@ import Auth from "../../Auth";
 import Callback from "../../pages/LandingPage/callback";
 import DialogBox from "../DialogBox/DialogBox";
 import { Header } from "../Header";
+import Icon from "@material-ui/core/Icon";
 // import ListQuestions from '../List/ListQuestions';
 import ListChoices from "../List/ListChoices";
+import ListCohorts from "../List/ListCohorts";
 import ListGames from "../List/ListGames";
 import ListPlayers from "../List/ListPlayers";
 import ListQuestions from "../List/ListQuestions";
@@ -37,18 +38,20 @@ import UpdateGame from "../Update/UpdateGame";
 import UpdatePlayer from "../../components/Update/UpdateProfile";
 import UpdateQuestion from "../Update/UpdateQuestion";
 import classnames from "classnames";
+import { connect } from "react-redux";
 import removequestion from "../Remove/RemoveQuestion";
-import Icon from "@material-ui/core/Icon";
 
-const auth0=new Auth();
+const auth0 = new Auth();
 
 //import NotFound from '../../pages/Landin';
 
-const headerTabs = ["games", "players"];
+const auth = new Auth();
+const headerTabs = ["games", "players", "cohort"];
 class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      gameAdded: false,
       openAddGameModal: false,
       gameData: {},
       score: 0,
@@ -75,11 +78,11 @@ class Admin extends Component {
   componentDidMount() {
     if (this.props.email !== null) {
       const encodedValue = encodeURIComponent(this.state.email);
-      console.log("auth ------------------",auth0.getAccessToken());
+      console.log("auth ------------------", auth0.getAccessToken());
       fetch(`http://localhost:9000/selectPlayerProfile`, {
         method: "post",
         headers: {
-          authorization: "Bearer "+auth0.getAccessToken(),
+          authorization: "Bearer " + auth0.getAccessToken(),
           "Content-Type": "Application/json",
           Accept: "application/json"
         },
@@ -204,7 +207,7 @@ class Admin extends Component {
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer "+auth0.getAccessToken(),
+        authorization: "Bearer " + auth0.getAccessToken(),
         "Content-Type": "Application/json",
         Accept: "application/json"
       },
@@ -293,7 +296,7 @@ class Admin extends Component {
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer "+auth0.getAccessToken(),
+        authorization: "Bearer " + auth0.getAccessToken(),
         Accept: "application/json",
         "Content-Type": "application/json"
       },
@@ -301,7 +304,7 @@ class Admin extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        this.setState({ showMessage: false });
+        this.setState({ showMessage: false, gameAdded: true });
         alert(data.message);
       })
       .catch(error => console.log(error));
@@ -365,7 +368,7 @@ class Admin extends Component {
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer "+auth0.getAccessToken(),
+        authorization: "Bearer " + auth0.getAccessToken(),
         Accept: "application/json",
         "Content-Type": "application/json"
       },
@@ -483,23 +486,26 @@ class Admin extends Component {
   onCancel = () => {
     this.setState({ showMessage: false });
   };
-  removePopup = () => {
-    this.setState({
-      showMessage: true,
-      confirmButtonValue: "Remove",
-      messageTitle: "",
-      messageDescription:
-        "Are you sure you want to delete question Q1 from level 1?",
-      onConfirm: this.remove,
-      isConfirmation: true,
-      title: "Remove Question",
-      messageBox: true,
-      edit: false,
-      create: false,
-      onDelete: null,
-      removeMessage: "",
-      isRemove: true
-    });
+  // removePopup = () => {
+  //   this.setState({
+  //     showMessage: true,
+  //     confirmButtonValue: "Remove",
+  //     messageTitle: "",
+  //     messageDescription:
+  //       "Are you sure you want to delete question Q1 from level 1?",
+  //     onConfirm: this.remove,
+  //     isConfirmation: true,
+  //     title: "Remove Question",
+  //     messageBox: true,
+  //     edit: false,
+  //     create: false,
+  //     onDelete: null,
+  //     removeMessage: false,
+  //     isRemove: true
+  //   });
+  // };
+  handleGameStatus = () => {
+    this.setState({ gameAdded: false });
   };
 
   render() {
@@ -625,7 +631,8 @@ class Admin extends Component {
                   </div>
                   <ListGames
                     editGame={this.editGame}
-                    editedDetals={this.state.editedDetals}
+                    gameAdded={this.state.gameAdded}
+                    handleGameStatus={this.handleGameStatus}
                   />
                   {/* <Row>
                   <Col sm="12">
@@ -740,6 +747,28 @@ class Admin extends Component {
                           <Row>
                             <Col sm="12">
                               <ListPlayers />
+                            </Col>
+                          </Row>
+                        </TabPane>
+                        <TabPane tabId="addNew">
+                          <Row>
+                            <Col sm="12">
+                              <Register />
+                            </Col>
+                          </Row>
+                        </TabPane>
+                      </TabContent>
+                    </Col>
+                  </Row>
+                </TabPane>
+                <TabPane tabId="cohort">
+                  <Row>
+                    <Col sm="12">
+                      <TabContent activeTab={this.state.activePlayerTab}>
+                        <TabPane tabId="list">
+                          <Row>
+                            <Col sm="12">
+                              <ListCohorts />
                             </Col>
                           </Row>
                         </TabPane>

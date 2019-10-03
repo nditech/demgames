@@ -25,6 +25,7 @@ class LevelCard extends Component {
 			moduleId,
 			prevLevelScore,
 			moduleName,
+			showScore=true,
 			moduleColor,
 			player_email,
 			moduleType
@@ -48,9 +49,9 @@ class LevelCard extends Component {
 					)}
 					<div className="level-label-score">
 						<p className="level-label">Level {level}</p>
-						<p className="level-score">
+						{showScore&&<p className="level-score">
 							Score: {currentScore}/{totalScore}
-						</p>
+						</p>}
 					</div>
 
 					<p className="level-description"> {description}</p>

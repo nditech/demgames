@@ -8,7 +8,7 @@ export const ModuleCard = (props) => (
 	<Link
 		className="module-card-link"
 		to={{
-			pathname: `/module/${props.moduleId}/levels`,
+			pathname: `/module/${props.moduleType==='scenario'?`scenario/${props.gameId}`:props.moduleId}/levels`,
 			item:{moduleType:props.moduleType}
 		}}
 

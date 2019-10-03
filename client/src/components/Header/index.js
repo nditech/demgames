@@ -3,6 +3,7 @@ import NdiLogoUrl from "../../images/ndiLogo.png";
 import "./styles.scss";
 import profileUrl from "../../images/profile.png";
 import Icon from "@material-ui/core/Icon";
+import { Link } from 'react-router-dom';
 
 export const Header = ({ headerTabs, toggleTab, activeTab, name, image }) => {
   console.log(name,image,"header");
@@ -29,15 +30,15 @@ export const Header = ({ headerTabs, toggleTab, activeTab, name, image }) => {
         <div className="header-right">
           <div className="header-search">
             <div className="header-searchbox">
+            
               <Icon className="search-icon">search</Icon>
               <input className="header-input" placeholder="search"></input>
             </div>
           </div>
           <div className="header-toolbar">
             <div className="header-options">
-              <Icon>search</Icon>
-              <Icon>search</Icon>
-              <Icon>notifications</Icon>
+            <a href="/landingpage"><Icon>home</Icon> </a>
+              
             </div>
             <div className="header-profile-info">
               <div>{name}</div>

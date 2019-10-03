@@ -21,6 +21,7 @@ import AddQuestion from './components/Add/AddQuestion';
 // import AddChoices from './components/Add/AddChoices';
 import Auth from './Auth';
 import Callback from './pages/LandingPage/callback';
+import ScenarioLevels from './pages/ScenarioLevels';
 import RemovePlayer from './components/Remove/RemovePlayer';
 import RemoveChoice from './components/Remove/RemoveChoice';
 import RemoveQuestion from './components/Remove/RemoveQuestion';
@@ -36,7 +37,8 @@ import UpdateChoice from './components/Update/UpdateChoice';
                 <Route path="/landingpage" exact component={LandingPage} />
 			    <Route path="/module/:moduleId/level/:levelId/questions/" exact component={QuestionsAnsPage} />
 			    <Route path="/module/:moduleId/levels" exact component={LevelsPage} />
-			    <Route path="/module/scenario/:moduleId/level/:levelId/questions" exact component={ScenarioQuesAns} />
+			    <Route path="/module/scenario/:moduleId/levels" exact component={ScenarioLevels} />
+				<Route path="/module/scenario/:moduleId/level/:levelId/questions" exact component={ScenarioQuesAns} />
 			    <Route path="/results" exact component={ResultPage} />
                 <Route path="/callback" exact component={Callback} />
 			    <Route path="/info" exact component={CorrectAnswerInfo} />

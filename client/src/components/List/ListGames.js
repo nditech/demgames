@@ -22,7 +22,7 @@ class ListGames extends Component {
     this.handleGameBoxClick = this.handleGameBoxClick.bind(this);
   }
 
-  pool() {
+  pool(fullUpdate) {
     const url = "http://localhost:9000/listgames";
     fetch(url, {
       method: "get",
@@ -35,6 +35,7 @@ class ListGames extends Component {
       .then(res => res.json())
       .then(data => {
         console.log("api data -->", JSON.stringify(data));
+        if(fullUpdate)
         this.setState({
           games: data,
           activeGame: data[0].id,
@@ -45,21 +46,27 @@ class ListGames extends Component {
             { key: "Game Type", value: data[0].gametype }
           ]
         });
+        else{
+          this.setState({
+            games: data
+          });
+        }
       })
       .catch(err => console.log(err));
     console.log(this.state.games, this.state.activeGame, "fre");
   }
   componentDidMount() {
-    this.pool();
+    this.pool(true);
   }
-  // shouldComponentUpdate(nextProp,nextState){
-  //   if(nextProp.editedDetals.caption===this.state.activeGameDetails[0].value && nextProp.editedDetals.gamedescription===this.state.activeGameDetails[1].value)
-  //     return false;
-  //   else{
-  //     updateDetails(nextProp.editedDetals);
-  //     return true;
-  //   }
-  // }
+  shouldComponentUpdate(nextProp,nextState){
+    console.log(nextProp,"----------------------------------------------");
+    if(nextProp.gameAdded)
+    {
+      nextProp.handleGameStatus();
+      this.pool(false);
+    }
+    return true;
+  }
   
   // shouldComponentUpdate(nextProp, nextState){
   //   // debugger;
@@ -213,6 +220,46 @@ class ListGames extends Component {
             })
             .catch((error) => console.log(error));
   };
+  removePopup = (id) => {
+    this.setState({
+      showMessage: true,
+      confirmButtonValue: "Remove",
+      messageTitle: "",
+      messageDescription:
+        "Are you sure you want to delete this Game?",
+      onConfirm: ()=>this.deleteGame(id),
+      isConfirmation: true,
+      title: "Remove Game",
+      messageBox: true,
+      edit: false,
+      create: false,
+      onDelete: null,
+      removeMessage: false,
+      isRemove: true
+    });
+  };
+  deleteGame=(id)=>{
+    console.log(id);
+    const deleteGameForm={game_id:id};
+    console.log(deleteGameForm);
+    // console.log("game edited. ",data);
+    const url = 'http://localhost:9000/DeleteGame';
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                authorization: "Bearer "+auth0.getAccessToken(),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(deleteGameForm)
+        })
+            .then(res => res.json())
+            .then((data) => {
+              this.setState({showMessage:false});
+              this.pool(true);
+            })
+            .catch((error) => console.log(error));
+  }
 
   simpleTable() {
     const {
@@ -255,6 +302,7 @@ class ListGames extends Component {
           games={this.state.games}
           activeGame={this.state.activeGame}
           handleGameBoxClick={this.handleGameBoxClick}
+          deleteGame={this.removePopup}
         />
         <div className="detail-box">
           <div className="tab-container">
@@ -272,7 +320,7 @@ class ListGames extends Component {
             >
               Questions
             </div>
-            {this.state.activeTab===1&&<div className='tab-option'>
+            {this.state.activeTab===1&&this.state.games[this.state.activeIndex]&&this.state.games[this.state.activeIndex].gametype!=="scenario"&&<div className='tab-option'>
               <Icon color="primary" className="tab-icons" onClick={()=>this.copyGameCb(this.state.activeGame)} style={{color:"#0d9eea",cursor:'pointer'}}>file_copy</Icon>
               <span className="tab-icons-details">Duplicate Game</span>
               <Icon color="primary" onClick={()=>this.editGame(this.state.activeGameDetails,this.state.activeGame)} style={{color:"#0d9eea",cursor:'pointer'}}>edit</Icon>

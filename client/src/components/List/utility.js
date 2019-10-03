@@ -120,3 +120,63 @@ export const deleteQuestion = (questionId, callbackFunction) => {
       .catch(error => console.log(error));
   }
 };
+
+// Add a New Cohort
+export const addCohort = (data, callbackFunction) => {
+  let url = "http://localhost:9000/AddCohort/";
+  fetch(url, {
+    method: "POST",
+    headers: {
+      authorization: "Bearer " + localStorage.getItem("access_token"),
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ data: data })
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(JSON.stringify(data));
+      callbackFunction();
+    })
+    .catch(error => console.log(error));
+};
+
+// Delete a cohort based on ID
+export const deleteCohort = (cohort_id, callbackFunction) => {
+  let url = "http://localhost:9000/DeleteCohort/";
+  fetch(url, {
+    method: "POST",
+    headers: {
+      authorization: "Bearer " + localStorage.getItem("access_token"),
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ cohort_id: cohort_id })
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(JSON.stringify(data));
+      callbackFunction();
+    })
+    .catch(error => console.log(error));
+};
+
+// Update Cohort
+export const updateCohort = (name = "", id, callbackFunction) => {
+  let url = "http://localhost:9000/updatecohort/";
+  fetch(url, {
+    method: "POST",
+    headers: {
+      authorization: "Bearer " + localStorage.getItem("access_token"),
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name: name, id: id })
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(JSON.stringify(data));
+      callbackFunction();
+    })
+    .catch(error => console.log(error));
+};
