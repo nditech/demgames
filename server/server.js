@@ -1428,14 +1428,53 @@ app.get("/api/get_cohort_rank/:email/:cohort_id",
       console.log("sortedArray array ");
       console.log(JSON.stringify(sortedArray));
 
-      let index = sortedArray.findIndex(x => x.Player.email === req.params.email);
-      index = index + 1;
-      console.log("rank == " + index);
-      return res.status(200).send({ rank:index});
+      let cohort_rank = sortedArray.findIndex(x => x.Player.email === req.params.email);
+      cohort_rank = cohort_rank + 1;
+      console.log("cohort_rank == " + cohort_rank);
+      let global_rank = 0;
+
+
+
+
+
+       plays.findAll({
+        attributes: [
+          [db.sequelize.literal("COALESCE(SUM(score), 0)"), "score"]
+        ],
+        include: [
+          {
+            model: players
+          }
+        ],
+        group: ["player_id"]
+      })
+      .then(data => {
+        console.log("global rank ---------");
+        console.log(JSON.stringify(data));
+
+        var reverseSortedGlobalRank = _.sortBy(data, ob => parseInt(ob.Player.score));
+
+        var sortedGlobalRank = reverseSortedGlobalRank.reverse();
+
+        global_rank = sortedGlobalRank.findIndex(playerOb => playerOb.Player.email === req.params.email);
+        global_rank = global_rank + 1;
+        console.log("global_rank == " + global_rank);
+
+
+        return res.status(200).send({ 
+          cohort_rank:cohort_rank,
+          global_rank:global_rank
+        });
+
+      })
+      .catch(error =>{
+          return res.status(500).send(error.message);
+      });
+
     })
     .catch(err => {
-      console.error(err.message);
-      return res.status(500).send("Server Error");
+      console.error();
+      return res.status(500).send(err.message);
     });
 
   } else {
