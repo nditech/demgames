@@ -14,6 +14,7 @@ import GameInfo from "../../components/GameInfo";
 import PropTypes from "prop-types";
 import AnswerInfoPopup from "../../components/AnswerInfoPopup";
 import Auth from "../../Auth";
+import { config } from "../../settings";
 
 const auth0 = new Auth();
 
@@ -67,7 +68,7 @@ export class ScenarioQuesAns extends React.Component {
         totalScore: this.state.currentQuestionScore + this.state.totalScore
       });
     } else {
-      const url = `http://localhost:9000/scenario_question/${this.state.linkedQuestion}`;
+      const url = config.baseUrl + `/scenario_question/${this.state.linkedQuestion}`;
       fetch(url, {
         method: "GET",
         headers: {
@@ -94,7 +95,7 @@ export class ScenarioQuesAns extends React.Component {
   }
 
   componentDidMount() {
-    const url = `http://localhost:9000/initial_scenario_question/${this.props.match.params.moduleId}/${this.props.match.params.levelId}`;
+    const url = config.baseUrl + `/initial_scenario_question/${this.props.match.params.moduleId}/${this.props.match.params.levelId}`;
     fetch(url, {
       method: "GET",
       headers: {

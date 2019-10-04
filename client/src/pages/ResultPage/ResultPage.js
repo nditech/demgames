@@ -16,7 +16,6 @@ class ResultPage extends Component {
 
 	componentWillMount(){
 		console.log('results props --> ',this.props);
-		debugger;
 	};
 
 	componentDidMount(){
@@ -36,7 +35,7 @@ class ResultPage extends Component {
 			}
 		}
 
-		fetch('http://localhost:9000' + '/updatePlay',{
+		fetch(config.baseUrl + '/updatePlay',{
 			method: 'post',
 			headers: {
 					authorization: "Bearer "+auth0.getAccessToken(),

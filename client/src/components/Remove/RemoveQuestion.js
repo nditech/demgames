@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import Auth from '../../Auth';
+import { config } from "../../settings";
 const auth0=new Auth();
 
 class RemoveQuestion extends Component{
@@ -37,7 +38,7 @@ class RemoveQuestion extends Component{
 
    handleSubmit(e){
       e.preventDefault();                      
-      const url ="http://localhost:9000/deletequestion";
+      const url ="/deletequestion";
       fetch(url, {
             method: 'POST',
             headers: {
@@ -84,7 +85,7 @@ class RemoveQuestion extends Component{
 
    handleSearch(){
 
-        fetch(`http://localhost:9000/selectQuestionforDel`, {
+        fetch(config.baseUrl + `/selectQuestionforDel`, {
         method: 'post',        
         headers: {
                 authorization: "Bearer "+auth0.getAccessToken(),

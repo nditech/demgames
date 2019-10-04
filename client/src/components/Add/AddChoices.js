@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 //import '../App.css';
 import {connect} from 'react-redux';
 import Auth from '../../Auth';
+import { config } from "../../settings";
+
 const auth0=new Auth();
 
 
@@ -31,29 +33,6 @@ const AddChoices = () => {
         setFormData({...formData, choicestatement: '', choicedescription: '', weight: '', isanswer: '', questionid: ''});
     };
 
-    // useEffect(() => {
-    //     let initialquestions = [];
-    //     fetch('http://localhost:9000/listquestions', {
-    //         method: 'GET',
-    //         headers: {
-    //             'Accept':'application/json',
-    //             'Content-Type': 'application/json'          
-    //         },
-    //       })
-    //       .then(res=>res.json())
-    //       .then((data)=>
-    //         {
-    //             initialquestions = data.map((question) => {
-    //                     return question
-    //             });
-
-    //             //console.log(initialquestions);
-                
-    //             setFormData({ ...formData, questions: initialquestions});    
-    //         })
-    //       .catch((error)=>console.log(error)); 
-    // }, []);
-
     const handleChange = (event) => {   
         setFormData({ ...formData, [event.target.name]: event.target.value });       
    }
@@ -63,7 +42,7 @@ const AddChoices = () => {
        event.preventDefault();
        console.log(formData);
        
-       fetch('http://localhost:9000/addchoice', {
+       fetch(config.baseUrl + '/addchoice', {
         method: 'POST',
         headers: {
              authorization: "Bearer "+auth0.getAccessToken(),

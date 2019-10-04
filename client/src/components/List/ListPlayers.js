@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ListTable from "../ListTable";
 import Icon from "@material-ui/core/Icon";
 import Auth from "../../Auth";
+import { config } from "../../settings";
 const auth0 = new Auth();
 
 const ListPlayers = () => {
@@ -80,7 +81,7 @@ const ListPlayers = () => {
 
   const getPlayers = () => {
     // console.log(this.props.auth);
-    const url = "http://localhost:9000/users";
+    const url = config.baseUrl + "/users";
     fetch(url, {
       method: "get",
       headers: {
@@ -107,7 +108,7 @@ const ListPlayers = () => {
   };
   const getCohort = () => {
     // console.log(this.props.auth);
-    const url = "http://localhost:9000/listCohort";
+    const url = config.baseUrl + "/listCohort";
     fetch(url, {
       method: "get",
       headers: {
@@ -133,13 +134,13 @@ const ListPlayers = () => {
     let api;
     switch (type) {
       case "all":
-        api = "http://localhost:9000/users";
+        api = config.baseUrl + "/users";
         break;
       case "global":
-        api = "http://localhost:9000/list_leaderBoard";
+        api = config.baseUrl + "/list_leaderBoard";
         break;
       case "cohort":
-        api = `http://localhost:9000/list_cohort_leaderBoard/${id ? id : "1"}`;
+        api = config.baseUrl + `/list_cohort_leaderBoard/${id ? id : "1"}`;
         break;
       default:
         break;

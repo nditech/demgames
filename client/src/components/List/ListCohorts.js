@@ -4,6 +4,7 @@ import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 
 import { addCohort, deleteCohort, updateCohort } from "./utility";
+import { config } from "../../settings";
 
 const ListCohorts = () => {
   const columns = [
@@ -83,7 +84,7 @@ const ListCohorts = () => {
   };
 
   const getCohort = () => {
-    const url = "http://localhost:9000/listCohort";
+    const url = config.baseUrl + "/listCohort";
     fetch(url, {
       method: "get",
       headers: {

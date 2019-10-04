@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 
 import "./styles.scss";
+import { config } from "../../settings";
 
 const ProfileInfo = props => {
   console.log("player email", props.player.player_email);
@@ -17,7 +18,7 @@ const ProfileInfo = props => {
   const { progressData } = profileData;
 
   const getPlayerProfile = async (email, callbackFunction) => {
-    const url = `http://localhost:9000/user/get_profile/${email}`;
+    const url = config.baseUrl + `/user/get_profile/${email}`;
     await fetch(url, {
       method: "get",
       headers: {

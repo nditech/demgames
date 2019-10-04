@@ -101,7 +101,7 @@ class LandingPage extends React.Component {
 
       this.props.setAuth(authDetail);
 
-      fetch("http://localhost:9000/user/findOne/" + authDetail.player_email, {
+      fetch(config.baseUrl + "/user/findOne/" + authDetail.player_email, {
         method: "get",
         headers: {
           authorization: "Bearer " + auth0.getAccessToken(),
@@ -117,7 +117,7 @@ class LandingPage extends React.Component {
           if (!data.email) {
             console.log("email not found --V");
 
-            fetch("http://localhost:9000/registerplayer", {
+            fetch(config.baseUrl + "/registerplayer", {
               method: "POST",
               headers: {
                 authorization: "Bearer " + auth0.getAccessToken(),
@@ -148,7 +148,7 @@ class LandingPage extends React.Component {
     }
 
     if (auth0.isAuthenticated() === true) {
-      fetch("http://localhost:9000/selectPlayerProfile", {
+      fetch(config.baseUrl + "/selectPlayerProfile", {
         method: "post",
         headers: {
           "Content-Type": "Application/json",

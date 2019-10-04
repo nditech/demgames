@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import GameInfo from "../../components/GameInfo";
 import PropTypes, { element } from "prop-types";
 import Auth from "../../Auth";
+import { config } from "../../settings";
 
 const auth0 = new Auth();
 
@@ -24,7 +25,7 @@ const authDetail = {
 class ScenarioLevels extends React.Component {
   state = { levels: 0, game: {} };
   componentDidMount() {
-    const url = `http://localhost:9000/level_by_game/${this.props.match.params.moduleId}`;
+    const url = config.baseUrl + `/level_by_game/${this.props.match.params.moduleId}`;
     fetch(url, {
       method: "GET",
       headers: {

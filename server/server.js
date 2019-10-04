@@ -76,7 +76,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get("/api/game", async (req, res) => {
+app.get("/api/api/game", async (req, res) => {
   // if (!gameData) res.status(404).send('No data found');
 
   if (!gameData) res.status(404).send("No data found");
@@ -111,7 +111,7 @@ app.get("/api/game", async (req, res) => {
   // });
 });
 
-app.get("/api/v2/game", async (req, res) => {
+app.get("/api/api/v2/game", async (req, res) => {
   console.log("GET=   api/v2/game -----api----------------");
 
   try {
@@ -228,7 +228,7 @@ app.get("/api/v2/game", async (req, res) => {
   // });
 });
 
-app.get("/listcohort_game", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listcohort_game", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listcohort_game -----api ---called");
   cohort_game
     .findAll()
@@ -242,7 +242,7 @@ app.get("/listcohort_game", checkJwt, verifyToken, (req, res) => {
     });
 });
 
-app.get("/listcohort_question", checkJwt, (req, res) => {
+app.get("/api/listcohort_question", checkJwt, (req, res) => {
   console.log("GET /listcohort_question -----api ---called");
   cohort_question
     .findAll()
@@ -257,7 +257,7 @@ app.get("/listcohort_question", checkJwt, (req, res) => {
 });
 
 app.post(
-  "/linkcohort_game",
+  "/api/linkcohort_game",
   [
     check("game_id", "question id is required").isNumeric(),
     check("cohort_id", "cohort id is required").isNumeric()
@@ -299,7 +299,7 @@ app.post(
 );
 
 app.post(
-  "/linkcohort_question",
+  "/api/linkcohort_question",
   [
     check("question_id", "question id is required").isNumeric(),
     check("cohort_id", "cohort id is required").isNumeric()
@@ -339,7 +339,7 @@ app.post(
 
 // @route   GET /users
 // @desc    Get players list from db
-app.get("/users", checkJwt, verifyToken, (req, res) => {
+app.get("/api/users", checkJwt, verifyToken, (req, res) => {
   console.log("GET /users ----api");
   players
     .findAll()
@@ -355,7 +355,7 @@ app.get("/users", checkJwt, verifyToken, (req, res) => {
 // @route   POST /registerplayer
 // @desc    Create a new player
 app.post(
-  "/registerplayer",
+  "/api/registerplayer",
   [
     check("firstName", "First Name is required")
       .not()
@@ -415,7 +415,7 @@ app.post(
 
 // @route   POST /registergame
 // @desc    Create a new game
-app.post("/registergame", checkJwt, verifyToken, async (req, res) => {
+app.post("/api/registergame", checkJwt, verifyToken, async (req, res) => {
   console.log("POST /registergame  -------api");
 
   const { caption, gamedescription, gametype } = req.body;
@@ -436,7 +436,7 @@ app.post("/registergame", checkJwt, verifyToken, async (req, res) => {
 
 // @route   GET /listchoices
 // @desc    Get list of all choices from db
-app.get("/listchoices", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listchoices", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listchoices ");
   choices
     .findAll()
@@ -451,7 +451,7 @@ app.get("/listchoices", checkJwt, verifyToken, (req, res) => {
 
 // @route   GET /listgames
 // @desc    Get list of all games from db
-app.get("/listgames", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listgames", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listgames -----api");
   games
     .findAll()
@@ -465,7 +465,7 @@ app.get("/listgames", checkJwt, verifyToken, (req, res) => {
 
 // @route   POST /addchoice
 // @desc    Post choices on db
-app.post("/addchoice", checkJwt, verifyToken, async (req, res) => {
+app.post("/api/addchoice", checkJwt, verifyToken, async (req, res) => {
   console.log("POST /addchoice  -------api");
 
   const {
@@ -494,7 +494,7 @@ app.post("/addchoice", checkJwt, verifyToken, async (req, res) => {
 
 // @route   GET /listquestions/:game_id
 // @desc    Get list of all questions from db
-app.get("/listquestions/:gameid", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listquestions/:gameid", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listquestions/:gameid ");
   if (!req.params.gameid) {
     return res.status(404).json({ msg: "Game Id not found" });
@@ -514,7 +514,7 @@ app.get("/listquestions/:gameid", checkJwt, verifyToken, (req, res) => {
 
 // @route   GET /choices/:questionid
 // @desc    Get list of all questions from db
-app.get("/choices/:questionid", checkJwt, verifyToken, (req, res) => {
+app.get("/api/choices/:questionid", checkJwt, verifyToken, (req, res) => {
   console.log("GET /choices/:questionid ");
   if (!req.params.questionid) {
     return res.status(404).json({ msg: "Game Id not found" });
@@ -536,7 +536,7 @@ app.get("/choices/:questionid", checkJwt, verifyToken, (req, res) => {
 // @desc    Get the choice linking to a question
 
 app.get(
-  "/choiceLinkingQuestion/:questionid",
+  "/api/choiceLinkingQuestion/:questionid",
   checkJwt,
   verifyToken,
   (req, res) => {
@@ -561,7 +561,7 @@ app.get(
 // @route   DELETE api/questions/:id
 // @desc    Delete a question by ID
 // @access  Private
-app.post("/questions/:id", checkJwt, verifyToken, async (req, res) => {
+app.post("/api/questions/:id", checkJwt, verifyToken, async (req, res) => {
   try {
     const question = await questions.findByPk(req.params.id);
 
@@ -583,7 +583,7 @@ app.post("/questions/:id", checkJwt, verifyToken, async (req, res) => {
 // @route   POST api/addquestion
 // @desc    Add a new question
 // @access  Private
-app.post("/addquestion", async (req, res) => {
+app.post("/api/addquestion", async (req, res) => {
   const data = req.body.data;
 
   try {
@@ -661,7 +661,7 @@ app.post("/addquestion", async (req, res) => {
 // @route   POST api/updatequestion/
 // @desc    Update a question by ID
 // @access  Private
-app.post("/updatequestion", checkJwt, verifyToken, async (req, res) => {
+app.post("/api/updatequestion", checkJwt, verifyToken, async (req, res) => {
   const data = req.body.data;
   const id = req.body.id;
 
@@ -708,7 +708,7 @@ app.post("/updatequestion", checkJwt, verifyToken, async (req, res) => {
   }
 });
 
-app.get("/listCohort", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listCohort", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listCohort -----api ---called");
   cohort
     .findAll()
@@ -722,7 +722,7 @@ app.get("/listCohort", checkJwt, verifyToken, (req, res) => {
     });
 });
 
-app.get("/listcohort_game", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listcohort_game", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listcohort_game -----api ---called");
   cohort_game
     .findAll()
@@ -736,7 +736,7 @@ app.get("/listcohort_game", checkJwt, verifyToken, (req, res) => {
     });
 });
 
-app.get("/listcohort_question", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listcohort_question", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listcohort_question -----api ---called");
   cohort_question
     .findAll()
@@ -751,7 +751,7 @@ app.get("/listcohort_question", checkJwt, verifyToken, (req, res) => {
 });
 
 app.post(
-  "/linkcohort_game",
+  "/api/linkcohort_game",
   [
     check("game_id", "question id is required").isNumeric(),
     check("cohort_id", "cohort id is required").isNumeric()
@@ -793,7 +793,7 @@ app.post(
 );
 
 app.post(
-  "/linkcohort_question",
+  "/api/linkcohort_question",
   [
     check("question_id", "question id is required").isNumeric(),
     check("cohort_id", "cohort id is required").isNumeric()
@@ -835,7 +835,7 @@ app.post(
 // @route   POST /duplicatGame
 // @desc    Duplicate selected game
 app.post(
-  "/duplicatGame",
+  "/api/duplicatGame",
   [check("game_id", "Game id is required").isNumeric()],
   checkJwt,
   verifyToken,
@@ -961,7 +961,7 @@ app.post(
   }
 );
 
-app.get("/list_leaderBoard", 
+app.get("/api/list_leaderBoard", 
   // checkJwt, 
   // verifyToken, 
   (req, res) => {
@@ -994,7 +994,7 @@ app.get("/list_leaderBoard",
 });
 
 app.get(
-  "/list_cohort_leaderBoard/:cohort_id",
+  "/api/list_cohort_leaderBoard/:cohort_id",
   // checkJwt,
   // verifyToken,
   (req, res) => {
@@ -1033,7 +1033,7 @@ app.get(
   }
 );
 
-app.get("/user/findOne/:email", checkJwt, async (req, res) => {
+app.get("/api/user/findOne/:email", checkJwt, async (req, res) => {
   console.log("GET /user/findOne/   -----api ---called" + req.params.email);
   let email = req.params.email;
 
@@ -1049,7 +1049,7 @@ app.get("/user/findOne/:email", checkJwt, async (req, res) => {
 });
 
 app.post(
-  "/Updategame",
+  "/api/Updategame",
   [
     check("id", "First Name is required").isNumeric(),
     check("caption", "Caption is required")
@@ -1090,7 +1090,7 @@ app.post(
 );
 
 app.post(
-  "/updatePlay",
+  "/api/updatePlay",
   [
     check("player_email", "Player email is required")
       .not()
@@ -1140,7 +1140,7 @@ app.post(
 );
 
 app.post(
-  "/DeleteGame",
+  "/api/DeleteGame",
   [check("game_id", "game id is required").isNumeric()],
   checkJwt,
   verifyToken,
@@ -1172,7 +1172,7 @@ app.post(
   }
 );
 
-app.post("/AddCohort", checkJwt, verifyToken, async (req, res) => {
+app.post("/api/AddCohort", checkJwt, verifyToken, async (req, res) => {
   console.log("POST /AddCohort  -------api");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -1200,7 +1200,7 @@ app.post("/AddCohort", checkJwt, verifyToken, async (req, res) => {
 });
 
 app.post(
-  "/DeleteCohort",
+  "/api/DeleteCohort",
   [check("cohort_id", "name id is required").isNumeric()],
   checkJwt,
   verifyToken,
@@ -1232,7 +1232,7 @@ app.post(
 );
 
 app.get(
-  "/level_by_game/:gameid",
+  "/api/level_by_game/:gameid",
   // checkJwt,
   // verifyToken,
   async (req, res) => {
@@ -1272,7 +1272,7 @@ app.get(
 );
 
 app.get(
-  "/initial_scenario_question/:gameid/:levelid",
+  "/api/initial_scenario_question/:gameid/:levelid",
   // checkJwt,
   // verifyToken,
   async (req, res) => {
@@ -1309,7 +1309,7 @@ app.get(
 );
 
 app.get(
-  "/scenario_question/:questionId",
+  "/api/scenario_question/:questionId",
   // checkJwt,
   // verifyToken,
   async (req, res) => {
@@ -1342,7 +1342,7 @@ app.get(
   }
 );
 
-app.post("/updatecohort", checkJwt, verifyToken, async (req, res) => {
+app.post("/api/updatecohort", checkJwt, verifyToken, async (req, res) => {
   console.log("POST /updatecohort  -------api");
 
   const { id, name } = req.body;
@@ -1363,7 +1363,7 @@ app.post("/updatecohort", checkJwt, verifyToken, async (req, res) => {
   }
 });
 
-app.get("/user/get_profile/:email", async (req, res) => {
+app.get("/api/user/get_profile/:email", async (req, res) => {
   console.log("GET /user/get_profile/:email  -----api ---called" + req.params.email);
   let email = req.params.email;
 
@@ -1395,7 +1395,7 @@ app.get("/user/get_profile/:email", async (req, res) => {
   }
 });
 
-app.get("/get_cohort_rank/:email/:cohort_id", 
+app.get("/api/get_cohort_rank/:email/:cohort_id", 
   // checkJwt, 
   // verifyToken, 
   async (req, res) => {

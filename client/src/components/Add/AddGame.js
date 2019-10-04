@@ -44,22 +44,6 @@ const AddGame = () => {
   const handleSubmit = event => {
     console.log(formData);
     event.preventDefault();
-    // console.log(formData);
-
-    // const url = 'http://localhost:9000/registergame';
-    // fetch(url, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(formData)
-    // })
-    //     .then(res => res.json())
-    //     .then((data) => {
-    //         alert(data.message);
-    //     })
-    //     .catch((error) => console.log(error));
   };
 
   return (

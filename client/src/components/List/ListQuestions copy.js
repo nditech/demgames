@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
+import { config } from "../../settings";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
   // Set data table columns
@@ -67,7 +68,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   );
 
   const getQuestions = () => {
-    const url = `http://localhost:9000/listquestions/${activeGame}`;
+    const url = config.baseUrl + `/listquestions/${activeGame}`;
     fetch(url, {
       method: "get",
       headers: {
@@ -102,7 +103,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   const deleteHandle = questionId => {
     console.log("choice id ------------> ", questionId);
     if (window.confirm("Are you sure you want to delete the question")) {
-      let url = "http://localhost:9000/questions/" + questionId;
+      let url = config.baseUrl + "/questions/" + questionId;
       fetch(url, {
         method: "POST",
         headers: {
@@ -135,7 +136,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     }
     data.answers = answers;
     console.log("options data -----> ", data);
-    let url = "http://localhost:9000/updatequestion/";
+    let url = config.baseUrl + "/updatequestion/";
     fetch(url, {
       method: "POST",
       headers: {
@@ -232,7 +233,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   };
 
   const getChoices = (questionId, selectedQuestion) => {
-    const url = `http://localhost:9000/choices/${questionId}`;
+    const url = config.baseUrl + `/choices/${questionId}`;
     fetch(url, {
       method: "get",
       headers: {

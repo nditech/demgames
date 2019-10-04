@@ -3,6 +3,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Auth from "../../Auth";
+import { config } from "../../settings"
+
 const auth0 = new Auth();
 
 const AddQuestion = () => {
@@ -53,13 +55,12 @@ const AddQuestion = () => {
       setFormData({ ...formData, [fieldName]: val });
     }
 
-    // console.log('form data --> ', formData);
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    fetch("http://localhost:9000/addquestion", {
+    fetch(config.baseUrl + "/addquestion", {
       method: "POST",
       headers: {
         authorization: "Bearer " + auth0.getAccessToken(),

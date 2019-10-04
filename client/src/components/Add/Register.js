@@ -5,7 +5,9 @@ import { setAlert } from '../../actions/alert';
 import DatePicker from 'react-datepicker';
 import { countryList } from './countryList';
 //import "react-datepicker/dist/react-datepicker.css";
+import { config } from "../../settings";
 import Auth from '../../Auth';
+
 const auth0=new Auth();
 
 const Register = ({ setAlert }) => {
@@ -48,7 +50,7 @@ const Register = ({ setAlert }) => {
 
         const submitData = () => {
 
-            const url = 'http://localhost:9000/registerplayer';
+            const url = config.baseUrl + '/registerplayer';
 
             fetch(url, {
                 method: 'POST',
