@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { Gamebox } from "../Gamebox";
 import { Details } from "../Details";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import ListQuestion from "../List/ListQuestions";
 import "./styles.scss";
 import DialogBox from "../DialogBox/DialogBox";
@@ -93,10 +95,14 @@ class ListGames extends Component {
             .then(res => res.json())
             .then((data) => {
               const a=[...this.state.games,data];
-              console.log(a,"gaga");
                 this.setState({games:a});
+                toast.info("Done...", {
+                  position: toast.POSITION.TOP_CENTER
+                });
             })
-            .catch((error) => console.log(error));
+            .catch((error) => toast.error("Sorry...some technical issue", {
+              position: toast.POSITION.TOP_CENTER
+            }));
   }
 
   handleGameBoxClick = id => {
@@ -216,9 +222,14 @@ class ListGames extends Component {
             .then((data) => {
               this.setState({showMessage:false});
               this.updateDetails(editGameForm);
+              toast.info("Successfully Updated !", {
+                position: toast.POSITION.TOP_CENTER
+              });
               // editGameForm=null;
             })
-            .catch((error) => console.log(error));
+            .catch((error) => toast.info("Sorry...some technical issue", {
+              position: toast.POSITION.TOP_CENTER
+            }));
   };
   removePopup = (id) => {
     this.setState({
@@ -257,8 +268,13 @@ class ListGames extends Component {
             .then((data) => {
               this.setState({showMessage:false});
               this.pool(true);
+              toast.info("Deleted Successfully !", {
+                position: toast.POSITION.TOP_CENTER
+              });
             })
-            .catch((error) => console.log(error));
+            .catch((error) => toast.error("Sorry...some technical issue", {
+              position: toast.POSITION.TOP_CENTER
+            }));
   }
 
   simpleTable() {

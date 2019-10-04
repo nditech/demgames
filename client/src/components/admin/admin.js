@@ -15,7 +15,8 @@ import {
 import { connect } from "react-redux";
 import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import React, { Component, Fragment } from "react";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AddChoices from "../Add/AddChoices";
 import AddGame from "../Add/AddGame";
 import AddQuestion from "../Add/AddQuestion";
@@ -294,9 +295,13 @@ class Admin extends Component {
       .then(res => res.json())
       .then(data => {
         this.setState({ showMessage: false, gameAdded:true });
-        alert(data.message);
+        toast.info("Successfully Added !", {
+          position: toast.POSITION.TOP_CENTER
+        });
       })
-      .catch(error => console.log(error));
+      .catch(error => toast.error("Sorry..there is some technical issue", {
+        position: toast.POSITION.TOP_CENTER
+      }));
   };
   editGame = (game, id) => {
     console.log(game, id);
@@ -519,6 +524,7 @@ class Admin extends Component {
     return (
       <Router>
         <Fragment>
+        <ToastContainer enableMultiContainer />
           <DialogBox
             confirmButtonValue={confirmButtonValue}
             showMessage={showMessage}
