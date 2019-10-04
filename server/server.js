@@ -76,7 +76,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get("/api/game", async (req, res) => {
+app.get("/api/api/game", async (req, res) => {
   // if (!gameData) res.status(404).send('No data found');
 
   if (!gameData) res.status(404).send("No data found");
@@ -111,7 +111,7 @@ app.get("/api/game", async (req, res) => {
   // });
 });
 
-app.get("/api/v2/game", async (req, res) => {
+app.get("/api/api/v2/game", async (req, res) => {
   console.log("GET=   api/v2/game -----api----------------");
 
   try {
@@ -228,7 +228,7 @@ app.get("/api/v2/game", async (req, res) => {
   // });
 });
 
-app.get("/listcohort_game", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listcohort_game", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listcohort_game -----api ---called");
   cohort_game
     .findAll()
@@ -242,7 +242,7 @@ app.get("/listcohort_game", checkJwt, verifyToken, (req, res) => {
     });
 });
 
-app.get("/listcohort_question", checkJwt, (req, res) => {
+app.get("/api/listcohort_question", checkJwt, (req, res) => {
   console.log("GET /listcohort_question -----api ---called");
   cohort_question
     .findAll()
@@ -257,7 +257,7 @@ app.get("/listcohort_question", checkJwt, (req, res) => {
 });
 
 app.post(
-  "/linkcohort_game",
+  "/api/linkcohort_game",
   [
     check("game_id", "question id is required").isNumeric(),
     check("cohort_id", "cohort id is required").isNumeric()
@@ -299,7 +299,7 @@ app.post(
 );
 
 app.post(
-  "/linkcohort_question",
+  "/api/linkcohort_question",
   [
     check("question_id", "question id is required").isNumeric(),
     check("cohort_id", "cohort id is required").isNumeric()
@@ -339,7 +339,7 @@ app.post(
 
 // @route   GET /users
 // @desc    Get players list from db
-app.get("/users", checkJwt, verifyToken, (req, res) => {
+app.get("/api/users", checkJwt, verifyToken, (req, res) => {
   console.log("GET /users ----api");
   players
     .findAll()
@@ -355,7 +355,7 @@ app.get("/users", checkJwt, verifyToken, (req, res) => {
 // @route   POST /registerplayer
 // @desc    Create a new player
 app.post(
-  "/registerplayer",
+  "/api/registerplayer",
   [
     check("firstName", "First Name is required")
       .not()
@@ -415,7 +415,7 @@ app.post(
 
 // @route   POST /registergame
 // @desc    Create a new game
-app.post("/registergame", checkJwt, verifyToken, async (req, res) => {
+app.post("/api/registergame", checkJwt, verifyToken, async (req, res) => {
   console.log("POST /registergame  -------api");
 
   const { caption, gamedescription, gametype } = req.body;
@@ -436,7 +436,7 @@ app.post("/registergame", checkJwt, verifyToken, async (req, res) => {
 
 // @route   GET /listchoices
 // @desc    Get list of all choices from db
-app.get("/listchoices", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listchoices", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listchoices ");
   choices
     .findAll()
@@ -451,7 +451,7 @@ app.get("/listchoices", checkJwt, verifyToken, (req, res) => {
 
 // @route   GET /listgames
 // @desc    Get list of all games from db
-app.get("/listgames", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listgames", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listgames -----api");
   games
     .findAll()
@@ -465,7 +465,7 @@ app.get("/listgames", checkJwt, verifyToken, (req, res) => {
 
 // @route   POST /addchoice
 // @desc    Post choices on db
-app.post("/addchoice", checkJwt, verifyToken, async (req, res) => {
+app.post("/api/addchoice", checkJwt, verifyToken, async (req, res) => {
   console.log("POST /addchoice  -------api");
 
   const {
@@ -494,7 +494,7 @@ app.post("/addchoice", checkJwt, verifyToken, async (req, res) => {
 
 // @route   GET /listquestions/:game_id
 // @desc    Get list of all questions from db
-app.get("/listquestions/:gameid", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listquestions/:gameid", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listquestions/:gameid ");
   if (!req.params.gameid) {
     return res.status(404).json({ msg: "Game Id not found" });
@@ -514,7 +514,7 @@ app.get("/listquestions/:gameid", checkJwt, verifyToken, (req, res) => {
 
 // @route   GET /choices/:questionid
 // @desc    Get list of all questions from db
-app.get("/choices/:questionid", checkJwt, verifyToken, (req, res) => {
+app.get("/api/choices/:questionid", checkJwt, verifyToken, (req, res) => {
   console.log("GET /choices/:questionid ");
   if (!req.params.questionid) {
     return res.status(404).json({ msg: "Game Id not found" });
@@ -536,7 +536,7 @@ app.get("/choices/:questionid", checkJwt, verifyToken, (req, res) => {
 // @desc    Get the choice linking to a question
 
 app.get(
-  "/choiceLinkingQuestion/:questionid",
+  "/api/choiceLinkingQuestion/:questionid",
   checkJwt,
   verifyToken,
   (req, res) => {
@@ -561,7 +561,7 @@ app.get(
 // @route   DELETE api/questions/:id
 // @desc    Delete a question by ID
 // @access  Private
-app.post("/questions/:id", checkJwt, verifyToken, async (req, res) => {
+app.post("/api/questions/:id", checkJwt, verifyToken, async (req, res) => {
   try {
     const question = await questions.findByPk(req.params.id);
 
@@ -583,20 +583,20 @@ app.post("/questions/:id", checkJwt, verifyToken, async (req, res) => {
 // @route   POST api/addquestion
 // @desc    Add a new question
 // @access  Private
-app.post("/addquestion", async (req, res) => {
+app.post("/api/addquestion", async (req, res) => {
   const data = req.body.data;
 
   try {
-    const question = await questions.create({
-      game_id: data.game_id,
-      difficulty_level: data.level,
-      question_statement: data.question,
-      weight: 0,
-      explanation: "explanation",
-      isitmedia: 0
-    });
-
     if ("previous_question_choice" in data) {
+      const question = await questions.create({
+        game_id: data.game_id,
+        difficulty_level: data.level,
+        question_statement: data.question,
+        weight: 0,
+        explanation: "explanation",
+        isitmedia: 0
+      });
+
       console.log("inside previous question");
       if (data.previous_question_choice) {
         const updateChoice = await choices.update(
@@ -613,13 +613,28 @@ app.post("/addquestion", async (req, res) => {
           choicestatement: choice.value,
           answer: 0,
           questionid: question.id,
-          weight: 0
+          weight:
+            choice.option === "A"
+              ? data.first_weight
+                ? data.first_weight
+                : 0
+              : data.second_weight
+              ? data.second_weight
+              : 0
         });
       });
       console.log("updated opitons --------------------");
     } else {
+      const question = await questions.create({
+        game_id: data.game_id,
+        difficulty_level: data.level,
+        question_statement: data.question,
+        weight: data.weight,
+        explanation: "explanation",
+        isitmedia: 0
+      });
       // Add choices
-      console.log("inside else");
+      console.log("inside else", data);
       data.options.map(async choice => {
         let isAnswer =
           choice.option.toString() === data.answers.toString() ? 1 : 0;
@@ -628,7 +643,7 @@ app.post("/addquestion", async (req, res) => {
           choicestatement: choice.value,
           answer: isAnswer,
           questionid: question.id,
-          weight: 0
+          weight: isAnswer === 1 ? data.weight : 0
         });
       });
     }
@@ -646,7 +661,7 @@ app.post("/addquestion", async (req, res) => {
 // @route   POST api/updatequestion/
 // @desc    Update a question by ID
 // @access  Private
-app.post("/updatequestion", checkJwt, verifyToken, async (req, res) => {
+app.post("/api/updatequestion", checkJwt, verifyToken, async (req, res) => {
   const data = req.body.data;
   const id = req.body.id;
 
@@ -693,7 +708,7 @@ app.post("/updatequestion", checkJwt, verifyToken, async (req, res) => {
   }
 });
 
-app.get("/listCohort", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listCohort", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listCohort -----api ---called");
   cohort
     .findAll()
@@ -707,7 +722,7 @@ app.get("/listCohort", checkJwt, verifyToken, (req, res) => {
     });
 });
 
-app.get("/listcohort_game", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listcohort_game", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listcohort_game -----api ---called");
   cohort_game
     .findAll()
@@ -721,7 +736,7 @@ app.get("/listcohort_game", checkJwt, verifyToken, (req, res) => {
     });
 });
 
-app.get("/listcohort_question", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listcohort_question", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listcohort_question -----api ---called");
   cohort_question
     .findAll()
@@ -736,7 +751,7 @@ app.get("/listcohort_question", checkJwt, verifyToken, (req, res) => {
 });
 
 app.post(
-  "/linkcohort_game",
+  "/api/linkcohort_game",
   [
     check("game_id", "question id is required").isNumeric(),
     check("cohort_id", "cohort id is required").isNumeric()
@@ -778,7 +793,7 @@ app.post(
 );
 
 app.post(
-  "/linkcohort_question",
+  "/api/linkcohort_question",
   [
     check("question_id", "question id is required").isNumeric(),
     check("cohort_id", "cohort id is required").isNumeric()
@@ -820,7 +835,7 @@ app.post(
 // @route   POST /duplicatGame
 // @desc    Duplicate selected game
 app.post(
-  "/duplicatGame",
+  "/api/duplicatGame",
   [check("game_id", "Game id is required").isNumeric()],
   checkJwt,
   verifyToken,
@@ -946,7 +961,10 @@ app.post(
   }
 );
 
-app.get("/list_leaderBoard", checkJwt, verifyToken, (req, res) => {
+app.get("/api/list_leaderBoard", 
+  // checkJwt, 
+  // verifyToken, 
+  (req, res) => {
   console.log("GET /list_leaderBoard -----api ---called");
 
   plays
@@ -960,9 +978,14 @@ app.get("/list_leaderBoard", checkJwt, verifyToken, (req, res) => {
       group: ["player_id"]
     })
     .then(result => {
-      console.log(JSON.stringify(result));
-
-      return res.status(200).send(JSON.stringify(result));
+      var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
+      var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()))
+      let mm = sortedArray.map((item, index) => {
+        item.rank = index+1;
+        return item;
+      });
+      console.log(mm);
+      return res.status(200).send(JSON.stringify(mm));
     })
     .catch(err => {
       console.error(err.message);
@@ -971,9 +994,9 @@ app.get("/list_leaderBoard", checkJwt, verifyToken, (req, res) => {
 });
 
 app.get(
-  "/list_cohort_leaderBoard/:cohort_id",
-  checkJwt,
-  verifyToken,
+  "/api/list_cohort_leaderBoard/:cohort_id",
+  // checkJwt,
+  // verifyToken,
   (req, res) => {
     console.log("GET /list_cohort_leaderBoard -----api ---called");
     let cohort_id = req.params.cohort_id;
@@ -994,7 +1017,14 @@ app.get(
         group: ["player_id"]
       })
       .then(result => {
-        return res.status(200).send(JSON.stringify(result));
+        var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
+        var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()))
+        let arrayWithRanking = sortedArray.map((item, index) => {
+          item.rank = index+1;
+          return item;
+        });
+        
+        return res.status(200).send(JSON.stringify(arrayWithRanking));
       })
       .catch(err => {
         console.error(err.message);
@@ -1003,7 +1033,7 @@ app.get(
   }
 );
 
-app.get("/user/findOne/:email", checkJwt, async (req, res) => {
+app.get("/api/user/findOne/:email", checkJwt, async (req, res) => {
   console.log("GET /user/findOne/   -----api ---called" + req.params.email);
   let email = req.params.email;
 
@@ -1012,14 +1042,14 @@ app.get("/user/findOne/:email", checkJwt, async (req, res) => {
   }
   let player = await players.findOne({ where: { email: email }, raw: true });
   if (player) {
-    res.send(player);
+    return res.status(200).send(player);
   } else {
     return res.status(200).send({ message: "not found" });
   }
 });
 
 app.post(
-  "/Updategame",
+  "/api/Updategame",
   [
     check("id", "First Name is required").isNumeric(),
     check("caption", "Caption is required")
@@ -1060,7 +1090,7 @@ app.post(
 );
 
 app.post(
-  "/updatePlay",
+  "/api/updatePlay",
   [
     check("player_email", "Player email is required")
       .not()
@@ -1083,7 +1113,7 @@ app.post(
 
     let default_cohort_id = 1;
 
-    if (typeof cohort_id == "number") {
+    if (cohort_id) {
       default_cohort_id = cohort_id;
     }
 
@@ -1110,7 +1140,7 @@ app.post(
 );
 
 app.post(
-  "/DeleteGame",
+  "/api/DeleteGame",
   [check("game_id", "game id is required").isNumeric()],
   checkJwt,
   verifyToken,
@@ -1142,7 +1172,7 @@ app.post(
   }
 );
 
-app.post("/AddCohort", checkJwt, verifyToken, async (req, res) => {
+app.post("/api/AddCohort", checkJwt, verifyToken, async (req, res) => {
   console.log("POST /AddCohort  -------api");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -1170,7 +1200,7 @@ app.post("/AddCohort", checkJwt, verifyToken, async (req, res) => {
 });
 
 app.post(
-  "/DeleteCohort",
+  "/api/DeleteCohort",
   [check("cohort_id", "name id is required").isNumeric()],
   checkJwt,
   verifyToken,
@@ -1201,11 +1231,11 @@ app.post(
   }
 );
 
-app.get("/level_by_game/:gameid",
+app.get(
+  "/api/level_by_game/:gameid",
   // checkJwt,
   // verifyToken,
   async (req, res) => {
-
     console.log("GET /level_by_game/:gameid ");
     if (!req.params.gameid) {
       return res.status(404).json({ msg: "Game Id not found" });
@@ -1213,105 +1243,106 @@ app.get("/level_by_game/:gameid",
 
     const game_id = req.params.gameid;
 
-    let currentGame = await games.findOne({ where:{
-      id:game_id
-    }});
+    let currentGame = await games.findOne({
+      where: {
+        id: game_id
+      }
+    });
 
-    if(!currentGame) {
+    if (!currentGame) {
       return res.status(404).json({ msg: "Game not found" });
     }
-    
-    let maxLevel =await questions.findAll(
-      {where : {game_id:game_id}, 
-      raw:true,
-      attributes: [
-        db.sequelize.fn('max', db.sequelize.col('difficulty_level'))
-     ]
-    }); 
+
+    let maxLevel = await questions.findAll({
+      where: { game_id: game_id },
+      raw: true,
+      attributes: [db.sequelize.fn("max", db.sequelize.col("difficulty_level"))]
+    });
 
     // var levels = [];
-    var length = maxLevel[0]['max(`difficulty_level`)'];
+    var length = maxLevel[0]["max(`difficulty_level`)"];
 
-    console.log('\n\n\n');
+    console.log("\n\n\n");
     console.log(length);
     return res.status(200).send({
-      game:currentGame,
-      length:length});
-});
+      game: currentGame,
+      length: length
+    });
+  }
+);
 
-app.get("/initial_scenario_question/:gameid/:levelid",
+app.get(
+  "/api/initial_scenario_question/:gameid/:levelid",
   // checkJwt,
   // verifyToken,
   async (req, res) => {
-
     console.log("GET /initial_scenario_question/:gameid/:levelid ");
-    if (!req.params.gameid ) {
+    if (!req.params.gameid) {
       return res.status(404).json({ msg: "Game Id not found" });
-    } else if(!req.params.levelid) {
+    } else if (!req.params.levelid) {
       return res.status(404).json({ msg: "level Id not found" });
     }
-    
-    let initialQuestion =await questions.findOne(
-      {where : {
-        game_id:req.params.gameid,
-        difficulty_level:req.params.levelid
-      }, 
-      raw:true,
-    }); 
 
-    if(!initialQuestion){
-      return res.status(404).send({message:"not found"});
+    let initialQuestion = await questions.findOne({
+      where: {
+        game_id: req.params.gameid,
+        difficulty_level: req.params.levelid
+      },
+      raw: true
+    });
+
+    if (!initialQuestion) {
+      return res.status(404).send({ message: "not found" });
     }
 
     let options = await choices.findAll({
-      where: {questionid:initialQuestion.id},
-      raw : true
+      where: { questionid: initialQuestion.id },
+      raw: true
     });
 
     initialQuestion.options = options;
 
-    console.log('\n\n\n');
+    console.log("\n\n\n");
     console.log(JSON.stringify(initialQuestion));
     return res.status(200).send(initialQuestion);
+  }
+);
 
-});
-
-
-app.get("/scenario_question/:questionId",
+app.get(
+  "/api/scenario_question/:questionId",
   // checkJwt,
   // verifyToken,
   async (req, res) => {
-
     console.log("GET /scenario_question /:questionId ");
     if (!req.params.questionId) {
       return res.status(404).json({ msg: "questionId not found" });
     }
-    
-    let newQuestion =await questions.findOne(
-      {where : {
-        id:req.params.questionId
-      }, 
-      raw:true,
-    }); 
 
-    if(!newQuestion){
-      return res.status(404).send({message:"not found"});
+    let newQuestion = await questions.findOne({
+      where: {
+        id: req.params.questionId
+      },
+      raw: true
+    });
+
+    if (!newQuestion) {
+      return res.status(404).send({ message: "not found" });
     }
 
     let options = await choices.findAll({
-      where: {questionid:newQuestion.id},
-      raw : true
+      where: { questionid: newQuestion.id },
+      raw: true
     });
 
     newQuestion.options = options;
 
-    console.log('\n\n\n');
+    console.log("\n\n\n");
     console.log(JSON.stringify(newQuestion));
     return res.status(200).send(newQuestion);
+  }
+);
 
-});
-
-app.post("/updatecohort", checkJwt, verifyToken, async (req, res) => {
+app.post("/api/updatecohort", checkJwt, verifyToken, async (req, res) => {
   console.log("POST /updatecohort  -------api");
 
   const { id, name } = req.body;
@@ -1331,5 +1362,126 @@ app.post("/updatecohort", checkJwt, verifyToken, async (req, res) => {
     return res.status(500).send({ message: "Server Error" });
   }
 });
+
+app.get("/api/user/get_profile/:email", async (req, res) => {
+  console.log("GET /user/get_profile/:email  -----api ---called" + req.params.email);
+  let email = req.params.email;
+
+  if (!email) {
+    return res.status(400).send("email not found on request");
+  }
+  let player = await players.findOne({ where: { email: email }, raw: true });
+
+  if (player) {
+    let allPlays = await plays.findAll({
+      where :{player_id:player.id},
+      include: [
+        {
+          model: cohort,
+        },
+        {
+          model: games,
+        }
+      ],
+      raw:true
+    });
+
+    const myOrderedArray = _.sortBy(allPlays, o => parseInt(o.score));
+    console.log(JSON.stringify(myOrderedArray));
+
+    return res.status(200).send(JSON.stringify(myOrderedArray));
+  } else {
+    return res.status(500).send({ message: "not found" });
+  }
+});
+
+app.get("/api/get_cohort_rank/:email/:cohort_id", 
+  // checkJwt, 
+  // verifyToken, 
+  async (req, res) => {
+  console.log("GET /get_cohort_rank -----api ---called");
+  if (!req.params.email) {
+    return res.status(404).json({ msg: "email not found" });
+  }
+  let player = await players.findOne({ where: { email: req.params.email }, raw: true });
+
+  if (player) {
+    plays.findAll({
+      where: { cohort_id: req.params.cohort_id},
+      attributes: [
+        [db.sequelize.literal("COALESCE(SUM(score), 0)"), "score"]
+      ],
+      include: [
+        {
+          model: players
+        }
+      ],
+      group: ["player_id"]
+    })
+    .then(result => {
+
+      var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
+      console.log(JSON.stringify(myOrderedArray));
+      console.log("\n\n\n\n");
+
+      var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()));
+      console.log("sortedArray array ");
+      console.log(JSON.stringify(sortedArray));
+
+      let cohort_rank = sortedArray.findIndex(x => x.Player.email === req.params.email);
+      cohort_rank = cohort_rank + 1;
+      console.log("cohort_rank == " + cohort_rank);
+      let global_rank = 0;
+
+
+
+
+
+       plays.findAll({
+        attributes: [
+          [db.sequelize.literal("COALESCE(SUM(score), 0)"), "score"]
+        ],
+        include: [
+          {
+            model: players
+          }
+        ],
+        group: ["player_id"]
+      })
+      .then(data => {
+        console.log("global rank ---------");
+        console.log(JSON.stringify(data));
+
+        var reverseSortedGlobalRank = _.sortBy(data, ob => parseInt(ob.Player.score));
+
+        var sortedGlobalRank = reverseSortedGlobalRank.reverse();
+
+        global_rank = sortedGlobalRank.findIndex(playerOb => playerOb.Player.email === req.params.email);
+        global_rank = global_rank + 1;
+        console.log("global_rank == " + global_rank);
+
+
+        return res.status(200).send({ 
+          cohort_rank:cohort_rank,
+          global_rank:global_rank
+        });
+
+      })
+      .catch(error =>{
+          return res.status(500).send(error.message);
+      });
+
+    })
+    .catch(err => {
+      console.error();
+      return res.status(500).send(err.message);
+    });
+
+  } else {
+    return res.status(500).send({ message: "not found" });
+  }
+
+});
+
 
 app.listen(9000, () => console.log("listening"));

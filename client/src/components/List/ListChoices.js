@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 
 import DataTable from "react-data-table-component";
+import { config } from "../../settings";
 
 const ListChoices = () => {
   const deleteClickHandle = choiceId => {
@@ -86,7 +87,7 @@ const ListChoices = () => {
   const { choices } = choicesData;
 
   const getChoices = () => {
-    const url = "http://localhost:9000/listchoices";
+    const url = config.basUrl + "/listchoices";
     fetch(url, {
       method: "get",
       headers: {

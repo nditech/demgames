@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
+import { config } from "../../settings";
 const auth0=new Auth();
 
 
@@ -110,7 +111,7 @@ class RemovePlayer extends Component{
 
    handleSubmit(e){
       e.preventDefault();                      
-      const url ="http://localhost:9000/deleteplayer";
+      const url =config.baseUrl + "/deleteplayer";
       fetch(url, {
             method: 'POST',
             headers: {
@@ -174,7 +175,7 @@ class RemovePlayer extends Component{
 
    handleSearch(){
 
-        fetch(`http://localhost:9000/selectProfileforDel`, {
+        fetch(config.baseUrl + `/selectProfileforDel`, {
         method: 'post',        
         headers: {
            authorization: "Bearer "+auth0.getAccessToken(),

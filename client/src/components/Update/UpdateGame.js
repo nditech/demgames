@@ -5,6 +5,8 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import Auth from '../../Auth';
+import { config } from "../../settings";
+
 const auth0=new Auth();
 
 class UpdateGame extends Component{
@@ -106,7 +108,7 @@ class UpdateGame extends Component{
 
     handleSearch(){
 
-        fetch(`http://localhost:9000/selectGameforDel`, {
+        fetch(config.baseUrl + `/selectGameforDel`, {
         method: 'post',        
         headers: {
             authorization: "Bearer "+auth0.getAccessToken(),
@@ -139,7 +141,7 @@ class UpdateGame extends Component{
 
    handleSubmit(e){
       e.preventDefault();                      
-      const url ="http://localhost:9000/updategame";
+      const url =config.baseUrl + "/updategame";
       fetch(url, {
             method: 'POST',
             headers: {

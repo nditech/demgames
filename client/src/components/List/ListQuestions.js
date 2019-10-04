@@ -283,6 +283,13 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       value: ""
     },
     {
+      key: "weight",
+      type: "text",
+      title: "Weight",
+      editable: true,
+      value: ""
+    },
+    {
       key: "options",
       type: "options",
       title: "answers",
@@ -385,6 +392,20 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           type: "options",
           title: "answers",
           value: ["", ""]
+        },
+        {
+          key: "first_weight",
+          type: "text",
+          title: "Option A Weight",
+          editable: true,
+          value: ""
+        },
+        {
+          key: "second_weight",
+          type: "text",
+          title: "Option B Weight",
+          editable: true,
+          value: ""
         }
       ];
 

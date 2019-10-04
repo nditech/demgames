@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import Auth from '../../Auth';
+import { config } from "../../settings";
 const auth0=new Auth();
 
 class UpdateProfile extends Component{
@@ -41,7 +42,7 @@ class UpdateProfile extends Component{
    componentDidMount(){
     if(this.props.email!==null)
     {                         
-        fetch(`http://localhost:9000/selectPlayerProfile`, {
+        fetch(config.baseUrl + `/selectPlayerProfile`, {
         method: 'post',        
         headers: {
           "authorization": "Bearer "+auth0.getAccessToken(),
@@ -141,7 +142,7 @@ class UpdateProfile extends Component{
 
    handleSubmit(e){
       e.preventDefault();                      
-      const url ="http://localhost:9000/updateplayer";
+      const url =config.baseUrl + "/updateplayer";
       fetch(url, {
             method: 'POST',
             headers: {

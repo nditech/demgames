@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import Auth from '../../Auth';
+import { config } from "../../settings";
 const auth0=new Auth();
 
 class RemoveChoice extends Component{
@@ -52,7 +53,7 @@ class RemoveChoice extends Component{
 
    handleSubmit(e){
       e.preventDefault();                      
-      const url ="http://localhost:9000/deletechoice";
+      const url =config.baseUrl = "/deletechoice";
       fetch(url, {
             method: 'POST',
             headers: {
@@ -99,7 +100,7 @@ class RemoveChoice extends Component{
 
    handleSearch(){
 
-        fetch(`http://localhost:9000/selectChoiceforDel`, {
+        fetch(config.baseUrl + `/selectChoiceforDel`, {
         method: 'post',        
         headers: {
           authorization: "Bearer "+auth0.getAccessToken(),

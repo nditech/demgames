@@ -1,11 +1,13 @@
 import React from "react";
 // import { Redirect } from "react-router-dom";
+import NdiLogoUrl from "../../images/ndiLogo.png";
 import { withRouter } from "react-router";
 import { Dropdown, Image } from "semantic-ui-react";
 import profileUrl from "../../images/profile.png";
 import { connect } from "react-redux";
 import { clearAuthDetails } from "../../pages/LandingPage/actions";
 import Auth from "../../Auth";
+import Icon from "@material-ui/core/Icon";
 const auth0 = new Auth();
 
 const authDetail = {
@@ -103,13 +105,24 @@ const ProfileHeader = props => {
     ];
   }
   return (
-    <div className="profile-header">
-      <Dropdown
-        trigger={trigger}
-        options={options}
-        pointing="top left"
-        icon={null}
-      />
+    <div className="main-header">
+      <div className="logo-header">
+        <img className="company-logo" src={NdiLogoUrl} alt="ndi-logo" />
+      </div>
+      <div className="profile-header">
+        <a
+          href="/landingpage"
+          style={{ verticalAlign: "middle", paddingRight: "30px" }}
+        >
+          <Icon>home</Icon>{" "}
+        </a>
+        <Dropdown
+          trigger={trigger}
+          options={options}
+          pointing="top left"
+          icon={null}
+        />
+      </div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import DialogBox from "../DialogBox/DialogBox";
 import Auth from '../../Auth';
+import { config } from "../../settings";
 const auth0=new Auth();
 
 const EditQuestion = ({
@@ -32,7 +33,7 @@ const EditQuestion = ({
     }
     data.answers = answers;
     console.log("options data -----> ", data);
-    let url = "http://localhost:9000/updatequestion/";
+    let url = config.baseUrl + "/updatequestion/";
     fetch(url, {
       method: "POST",
       headers: {
@@ -141,7 +142,7 @@ const EditQuestion = ({
   };
 
   const getChoices = (questionId, selectedQuestion) => {
-    const url = `http://localhost:9000/choices/${questionId}`;
+    const url = config.baseUrl + `/choices/${questionId}`;
     fetch(url, {
       method: "get",
       headers: {

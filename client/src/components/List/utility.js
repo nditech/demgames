@@ -1,10 +1,12 @@
 // Get all the choices related to a question
+import { config } from "../../settings";
+
 export const getChoices = async (
   questionId,
   selectedQuestion = null,
   callbackFunction
 ) => {
-  const url = `http://localhost:9000/choices/${questionId}`;
+  const url = config.baseUrl + `/choices/${questionId}`;
   await fetch(url, {
     method: "get",
     headers: {
@@ -23,7 +25,7 @@ export const getChoices = async (
 
 // Get the choices referencing(linking) a Quesion
 export const getChoiceLinkingQuestion = (questionId, callbackFunction) => {
-  const url = `http://localhost:9000/choiceLinkingQuestion/${questionId}`;
+  const url = config.baseUrl + `/choiceLinkingQuestion/${questionId}`;
   fetch(url, {
     method: "get",
     headers: {
@@ -42,7 +44,7 @@ export const getChoiceLinkingQuestion = (questionId, callbackFunction) => {
 
 // Get all the questions related to a game
 export const getQuestions = (gameId, callbackFunction) => {
-  const url = `http://localhost:9000/listquestions/${gameId}`;
+  const url = config.baseUrl + `/listquestions/${gameId}`;
   fetch(url, {
     method: "get",
     headers: {
@@ -61,7 +63,7 @@ export const getQuestions = (gameId, callbackFunction) => {
 
 // Add a New Question
 export const addQuestion = (data, callbackFunction) => {
-  let url = "http://localhost:9000/addquestion/";
+  let url = config.baseUrl + "/addquestion/";
   fetch(url, {
     method: "POST",
     headers: {
@@ -81,7 +83,7 @@ export const addQuestion = (data, callbackFunction) => {
 
 // Update Question
 export const updateQuestion = (data = "", id, callbackFunction) => {
-  let url = "http://localhost:9000/updatequestion/";
+  let url = config.baseUrl + "/updatequestion/";
   fetch(url, {
     method: "POST",
     headers: {
@@ -102,7 +104,7 @@ export const updateQuestion = (data = "", id, callbackFunction) => {
 // Delete a question based on ID
 export const deleteQuestion = (questionId, callbackFunction) => {
   if (window.confirm("Are you sure you want to delete the question")) {
-    let url = "http://localhost:9000/questions/" + questionId;
+    let url = config.baseUrl + "/questions/" + questionId;
     fetch(url, {
       method: "POST",
       headers: {
@@ -123,7 +125,7 @@ export const deleteQuestion = (questionId, callbackFunction) => {
 
 // Add a New Cohort
 export const addCohort = (data, callbackFunction) => {
-  let url = "http://localhost:9000/AddCohort/";
+  let url = config.baseUrl + "/AddCohort/";
   fetch(url, {
     method: "POST",
     headers: {
@@ -143,7 +145,7 @@ export const addCohort = (data, callbackFunction) => {
 
 // Delete a cohort based on ID
 export const deleteCohort = (cohort_id, callbackFunction) => {
-  let url = "http://localhost:9000/DeleteCohort/";
+  let url = config.baseUrl + "/DeleteCohort/";
   fetch(url, {
     method: "POST",
     headers: {
@@ -163,7 +165,7 @@ export const deleteCohort = (cohort_id, callbackFunction) => {
 
 // Update Cohort
 export const updateCohort = (name = "", id, callbackFunction) => {
-  let url = "http://localhost:9000/updatecohort/";
+  let url = config.baseUrl + "/updatecohort/";
   fetch(url, {
     method: "POST",
     headers: {

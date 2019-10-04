@@ -41,6 +41,7 @@ import UpdateQuestion from "../Update/UpdateQuestion";
 import classnames from "classnames";
 import removequestion from "../Remove/RemoveQuestion";
 import Icon from "@material-ui/core/Icon";
+import { config } from "../../settings";
 
 const auth0=new Auth();
 
@@ -80,7 +81,7 @@ class Admin extends Component {
     if (this.props.email !== null) {
       const encodedValue = encodeURIComponent(this.state.email);
       console.log("auth ------------------",auth0.getAccessToken());
-      fetch(`http://localhost:9000/selectPlayerProfile`, {
+      fetch(config.baseUrl + `/selectPlayerProfile`, {
         method: "post",
         headers: {
           authorization: "Bearer "+auth0.getAccessToken(),
@@ -193,7 +194,7 @@ class Admin extends Component {
       total: Number(this.state.score) + Number(this.state.total)
     });
 
-    const url = "http://localhost:9000/updateplayerscore";
+    const url = config.baseUrl + "/updateplayerscore";
     fetch(url, {
       method: "POST",
       headers: {
@@ -282,7 +283,7 @@ class Admin extends Component {
     };
     console.log(data);
     console.log("game added. ", data);
-    const url = "http://localhost:9000/registergame";
+    const url = config.baseUrl + "/registergame";
     fetch(url, {
       method: "POST",
       headers: {
@@ -358,7 +359,7 @@ class Admin extends Component {
     };
     console.log(editGameForm);
     console.log("game edited. ", data);
-    const url = "http://localhost:9000/Updategame";
+    const url = config.baseUrl + "/Updategame";
     fetch(url, {
       method: "POST",
       headers: {

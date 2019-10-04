@@ -8,6 +8,7 @@ import "./styles.scss";
 import DialogBox from "../DialogBox/DialogBox";
 import Icon from "@material-ui/core/Icon";
 import Auth from '../../Auth';
+import { config } from "../../settings";
 const auth0=new Auth();
 
 class ListGames extends Component {
@@ -25,7 +26,7 @@ class ListGames extends Component {
   }
 
   pool(fullUpdate) {
-    const url = "http://localhost:9000/listgames";
+    const url = config.baseUrl + "/listgames";
     fetch(url, {
       method: "get",
       headers: {
@@ -82,7 +83,7 @@ class ListGames extends Component {
   // }
   copyGameCb=(id)=>{
     console.log(id);
-    const url = 'http://localhost:9000/duplicatGame';
+    const url = config.baseUrl + '/duplicatGame';
         fetch(url, {
             method: 'POST',
             headers: {
@@ -118,7 +119,7 @@ class ListGames extends Component {
   };
 
   updateDetails=(data)=>{
-    const url = "http://localhost:9000/listgames";
+    const url = config.baseUrl + "/listgames";
     fetch(url, {
       method: "get",
       headers: {
@@ -208,7 +209,7 @@ class ListGames extends Component {
     const editGameForm={id,caption:data.Title,gamedescription:data.Description};
     console.log(editGameForm);
     console.log("game edited. ",data);
-    const url = 'http://localhost:9000/Updategame';
+    const url = config.baseUrl + '/Updategame';
         fetch(url, {
             method: 'POST',
             headers: {
@@ -254,7 +255,7 @@ class ListGames extends Component {
     const deleteGameForm={game_id:id};
     console.log(deleteGameForm);
     // console.log("game edited. ",data);
-    const url = 'http://localhost:9000/DeleteGame';
+    const url = config.baseUrl + '/DeleteGame';
         fetch(url, {
             method: 'POST',
             headers: {
