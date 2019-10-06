@@ -6,6 +6,10 @@ if (process.env.NODE_ENV === 'development') {
 	// config = { baseUrl: 'http://192.168.13.86:9000' };
 } else if (process.env.NODE_ENV === 'production') {
 	config = { baseUrl: '' };
+} else {
+	config = { baseUrl: 'http://localhost:9000/api' };
 }
+
+// provide redirect uri
 
 export { config };

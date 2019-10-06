@@ -1,6 +1,6 @@
 // Get all the choices related to a question
 import { config } from "../../settings";
-
+import { ToastContainer, toast } from 'react-toastify';
 export const getChoices = async (
   questionId,
   selectedQuestion = null,
@@ -75,10 +75,14 @@ export const addQuestion = (data, callbackFunction) => {
   })
     .then(res => res.json())
     .then(data => {
-      alert(JSON.stringify(data));
+      toast.info("Successfully Added !", {
+        position: toast.POSITION.TOP_CENTER
+      });
       callbackFunction();
     })
-    .catch(error => console.log(error));
+    .catch(err=>toast.error("Sorry...some technical issue !", {
+      position: toast.POSITION.TOP_CENTER
+    }));
 };
 
 // Update Question
@@ -95,10 +99,14 @@ export const updateQuestion = (data = "", id, callbackFunction) => {
   })
     .then(res => res.json())
     .then(data => {
-      alert(JSON.stringify(data));
+      toast.info("Updated Successfully !", {
+        position: toast.POSITION.TOP_CENTER
+      });
       callbackFunction();
     })
-    .catch(error => console.log(error));
+    .catch(error => toast.error("Sorry...some technical issue !", {
+      position: toast.POSITION.TOP_CENTER
+    }));
 };
 
 // Delete a question based on ID
@@ -116,10 +124,14 @@ export const deleteQuestion = (questionId, callbackFunction) => {
     })
       .then(res => res.json())
       .then(data => {
-        alert(JSON.stringify(data));
+        toast.info("Deleted Successfully !", {
+          position: toast.POSITION.TOP_CENTER
+        });
         callbackFunction();
       })
-      .catch(error => console.log(error));
+      .catch(error => toast.error("Sorry...some technical issue !", {
+        position: toast.POSITION.TOP_CENTER
+      }));
   }
 };
 
@@ -137,10 +149,14 @@ export const addCohort = (data, callbackFunction) => {
   })
     .then(res => res.json())
     .then(data => {
-      alert(JSON.stringify(data));
+      toast.info("Successfully Added !", {
+        position: toast.POSITION.TOP_CENTER
+      });
       callbackFunction();
     })
-    .catch(error => console.log(error));
+    .catch(error => toast.error("Sorry...some technical issue !", {
+      position: toast.POSITION.TOP_CENTER
+    }));
 };
 
 // Delete a cohort based on ID
@@ -157,10 +173,14 @@ export const deleteCohort = (cohort_id, callbackFunction) => {
   })
     .then(res => res.json())
     .then(data => {
-      alert(JSON.stringify(data));
+      toast.info("Deleted Successfully !", {
+        position: toast.POSITION.TOP_CENTER
+      });
       callbackFunction();
     })
-    .catch(error => console.log(error));
+    .catch(error => toast.error("Sorry...some technical issue !", {
+      position: toast.POSITION.TOP_CENTER
+    }));
 };
 
 // Update Cohort
@@ -177,8 +197,12 @@ export const updateCohort = (name = "", id, callbackFunction) => {
   })
     .then(res => res.json())
     .then(data => {
-      alert(JSON.stringify(data));
+      toast.info("Updated Successfully !", {
+        position: toast.POSITION.TOP_CENTER
+      });
       callbackFunction();
     })
-    .catch(error => console.log(error));
+    .catch(error => toast.error("Sorry...some technical issue !", {
+      position: toast.POSITION.TOP_CENTER
+    }));
 };
