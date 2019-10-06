@@ -64,14 +64,14 @@ div.inhAeF {
 }
 
 .profile-page .jumbotron {
-  padding: 2rem 2rem;
+  padding: 1rem 2rem;
 }
 .profile-page .progress-status {
-  height: 575px;
+  height: 385px;
 }
 
 .profile-page .table-responsive {
-  height: 415px;
+  height: 270px;
   overflow-y: scroll;
   overflow: auto;
 }
@@ -97,4 +97,8 @@ div.inhAeF {
 
 .header-wrapper .header-container .header-left .header-button {
   outline: none;
+}
+
+.card-row{
+  padding: 0px 15px 15px 15px;
 }
