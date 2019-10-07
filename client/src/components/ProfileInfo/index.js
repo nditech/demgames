@@ -96,7 +96,7 @@ const ProfileInfo = props => {
 
   const getRank = (cohortId, cohorts, changeCohort = false) => {
     console.log("selected cohort id: ", cohortId);
-    const url = config.baseUrl + `/get_cohort_rank/${userEmail}/:${cohortId}`;
+    const url = config.baseUrl + `/get_cohort_rank/${userEmail}/${cohortId}`;
     fetch(url, {
       method: "get",
       headers: {

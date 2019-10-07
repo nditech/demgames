@@ -111,14 +111,58 @@ app.get("/api/api/game", async (req, res) => {
   // });
 });
 
-app.get("/api/api/v2/game", async (req, res) => {
+app.get("/api/api/v2/game/:cohort", async (req, res) => {
   console.log("GET=   api/v2/game -----api----------------");
+
+  let cohort_name = req.params.cohort;
+
+  let temp_cohort;
+  let linkedGames ;
+  let linkedGamesId = [];
+
+  if(cohort_name !== undefined && cohort_name !== 'default') {
+    temp_cohort = await cohort.findOne({
+      where:{
+      name:cohort_name
+      },
+      raw : true
+    });
+
+    console.log(temp_cohort);
+
+    linkedGames = await cohort_game.findAll({
+      where:{
+        cohort_id:temp_cohort.id
+      },
+      raw : true
+    })
+
+    console.log(linkedGames);
+
+    for(var temp_linkedGames of linkedGames){
+      linkedGamesId.push(temp_linkedGames.game_id);
+    }
+
+
+    console.log("linked games id are --"+linkedGamesId)
+  }
+
+
 
   try {
     let gameData = [];
-
+    let allGames;
     // first find all games
-    let allGames = await games.findAll({ raw: true });
+    if(linkedGamesId.length >= 1) {
+     allGames = await games.findAll({
+       where : {
+        id:linkedGamesId
+       },
+       raw: true 
+      });
+    } else {
+      allGames = await games.findAll({raw: true });
+    }
 
     for (const [index, eachGame] of allGames.entries()) {
       let modifiedGame = {};
@@ -128,6 +172,10 @@ app.get("/api/api/v2/game", async (req, res) => {
       modifiedGame.type = eachGame.gametype;
       modifiedGame.style = "blue";
       modifiedGame.levels = [];
+
+      if(temp_cohort){
+        modifiedGame.cohort_id = parseInt(temp_cohort.id);
+      }
 
       let maxLevel = await questions.findAll({
         where: { game_id: eachGame.id },
@@ -262,8 +310,8 @@ app.post(
     check("game_id", "question id is required").isNumeric(),
     check("cohort_id", "cohort id is required").isNumeric()
   ],
-  checkJwt,
-  verifyToken,
+  // checkJwt,
+  // verifyToken,
   async (req, res) => {
     console.log("POST /linkcohort_game -----api ---called");
 
@@ -708,7 +756,10 @@ app.post("/api/updatequestion", checkJwt, verifyToken, async (req, res) => {
   }
 });
 
-app.get("/api/listCohort", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listCohort", 
+  // checkJwt, 
+  // verifyToken, 
+  (req, res) => {
   console.log("GET /listCohort -----api ---called");
   cohort
     .findAll()
@@ -1400,14 +1451,19 @@ app.get("/api/get_cohort_rank/:email/:cohort_id",
   // verifyToken, 
   async (req, res) => {
   console.log("GET /get_cohort_rank -----api ---called");
-  if (!req.params.email) {
-    return res.status(404).json({ msg: "email not found" });
-  }
+  // if (!req.params.email) {
+  //   return res.status(404).json({ msg: "email not found" });
+  // }
   let player = await players.findOne({ where: { email: req.params.email }, raw: true });
 
+  console.log("email below =------ and cohort id is :== "+req.params.cohort_id)
+  console.log(req.params.cohort_id == 1);
+
+  console.log("player is --- " , JSON.stringify(player));
+
   if (player) {
-    plays.findAll({
-      where: { cohort_id: req.params.cohort_id},
+     plays.findAll({
+      where: { cohort_id: parseInt(req.params.cohort_id)},
       attributes: [
         [db.sequelize.literal("COALESCE(SUM(score), 0)"), "score"]
       ],
@@ -1418,7 +1474,7 @@ app.get("/api/get_cohort_rank/:email/:cohort_id",
       ],
       group: ["player_id"]
     })
-    .then(result => {
+    .then( result => {
 
       var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
       console.log(JSON.stringify(myOrderedArray));
@@ -1433,10 +1489,6 @@ app.get("/api/get_cohort_rank/:email/:cohort_id",
       console.log("cohort_rank == " + cohort_rank);
       let global_rank = 0;
 
-
-
-
-
        plays.findAll({
         attributes: [
           [db.sequelize.literal("COALESCE(SUM(score), 0)"), "score"]
@@ -1450,15 +1502,18 @@ app.get("/api/get_cohort_rank/:email/:cohort_id",
       })
       .then(data => {
         console.log("global rank ---------");
-        console.log(JSON.stringify(data));
 
-        var reverseSortedGlobalRank = _.sortBy(data, ob => parseInt(ob.Player.score));
+        var reverseSortedGlobalRank = _.sortBy(data, ob => parseInt(ob.score));
+
+        console.log(JSON.stringify(reverseSortedGlobalRank));
 
         var sortedGlobalRank = reverseSortedGlobalRank.reverse();
+        console.log(JSON.stringify(sortedGlobalRank));
 
         global_rank = sortedGlobalRank.findIndex(playerOb => playerOb.Player.email === req.params.email);
         global_rank = global_rank + 1;
         console.log("global_rank == " + global_rank);
+        console.log("cohort_rank == " + cohort_rank)
 
 
         return res.status(200).send({ 

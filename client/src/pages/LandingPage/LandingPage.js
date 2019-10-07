@@ -62,8 +62,14 @@ class LandingPage extends React.Component {
 
   //Fetch complete game data.
   componentWillMount() {
+
+    var cohort = 'default';
+    if(this.props.match) {
+     console.log(this.props.match.params);
+     cohort = this.props.match.params.cohortName ? this.props.match.params.cohortName:'default';
+    }
     // fetch('./moduleData.json')
-    fetch(config.baseUrl + "/api/v2/game", {
+    fetch(config.baseUrl + `/api/v2/game/${cohort}`, {
       method: "get",
       headers: {
         authorization: "Bearer " + auth0.getAccessToken(),

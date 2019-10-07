@@ -6,7 +6,7 @@ import jwtDecode from "jwt-decode";
 
 // jwtDecode =require(jwt-decode);
 
-const LOGIN_SUCCESS_PAGE = "/landingpage";
+let LOGIN_SUCCESS_PAGE = "/landingpage";
 const LOGIN_FAILURE_PAGE = "/";
 
 export default class Auth {
@@ -36,6 +36,18 @@ export default class Auth {
     this.auth0.authorize({
       prompt: "login"
     });
+  }
+
+  setCohort(cohort) {
+    if(localStorage.getItem("cohort_address") !== "/landingpage") {
+      localStorage.setItem("cohort_address", cohort);
+    }
+  }
+
+  getCohort(){
+    if (localStorage.getItem("cohort_address")) {
+      return localStorage.getItem("cohort_address");
+    }
   }
 
   logout() {
@@ -73,7 +85,7 @@ export default class Auth {
         localStorage.setItem("id_token", authResults.idToken);
         localStorage.setItem("expires_at", expiresAt);
         location.hash = "";
-        location.pathname = LOGIN_SUCCESS_PAGE;
+        location.pathname =localStorage.getItem("cohort_address") ? localStorage.getItem("cohort_address") : LOGIN_SUCCESS_PAGE;
       } else if (error) {
         location.pathname = LOGIN_FAILURE_PAGE;
         console.log(error);

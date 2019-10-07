@@ -20,9 +20,11 @@ const authDetail = {
 };
 
 const ProfileHeader = props => {
-  console.log("auth detail: ", props);
   let trigger;
   let options = [];
+  if(props.location.pathname.includes("/landingpage") && props.location.pathname.length >= 14){ 
+    auth0.setCohort(props.location.pathname);
+  }
 
   //handle Login in action
   const handleLogIn = () => {

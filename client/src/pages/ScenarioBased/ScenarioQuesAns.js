@@ -60,8 +60,6 @@ export class ScenarioQuesAns extends React.Component {
   };
 
   handleScenarioProceed = () => {
-    console.log("state linked question: ", this.state);
-    debugger;
     if (this.state.linkedQuestion === null) {
       this.setState({
         redirect: true,
