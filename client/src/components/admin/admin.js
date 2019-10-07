@@ -15,8 +15,8 @@ import {
 import { connect } from "react-redux";
 import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import React, { Component, Fragment } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import AddChoices from "../Add/AddChoices";
 import AddGame from "../Add/AddGame";
 import AddQuestion from "../Add/AddQuestion";
@@ -43,7 +43,7 @@ import removequestion from "../Remove/RemoveQuestion";
 import Icon from "@material-ui/core/Icon";
 import { config } from "../../settings";
 
-const auth0=new Auth();
+const auth0 = new Auth();
 
 //import NotFound from '../../pages/Landin';
 
@@ -53,7 +53,7 @@ class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gameAdded:false,
+      gameAdded: false,
       openAddGameModal: false,
       gameData: {},
       score: 0,
@@ -70,7 +70,8 @@ class Admin extends Component {
       activeGameTab: "list",
       activePlayerTab: "list",
       activeQuestionTab: "list",
-      activeChoiceTab: "list"
+      activeChoiceTab: "list",
+      cohorts: [{ id: "", title: "Select Cohort" }]
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -80,11 +81,11 @@ class Admin extends Component {
   componentDidMount() {
     if (this.props.email !== null) {
       const encodedValue = encodeURIComponent(this.state.email);
-      console.log("auth ------------------",auth0.getAccessToken());
+      console.log("auth ------------------", auth0.getAccessToken());
       fetch(config.baseUrl + `/selectPlayerProfile`, {
         method: "post",
         headers: {
-          authorization: "Bearer "+auth0.getAccessToken(),
+          authorization: "Bearer " + auth0.getAccessToken(),
           "Content-Type": "Application/json",
           Accept: "application/json"
         },
@@ -198,7 +199,7 @@ class Admin extends Component {
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer "+auth0.getAccessToken(),
+        authorization: "Bearer " + auth0.getAccessToken(),
         "Content-Type": "Application/json",
         Accept: "application/json"
       },
@@ -219,67 +220,96 @@ class Admin extends Component {
       });
     }
   }
+
+  addGameFields = [
+    {
+      key: "Title",
+      type: "text",
+      title: "Title",
+      value: "",
+      editable: true
+    },
+    {
+      key: "Description",
+      type: "text",
+      title: "Description",
+      value: "",
+      multiline: true,
+      editable: true
+    },
+    {
+      key: "cohort_id",
+      type: "dropdown",
+      title: "Cohort",
+      options: [{ id: "", title: "Select Cohort" }],
+      value: "",
+      editable: true
+    },
+    {
+      key: "gametype",
+      type: "dropdown",
+      title: "Game Type",
+      options: [
+        { id: "", title: "Select Game Type" },
+        { id: "multiplechoice", title: "Multiple Choice" },
+        { id: "scenario", title: "Scenario" }
+      ],
+      value: "",
+      editable: true
+    }
+  ];
+
   toggleGame(tab) {
-    const fields = [
-      {
-        key: "Title",
-        type: "text",
-        title: "Title",
-        value: "",
-        editable: true
-      },
-      {
-        key: "Description",
-        type: "text",
-        title: "Description",
-        value: "",
-        multiline: true,
-        editable: true
-      },
-      {
-        key: "gametype",
-        type: "dropdown",
-        title: "Game Type",
-        options: [
-          { id: "", title: "Select Game Type" },
-          { id: "multiplechoice", title: "Multiple Choice" },
-          { id: "scenario", title: "Scenario" }
-        ],
-        value: "",
-        editable: true
-      }
-    ];
-    this.setState(
-      {
-        fields,
-        // showMessage:true,
-        confirmButtonValue: "ADD",
-        messageTitle: "",
-        messageDescription: "",
-        onConfirm: this.addGameCb,
-        isConfirmation: true,
-        title: "ADD GAME",
-        messageBox: false,
-        edit: false,
-        create: true,
-        onDelete: null,
-        removeMessage: false
-      },
-      () => {
-        if (this.state.activeGameTab !== tab) {
+    if (this.state.activeGameTab !== tab) {
+      const url = config.baseUrl + `/listCohort/`;
+      fetch(url, {
+        method: "get",
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("access_token"),
+          "Content-Type": "Application/json",
+          Accept: "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          for (let i = 0; i < this.addGameFields.length; i++) {
+            if (this.addGameFields[i].key === "cohort_id") {
+              data.map(item => {
+                this.addGameFields[i].options.push({
+                  id: item.id,
+                  title: item.name
+                });
+              });
+            }
+          }
+          console.log("cohorts data -->", JSON.stringify());
           this.setState({
-            // activeGameTab:tab
+            fields: this.addGameFields,
+            // showMessage:true,
+            confirmButtonValue: "ADD",
+            messageTitle: "",
+            messageDescription: "",
+            onConfirm: this.addGameCb,
+            isConfirmation: true,
+            title: "ADD GAME",
+            messageBox: false,
+            edit: false,
+            create: true,
+            onDelete: null,
+            removeMessage: false,
+            cohorts: data,
             showMessage: true
           });
-        }
-      }
-    );
+        })
+        .catch(err => console.log(err));
+    }
   }
   addGameCb = (data = "") => {
     const addGameForm = {
       caption: data.Title,
       gamedescription: data.Description,
-      gametype: data.gametype
+      gametype: data.gametype,
+      cohort_id: data.cohort_id
     };
     console.log(data);
     console.log("game added. ", data);
@@ -287,7 +317,7 @@ class Admin extends Component {
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer "+auth0.getAccessToken(),
+        authorization: "Bearer " + auth0.getAccessToken(),
         Accept: "application/json",
         "Content-Type": "application/json"
       },
@@ -295,14 +325,16 @@ class Admin extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        this.setState({ showMessage: false, gameAdded:true });
+        this.setState({ showMessage: false, gameAdded: true });
         toast.info("Successfully Added !", {
           position: toast.POSITION.TOP_CENTER
         });
       })
-      .catch(error => toast.error("Sorry..there is some technical issue", {
-        position: toast.POSITION.TOP_CENTER
-      }));
+      .catch(error =>
+        toast.error("Sorry..there is some technical issue", {
+          position: toast.POSITION.TOP_CENTER
+        })
+      );
   };
   editGame = (game, id) => {
     console.log(game, id);
@@ -363,7 +395,7 @@ class Admin extends Component {
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer "+auth0.getAccessToken(),
+        authorization: "Bearer " + auth0.getAccessToken(),
         Accept: "application/json",
         "Content-Type": "application/json"
       },
@@ -499,9 +531,9 @@ class Admin extends Component {
   //     isRemove: true
   //   });
   // };
-  handleGameStatus=()=>{
-    this.setState({gameAdded:false});
-  }
+  handleGameStatus = () => {
+    this.setState({ gameAdded: false });
+  };
 
   render() {
     console.log(this.props, "PROPS");
@@ -525,7 +557,7 @@ class Admin extends Component {
     return (
       <Router>
         <Fragment>
-        <ToastContainer enableMultiContainer />
+          <ToastContainer enableMultiContainer />
           <DialogBox
             confirmButtonValue={confirmButtonValue}
             showMessage={showMessage}
