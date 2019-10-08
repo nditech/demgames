@@ -466,14 +466,23 @@ app.post(
 app.post("/api/registergame", checkJwt, verifyToken, async (req, res) => {
   console.log("POST /registergame  -------api");
 
-  const { caption, gamedescription, gametype } = req.body;
+  const { caption, gamedescription, gametype , cohort_id} = req.body;
+
+  console.log(cohort_id);
 
   try {
-    await games.create({
+    let newGame = await games.create({
       caption: caption,
       gamedescription: gamedescription,
       gametype: gametype
     });
+    
+    if(newGame) {
+      let newCohortGameLink = await cohort_game.create({
+        game_id:newGame.id,
+        cohort_id:cohort_id
+      })
+    }
 
     return res.send({ message: "game successfully added" });
   } catch (error) {
@@ -1205,6 +1214,12 @@ app.post(
     console.log("updating ");
     // console.log(JSON.stringify(updatedGame));
     const { game_id } = req.body;
+
+    if(game_id){
+      let cohort_game_link = await cohort_game.destroy({
+        where:{game_id:game_id}
+      });
+    }
 
     try {
       let deletedGame = await games.destroy({
