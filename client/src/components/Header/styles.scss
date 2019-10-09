@@ -1,0 +1,91 @@
+.header-wrapper{
+    width:100%;
+    height: 50px;
+    box-shadow: 0 4px 4px 0 #eff3f5;
+    background-color: #ffffff;
+    .header-container{
+        display: flex;
+        margin: auto;
+        padding: 10px 41px;
+        .header-left{
+            flex:1;
+            display: flex;
+            .header-logo{
+                flex:1;
+                padding-top: 2px 0px;
+            }
+            .header-buttons{
+                flex:1;
+                display: flex;
+                height: 30px;
+                .header-button{
+                    border-radius: 50px;
+                    border:0px;
+                    font-family: Roboto;
+                    font-size: 13px;
+                    font-weight: bold;
+                    font-style: normal;
+                    font-stretch: normal;
+                    line-height: 1.38;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: #ccd8e1;
+                    padding:0px 25px;
+                    margin-right: 20px;
+                    background-color:#f7f7f7; 
+                    &.active{
+                        background-color:#0d9eea;
+                        color:#ffffff;
+                    }
+                }
+            }
+        }
+        .header-right{
+            flex:1;
+            display:flex;
+            .header-search{
+                flex:1.5;
+                display: flex;
+                justify-content: flex-end;
+                margin-right: 10px;
+                .header-searchbox{
+                    visibility: hidden;
+                    display: flex;
+                    width:50%;
+                    border:1px solid grey;
+                    align-items: center;
+                    .header-input{
+                        border: none;
+                        width: 100%;
+                        padding-left: 10px;  
+                    }
+                    .search-icon{
+                        padding-left:5px; 
+                    }
+                }
+                
+            }
+            .header-toolbar{
+                flex:1;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                
+                .header-options{
+                    // visibility: hidden;
+                    padding-right: 10px; 
+                    text-align: right;
+                    flex:1;
+                    border-right: 1px solid grey;
+                }
+                .header-profile-info{
+                    flex:1;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-left:20px;
+                }
+            }
+        }
+    }
+}

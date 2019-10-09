@@ -1,0 +1,1 @@
+export const FETCH_SCORE_DETAIL = 'FETCH_SCORE_DETAIL';
