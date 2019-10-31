@@ -40,8 +40,6 @@ const AddChoices = () => {
    const handleSubmit = (event) => 
    {
        event.preventDefault();
-       console.log(formData);
-       
        fetch(config.baseUrl + '/addchoice', {
         method: 'POST',
         headers: {

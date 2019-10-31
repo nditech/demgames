@@ -149,7 +149,7 @@ export class ScenarioQuesAns extends React.Component {
                   <span>Level {"1"} </span>
                 </div>
                 <div className="questions-container">
-                  <p className={`question-label question-label-${"blue"}`}>
+                  <p className={`question-label question-label-${this.props.location.state.moduleColor === null ? "blue":this.props.location.state.moduleColor}`}>
                     {this.state.questionStatement}
                   </p>
                 </div>
@@ -169,7 +169,7 @@ export class ScenarioQuesAns extends React.Component {
                                 option.weight
                               )
                             }
-                            moduleColor={"blue"}
+                            moduleColor={this.props.location.state.moduleColor === null ? "blue":this.props.location.state.moduleColor}
                           />
                         );
                       })}

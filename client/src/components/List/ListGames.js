@@ -7,8 +7,10 @@ import ListQuestion from "../List/ListQuestions";
 import "./styles.scss";
 import DialogBox from "../DialogBox/DialogBox";
 import Icon from "@material-ui/core/Icon";
+import Button from '@material-ui/core/Button';
 import Auth from '../../Auth';
 import { config } from "../../settings";
+import Popup from "reactjs-popup";
 const auth0=new Auth();
 
 class ListGames extends Component {
@@ -19,7 +21,8 @@ class ListGames extends Component {
       activeGameDetails:[],
       activeGame: null,
       activeTab: 1,
-      loadQuestionsComponent: false
+      loadQuestionsComponent: false,
+      cohorts:[{}]
     };
     this.simpleTable = this.simpleTable.bind(this);
     this.handleGameBoxClick = this.handleGameBoxClick.bind(this);
@@ -46,7 +49,10 @@ class ListGames extends Component {
           activeGameDetails: [
             { key: "Name", value: data[0].caption },
             { key: "Description", value: data[0].gamedescription },
-            { key: "Game Type", value: data[0].gametype }
+            { key: "Game Type", value: data[0].gametype },
+            { key:"Cohort", value: data[0].Cohort_Game.name},
+            { key: "Style", value: data[0].style},
+            {key: "par_score", value: data[0].par_score}
           ]
         });
         else{
@@ -56,7 +62,23 @@ class ListGames extends Component {
         }
       })
       .catch(err => console.log(err));
-    console.log(this.state.games, this.state.activeGame, "fre");
+    // console.log(this.state.games, this.state.activeGame, "fre");
+  
+    const cohort_url = config.baseUrl + "/listCohort";
+    fetch(cohort_url, {
+      method: "get",
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("access_token"),
+        "Content-Type": "Application/json",
+        Accept: "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("api data for cohort", JSON.stringify(data));
+        this.setState({cohorts:data});
+      })
+      .catch(err => console.log(err));
   }
   componentDidMount() {
     this.pool(true);
@@ -82,7 +104,7 @@ class ListGames extends Component {
       
   // }
   copyGameCb=(id)=>{
-    console.log(id);
+    let cohort_id = this.menu.value;
     const url = config.baseUrl + '/duplicatGame';
         fetch(url, {
             method: 'POST',
@@ -91,7 +113,7 @@ class ListGames extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({game_id:id})
+            body: JSON.stringify({game_id:id,cohort_id:cohort_id})
         })
             .then(res => res.json())
             .then((data) => {
@@ -111,7 +133,10 @@ class ListGames extends Component {
       activeGameDetails: [
         { key: "Name", value: this.state.games[id].caption },
         { key: "Description", value: this.state.games[id].gamedescription },
-        { key: "Game Type", value: this.state.games[id].gametype }
+        { key: "Game Type", value: this.state.games[id].gametype },
+        { key: "Cohort", value: this.state.games[id].Cohort_Game.name },
+        { key: "Style", value: this.state.games[id].style},
+        { key: "par_score", value: this.state.games[id].par_score}
       ],
       activeGame: this.state.games[id].id,
       activeIndex:id
@@ -185,6 +210,26 @@ class ListGames extends Component {
         multiline: true,
         editable: true
       },
+      {
+        key:"style",
+        type:"dropdown",
+        title: "Style",
+        options: [
+          { id: "green", title: "Green" },
+          { id: "blue", title: "Blue" },
+          { id: "orange", title: "Orange" }
+        ],
+        value: "",
+        editable: true
+      },
+      {
+        key: "par_score",
+        type: "text",
+        title: "par_score",
+        value: "",
+        multiline: true,
+        editable: true
+      }
     ]};
     this.setState({ data,
       // showMessage:true,
@@ -206,9 +251,9 @@ class ListGames extends Component {
     });
   }
   editGameCb = (data,id) => {
-    const editGameForm={id,caption:data.Title,gamedescription:data.Description};
+    const editGameForm={id,caption:data.Title,gamedescription:data.Description, style:data.style, par_score:data.par_score};
     console.log(editGameForm);
-    console.log("game edited. ",data);
+    // console.log("game edited. ",data);
     const url = config.baseUrl + '/Updategame';
         fetch(url, {
             method: 'POST',
@@ -223,9 +268,11 @@ class ListGames extends Component {
             .then((data) => {
               this.setState({showMessage:false});
               this.updateDetails(editGameForm);
+              this.pool(true);
               toast.info("Successfully Updated !", {
                 position: toast.POSITION.TOP_CENTER
               });
+              
               // editGameForm=null;
             })
             .catch((error) => toast.info("Sorry...some technical issue", {
@@ -338,8 +385,28 @@ class ListGames extends Component {
               Questions
             </div>
             {this.state.activeTab===1&&this.state.games[this.state.activeIndex]&&this.state.games[this.state.activeIndex].gametype!=="scenario"&&<div className='tab-option'>
-              <Icon color="primary" className="tab-icons" onClick={()=>this.copyGameCb(this.state.activeGame)} style={{color:"#0d9eea",cursor:'pointer'}}>file_copy</Icon>
-              <span className="tab-icons-details">Duplicate Game</span>
+              <Icon color="primary" className="tab-icons" style={{color:"#0d9eea",cursor:'pointer'}}>file_copy</Icon>
+              <span className="tab-icons-details">
+                <Popup
+                  trigger={<button className="button"> Duplicate Game </button>}
+                  position="top center"
+                  closeOnDocumentClick
+                >
+                <div>
+                  <span>Select the cohort where you want to copy the game</span>
+                </div>
+
+                <div>
+                  <select className="buttonA" name="cohorts" ref = {(input)=> this.menu = input}>
+                      {this.state.cohorts.map(function(object, i){
+                          return <option value={object.id} key={object.id}>{object.name}</option>;
+                      })}
+                  </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <Button className="button" color="primary" onClick={()=>this.copyGameCb(this.state.activeGame)}> Copy </Button>
+                </div>      
+              </Popup>
+
+              </span>
               <Icon color="primary" onClick={()=>this.editGame(this.state.activeGameDetails,this.state.activeGame)} style={{color:"#0d9eea",cursor:'pointer'}}>edit</Icon>
               <span className="tab-icons-details">Edit Game details</span>
             </div>}

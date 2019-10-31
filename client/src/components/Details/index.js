@@ -2,7 +2,7 @@ import React from 'react';
 import './styles.scss';
 
 export const Details=({data})=>{
-    console.log(data,"csdcd");
+    
     return(
         <div className="details-container">
             {data&&data.map((d)=>

@@ -113,7 +113,8 @@ const ProfileHeader = props => {
       </div>
       <div className="profile-header">
         <a
-          href="/landingpage"
+          // href="/landingpage"
+          href={auth0.getCohort() != null? auth0.getCohort():"/landingpage"}
           style={{ verticalAlign: "middle", paddingRight: "30px" }}
         >
           <Icon>home</Icon>{" "}

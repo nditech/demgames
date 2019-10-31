@@ -28,13 +28,29 @@ class ResultPage extends Component {
 		
 		var game_id = 1;
 		var cohort_id = 1;
+		var temp_cohort = auth0.getCohort();
+
+		temp_cohort = temp_cohort.split("/")[1];
+		console.log(temp_cohort);
+
 
 		for(var game of this.props.gameData.gameData){
-			if(game.id === this.props.location.state.moduleId){
+			
+			if(game.id === this.props.location.state.moduleId ){
 				game_id = game.game_id;
 				cohort_id = game.cohort_id ? game.cohort_id:1;
 				console.log(game.game_id + "  ----  " + game.id);
 				console.log("cohort _ id " + game.cohort_id)
+				continue;
+			}
+
+			if(this.props.location.state.moduleScenario){
+				var mod = parseInt(this.props.location.state.moduleId);
+				if(game.game_id === parseInt(this.props.location.state.moduleId)){
+					game_id = game.game_id;
+					cohort_id = game.cohort_id ? game.cohort_id:1;
+					continue;
+				}
 			}
 		}
 
@@ -118,8 +134,8 @@ class ResultPage extends Component {
 						<button className={`retry-level`}>Move To Level {level + 1}</button>
 					</a>
 				) : (
-					<a className="back-to-all-levels-link" href="/">
-						<button className={`retry-level`}>Modules</button>
+					<a className="back-to-all-levels-link" href={auth0.getCohort() !=null ? auth0.getCohort() : "/"}>
+						<button className={`retry-level`}>All Games</button>
 					</a>
 				)}
 			</div>

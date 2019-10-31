@@ -256,10 +256,31 @@ class Admin extends Component {
       ],
       value: "",
       editable: true
+    },
+    {
+      key:"style",
+      type:"dropdown",
+      title: "Style",
+      options: [
+        { id: "green", title: "Green" },
+        { id: "blue", title: "Blue" },
+        { id: "orange", title: "Orange" }
+      ],
+      value: "",
+      editable: true
+    },
+    {
+      key: "par_score",
+      type: "text",
+      title: "par_score",
+      value: "",
+      multiline: true,
+      editable: true
     }
   ];
 
   toggleGame(tab) {
+    
     if (this.state.activeGameTab !== tab) {
       const url = config.baseUrl + `/listCohort/`;
       fetch(url, {
@@ -274,12 +295,14 @@ class Admin extends Component {
         .then(data => {
           for (let i = 0; i < this.addGameFields.length; i++) {
             if (this.addGameFields[i].key === "cohort_id") {
+              let newGameCohorts = []
               data.map(item => {
-                this.addGameFields[i].options.push({
+                newGameCohorts.push({
                   id: item.id,
                   title: item.name
                 });
               });
+              this.addGameFields[i].options = newGameCohorts;
             }
           }
           console.log("cohorts data -->", JSON.stringify());
@@ -309,9 +332,11 @@ class Admin extends Component {
       caption: data.Title,
       gamedescription: data.Description,
       gametype: data.gametype,
-      cohort_id: data.cohort_id
+      cohort_id: data.cohort_id,
+      style: data.style,
+      par_score: data.par_score
     };
-    console.log(data);
+    console.log(addGameForm);
     console.log("game added. ", data);
     const url = config.baseUrl + "/registergame";
     fetch(url, {
@@ -323,8 +348,14 @@ class Admin extends Component {
       },
       body: JSON.stringify(addGameForm)
     })
-      .then(res => res.json())
+      .then(res => {
+        if(res.status == 400){
+          throw new Error();
+        }
+        return res.json();
+      })
       .then(data => {
+        // alert("paused admin");
         this.setState({ showMessage: false, gameAdded: true });
         toast.info("Successfully Added !", {
           position: toast.POSITION.TOP_CENTER

@@ -145,10 +145,14 @@ export const addCohort = (data, callbackFunction) => {
       Accept: "application/json",
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ data: data })
+    body: JSON.stringify({ name: data.name })
   })
-    .then(res => res.json())
-    .then(data => {
+    .then(res => {
+      if(res.status == 400){
+        throw new Error();
+      }
+      return res.json()
+    }).then(data => {
       toast.info("Successfully Added !", {
         position: toast.POSITION.TOP_CENTER
       });
@@ -173,9 +177,16 @@ export const deleteCohort = (cohort_id, callbackFunction) => {
   })
     .then(res => res.json())
     .then(data => {
-      toast.info("Deleted Successfully !", {
-        position: toast.POSITION.TOP_CENTER
-      });
+      
+      if(JSON.stringify(data.message) === JSON.stringify("Server Error")) {
+        toast.error("Sorry...some technical issue !", {
+          position: toast.POSITION.TOP_CENTER
+        });
+      } else {
+        toast.info("Deleted Successfully !", {
+          position: toast.POSITION.TOP_CENTER
+        });
+     }
       callbackFunction();
     })
     .catch(error => toast.error("Sorry...some technical issue !", {

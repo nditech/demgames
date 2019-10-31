@@ -50,6 +50,21 @@ export default class Auth {
     }
   }
 
+  setStyle(style){
+    if(style !== null) {
+      localStorage.setItem("style", style);
+      alert('style set');
+    }
+  }
+
+  getStyle(){
+    if (localStorage.getItem("style")) {
+      return localStorage.getItem("style");
+    } else {
+      return "orange";
+    }
+  }
+
   logout() {
     // Remove tokens and expiry time
     localStorage.removeItem("access_token");
@@ -94,6 +109,7 @@ export default class Auth {
   }
 
   isAuthenticated() {
+    // alert("Inside alert");
     let expiresAt = JSON.parse(localStorage.getItem("expires_at"));
     return new Date().getTime() < expiresAt;
   }
