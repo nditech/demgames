@@ -53,7 +53,6 @@ export default class Auth {
   setStyle(style){
     if(style !== null) {
       localStorage.setItem("style", style);
-      alert('style set');
     }
   }
 
@@ -109,7 +108,6 @@ export default class Auth {
   }
 
   isAuthenticated() {
-    // alert("Inside alert");
     let expiresAt = JSON.parse(localStorage.getItem("expires_at"));
     return new Date().getTime() < expiresAt;
   }
