@@ -48,6 +48,19 @@ const ProfileHeader = props => {
     }
   };
 
+  const getLogoPath = () =>{
+    try {
+      let cohort_name = auth0.getCohort().split("/landingpage")[0];
+      if(cohort_name) {
+        return "/client/images" + cohort_name +".png";
+      } else {
+        return "/client/images/default.png";
+      }
+    } catch(err){
+      return "/client/images/default.png";
+    }
+  }
+
   const handleAdmin = () => {
     props.history.push("/admin");
   };
@@ -109,7 +122,7 @@ const ProfileHeader = props => {
   return (
     <div className="main-header">
       <div className="logo-header">
-        <img className="company-logo" src={NdiLogoUrl} alt="ndi-logo" />
+        <img className="company-logo" src={getLogoPath()} alt="ndi-logo" />
       </div>
       <div className="profile-header">
         <a

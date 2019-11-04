@@ -106,7 +106,7 @@ class LandingPage extends React.Component {
       authDetail.player_gender = auth0.getProfile().gender;
       console.log("auth details below: ----------------- ");
       console.log(auth0.getProfile());
-      console.log(auth0.getProfile()["http://demozero.net/roles"]);
+      console.log(auth0.getProfile()["http://demGames.net/roles"]);
       console.log(authDetail);
       console.log(auth0.getProfile());
 

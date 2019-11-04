@@ -129,7 +129,7 @@ const ListPlayers = () => {
     getPlayers();
     getCohort();
   }, []);
-  console.log(cohort, "suyash");
+  // console.log(cohort, "suyash");
   const handleLeaderShip = (type, id) => {
     let api;
     switch (type) {

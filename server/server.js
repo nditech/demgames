@@ -116,6 +116,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
   console.log("GET=   api/v2/game -----api----------------");
 
   let cohort_name = req.params.cohort;
+  console.log(cohort_name);
   let temp_cohort;
   let linkedGames ;
   let linkedGamesId = [];
