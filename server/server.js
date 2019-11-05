@@ -1602,9 +1602,69 @@ app.get("/api/get_cohort_rank/:email/:cohort_id",
   } else {
     return res.status(500).send({ message: "not found" });
   }
-
-  
 });
 
+app.post("/api/updateUser", 
+  checkJwt, 
+  verifyToken, 
+  async (req, res) => {
+    console.log("POST /api/updateUser  -------api");
+
+    const { id, program, gender , country } = req.body;
+    console.log(JSON.stringify(req.body));
+    try {
+      let updatedUser = await players.update(
+        { 
+          program: program,
+          gender : gender,
+          country : country
+        },
+        { where: { id: id } }
+      );
+
+      if(updatedUser) {
+        return res.status(200).send({ message: "cohort updated successfully" });
+      } else {
+        return res.status(500).send({ message: "Server Error" });
+      }
+    } catch (error) {
+      console.error(error.message);
+      return res.status(500).send({ message: "Server Error" });
+    }
+});
+
+app.post(
+  "/api/DeleteUser",
+  [check("id", "user id is required").isNumeric()],
+  checkJwt,
+  verifyToken,
+  async (req, res) => {
+    console.log("POST /DeleteUser  -------api");
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { id } = req.body;
+
+    try {
+      let deletedPlayer = await players.destroy({
+        where: {
+          id: id
+        }
+      });
+
+      if(deletedPlayer) {
+        return res.status(200).send({ message: "player deleted successfully" });
+      } else {
+        return res.status(500).send({ message: "Server Error" });
+      }
+    
+    } catch (error) {
+      console.error(error.message);
+      return res.status(500).send({ message: "Server Error" });
+    }
+  }
+);
 
 app.listen(9000, () => console.log("listening"));

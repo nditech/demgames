@@ -3,9 +3,79 @@ import ListTable from "../ListTable";
 import Icon from "@material-ui/core/Icon";
 import Auth from "../../Auth";
 import { config } from "../../settings";
+import DialogBox from "../DialogBox/DialogBox";
+import { updatePlayer , deletePlayer } from "./utility";
+
 const auth0 = new Auth();
 
 const ListPlayers = () => {
+
+  const [popupState, setPopupState] = useState({
+    showMessage: false,
+    confirmButtonValue: "Update",
+    messageTitle: "",
+    messageDescription: "",
+    onConfirm: "",
+    isConfirmation: true,
+    title: "Player detail",
+    messageBox: false,
+    edit: false,
+    create: false,
+    onDelete: null,
+    removeMessage: false
+  });
+  
+  const {
+    showMessage,
+    confirmButtonValue,
+    messageTitle,
+    messageDescription,
+    onConfirm,
+    isConfirmation,
+    title,
+    messageBox,
+    edit,
+    create,
+    onDelete,
+    removeMessage
+  } = popupState;
+  
+  const [playerData, setPlayerData] = useState({
+    player: [{}],
+    selectedPlayer: { id: "", name: "" }
+  });
+  
+  const { player, selectedPlayer } = playerData;
+  
+  const editPlayerFields = {
+    id: selectedPlayer.id,
+    values: [
+      {
+        key: "program",
+        type: "text",
+        title: "Program",
+        value: selectedPlayer.program ? selectedPlayer.program : "",
+        editable: true
+      },
+      {
+        key: "gender",
+        type: "dropdown",
+        title: "gender",
+        options:  [{id:"male",title:"male"},{id:"female",title:"female"}],
+        editable: true,
+        value: "male"
+      },
+      {
+        key: "country",
+        type: "text",
+        title: "Country",
+        value: selectedPlayer.country ? selectedPlayer.country : "",
+        editable: true
+      },
+      
+    ]
+  };
+
   const columns = [
     {
       name: "Sl. No.",
@@ -71,7 +141,8 @@ const ListPlayers = () => {
     user: [{}],
     globalleadership: [{}],
     cohortleadership: [{}],
-    noOfPlayers: 0
+    noOfPlayers: 0,
+    selectedPlayer: { id: "", name: "" }
   });
   const [cohort, setCohort] = useState(null);
   const [activeTab, setActiveTab] = useState(1);
@@ -195,8 +266,98 @@ const ListPlayers = () => {
       })
       .catch(err => console.log(err));
   };
+
+  const deleteHandle = playerId => {
+    console.log("cohort id: ", playerId);
+    var r = window.confirm(
+      "Are you sure you want to delete player with id = " + playerId
+    );
+    if (r === true) {
+      deletePlayer(playerId, function() {
+        getPlayers();
+      });
+    } else {
+      return;
+    }
+  };
+
+  const editHandle = id => {
+    // alert("inside edit handle and the player id is -- " + id);
+
+    const selected_player = user.find(item => {
+      return item.id === id;
+    });
+
+    setPlayerData({ ...playerData, selectedPlayer: selected_player });
+    setPopupState({
+      showMessage: true,
+      confirmButtonValue: "Update",
+      messageTitle: "",
+      messageDescription: "",
+      onConfirm: editPlayer,
+      isConfirmation: true,
+      title: "Player detail",
+      messageBox: false,
+      edit: true,
+      create: false,
+      onDelete: null,
+      removeMessage: false
+    });
+  };
+
+  const onCancel = () => {
+    setPopupState({ ...popupState, showMessage: false });
+  };
+  
+  const editPlayer = (data = "", id) => {
+    console.log("dialogbox data", id, data);
+    updatePlayer(data, id, function() {
+      setPopupState({ ...popupState, showMessage: false });
+      getPlayers();
+    });
+  };
+
+  // const getPlayers = () => {
+  //   const url = config.baseUrl + "/users";
+  //   fetch(url, {
+  //     method: "get",
+  //     headers: {
+  //       authorization: "Bearer " + localStorage.getItem("access_token"),
+  //       "Content-Type": "Application/json",
+  //       Accept: "application/json"
+  //     }
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log("cohort api data -->", JSON.stringify(data));
+  //       setCohortData({ ...playerData, player: data });
+  //     })
+  //     .catch(err => console.log(err));
+  // };
+
+  // useEffect(() => {
+  //   getPlayers();
+  // }, []);
+
   return (
-    <>
+    <><DialogBox
+        confirmButtonValue={confirmButtonValue}
+        showMessage={showMessage}
+        messageTitle={messageTitle}
+        messageDescription={messageDescription}
+        onConfirm={onConfirm}
+        isConfirmation={isConfirmation}
+        onCancel={onCancel}
+        title={title}
+        data={editPlayerFields}
+     
+        messageBox={messageBox}
+        edit={edit}
+        create={create}
+        onDelete={onDelete}
+        removeMessage={removeMessage}
+        hasChoices={false}
+      />
       <div className="player-header">
         <div className="playerbox-wrapper">
           <div className="playerbox">
@@ -264,14 +425,16 @@ const ListPlayers = () => {
                     ? leadershipcolumns
                     : leadershipcolumns,
                 confirmMsg: "Are you sure you want to delete the player",
-                hasActionBtns: false,
+                hasActionBtns: true,
                 data:
                   activeTab === 1
                     ? user
                     : activeTab === 2
                     ? globalleadership
                     : cohortleadership,
-                callbackAfterDelete: getPlayers
+                callbackAfterDelete: getPlayers,
+                deleteHandle: deleteHandle,
+                editHandle: editHandle
               }}
             />
           </div>
