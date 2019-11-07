@@ -1,0 +1,81 @@
+.list-games-wrapper{
+    width:100%;
+    .list-games-container{
+        margin:auto;
+        padding-top:20px;
+        padding-bottom: 21px;
+        .gamebox-wrapper{
+            padding-left:30px;
+            padding-right: 30px;
+            hr {
+                border: 2px solid #cee0f4;
+                border-radius: 5px;
+            }
+        
+            .gamebox{
+                height:113px !important;
+
+                background-image: url('../../images/clip.png');
+                padding-bottom: 20px;
+                border-radius: 5px;
+                // background-image: url('../../images/clip.png');
+                background-color: #d3e1eb;
+                cursor: pointer;
+                position: relative;
+                &.active{
+                    background-image: url('../../images/clip.png'),linear-gradient(253deg, #0d9eea, #9839ea);
+                    box-shadow: 0 10px 20px 0 rgba(52, 146, 245, 0.23);
+                        .game-title{
+                            display: inline-block;
+                            position:absolute;
+                            bottom:10px;
+                            right:30px;
+                            // color:white;
+                            font-family: Roboto;
+                            font-size: 24px;
+                            font-weight: bold;
+                            font-style: normal;
+                            font-stretch: normal;
+                            line-height: 1.33;
+                            letter-spacing: normal;
+                            text-align: left;
+                            color: #ffffff;
+                        }
+                    
+                }
+                .game-delete{
+                    position: absolute;
+                    top:5px;
+                    right:10px;
+                }
+                .game-title{
+                    display: inline-block;
+                    position:absolute;
+                    bottom:10px;
+                    right:30px;
+                    // color:white;
+                    font-family: Roboto;
+                    font-size: 24px;
+                    font-weight: bold;
+                    font-style: normal;
+                    font-stretch: normal;
+                    line-height: 1.33;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: #1667bc;
+                }
+            }
+        }
+    }
+}
+
+// .slick-slide{
+//     padding-bottom: 20px;
+// // }
+// .slick-list{
+//     box-sizing: border-box;
+//     .slick-slide{
+//         // margin-right:30px    !important;
+        
+//     }
+// }

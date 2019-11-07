@@ -12,3 +12,75 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.pill-tabs.nav{
+  margin: 20px;
+  display: block;
+}
+
+div.rdt_TableRow {
+  border: #daeffa solid 1px;
+  border-radius: 7px;
+  margin-bottom: 10px;
+}
+div.hLrWNh {
+  font-size: 16px;
+}
+
+div.inhAeF {
+  font-size: 16px;
+}
+
+.iMLKlc div:first-child {
+  font-size: 16px; 
+  font-weight: 600;
+  color: #707070;
+}
+
+.dt-btn.btn:focus{
+  box-shadow:none;
+}
+
+#root .list-games-wrapper .list-games-container .gamebox.active {
+  background-color: #7c2a82;
+  box-shadow: none;
+  border-bottom: none !important;
+}
+
+#root .list-games-wrapper .list-games-container .gamebox .game-title {
+  left: 16px;
+  right: auto;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.tableSearchBox {
+  float: right;
+  margin-right: 10px;
+}
+
+.ui.dropdown .menu .active.item{
+  font-weight: normal;
+}
+
+.profile-page .jumbotron {
+  padding: 2rem 2rem;
+}
+.profile-page .progress-status {
+  height: 575px;
+}
+
+.profile-page .table-responsive {
+  height: 415px;
+  overflow-y: scroll;
+  overflow: auto;
+}
+
+.profile-page .profile-header {
+  float: right;
+  margin: 18px;
+}
+
+.profile-page .profile-content {
+  clear: both;
+}

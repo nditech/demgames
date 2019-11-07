@@ -9,6 +9,20 @@ import './styles.scss';
 import { connect } from 'react-redux';
 import GameInfo from '../../components/GameInfo';
 import PropTypes from 'prop-types';
+import Auth from '../../Auth';
+
+const auth0=new Auth();
+
+const authDetail=
+		{
+					player_given_name:"",
+					player_family_name:"",
+					player_email:"",
+					player_username:"",
+					player_picture:"",
+					player_gender:""
+		};
+
 class LevelsPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -19,6 +33,10 @@ class LevelsPage extends React.Component {
 	handleClickOpen = () => {
 		this.setState({ open: true });
 	};
+
+	componentDidMount(){
+		// console.log(this.props);
+	}
 
 	//Handle info dialog box close.
 	handleClose = () => {
@@ -44,20 +62,61 @@ class LevelsPage extends React.Component {
 
 	//Get list of par scores for each level of a particular module.
 	getParScores = () => {
+		const { gameData } = this.props;
+		let parScores;
 		let moduleId = parseInt(this.props.match.params.moduleId);
-		const parScores = this.props.gameData.gameData[moduleId - 1].levels.map((level) => level.par_score);
+		if (gameData[gameData[moduleId - 1]])
+		{
+			parScores = gameData[moduleId - 1].levels.map((level) => level.par_score);
+		}
+
 		return parScores;
 	};
 
-	render() {
+		//handle Login in action
+		handleLogIn = () => {
+
+			if (!auth0.isAuthenticated())
+			{
+				auth0.login();
+			}
+		};
+	
+		//handle Logout in action
+		handleLogOut = () => {
+	
+			if (auth0.isAuthenticated())
+			{
+					
+				authDetail.player_given_name="";
+				authDetail.player_family_name="";
+				authDetail.player_email="";
+				authDetail.player_username="";
+				authDetail.player_picture="";
+				authDetail.player_gender=""
+				
+				//this.props.clearAuth(authDetail);
+				auth0.logout();
+			}
+		};
+
+		render() {
 		const moduleNames = this.getModuleNames();
 		const { open } = this.state;
+		const { gameData } = this.props;
+		console.log("gameDatagameData", gameData)
 		const scores = this.getScores();
 		const parScores = this.getParScores();
 		const moduleId = parseInt(this.props.match.params.moduleId);
+		console.log("player_email ---test\n\n", JSON.stringify(this.props.player_email));
 		const moduleName = moduleNames[moduleId - 1];
-		let levels = this.props.gameData.gameData[moduleId - 1].levels;
-		const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
+		let levels, moduleColor,moduleType ;
+		if (gameData.gameData[moduleId - 1])
+		{
+			levels = gameData.gameData[moduleId - 1].levels;
+			moduleColor = this.props.gameData.gameData[moduleId - 1].style;
+			moduleType = gameData.gameData[moduleId - 1].type;
+		}
 
 		return (
 			<div className="landing-page-wrapper">
@@ -65,7 +124,7 @@ class LevelsPage extends React.Component {
 					<div className="top-section">
 						<div className="back-ndi-logo">
 							<button className="back-button">
-								<a href="/">
+								<a href="/	">
 									<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
 								</a>
 							</button>
@@ -75,9 +134,19 @@ class LevelsPage extends React.Component {
 						</div>
 						<div className="info-profile-icon-container">
 							<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleClickOpen} />
-							<a href="/profile">
-								<img className="profile-icon" src={profileUrl} alt="profile-icon" />
-							</a>
+								{
+									!auth0.isAuthenticated()&&	
+									<a onClick={this.handleLogIn}>									
+										<img className="profile-icon" src={this.props.player_picture||profileUrl} alt="Log out" />
+									</a>
+								}
+								{
+									auth0.isAuthenticated()&&
+									<a onClick={this.handleLogOut}>									
+										<acronym title="Logout"> <img className="profile-icon" src={this.props.player_picture||profileUrl} alt="Log out" />
+										</acronym>
+									</a>
+								}
 						</div>
 					</div>
 					<p className="game-title"> {moduleName}</p>
@@ -91,13 +160,15 @@ class LevelsPage extends React.Component {
 									moduleId={moduleId}
 									prevLevelScore={data.id > 1 ? scores[data.id - 2] : 0}
 									currentScore={scores[data.id - 1]}
-									parScore={parScores[data.id - 1]}
+									parScore={parScores ? parScores[data.id - 1]: null}
 									linkedLevel={data.linked_level}
 									description={data.desc}
 									totalScore={data.total_score}
 									questions={data.questions}
 									moduleName={moduleName}
+									moduleType={moduleType}
 									moduleColor={moduleColor}
+									player_email={this.props.player_email == null ? "default":this.props.player_email }
 								/>
 							))}
 					</div>
@@ -106,17 +177,33 @@ class LevelsPage extends React.Component {
 			</div>
 		);
 	}
+
 }
 
 const mapStateToProps = (state) => {
-	return { gameData: state.gameData };
+	return { 
+		player_given_name:state.authDetail.authDetail.player_given_name,
+		player_picture:state.authDetail.authDetail.player_picture,
+		player_email:state.authDetail.authDetail.player_email,
+		gameData: state.gameData 
+	};
 };
+
+
+//Dispatch action to fetch game data and scores.
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setAuth:(authDetail) => dispatch(fetchAuthDetails(authDetail)),
+		clearAuth:(authDetail)=> dispatch(clearAuthDetails(authDetail)),
+	};
+};
+
 
 LevelsPage.propTypes = {
 	gameData: PropTypes.object,
 	match: PropTypes.object
 };
 
-export default connect(mapStateToProps, null)(LevelsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LevelsPage);
 
 // export default LevelsPage;

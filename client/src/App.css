@@ -1,3 +1,11 @@
+:root {
+	--primary-color: #17a2b8;
+	--dark-color: #343a40;
+	--light-color: #f4f4f4;
+	--danger-color: #dc3545;
+	--success-color: #28a745;
+  }
+
 .App {
 	text-align: center;
 }
@@ -21,6 +29,29 @@
 .App-link {
 	color: #61dafb;
 }
+
+.alert-danger {
+	background: var(--danger-color);
+	color: #fff;
+  }
+.alert-success {
+	background: var(--success-color);
+	color: #fff;
+}
+.alert-white {
+	background: #fff;
+	color: #333;
+	border: #ccc solid 1px;
+}
+
+.alert {
+	padding: 0.8rem;
+	margin: 1rem 0;
+	opacity: 0.9;
+	background: var(--light-color);
+	color: #333;
+}
+
 
 @keyframes App-logo-spin {
 	from {

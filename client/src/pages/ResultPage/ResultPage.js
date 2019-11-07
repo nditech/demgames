@@ -3,11 +3,60 @@ import congoUrl from '../../images/congratulations.png';
 import './styles.scss';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { config } from '../../settings';
+import { da } from 'date-fns/locale';
+import Auth from '../../Auth';
 
+const auth0=new Auth();
 class ResultPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
+	}
+
+	componentWillMount(){
+		console.log('results props --> ',this.props);
+		debugger;
+	};
+
+	componentDidMount(){
+		
+		console.log(JSON.stringify(this.props.location.state.totalScore));
+		
+		console.log(this.props.location.state.moduleId);
+
+		console.log(this.props.gameData.gameData);
+		
+		var game_id = 1;
+
+		for(var game of this.props.gameData.gameData){
+			console.log(game.game_id + "  ----  " + game.id);
+			if(game.id === this.props.location.state.moduleId){
+				game_id = game.game_id;
+			}
+		}
+
+		fetch('http://localhost:9000' + '/updatePlay',{
+			method: 'post',
+			headers: {
+					authorization: "Bearer "+auth0.getAccessToken(),
+					"Content-Type":"Application/json",
+					"Accept":"application/json"
+			},
+			body:JSON.stringify({
+				player_email:this.props.player_email,
+				game_id:game_id,
+				score:this.props.location.state.totalScore
+			})
+		})
+		.then((res) => {
+			 res.json();
+		})
+		.then((data) => {
+			console.log(data);
+		})
+		.catch((err) => console.log(err));
+
 	}
 
 	render() {
@@ -71,7 +120,12 @@ class ResultPage extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return { gameData: state.gameData };
+	return { 
+		player_given_name:state.authDetail.authDetail.player_given_name,
+		player_picture:state.authDetail.authDetail.player_picture,
+		player_email:state.authDetail.authDetail.player_email,
+		gameData: state.gameData 
+	};
 };
 
 ResultPage.propTypes = {

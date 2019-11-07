@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import './styles.scss';
 import GameInfo from '../../components/GameInfo';
 import PropTypes from 'prop-types';
+import profileUrl from '../../images/profile.png';
 
 export class QuestionsAnsPage extends React.Component {
 	constructor(props) {
@@ -307,13 +308,19 @@ export class QuestionsAnsPage extends React.Component {
 							<button className="back-button">
 								<a href={backUrl}>
 									<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
+									
 								</a>
 							</button>
 
 							<p className="questions-page-module-name">
 								{moduleNames[this.props.match.params.moduleId - 1]}
 							</p>
+							<div>
+							{this.props.player_given_name} 
+							<img className="profile-icon" src={this.props.player_picture||profileUrl} alt="Log out" /></div>
+
 						</div>
+
 						<img className="info-icon" src={infoUrl} alt="info-icon" onClick={this.handleInfoOpen} />
 					</div>
 					<Fragment>
@@ -325,6 +332,7 @@ export class QuestionsAnsPage extends React.Component {
 								to={{
 									pathname: '/results',
 									state: {
+										player_email: this.props.player_email,
 										moduleId: moduleId,
 										parScoreStatus: parScoreStatus,
 										totalScore: totalScore,
@@ -444,7 +452,12 @@ export class QuestionsAnsPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return { gameData: state.gameData };
+	return { 
+				player_given_name:state.authDetail.authDetail.player_given_name,
+				player_picture:state.authDetail.authDetail.player_picture,
+				player_email:state.authDetail.authDetail.player_email,
+				gameData: state.gameData 
+		   };
 };
 
 const mapDispatchToProps = (dispatch) => {
