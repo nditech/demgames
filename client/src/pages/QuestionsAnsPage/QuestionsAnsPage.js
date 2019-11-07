@@ -348,7 +348,7 @@ export class QuestionsAnsPage extends React.Component {
                         }/${totalScore}.`,
                     messageTwo: parScoreStatus
                       ? `You are in top 100 in the rank.`
-                      : `You need to earn ${parScores[level]}/${totalScore} for Level ${level}.`,
+                      : `You need to earn ${parScores[level] *10}/${totalScore} for Level ${level}.`,
                     buttonMessage: !parScoreStatus
                       ? `Retry Level ${level}`
                       : `Continue Level ${level + 1}`

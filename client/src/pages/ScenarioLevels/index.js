@@ -50,17 +50,8 @@ class ScenarioLevels extends React.Component {
           level={x + 1}
           moduleId={this.props.match.params.moduleId}
           showScore={false}
-          // prevLevelScore={data.id > 1 ? scores[data.id - 2] : 0}
-          // currentScore={scores[data.id - 1]}
-          // parScore={parScores ? parScores[data.id - 1]: null}
-          // linkedLevel={data.linked_level}
-          // description={data.desc}
-          // totalScore={data.total_score}
-          // questions={data.questions}
-          // moduleName={moduleName}
           moduleType="scenario"
-          moduleColor="blue"
-          // player_email={this.props.player_email == null ? "default":this.props.player_email }
+          moduleColor={this.props.location.state.style === null?"orange": this.props.location.state.style}
         />
       );
     }

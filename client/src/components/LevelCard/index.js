@@ -37,7 +37,8 @@ class LevelCard extends Component {
 				to={{
 					pathname: `/module/${moduleType === 'scenario'
 						? 'scenario/'
-						: ''}${moduleId}/level/${level}/questions/`
+						: ''}${moduleId}/level/${level}/questions/`,
+					state: { moduleColor: moduleColor}
 				}}
 			>
 				<button className={`level-card level-card-${moduleColor} card-lock-${lock}`} type="button">

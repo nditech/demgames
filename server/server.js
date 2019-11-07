@@ -46,11 +46,6 @@ function verifyToken(req, res, next) {
   const bearerToken = bearer[1];
   let decoded = jwtDecode(bearerToken);
 
-  console.log(
-    "decoded --- role",
-    JSON.stringify(decoded["http://demGames.net/roles"])
-  );
-
   if (decoded["http://demGames.net/roles"][0] === "admin") {
     console.log("admin role called...");
   } else {
@@ -59,6 +54,24 @@ function verifyToken(req, res, next) {
   }
 
   next();
+}
+
+function restrictGamesList(tempBearedHeader){
+  try{
+    const bearedHeader = tempBearedHeader;
+    const bearer = bearedHeader.split(" ");
+    const bearerToken = bearer[1];
+    let decoded = jwtDecode(bearerToken);
+
+    if (decoded["http://demGames.net/roles"][0] === "admin") {
+      return false;
+    } else {
+      return true;
+    }
+  } catch(err){
+    return true;
+    console.log("error while restricting games");
+  }
 }
 
 // app.use(checkJwt);
@@ -77,12 +90,8 @@ app.use(function(req, res, next) {
 });
 
 app.get("/api/api/game", async (req, res) => {
-  // if (!gameData) res.status(404).send('No data found');
-
   if (!gameData) res.status(404).send("No data found");
-
   console.log("GET /api/game -----api");
-
   try {
     res.setHeader("Access-Control-Allow-Origin", "*");
     // Request methods you wish to allow
@@ -96,26 +105,18 @@ app.get("/api/api/game", async (req, res) => {
     // to the API (e.g. in case you use sessions)
     res.setHeader("Access-Control-Allow-Credentials", true);
 
-    // res.json({gameData});
     return res.json({ gameData });
-    // res.json({ newGameData });
   } catch (error) {
     console.error(error.message);
     return res.status(500).send("Server Error");
   }
-  // games.findAll().then(result => {
-  //   res.send(JSON.stringify(result));
-  //   console.log(result);
-  // }).catch(err => {
-  //   console.log(err);
-  // });
 });
 
 app.get("/api/api/v2/game/:cohort", async (req, res) => {
   console.log("GET=   api/v2/game -----api----------------");
 
   let cohort_name = req.params.cohort;
-
+  console.log(cohort_name);
   let temp_cohort;
   let linkedGames ;
   let linkedGamesId = [];
@@ -128,7 +129,24 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
       raw : true
     });
 
-    console.log(temp_cohort);
+    linkedGames = await cohort_game.findAll({
+      where:{
+        cohort_id:temp_cohort.id
+      },
+      raw : true
+    })
+
+    for(var temp_linkedGames of linkedGames){
+      linkedGamesId.push(temp_linkedGames.game_id);
+    }
+
+  } else if(restrictGamesList(req.headers["authorization"])){
+    temp_cohort = await cohort.findOne({
+      where:{
+      name:"default"
+      },
+      raw : true
+    });
 
     linkedGames = await cohort_game.findAll({
       where:{
@@ -137,17 +155,10 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
       raw : true
     })
 
-    console.log(linkedGames);
-
     for(var temp_linkedGames of linkedGames){
       linkedGamesId.push(temp_linkedGames.game_id);
     }
-
-
-    console.log("linked games id are --"+linkedGamesId)
   }
-
-
 
   try {
     let gameData = [];
@@ -170,7 +181,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
       modifiedGame.game_id = eachGame.id;
       modifiedGame.name = eachGame.caption;
       modifiedGame.type = eachGame.gametype;
-      modifiedGame.style = "blue";
+      modifiedGame.style = eachGame.style === null ? "blue": eachGame.style;
       modifiedGame.levels = [];
 
       if(temp_cohort){
@@ -185,17 +196,12 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         ]
       });
 
-      // var levels = [];
       var length = maxLevel[0]["max(`difficulty_level`)"];
 
-      console.log("\n\n\n");
-      console.log(length);
-
       for (var i = 0; i < length; i++) {
-        var level = {};
+        level = {};
         level.id = i + 1;
         level.current_score = 0;
-        level.par_score = 0;
         level.total_score = 10; // no of questions
         level.desc = eachGame.gamedescription;
         level.linked_level = i;
@@ -210,8 +216,8 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
 
         if (newScore !== 0) {
           level.total_score = newScore * 10;
+          level.par_score = eachGame.par_score ;
         }
-        // console.log(JSON.stringify(allQuestions));
 
         var incrementHack = 1;
 
@@ -224,9 +230,6 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
             where: { questionid: tempQuestion.id },
             raw: true
           });
-
-          // console.log("\n\n choices for question id " + tempQuestion.id);
-          // console.log(JSON.stringify(options));
 
           modifiedQuestion.options = [];
 
@@ -254,8 +257,6 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
           }
 
           incrementHack = incrementHack + incrementHack;
-          // console.log("\n\n\n\n below is the modified question \n");
-          // console.log(modifiedQuestion);
           level.questions.push(modifiedQuestion);
         }
         modifiedGame.levels.push(level);
@@ -265,38 +266,35 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
 
     return res.json({ gameData });
   } catch (error) {
-    console.error(error.message);
     return res.status(500).send("Server Error");
   }
-  // games.findAll().then(result => {
-  //   res.send(JSON.stringify(result));
-  //   console.log(result);
-  // }).catch(err => {
-  //   console.log(err);
-  // });
 });
 
-app.get("/api/listcohort_game", checkJwt, verifyToken, (req, res) => {
-  console.log("GET /listcohort_game -----api ---called");
-  cohort_game
-    .findAll()
-    .then(result => {
-      return res.send(JSON.stringify(result));
-      // console.log(result);
-    })
-    .catch(err => {
-      console.log(err);
-      return res.status(500).send("Server Error");
-    });
-});
+app.get("/api/listcohort_game", 
+  // checkJwt, 
+  verifyToken, 
+  (req, res) => {
+    console.log("GET /listcohort_game -----api ---called");
+    cohort_game
+      .findAll()
+      .then(result => {
+        return res.send(JSON.stringify(result));
+        // console.log(result);
+      })
+      .catch(err => {
+        console.log(err);
+        return res.status(500).send("Server Error");
+      });
+  });
 
-app.get("/api/listcohort_question", checkJwt, (req, res) => {
+app.get("/api/listcohort_question", 
+// checkJwt,
+ (req, res) => {
   console.log("GET /listcohort_question -----api ---called");
   cohort_question
     .findAll()
     .then(result => {
       return res.send(JSON.stringify(result));
-      // console.log(result);
     })
     .catch(err => {
       console.error(error.message);
@@ -310,8 +308,8 @@ app.post(
     check("game_id", "question id is required").isNumeric(),
     check("cohort_id", "cohort id is required").isNumeric()
   ],
-  // checkJwt,
-  // verifyToken,
+  checkJwt,
+  verifyToken,
   async (req, res) => {
     console.log("POST /linkcohort_game -----api ---called");
 
@@ -338,7 +336,6 @@ app.post(
         cohort_id: cohort_id
       });
       return res.send("cohort to game linked");
-      console.log("cohort to game linked successfully");
     } catch (error) {
       console.error(error.message);
       return res.status(500).send("Server Error");
@@ -400,8 +397,6 @@ app.get("/api/users", checkJwt, verifyToken, (req, res) => {
     });
 });
 
-// @route   POST /registerplayer
-// @desc    Create a new player
 app.post(
   "/api/registerplayer",
   [
@@ -461,136 +456,175 @@ app.post(
   }
 );
 
-// @route   POST /registergame
-// @desc    Create a new game
-app.post("/api/registergame", checkJwt, verifyToken, async (req, res) => {
-  console.log("POST /registergame  -------api");
-
-  const { caption, gamedescription, gametype , cohort_id} = req.body;
-
-  console.log(cohort_id);
-
-  try {
-    let newGame = await games.create({
-      caption: caption,
-      gamedescription: gamedescription,
-      gametype: gametype
-    });
-    
-    if(newGame) {
-      let newCohortGameLink = await cohort_game.create({
-        game_id:newGame.id,
-        cohort_id:cohort_id
-      })
+app.post("/api/registergame", 
+  [
+    check("caption", "Caption is required")
+      .not()
+      .isEmpty(),
+    check("gamedescription", "Game Description is required")
+      .not()
+      .isEmpty(),
+    check("gametype", "game type is required")
+      .not()
+      .isEmpty(),
+    check("style", "style is required")
+    .not()
+    .isEmpty(),
+    check("par_score", "par_score is required")
+    .not()
+    .isEmpty()
+  ],
+  checkJwt, 
+  verifyToken, 
+  async (req, res) => {
+    console.log("POST /registergame  -------api");
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(errors);
+      return res.status(400).json({ errors: errors.array() });
     }
+    const { caption, gamedescription, gametype , cohort_id, style, par_score} = req.body;
+    try {
+      let newGame = await games.create({
+        caption: caption,
+        gamedescription: gamedescription,
+        gametype: gametype,
+        style:style,
+        par_score:par_score
+      });
+      
+      if(newGame) {
+        let newCohortGameLink = await cohort_game.create({
+          game_id:newGame.id,
+          cohort_id:cohort_id
+        })
+      }
 
-    return res.send({ message: "game successfully added" });
-  } catch (error) {
-    console.error(error.message);
-    return res.status(500).send({ message: "Server Error" });
-  }
-});
+      return res.send({ message: "game successfully added" });
+    } catch (error) {
+      console.error(error.message);
+      return res.status(500).send({ message: "Server Error" });
+    }
+  });
 
-// @route   GET /listchoices
-// @desc    Get list of all choices from db
 app.get("/api/listchoices", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listchoices ");
   choices
     .findAll()
     .then(result => {
       return res.send(JSON.stringify(result));
-      console.log(result);
     })
     .catch(err => {
       console.log(err);
     });
 });
 
-// @route   GET /listgames
-// @desc    Get list of all games from db
-app.get("/api/listgames", checkJwt, verifyToken, (req, res) => {
-  console.log("GET /listgames -----api");
-  games
-    .findAll()
-    .then(result => {
-      return res.send(JSON.stringify(result));
-    })
-    .catch(err => {
-      console.log(err);
-    });
+app.get("/api/listgames", 
+// checkJwt, 
+// verifyToken, 
+  async (req, res) => {
+    console.log("GET /listgames -----api");
+    games
+      .findAll({
+        include: [
+          {
+            model: cohort_game
+          }
+        ],
+      })
+      .then(async result => { 
+        let returnData = JSON.parse(JSON.stringify(result));
+
+        for(var ob of returnData) {
+          console.log(ob);
+          let temp_cohort_id = ob.Cohort_Game.cohort_id;
+
+          if(temp_cohort_id === null) {
+            ob.Cohort_Game.name = "default";
+          } else {
+            let current_cohort = await cohort.findOne({ where: { id: ob.Cohort_Game.cohort_id }});
+            ob.Cohort_Game.name = current_cohort.name;
+          }
+
+        }
+
+        return res.send(JSON.stringify(returnData));
+      })
+      .catch(err => {
+        console.log("error below");
+        console.log(err);
+      });
 });
 
-// @route   POST /addchoice
-// @desc    Post choices on db
-app.post("/api/addchoice", checkJwt, verifyToken, async (req, res) => {
-  console.log("POST /addchoice  -------api");
+app.post("/api/addchoice", 
+  checkJwt, 
+  verifyToken, 
+  async (req, res) => {
+    console.log("POST /addchoice  -------api");
 
-  const {
-    choicedescription,
-    choicestatement,
-    isanswer,
-    questionid,
-    weight
-  } = req.body;
+    const {
+      choicedescription,
+      choicestatement,
+      isanswer,
+      questionid,
+      weight
+    } = req.body;
 
-  try {
-    await choices.create({
-      choicedescription: choicedescription,
-      choicestatement: choicestatement,
-      answer: isanswer,
-      questionid: questionid,
-      weight: weight
-    });
+    try {
+      await choices.create({
+        choicedescription: choicedescription,
+        choicestatement: choicestatement,
+        answer: isanswer,
+        questionid: questionid,
+        weight: weight
+      });
 
-    return res.send({ message: "choice successfully added" });
-  } catch (error) {
-    console.error(error.message);
-    return res.status(500).send({ message: "Server Error" });
-  }
-});
+      return res.send({ message: "choice successfully added" });
+    } catch (error) {
+      console.error(error.message);
+      return res.status(500).send({ message: "Server Error" });
+    }
+  });
 
-// @route   GET /listquestions/:game_id
-// @desc    Get list of all questions from db
-app.get("/api/listquestions/:gameid", checkJwt, verifyToken, (req, res) => {
-  console.log("GET /listquestions/:gameid ");
-  if (!req.params.gameid) {
-    return res.status(404).json({ msg: "Game Id not found" });
-  }
-  questions
-    .findAll({
-      where: { game_id: req.params.gameid }
-    })
-    .then(result => {
-      return res.send(JSON.stringify(result));
-      console.log(result);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-});
+app.get("/api/listquestions/:gameid", 
+  checkJwt, 
+  verifyToken, 
+  (req, res) => {
+    console.log("GET /listquestions/:gameid ");
+    if (!req.params.gameid) {
+      return res.status(404).json({ msg: "Game Id not found" });
+    }
+    questions
+      .findAll({
+        where: { game_id: req.params.gameid }
+      })
+      .then(result => {
+        return res.send(JSON.stringify(result));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
 
-// @route   GET /choices/:questionid
-// @desc    Get list of all questions from db
-app.get("/api/choices/:questionid", checkJwt, verifyToken, (req, res) => {
-  console.log("GET /choices/:questionid ");
-  if (!req.params.questionid) {
-    return res.status(404).json({ msg: "Game Id not found" });
-  }
-  choices
-    .findAll({
-      where: { questionid: req.params.questionid }
-    })
-    .then(result => {
-      return res.send(JSON.stringify(result));
-      console.log(result);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-});
-
-// @route   GET /choices/:questionid
-// @desc    Get the choice linking to a question
+app.get("/api/choices/:questionid", 
+  checkJwt, 
+  verifyToken, 
+  (req, res) => {
+    console.log("GET /choices/:questionid ");
+    if (!req.params.questionid) {
+      return res.status(404).json({ msg: "Game Id not found" });
+    }
+    choices
+      .findAll({
+        where: { questionid: req.params.questionid }
+      })
+      .then(result => {
+        return res.send(JSON.stringify(result));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
 
 app.get(
   "/api/choiceLinkingQuestion/:questionid",
@@ -607,7 +641,6 @@ app.get(
       })
       .then(result => {
         res.send(JSON.stringify(result));
-        console.log(result);
       })
       .catch(err => {
         console.log(err);
@@ -615,158 +648,193 @@ app.get(
   }
 );
 
-// @route   DELETE api/questions/:id
-// @desc    Delete a question by ID
-// @access  Private
-app.post("/api/questions/:id", checkJwt, verifyToken, async (req, res) => {
-  try {
-    const question = await questions.findByPk(req.params.id);
+app.post("/api/questions/:id", 
+  checkJwt, 
+  verifyToken, 
+  async (req, res) => {
+    try {
+      const question = await questions.findByPk(req.params.id);
 
-    if (!question) {
-      return res.status(404).json({ msg: "Question not found" });
-    }
-
-    await questions.destroy({ where: { id: req.params.id } });
-    res.json({ msg: "Question removed" });
-  } catch (err) {
-    console.error(err);
-    if (err.kind === "ObjectId") {
-      return res.status(404).json({ msg: "Question not found" });
-    }
-    return res.status(500).send("Server Error");
-  }
-});
-
-// @route   POST api/addquestion
-// @desc    Add a new question
-// @access  Private
-app.post("/api/addquestion", async (req, res) => {
-  const data = req.body.data;
-
-  try {
-    if ("previous_question_choice" in data) {
-      const question = await questions.create({
-        game_id: data.game_id,
-        difficulty_level: data.level,
-        question_statement: data.question,
-        weight: 0,
-        explanation: "explanation",
-        isitmedia: 0
-      });
-
-      console.log("inside previous question");
-      if (data.previous_question_choice) {
-        const updateChoice = await choices.update(
-          { linked_question: question.id },
-          {
-            where: { id: data.previous_question_choice }
-          }
-        );
-        console.log("updated linked questions", updateChoice);
+      if (!question) {
+        return res.status(404).json({ msg: "Question not found" });
       }
-      data.options.map(async choice => {
-        await choices.create({
-          choicedescription: "",
-          choicestatement: choice.value,
-          answer: 0,
-          questionid: question.id,
-          weight:
-            choice.option === "A"
-              ? data.first_weight
-                ? data.first_weight
-                : 0
-              : data.second_weight
-              ? data.second_weight
-              : 0
+
+      await questions.destroy({ where: { id: req.params.id } });
+      res.json({ msg: "Question removed" });
+    } catch (err) {
+      console.error(err);
+      if (err.kind === "ObjectId") {
+        return res.status(404).json({ msg: "Question not found" });
+      }
+      return res.status(500).send("Server Error");
+    }
+  });
+
+app.post("/api/addquestion", 
+  [
+    check("game", "Game name is required")
+      .not()
+      .isEmpty(),
+    check("level", "Game level is required")
+      .not()
+      .isEmpty(),
+    check("question", "question is required")
+      .not()
+      .isEmpty(),
+    check("first_weight", "first_weight is required")
+    .isNumeric(),
+    check("second_weight", "second_weight is required")
+    .isNumeric()
+  ],
+  checkJwt, 
+  verifyToken, 
+  async (req, res) => {
+    console.log("POST /api/addquestion ");
+    const data = req.body.data;
+   
+    if(isNaN(parseInt(data.first_weight))){
+      console.log("First weight is not a number");
+      return res.status(500).send("First weight is not a number");
+    }
+
+    if(isNaN(parseInt(data.second_weight))){
+      console.log("Second weight is not a number");
+      return res.status(500).send("Second weight is not a number");
+    }
+
+    console.log(JSON.stringify(data));
+
+    const errors = validationResult(req.body.data);
+    console.log(JSON.stringify(errors));
+    if (!errors.isEmpty()) {
+      console.log("ERROR IN INCOMING DATA");
+      return res.status(500).json({ errors: errors.array() });
+    }
+
+    try {
+      if ("previous_question_choice" in data) {
+        const question = await questions.create({
+          game_id: data.game_id,
+          difficulty_level: data.level,
+          question_statement: data.question,
+          weight: 0,
+          explanation: "explanation",
+          isitmedia: 0
         });
-      });
-      console.log("updated opitons --------------------");
-    } else {
-      const question = await questions.create({
-        game_id: data.game_id,
-        difficulty_level: data.level,
-        question_statement: data.question,
-        weight: data.weight,
-        explanation: "explanation",
-        isitmedia: 0
-      });
-      // Add choices
-      console.log("inside else", data);
+
+        console.log("inside previous question");
+        if (data.previous_question_choice) {
+          const updateChoice = await choices.update(
+            { linked_question: question.id },
+            {
+              where: { id: data.previous_question_choice }
+            }
+          );
+          console.log("updated linked questions", updateChoice);
+        }
+        data.options.map(async choice => {
+          await choices.create({
+            choicedescription: "",
+            choicestatement: choice.value,
+            answer: 0,
+            questionid: question.id,
+            weight:
+              choice.option === "A"
+                ? data.first_weight
+                  ? data.first_weight
+                  : 0
+                : data.second_weight
+                ? data.second_weight
+                : 0
+          });
+        });
+        console.log("updated opitons --------------------");
+      } else {
+        const question = await questions.create({
+          game_id: data.game_id,
+          difficulty_level: data.level,
+          question_statement: data.question,
+          weight: data.weight,
+          explanation: "explanation",
+          isitmedia: 0
+        });
+        // Add choices
+        console.log("inside else", data);
+        data.options.map(async choice => {
+          let isAnswer =
+            choice.option.toString() === data.answers.toString() ? 1 : 0;
+          await choices.create({
+            choicedescription: "",
+            choicestatement: choice.value,
+            answer: isAnswer,
+            questionid: question.id,
+            weight: isAnswer === 1 ? data.weight : 0
+          });
+        });
+      }
+
+      return res.json({ msg: "Question Added Successfully" });
+    } catch (err) {
+      console.error(err);
+      if (err.kind === "ObjectId") {
+        return res.status(404).json({ msg: "Question not found" });
+      }
+      return res.status(500).send("Server Error");
+    }
+  });
+
+app.post("/api/updatequestion", 
+  checkJwt, 
+  verifyToken, 
+  async (req, res) => {
+    const data = req.body.data;
+    const id = req.body.id;
+
+    try {
+      const question = await questions.findByPk(id);
+
+      if (!question) {
+        return res.status(404).json({ msg: "Question not found" });
+      }
+
+      await questions.update(
+        { question_statement: data.question },
+        {
+          where: { id: id }
+        }
+      );
+
+      // Update choices
+      await choices.destroy({ where: { questionid: id } });
       data.options.map(async choice => {
-        let isAnswer =
-          choice.option.toString() === data.answers.toString() ? 1 : 0;
+        let isAnswer = 0;
+        if (data.previous_question_choice) {
+          isAnswer = 0;
+        } else {
+          isAnswer = choice.option.toString() === data.answers.toString() ? 1 : 0;
+        }
+
         await choices.create({
           choicedescription: "",
           choicestatement: choice.value,
           answer: isAnswer,
-          questionid: question.id,
-          weight: isAnswer === 1 ? data.weight : 0
+          questionid: id,
+          weight: 0
         });
       });
-    }
 
-    return res.json({ msg: "Question Added Successfully" });
-  } catch (err) {
-    console.error(err);
-    if (err.kind === "ObjectId") {
-      return res.status(404).json({ msg: "Question not found" });
-    }
-    return res.status(500).send("Server Error");
-  }
-});
-
-// @route   POST api/updatequestion/
-// @desc    Update a question by ID
-// @access  Private
-app.post("/api/updatequestion", checkJwt, verifyToken, async (req, res) => {
-  const data = req.body.data;
-  const id = req.body.id;
-
-  try {
-    const question = await questions.findByPk(id);
-
-    if (!question) {
-      return res.status(404).json({ msg: "Question not found" });
-    }
-
-    await questions.update(
-      { question_statement: data.question },
-      {
-        where: { id: id }
+      return res.json({ msg: "Question Updated" });
+    } catch (err) {
+      console.error(err);
+      if (err.kind === "ObjectId") {
+        return res.status(404).json({ msg: "Question not found" });
       }
-    );
-
-    // Update choices
-    await choices.destroy({ where: { questionid: id } });
-    data.options.map(async choice => {
-      let isAnswer = 0;
-      if (data.previous_question_choice) {
-        isAnswer = 0;
-      } else {
-        isAnswer = choice.option.toString() === data.answers.toString() ? 1 : 0;
-      }
-
-      await choices.create({
-        choicedescription: "",
-        choicestatement: choice.value,
-        answer: isAnswer,
-        questionid: id,
-        weight: 0
-      });
-    });
-
-    return res.json({ msg: "Question Updated" });
-  } catch (err) {
-    console.error(err);
-    if (err.kind === "ObjectId") {
-      return res.status(404).json({ msg: "Question not found" });
+      return res.status(500).send("Server Error");
     }
-    return res.status(500).send("Server Error");
-  }
-});
+  });
 
 app.get("/api/listCohort", 
-  // checkJwt, 
+  checkJwt, 
   // verifyToken, 
   (req, res) => {
   console.log("GET /listCohort -----api ---called");
@@ -782,27 +850,30 @@ app.get("/api/listCohort",
     });
 });
 
-app.get("/api/listcohort_game", checkJwt, verifyToken, (req, res) => {
-  console.log("GET /listcohort_game -----api ---called");
-  cohort_game
-    .findAll()
-    .then(result => {
-      return res.send(JSON.stringify(result));
-      // console.log(result);
-    })
-    .catch(err => {
-      console.log(err);
-      return res.status(500).send("Server Error");
-    });
-});
+app.get("/api/listcohort_game", 
+  checkJwt, 
+  verifyToken, 
+  (req, res) => {
+    console.log("GET /listcohort_game -----api ---called");
+    cohort_game
+      .findAll()
+      .then(result => {
+        return res.send(JSON.stringify(result));
+      })
+      .catch(err => {
+        console.log(err);
+        return res.status(500).send("Server Error");
+      });
+  });
 
-app.get("/api/listcohort_question", checkJwt, verifyToken, (req, res) => {
+app.get("/api/listcohort_question",
+ checkJwt, 
+ verifyToken, (req, res) => {
   console.log("GET /listcohort_question -----api ---called");
   cohort_question
     .findAll()
     .then(result => {
       return res.send(JSON.stringify(result));
-      // console.log(result);
     })
     .catch(err => {
       console.error(error.message);
@@ -844,7 +915,6 @@ app.post(
         cohort_id: cohort_id
       });
       return res.send("cohort to game linked");
-      console.log("cohort to game linked successfully");
     } catch (error) {
       console.error(error.message);
       return res.status(500).send("Server Error");
@@ -884,7 +954,6 @@ app.post(
         cohort_id: cohort_id
       });
       return res.send("cohort to question linked");
-      console.log("cohort to question linked successfully");
     } catch (error) {
       console.error(error.message);
       return res.status(500).send("Server Error");
@@ -892,8 +961,6 @@ app.post(
   }
 );
 
-// @route   POST /duplicatGame
-// @desc    Duplicate selected game
 app.post(
   "/api/duplicatGame",
   [check("game_id", "Game id is required").isNumeric()],
@@ -910,6 +977,7 @@ app.post(
     }
 
     const { game_id } = req.body;
+    const { cohort_id } = req.body;
 
     // Find game based on game_id and throw error if not exist
     try {
@@ -932,14 +1000,10 @@ app.post(
         return test;
       });
 
-      console.log(JSON.stringify(questionIdList));
-
       let choiceList = await choices.findAll({
         where: { questionid: questionIdList },
         raw: true
       });
-
-      console.log(JSON.stringify(choiceList));
 
       //   res.send('game and questions finded');
 
@@ -954,14 +1018,15 @@ app.post(
           {
             caption: originalGame.caption,
             gamedescription: originalGame.gamedescription,
-            gametype: originalGame.gametype
+            gametype: originalGame.gametype,
+            style: originalGame.style,
+            par_score:originalGame.par_score
           },
           { transaction },
           { raw: true }
         );
 
         console.log("newGame created successfully ---VVV  \n\n\n");
-        console.log(JSON.stringify(newGame));
 
         // step 2 - create questions and choices from old question
 
@@ -979,7 +1044,6 @@ app.post(
           );
 
           console.log("\n\n\n  New Question created successfully ---");
-          console.log(JSON.stringify(newQuestion));
 
           let oldchoices = await choices.findAll({
             where: { questionid: temp.id },
@@ -993,7 +1057,6 @@ app.post(
           });
 
           console.log("\n NEW choices for bulkCreate --- ");
-          console.log(JSON.stringify(oldchoices));
 
           let newInsertedChoices = await choices.bulkCreate(
             oldchoices,
@@ -1001,10 +1064,15 @@ app.post(
             { raw: true }
           );
           console.log("\n\n\n New Inserted choices after bulkCreate --- ");
-          console.log(JSON.stringify(newInsertedChoices));
         }
 
         await transaction.commit();
+
+        await cohort_game.create({
+          game_id: newGame.id,
+          cohort_id: cohort_id
+        });
+
         console.log("game duplicated successfully");
         return res.status(200).send(JSON.stringify(newGame));
       } catch (err) {
@@ -1022,7 +1090,7 @@ app.post(
 );
 
 app.get("/api/list_leaderBoard", 
-  // checkJwt, 
+  checkJwt, 
   // verifyToken, 
   (req, res) => {
   console.log("GET /list_leaderBoard -----api ---called");
@@ -1044,7 +1112,6 @@ app.get("/api/list_leaderBoard",
         item.rank = index+1;
         return item;
       });
-      console.log(mm);
       return res.status(200).send(JSON.stringify(mm));
     })
     .catch(err => {
@@ -1055,7 +1122,7 @@ app.get("/api/list_leaderBoard",
 
 app.get(
   "/api/list_cohort_leaderBoard/:cohort_id",
-  // checkJwt,
+  checkJwt,
   // verifyToken,
   (req, res) => {
     console.log("GET /list_cohort_leaderBoard -----api ---called");
@@ -1117,7 +1184,12 @@ app.post(
       .isEmpty(),
     check("gamedescription", "gamedescription is required")
       .not()
-      .isEmpty()
+      .isEmpty(),
+    check("style", "style is required")
+    .not()
+    .isEmpty(),
+    check("par_score", "par_score is required")
+    .isNumeric()
   ],
   checkJwt,
   verifyToken,
@@ -1128,20 +1200,20 @@ app.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    console.log("updating ");
-    // console.log(JSON.stringify(updatedGame));
-    const { id, caption, gamedescription } = req.body;
-
+    console.log("updating \n" + JSON.stringify(req.body));
+    const { id, caption, gamedescription, style, par_score } = req.body;
+    console.log(req.body);
     try {
       let updatedGame = await games.update(
-        { caption: caption, gamedescription: gamedescription },
+        { caption: caption, gamedescription: gamedescription, style:style, par_score:par_score },
         { where: { id: id }, raw: true }
       );
 
-      console.log("updating nowwwwwwwwww");
-      console.log(JSON.stringify(updatedGame));
+      if(updatedGame !=null ){
+        return res.status(200).send({ message: "game updated successfully" });
+      }
 
-      return res.send({ message: "game updated successfully" });
+      return res.status(500).send({ message: "Server Error"  });
     } catch (error) {
       console.error(error.message);
       return res.status(500).send({ message: "Server Error" });
@@ -1166,8 +1238,6 @@ app.post(
     }
 
     const { player_email, game_id, cohort_id, score } = req.body;
-
-    console.log(JSON.stringify(req.body));
 
     let user = await players.findOne({ where: { email: player_email } });
 
@@ -1212,7 +1282,6 @@ app.post(
     }
 
     console.log("updating ");
-    // console.log(JSON.stringify(updatedGame));
     const { game_id } = req.body;
 
     if(game_id){
@@ -1228,7 +1297,6 @@ app.post(
       });
 
       console.log("deleted game below --- ");
-      console.log(JSON.stringify(deletedGame));
 
       return res.send({ message: "game deleted successfully" });
     } catch (error) {
@@ -1238,31 +1306,37 @@ app.post(
   }
 );
 
-app.post("/api/AddCohort", checkJwt, verifyToken, async (req, res) => {
-  console.log("POST /AddCohort  -------api");
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  const { name } = req.body.data;
-  try {
-    let oldCohort = await cohort.findOne({ where: { name: name } });
-
-    if (oldCohort) {
-      return res
-        .status(404)
-        .send({ message: "cohort with the same name exist" });
+app.post("/api/AddCohort", 
+  [
+    check("name", "cohort name is required")
+      .not()
+      .isEmpty()
+  ],
+  checkJwt, 
+  verifyToken, 
+  async (req, res) => {
+    console.log("POST /AddCohort  -------api");
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-    let addedCohort = await cohort.create({ name: name });
 
-    console.log(JSON.stringify(addedCohort));
+    const { name } = req.body;
+    try {
+      let oldCohort = await cohort.findOne({ where: { name: name } });
 
-    return res.send({ message: "cohort added successfully" });
-  } catch (error) {
-    console.error(error.message);
-    return res.status(500).send({ message: "Server Error" });
-  }
+      if (oldCohort) {
+        return res
+          .status(404)
+          .send({ message: "cohort with the same name exist" });
+      }
+      let addedCohort = await cohort.create({ name: name });
+
+      return res.send({ message: "cohort added successfully" });
+    } catch (error) {
+      console.error(error.message);
+      return res.status(500).send({ message: "Server Error" });
+    }
 });
 
 app.post(
@@ -1285,9 +1359,6 @@ app.post(
           id: cohort_id
         }
       });
-
-      console.log("deleted cohort below --- ");
-      console.log(JSON.stringify(deletedCohort));
 
       return res.status(200).send({ message: "cohort deleted successfully" });
     } catch (error) {
@@ -1328,8 +1399,6 @@ app.get(
     // var levels = [];
     var length = maxLevel[0]["max(`difficulty_level`)"];
 
-    console.log("\n\n\n");
-    console.log(length);
     return res.status(200).send({
       game: currentGame,
       length: length
@@ -1368,8 +1437,6 @@ app.get(
 
     initialQuestion.options = options;
 
-    console.log("\n\n\n");
-    console.log(JSON.stringify(initialQuestion));
     return res.status(200).send(initialQuestion);
   }
 );
@@ -1401,33 +1468,30 @@ app.get(
     });
 
     newQuestion.options = options;
-
-    console.log("\n\n\n");
-    console.log(JSON.stringify(newQuestion));
     return res.status(200).send(newQuestion);
   }
 );
 
-app.post("/api/updatecohort", checkJwt, verifyToken, async (req, res) => {
-  console.log("POST /updatecohort  -------api");
+app.post("/api/updatecohort", 
+  checkJwt, 
+  verifyToken, 
+  async (req, res) => {
+    console.log("POST /updatecohort  -------api");
 
-  const { id, name } = req.body;
+    const { id, name } = req.body;
 
-  try {
-    let updatedGame = await cohort.update(
-      { name: name },
-      { where: { id: id } }
-    );
+    try {
+      let updatedGame = await cohort.update(
+        { name: name },
+        { where: { id: id } }
+      );
 
-    console.log("updating nowwwwwwwwww");
-    console.log(JSON.stringify(updatedGame));
-
-    return res.send({ message: "cohort updated successfully" });
-  } catch (error) {
-    console.error(error.message);
-    return res.status(500).send({ message: "Server Error" });
-  }
-});
+      return res.send({ message: "cohort updated successfully" });
+    } catch (error) {
+      console.error(error.message);
+      return res.status(500).send({ message: "Server Error" });
+    }
+  });
 
 app.get("/api/user/get_profile/:email", async (req, res) => {
   console.log("GET /user/get_profile/:email  -----api ---called" + req.params.email);
@@ -1453,7 +1517,6 @@ app.get("/api/user/get_profile/:email", async (req, res) => {
     });
 
     const myOrderedArray = _.sortBy(allPlays, o => parseInt(o.score));
-    console.log(JSON.stringify(myOrderedArray));
 
     return res.status(200).send(JSON.stringify(myOrderedArray));
   } else {
@@ -1471,11 +1534,6 @@ app.get("/api/get_cohort_rank/:email/:cohort_id",
   // }
   let player = await players.findOne({ where: { email: req.params.email }, raw: true });
 
-  console.log("email below =------ and cohort id is :== "+req.params.cohort_id)
-  console.log(req.params.cohort_id == 1);
-
-  console.log("player is --- " , JSON.stringify(player));
-
   if (player) {
      plays.findAll({
       where: { cohort_id: parseInt(req.params.cohort_id)},
@@ -1492,12 +1550,8 @@ app.get("/api/get_cohort_rank/:email/:cohort_id",
     .then( result => {
 
       var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
-      console.log(JSON.stringify(myOrderedArray));
-      console.log("\n\n\n\n");
 
       var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()));
-      console.log("sortedArray array ");
-      console.log(JSON.stringify(sortedArray));
 
       let cohort_rank = sortedArray.findIndex(x => x.Player.email === req.params.email);
       cohort_rank = cohort_rank + 1;
@@ -1520,10 +1574,8 @@ app.get("/api/get_cohort_rank/:email/:cohort_id",
 
         var reverseSortedGlobalRank = _.sortBy(data, ob => parseInt(ob.score));
 
-        console.log(JSON.stringify(reverseSortedGlobalRank));
 
         var sortedGlobalRank = reverseSortedGlobalRank.reverse();
-        console.log(JSON.stringify(sortedGlobalRank));
 
         global_rank = sortedGlobalRank.findIndex(playerOb => playerOb.Player.email === req.params.email);
         global_rank = global_rank + 1;
@@ -1550,9 +1602,69 @@ app.get("/api/get_cohort_rank/:email/:cohort_id",
   } else {
     return res.status(500).send({ message: "not found" });
   }
-
-  
 });
 
+app.post("/api/updateUser", 
+  checkJwt, 
+  verifyToken, 
+  async (req, res) => {
+    console.log("POST /api/updateUser  -------api");
+
+    const { id, program, gender , country } = req.body;
+    console.log(JSON.stringify(req.body));
+    try {
+      let updatedUser = await players.update(
+        { 
+          program: program,
+          gender : gender,
+          country : country
+        },
+        { where: { id: id } }
+      );
+
+      if(updatedUser) {
+        return res.status(200).send({ message: "cohort updated successfully" });
+      } else {
+        return res.status(500).send({ message: "Server Error" });
+      }
+    } catch (error) {
+      console.error(error.message);
+      return res.status(500).send({ message: "Server Error" });
+    }
+});
+
+app.post(
+  "/api/DeleteUser",
+  [check("id", "user id is required").isNumeric()],
+  checkJwt,
+  verifyToken,
+  async (req, res) => {
+    console.log("POST /DeleteUser  -------api");
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { id } = req.body;
+
+    try {
+      let deletedPlayer = await players.destroy({
+        where: {
+          id: id
+        }
+      });
+
+      if(deletedPlayer) {
+        return res.status(200).send({ message: "player deleted successfully" });
+      } else {
+        return res.status(500).send({ message: "Server Error" });
+      }
+    
+    } catch (error) {
+      console.error(error.message);
+      return res.status(500).send({ message: "Server Error" });
+    }
+  }
+);
 
 app.listen(9000, () => console.log("listening"));

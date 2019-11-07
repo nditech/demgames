@@ -55,7 +55,12 @@ global.fetch = require("node-fetch");
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { open: false };
+    this.state = { 
+      open: false,
+      color: "blue"
+    };
+
+    this.colorChange = this.colorChange.bind(this);
 
     //this.handleLogIn=this.handleLogIn.bind(this);
   }
@@ -101,7 +106,7 @@ class LandingPage extends React.Component {
       authDetail.player_gender = auth0.getProfile().gender;
       console.log("auth details below: ----------------- ");
       console.log(auth0.getProfile());
-      console.log(auth0.getProfile()["http://demozero.net/roles"]);
+      console.log(auth0.getProfile()["http://demGames.net/roles"]);
       console.log(authDetail);
       console.log(auth0.getProfile());
 
@@ -226,6 +231,16 @@ class LandingPage extends React.Component {
     }
   };
 
+  // colorChange = (color) => {
+    
+  //   alert(color);
+    
+  // }
+
+ colorChange = color => {
+    this.setState({color:color});
+  };
+
   render() {
     // console.log(auth0.getProfile()["http://demGames.net/roles"]&&auth0.getProfile()["http://demGames.net/roles"][0]==="admin");
     const gameData = this.props.gameData.gameData;
@@ -233,7 +248,9 @@ class LandingPage extends React.Component {
     return (
       <div className="landing-page-wrapper">
         <div className="landing-page-container">
-          <p className="game-title">DemGames - Demo</p>
+          <div className="game-title-container">
+            <p className="game-title">DemGames - Demo</p>
+          </div>
           <div className="game-type-card-container">
             {gameData.length > 0 &&
               gameData.map((modules, key) => (

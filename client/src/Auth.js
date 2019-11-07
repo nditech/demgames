@@ -50,6 +50,20 @@ export default class Auth {
     }
   }
 
+  setStyle(style){
+    if(style !== null) {
+      localStorage.setItem("style", style);
+    }
+  }
+
+  getStyle(){
+    if (localStorage.getItem("style")) {
+      return localStorage.getItem("style");
+    } else {
+      return "orange";
+    }
+  }
+
   logout() {
     // Remove tokens and expiry time
     localStorage.removeItem("access_token");

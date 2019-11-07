@@ -19,6 +19,12 @@ module.exports = {
         },
         gametype:{
             type: Sequelize.STRING(200)
+        },
+        style:{
+          type: Sequelize.STRING(200)
+        },
+        par_score:{
+          type: type.INTEGER
         }
 
     }, 

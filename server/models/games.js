@@ -15,9 +15,14 @@ module.exports = (sequelize, type) => {
             allowNull: false
         },
         gametype:{
+            type: type.STRING(200),
+        },
+        style:{
             type: type.STRING(200)
+        },
+        par_score:{
+            type: type.INTEGER
         }
-
     }, 
     {
         timestamps: false,

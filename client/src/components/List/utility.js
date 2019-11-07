@@ -145,10 +145,14 @@ export const addCohort = (data, callbackFunction) => {
       Accept: "application/json",
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ data: data })
+    body: JSON.stringify({ name: data.name })
   })
-    .then(res => res.json())
-    .then(data => {
+    .then(res => {
+      if(res.status == 400){
+        throw new Error();
+      }
+      return res.json()
+    }).then(data => {
       toast.info("Successfully Added !", {
         position: toast.POSITION.TOP_CENTER
       });
@@ -173,9 +177,16 @@ export const deleteCohort = (cohort_id, callbackFunction) => {
   })
     .then(res => res.json())
     .then(data => {
-      toast.info("Deleted Successfully !", {
-        position: toast.POSITION.TOP_CENTER
-      });
+      
+      if(JSON.stringify(data.message) === JSON.stringify("Server Error")) {
+        toast.error("Sorry...some technical issue !", {
+          position: toast.POSITION.TOP_CENTER
+        });
+      } else {
+        toast.info("Deleted Successfully !", {
+          position: toast.POSITION.TOP_CENTER
+        });
+     }
       callbackFunction();
     })
     .catch(error => toast.error("Sorry...some technical issue !", {
@@ -200,6 +211,66 @@ export const updateCohort = (name = "", id, callbackFunction) => {
       toast.info("Updated Successfully !", {
         position: toast.POSITION.TOP_CENTER
       });
+      callbackFunction();
+    })
+    .catch(error => toast.error("Sorry...some technical issue !", {
+      position: toast.POSITION.TOP_CENTER
+    }));
+};
+
+// Update Player
+export const updatePlayer = (data, id, callbackFunction) => {
+  let url = config.baseUrl + "/updateUser/";
+  fetch(url, {
+    method: "POST",
+    headers: {
+      authorization: "Bearer " + localStorage.getItem("access_token"),
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ 
+      program: data.program, 
+      id: id,
+      gender : data.gender,
+      country : data.country
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      toast.info("Updated Successfully !", {
+        position: toast.POSITION.TOP_CENTER
+      });
+      callbackFunction();
+    })
+    .catch(error => toast.error("Sorry...some technical issue !", {
+      position: toast.POSITION.TOP_CENTER
+    }));
+};
+
+// Delete player
+export const deletePlayer = (id, callbackFunction) => {
+  let url = config.baseUrl + "/DeleteUser/";
+  fetch(url, {
+    method: "POST",
+    headers: {
+      authorization: "Bearer " + localStorage.getItem("access_token"),
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ id: id })
+  })
+    .then(res => res.json())
+    .then(data => {
+      
+      if(JSON.stringify(data.message) === JSON.stringify("Server Error")) {
+        toast.error("Sorry...some technical issue !", {
+          position: toast.POSITION.TOP_CENTER
+        });
+      } else {
+        toast.info("Deleted Successfully !", {
+          position: toast.POSITION.TOP_CENTER
+        });
+     }
       callbackFunction();
     })
     .catch(error => toast.error("Sorry...some technical issue !", {
