@@ -1,9 +1,5 @@
 // Bootstrap
 import {
-  Button,
-  Card,
-  CardText,
-  CardTitle,
   Col,
   Nav,
   NavItem,
@@ -18,28 +14,15 @@ import React, { Component, Fragment } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AddChoices from "../Add/AddChoices";
-import AddGame from "../Add/AddGame";
-import AddQuestion from "../Add/AddQuestion";
 import Auth from "../../Auth";
 //import notfound from './NotFound';
-import Callback from "../../pages/LandingPage/callback";
 import DialogBox from "../DialogBox/DialogBox";
 import { Header } from "../Header";
-// import ListQuestions from '../List/ListQuestions';
-import ListChoices from "../List/ListChoices";
 import ListGames from "../List/ListGames";
 import ListPlayers from "../List/ListPlayers";
 import ListCohorts from "../List/ListCohorts";
-import ListQuestions from "../List/ListQuestions";
 import Register from "../Add/Register";
-import RemoveChoice from "../Remove/RemoveChoice";
-import RemovePlayer from "../Remove/RemovePlayer";
-import UpdateChoice from "../Update/UpdateChoice";
-import UpdateGame from "../Update/UpdateGame";
-import UpdatePlayer from "../../components/Update/UpdateProfile";
-import UpdateQuestion from "../Update/UpdateQuestion";
 import classnames from "classnames";
-import removequestion from "../Remove/RemoveQuestion";
 import Icon from "@material-ui/core/Icon";
 import { config } from "../../settings";
 
@@ -258,8 +241,8 @@ class Admin extends Component {
       editable: true
     },
     {
-      key:"style",
-      type:"dropdown",
+      key: "style",
+      type: "dropdown",
       title: "Style",
       options: [
         { id: "green", title: "Green" },
@@ -280,7 +263,6 @@ class Admin extends Component {
   ];
 
   toggleGame(tab) {
-    
     if (this.state.activeGameTab !== tab) {
       const url = config.baseUrl + `/listCohort/`;
       fetch(url, {
@@ -295,7 +277,7 @@ class Admin extends Component {
         .then(data => {
           for (let i = 0; i < this.addGameFields.length; i++) {
             if (this.addGameFields[i].key === "cohort_id") {
-              let newGameCohorts = []
+              let newGameCohorts = [{ id: "", title: "Select Cohort" }];
               data.map(item => {
                 newGameCohorts.push({
                   id: item.id,
@@ -349,7 +331,7 @@ class Admin extends Component {
       body: JSON.stringify(addGameForm)
     })
       .then(res => {
-        if(res.status == 400){
+        if (res.status == 400) {
           throw new Error();
         }
         return res.json();
@@ -544,24 +526,7 @@ class Admin extends Component {
   onCancel = () => {
     this.setState({ showMessage: false });
   };
-  // removePopup = () => {
-  //   this.setState({
-  //     showMessage: true,
-  //     confirmButtonValue: "Remove",
-  //     messageTitle: "",
-  //     messageDescription:
-  //       "Are you sure you want to delete question Q1 from level 1?",
-  //     onConfirm: this.remove,
-  //     isConfirmation: true,
-  //     title: "Remove Question",
-  //     messageBox: true,
-  //     edit: false,
-  //     create: false,
-  //     onDelete: null,
-  //     removeMessage: false,
-  //     isRemove: true
-  //   });
-  // };
+
   handleGameStatus = () => {
     this.setState({ gameAdded: false });
   };
@@ -620,28 +585,6 @@ class Admin extends Component {
             }}
           >
             <div className="containers">
-              {/* <Nav tabs>
-                            <NavItem>
-                                <NavLink className={classnames({ active: this.state.activeTab === 'games' })} onClick={() => { this.toggle('games'); }} >
-                                    Games
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink className={classnames({ active: this.state.activeTab === 'players' })} onClick={() => { this.toggle('players'); }} >
-                                    Players
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink className={classnames({ active: this.state.activeTab === 'questions' })} onClick={() => { this.toggle('questions'); }} >
-                                    Questions
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink className={classnames({ active: this.state.activeTab === 'choices' })} onClick={() => { this.toggle('choices'); }} >
-                                    Choices
-                                </NavLink>
-                            </NavItem>
-                        </Nav> */}
               <TabContent activeTab={this.state.activeTab}>
                 <TabPane tabId="games">
                   <div style={{ display: "flex" }}>
@@ -693,114 +636,10 @@ class Admin extends Component {
                     gameAdded={this.state.gameAdded}
                     handleGameStatus={this.handleGameStatus}
                   />
-                  {/* <Row>
-                  <Col sm="12">
-                    <Nav pills className="float-right pill-tabs">
-                      <NavItem>
-                                                <NavLink className={classnames({ active: this.state.activeGameTab === 'list' })} onClick={() => { this.toggleGame('list'); }} > List Games </NavLink>
-                                            </NavItem>
-                                            <NavItem>
-                                                <NavLink className={classnames({ active: this.state.activeGameTab === 'addNew' })} onClick={() => { this.toggleGame('addNew'); }} > Add New Game </NavLink>
-                                            </NavItem>
-                    </Nav>
-                    <TabContent activeTab={this.state.activeGameTab}>
-                      <TabPane tabId="list">
-                        <Row>
-                          <Col sm="12">
-                            <ListGames editGame={this.editGame} copyGameCb={this.copyGameCb}/>
-                          </Col>
-                        </Row>
-                      </TabPane>
-                      <TabPane tabId="addNew">
-                        <Row>
-                          <Col sm="12">
-                            <AddGame />
-                          </Col>
-                        </Row>
-                      </TabPane>
-                    </TabContent>
-                  </Col>
-                </Row> */}
                 </TabPane>
                 <TabPane tabId="players">
                   <Row>
                     <Col sm="12">
-                      {/* <Nav pills className="float-right pill-tabs"> */}
-                      {/* <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activePlayerTab === "list"
-                          })}
-                          onClick={() => {
-                            this.togglePlayer("list");
-                          }}
-                        >
-                          {" "}
-                          List Players{" "}
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activePlayerTab === "addNew"
-                          })}
-                          onClick={() => {
-                            this.togglePlayer("addNew");
-                          }}
-                        >
-                          {" "}
-                          Add New Player{" "}
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activePlayerTab === "popup"
-                          })}
-                          onClick={() => {
-                            this.editPopup();
-                          }}
-                        >
-                          Edit Item
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activePlayerTab === "popup"
-                          })}
-                          onClick={() => {
-                            this.addItemPopup();
-                          }}
-                        >
-                          add Item
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activePlayerTab === "popup"
-                          })}
-                          onClick={() => {
-                            this.viewPopup();
-                          }}
-                        >
-                          View Item
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activePlayerTab === "popup"
-                          })}
-                          onClick={() => {
-                            this.removePopup();
-                          }}
-                        >
-                          Delete Item
-                        </NavLink>
-                      </NavItem>
-                    </Nav> */}
                       <TabContent activeTab={this.state.activePlayerTab}>
                         <TabPane tabId="list">
                           <Row>
@@ -842,36 +681,7 @@ class Admin extends Component {
                     </Col>
                   </Row>
                 </TabPane>
-                {/* <TabPane tabId="questions">
-                                <Row>
-                                    <Col sm="12">
-                                        <Nav pills className="float-right pill-tabs">
-                                            <NavItem>
-                                                <NavLink className={classnames({ active: this.state.activeQuestionTab === 'list' })} onClick={() => { this.toggleQuestion('list'); }} > List Questions </NavLink>
-                                            </NavItem>
-                                            <NavItem>
-                                                <NavLink className={classnames({ active: this.state.activeQuestionTab === 'addNew' })} onClick={() => { this.toggleQuestion('addNew'); }} > Add New Question </NavLink>
-                                            </NavItem>
-                                        </Nav>
-                                        <TabContent activeTab={this.state.activeQuestionTab}>
-                                            <TabPane tabId="list">
-                                                <Row>
-                                                    <Col sm="12">
-                                                        <ListQuestions />
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                            <TabPane tabId="addNew">
-                                                <Row>
-                                                    <Col sm="12">
-                                                        <AddQuestion />
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-                                        </TabContent>
-                                    </Col>
-                                </Row>
-                            </TabPane> */}
+
                 <TabPane tabId="choices">
                   <Row>
                     <Col sm="12">
@@ -921,43 +731,6 @@ class Admin extends Component {
                   </Row>
                 </TabPane>
               </TabContent>
-
-              {/* <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
-                            <ul className="navbar-nav">
-                                <li className="nav-item"><Link className="nav-link" to="/list">List players</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/listgames">List games</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/listquestions">List questions</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/listchoices">List choices</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/UpdatePlayer">Update player</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/registerplayer">Register new player</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/addgame">Add game</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/addchoices">Add choices</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/addquestion">Add question</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/removeplayer">Remove player</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/removechoice">Remove choice</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/removequestion">Remove question</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/updategame">Update game</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/updatequestion">Update question</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/updatechoice">Update choice</Link> </li>
-                            </ul>
-                        </nav>
-                        <Switch>
-                            <Route path="/list" component={ListPlayers} />
-                            <Route path="/UpdatePlayer" component={UpdatePlayer} />
-                            <Route path="/registerplayer" component={Register} />
-                            <Route path="/addgame" component={AddGame} />
-                            <Route path="/addchoices" component={AddChoices} />
-                            <Route path="/addquestion" component={AddQuestion} />
-                            <Route path="/listquestions" component={ListQuestions} />
-                            <Route path="/listchoices" component={ListChoices} />
-                            <Route path="/listgames" component={ListGames} />
-                            <Route path="/removeplayer" component={RemovePlayer} />
-                            <Route path="/removechoice" component={RemoveChoice} />
-                            <Route path="/removequestion" component={removequestion} />
-                            <Route path="/updategame" component={UpdateGame} />
-                            <Route path="/updatequestion" component={UpdateQuestion} />
-                            <Route path="/updatechoice" component={UpdateChoice} />
-                        </Switch> */}
             </div>
           </div>
         </Fragment>
