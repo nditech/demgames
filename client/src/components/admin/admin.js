@@ -296,7 +296,7 @@ class Admin extends Component {
         .then(data => {
           for (let i = 0; i < this.addGameFields.length; i++) {
             if (this.addGameFields[i].key === "cohort_id") {
-              let newGameCohorts = []
+              let newGameCohorts = [{ id: "", title: "Select Cohort" }]
               data.map(item => {
                 newGameCohorts.push({
                   id: item.id,
