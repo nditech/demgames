@@ -472,6 +472,9 @@ app.post("/api/registergame",
     .isEmpty(),
     check("par_score", "par_score is required")
     .not()
+    .isEmpty(),
+    check("cohort_id", "cohort_id is required")
+    .not()
     .isEmpty()
   ],
   checkJwt, 
