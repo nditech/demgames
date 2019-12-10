@@ -52,7 +52,7 @@
 	},
 	"scripts": {
 		"start": "webpack-dev-server --mode development --open --hot",
-		"server": "nodemon server/server.js",
+		"server": "concurrently \"sudo fuser -k 9000/tcp\" \"NODE_ENV=production nodemon server/server.js\"",
 		"dev": "concurrently \"npm run server\" \"npm start\"",
 		"build": "webpack --mode production",
 		"test": "jest --watchAll",

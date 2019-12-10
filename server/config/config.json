@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "root",
-    "password": "Hasher@123",
-    "database": "DemGamesDbTest",
+    "username": "user1",
+    "password": "password1",
+    "database": "DemGames",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "operatorsAliases": false
@@ -16,9 +16,9 @@
     "operatorsAliases": false
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
+    "username": "user1",
+    "password": "password1",
+    "database": "DemGames",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "operatorsAliases": false
