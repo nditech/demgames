@@ -36,7 +36,7 @@ const Routes = () => (
       <>
         <ProfileHeader />
         <Route path="/" exact component={App} />
-        <Route path="/:cohortName/home" exact component={LandingPage} />
+        <Route path="/:cohortName" exact component={LandingPage} />
         <Route path="/landingpage" exact component={LandingPage} />
         <Route
           path="/module/:moduleId/level/:levelId/questions/"
