@@ -472,6 +472,9 @@ app.post("/api/registergame",
     .isEmpty(),
     check("par_score", "par_score is required")
     .not()
+    .isEmpty(),
+    check("cohort_id", "cohort_id is required")
+    .not()
     .isEmpty()
   ],
   checkJwt, 
@@ -680,11 +683,11 @@ app.post("/api/addquestion",
       .isEmpty(),
     check("question", "question is required")
       .not()
-      .isEmpty(),
+      .isEmpty()/*,
     check("first_weight", "first_weight is required")
     .isNumeric(),
     check("second_weight", "second_weight is required")
-    .isNumeric()
+    .isNumeric()*/
   ],
   checkJwt, 
   verifyToken, 
@@ -692,7 +695,7 @@ app.post("/api/addquestion",
     console.log("POST /api/addquestion ");
     const data = req.body.data;
    
-    if(isNaN(parseInt(data.first_weight))){
+    /*if(isNaN(parseInt(data.first_weight))){
       console.log("First weight is not a number");
       return res.status(500).send("First weight is not a number");
     }
@@ -700,7 +703,7 @@ app.post("/api/addquestion",
     if(isNaN(parseInt(data.second_weight))){
       console.log("Second weight is not a number");
       return res.status(500).send("Second weight is not a number");
-    }
+    }*/
 
     console.log(JSON.stringify(data));
 
@@ -1667,4 +1670,4 @@ app.post(
   }
 );
 
-app.listen(9000, () => console.log("listening"));
+app.listen(9000,'127.0.0.1', () => console.log("listening"));

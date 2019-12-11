@@ -245,6 +245,7 @@ class Admin extends Component {
       type: "dropdown",
       title: "Style",
       options: [
+	{ id: "", title: "Select Game Color" },
         { id: "green", title: "Green" },
         { id: "blue", title: "Blue" },
         { id: "orange", title: "Orange" }

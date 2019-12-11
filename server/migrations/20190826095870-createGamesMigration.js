@@ -24,7 +24,7 @@ module.exports = {
           type: Sequelize.STRING(200)
         },
         par_score:{
-          type: type.INTEGER
+          type: Sequelize.INTEGER
         }
 
     }, 
