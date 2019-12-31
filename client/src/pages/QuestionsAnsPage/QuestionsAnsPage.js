@@ -248,11 +248,16 @@ export class QuestionsAnsPage extends React.Component {
 
   checkLevelUnlock = () => {
     let level = parseInt(this.props.match.params.levelId);
-    const parScores = this.getParScores();
-    const parScore = parScores[level - 1];
-    const scores = this.getScores();
-    const score = level > 1 && scores[level - 2];
-    return score >= parScore;
+    if (level > 1) {
+      const parScores = this.getParScores();
+      const parScore = parScores[level - 1];
+      const scores = this.getScores();
+      const score = level > 1 && scores[level - 2];
+      return score >= parScore;
+    }
+    else {
+      return true;
+    }
   };
 
   // Get Scores for each levels of a particular module.
