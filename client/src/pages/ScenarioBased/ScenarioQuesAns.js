@@ -31,6 +31,7 @@ export class ScenarioQuesAns extends React.Component {
       parScoreStatus: false,
       showCorrectAns: false,
       currentQuestionScore: 0,
+      currentScore: 0,
       totalScore: 0,
       click: false,
       selectedCard: null,
@@ -45,9 +46,33 @@ export class ScenarioQuesAns extends React.Component {
       linkedQuestion: null,
       redirect: false,
       gameId: this.props.match.params.moduleId,
-      levelId: this.props.match.params.levelId
+      levelId: this.props.match.params.levelId,
+      moduleId: null
     };
   }
+
+  getModuleId = () => {
+    let moduleId = null;
+    let gameId = this.props.match.params.moduleId;
+    let gameDataArray = this.props.gameData.gameData;
+    for (const module of gameDataArray) {
+      if (module.game_id == gameId)
+      {
+	moduleId = parseInt(module.id);
+      }
+    }
+    console.log(moduleId);
+    return(moduleId);
+  }
+
+  //Get list of parScores for a module.
+  getParScores = () => {
+    let moduleId = this.getModuleId();
+    let level = this.props.match.params.levelId;
+    let currentLevel = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
+    const parScores = currentLevel.par_score > 0 ? currentLevel.par_score : 0;
+    return parScores;
+  };
 
   handleAnswerClick = (linkedQuestion, optionId, score) => {
     this.setState(prevState => ({
@@ -60,10 +85,11 @@ export class ScenarioQuesAns extends React.Component {
   };
 
   handleScenarioProceed = () => {
+    this.checkParScoreStatus();
     if (this.state.linkedQuestion === null) {
       this.setState({
         redirect: true,
-        totalScore: this.state.currentQuestionScore + this.state.totalScore
+        currentScore: this.state.currentScore + this.state.currentQuestionScore
       });
     } else {
       const url = config.baseUrl + `/scenario_question/${this.state.linkedQuestion}`;
@@ -80,13 +106,28 @@ export class ScenarioQuesAns extends React.Component {
           this.setState({
             questionStatement: data.question_statement,
             options: data.options,
-            totalScore: this.state.currentQuestionScore + this.state.totalScore
+            currentScore: this.state.currentScore + this.state.currentQuestionScore
           });
           console.log("linked question data data", data);
         })
         .catch(error => console.log(error));
     }
   };
+
+  checkParScoreStatus = () => {
+    let moduleId = this.getModuleId();
+    let level = parseInt(this.props.match.params.levelId);
+    const { currentScore } = this.state;
+    const parScores = this.getParScores();
+    let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
+    console.log("The par score is " + parScores);
+    if (currentScore < parScores) {
+      this.setState({ parScoreStatus: false });
+    } else {
+      this.setState({ parScoreStatus: true });
+    }
+  };
+
 
   componentWillMount() {
     console.log("props -- > ", this.props);
@@ -106,7 +147,8 @@ export class ScenarioQuesAns extends React.Component {
       .then(data => {
         this.setState({
           questionStatement: data.question_statement,
-          options: data.options
+          options: data.options,
+	  par_score: data.par_score
         });
         console.log("first question data data", data);
       })
@@ -120,8 +162,16 @@ export class ScenarioQuesAns extends React.Component {
       questionId,
       showCorrectAns,
       selectedCard,
-      redirect
+      redirect,
+      parScoreStatus,
+      currentScore,
+      totalScore,
+      gameId
     } = this.state;
+    
+    let level = parseInt(this.props.match.params.levelId);
+    const parScore = this.getParScores();
+    const moduleId = this.getModuleId();
 
     return (
       <Fragment>
@@ -132,12 +182,29 @@ export class ScenarioQuesAns extends React.Component {
                 to={{
                   pathname: "/results",
                   state: {
-                    moduleId: this.state.gameId,
-                    moduleScenario: true,
-                    totalScore: this.state.totalScore,
-                    open: true,
-                    level: this.state.levelId,
-                    image: hurreyUrl
+                    gameId: gameId,
+                    finishedScore: currentScore,
+		    moduleScenario: true,
+                    totalScore: totalScore,
+		    parScoreStatus: parScoreStatus,
+		    open: true,
+                    level: level,
+		    moduleId: moduleId,
+                    image: parScoreStatus ? hurreyUrl : oopsUrl,
+                    expression: parScoreStatus ? `Hurray!` : `Oh!`,
+                    messageOne: parScoreStatus
+                      ? `You have scored  ${
+                          currentScore > 0 ? currentScore : currentScore
+                        }/${totalScore}.`
+                      : `You have scored only  ${
+                          currentScore > 0 ? currentScore : 0
+                        }/${totalScore}.`,
+                    messageTwo: parScoreStatus
+                      ? `You are in top 100 in the rank.`
+                      : `You need to earn ${parScore}/${totalScore} for Level ${level}.`,
+                    buttonMessage: !parScoreStatus
+                      ? `Retry Level ${level}`
+                      : `Continue Level ${level + 1}`
                   }
                 }}
               />

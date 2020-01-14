@@ -35,7 +35,7 @@ class AnswerInfoPopup extends Component {
 	}
 
 	render() {
-		const { open, handleClose, imageUrl, answerStatus, message, moduleScenario, currentScore } = this.props;
+		const { open, handleClose, imageUrl, answerStatus, message, moduleScenario, currentScore, currentQuestionScore } = this.props;
 		return (
 			<Dialog
 				className="dialog-content"
@@ -59,15 +59,15 @@ class AnswerInfoPopup extends Component {
 				</DialogContent>
 				<DialogContent>
 					<DialogContentText className="points-status" id="dialog-slide-description">
-						<span>You have </span>
+						<span>You </span>
 						{answerStatus ? (
 							<span>
-								<span>earned</span>
-								<span className="correct-points"> {moduleScenario ? currentScore : 10} </span>
+								<span>earn</span>
+								<span className="correct-points"> {/*moduleScenario ? currentQuestionScore :*/ currentQuestionScore} </span>
 							</span>
 						) : (
 							<span>
-								<span>reduced</span>
+								<span>lose</span>
 								<span className="wrong-points"> -10</span>
 							</span>
 						)}{' '}

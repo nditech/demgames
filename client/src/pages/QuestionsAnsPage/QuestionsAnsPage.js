@@ -35,7 +35,9 @@ export class QuestionsAnsPage extends React.Component {
       answerClicked: 0,
       clickedOptions: [],
       moduleScenario: false,
-      selectedOption: 0
+      selectedOption: 0,
+      currentQuestionScore: 0,
+      gameId: null,
     };
   }
 
@@ -49,18 +51,21 @@ export class QuestionsAnsPage extends React.Component {
     this.setState({ showCorrectAns: false });
     this.nextQuestion();
   };
-
+  
   //Checks for correct answer and add or reduces scores.
   checkCorrectAnswer = () => {
     const correctAns = this.getCorrectAnswer();
     const selectedValue = this.state.selectedAnswer;
+    const correctAnsWeight = this.getCorrectAnswerWeight();
+    const correctAnsWeightNum = parseInt(correctAnsWeight) > 0 ? parseInt(correctAnsWeight) : 0;
     selectedValue.sort();
     correctAns.sort();
 
     if (JSON.stringify(selectedValue) === JSON.stringify(correctAns)) {
       this.setState(prevState => ({
         answerCorrect: true,
-        currentScore: prevState.currentScore + 10
+	currentQuestionScore: correctAnsWeightNum,
+        currentScore: prevState.currentScore + correctAnsWeightNum
       }));
     } else {
       this.setState(prevState => ({
@@ -117,6 +122,24 @@ export class QuestionsAnsPage extends React.Component {
           ? questions[questionId - 1].correct_answer
           : null;
       return correctAns;
+    }
+  };
+
+  //Finds the points for the correct answer
+  getCorrectAnswerWeight = () => {
+    const { questionId } = this.state;
+    let moduleId = parseInt(this.props.match.params.moduleId);
+    let level = parseInt(this.props.match.params.levelId);
+    let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1]
+      .questions;
+    var totalQuestion = 0;
+    if (questions && questions.length > 0) {
+      totalQuestion = questions.length;
+      var correctAnsWeight =
+        questionId <= totalQuestion
+          ? parseInt(questions[questionId - 1].weight)
+          : 0;
+      return correctAnsWeight;
     }
   };
 
@@ -206,8 +229,9 @@ export class QuestionsAnsPage extends React.Component {
     const { currentScore } = this.state;
     const parScores = this.getParScores();
     let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
-    let prevScore = currentLevelNewScores[level - 1];
-    if (prevScore + currentScore < parScores[level]) {
+    //let prevScore = currentLevelNewScores[level - 1];
+    console.log("The par score is " + parScores);
+    if (currentScore < parScores) {
       this.setState({ parScoreStatus: false });
     } else {
       this.setState({ parScoreStatus: true });
@@ -240,9 +264,9 @@ export class QuestionsAnsPage extends React.Component {
   //Get list of parScores for a module.
   getParScores = () => {
     let moduleId = this.props.match.params.moduleId;
-    const parScores = this.props.gameData.gameData[moduleId - 1].levels.map(
-      level => level.par_score
-    );
+    let level = parseInt(this.props.match.params.levelId);
+    let currentLevel = this.props.gameData.gameData[moduleId - 1].levels[level - 1] 
+    const parScores = currentLevel.par_score > 0 ? currentLevel.par_score : 0;
     return parScores;
   };
 
@@ -250,9 +274,8 @@ export class QuestionsAnsPage extends React.Component {
     let level = parseInt(this.props.match.params.levelId);
     if (level > 1) {
       const parScores = this.getParScores();
-      const parScore = parScores[level - 1];
       const scores = this.getScores();
-      const score = level > 1 && scores[level - 2];
+      const score = scores[level - 2];
       return score >= parScore;
     }
     else {
@@ -303,7 +326,9 @@ export class QuestionsAnsPage extends React.Component {
       selectedAnswer,
       infoOpen,
       selectedCard,
-      moduleScenario
+      moduleScenario,
+      gameId,
+      currentQuestionScore
     } = this.state;
 
     let moduleId = parseInt(this.props.match.params.moduleId);
@@ -323,7 +348,7 @@ export class QuestionsAnsPage extends React.Component {
       level - 1
     ].total_score;
     const isLevelLocked = this.checkLevelUnlock();
-
+ 
     return (
       <Fragment>
         <div className="question-main-container">
@@ -339,21 +364,22 @@ export class QuestionsAnsPage extends React.Component {
                     moduleId: moduleId,
                     parScoreStatus: parScoreStatus,
                     totalScore: totalScore,
-                    currentScore: currentScore,
+                    finishedScore: currentScore,
                     moduleName: moduleNames[moduleId - 1],
                     level: level,
+		    gameId: this.props.gameData.gameData[moduleId - 1].game_id,
                     image: parScoreStatus ? hurreyUrl : oopsUrl,
                     expression: parScoreStatus ? `Hurray!` : `Oh!`,
                     messageOne: parScoreStatus
                       ? `You have scored  ${
-                          currentScore > 0 ? currentScore : 0
+                          currentScore > 0 ? currentScore : currentScore
                         }/${totalScore}.`
                       : `You have scored only  ${
                           currentScore > 0 ? currentScore : 0
                         }/${totalScore}.`,
                     messageTwo: parScoreStatus
                       ? `You are in top 100 in the rank.`
-                      : `You need to earn ${parScores[level] *10}/${totalScore} for Level ${level}.`,
+                      : `You need to earn ${parScores}/${totalScore} for Level ${level}.`,
                     buttonMessage: !parScoreStatus
                       ? `Retry Level ${level}`
                       : `Continue Level ${level + 1}`
@@ -448,6 +474,7 @@ export class QuestionsAnsPage extends React.Component {
               handleClose={this.handleClose}
               imageUrl={correctAnsUrl}
               nextQuestion={this.nextQuestion}
+              currentQuestionScore={currentQuestionScore}
             />
           ) : (
             <AnswerInfoPopup
@@ -458,6 +485,7 @@ export class QuestionsAnsPage extends React.Component {
               imageUrl={wrongAnsUrl}
               showRightAnswer={this.showRightAnswer}
               nextQuestion={this.nextQuestion}
+              currentQuestionScore={currentQuestionScore}
             />
           )}
         </div>

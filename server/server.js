@@ -215,8 +215,10 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         let newScore = allQuestions.length;
 
         if (newScore !== 0) {
-          level.total_score = newScore * 10;
-          level.par_score = eachGame.par_score ;
+          for (var i = 0; i < newScore; i++) {
+            level.total_score = allQuestions[i].weight;
+          }
+          level.par_score = eachGame.par_score;
         }
 
         var incrementHack = 1;
@@ -232,6 +234,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
           });
 
           modifiedQuestion.options = [];
+          modifiedQuestion.weight = [];
 
           if (eachGame.gametype === "scenario") {
             modifiedQuestion.score = 10;
@@ -252,6 +255,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
               modifiedQuestion.options.push(value.choicestatement);
               if (value.answer == 1) {
                 modifiedQuestion.correct_answer.push(i);
+                modifiedQuestion.weight = value.weight;
               }
             }
           }
@@ -570,7 +574,8 @@ app.post("/api/addchoice",
       choicestatement,
       isanswer,
       questionid,
-      weight
+      weight,
+      second_weight
     } = req.body;
 
     try {
@@ -579,7 +584,8 @@ app.post("/api/addchoice",
         choicestatement: choicestatement,
         answer: isanswer,
         questionid: questionid,
-        weight: weight
+        weight: weight,
+	second_weight: second_weight
       });
 
       return res.send({ message: "choice successfully added" });
@@ -720,8 +726,9 @@ app.post("/api/addquestion",
           game_id: data.game_id,
           difficulty_level: data.level,
           question_statement: data.question,
-          weight: 0,
-          explanation: "explanation",
+          weight: data.weight,
+          second_weight: data.second_weight,
+          //explanation: "",
           isitmedia: 0
         });
 
@@ -743,8 +750,8 @@ app.post("/api/addquestion",
             questionid: question.id,
             weight:
               choice.option === "A"
-                ? data.first_weight
-                  ? data.first_weight
+                ? data.weight
+                  ? data.weight
                   : 0
                 : data.second_weight
                 ? data.second_weight
@@ -822,7 +829,8 @@ app.post("/api/updatequestion",
           choicestatement: choice.value,
           answer: isAnswer,
           questionid: id,
-          weight: 0
+          weight: weight,
+          second_weight, second_weight
         });
       });
 
@@ -1040,6 +1048,7 @@ app.post(
               difficulty_level: temp.difficulty_level,
               question_statement: temp.question_statement,
               weight: temp.weight,
+	      second_weight: second_weight,
               explanation: temp.explanation,
               isitmedia: temp.isitmedia
             },
