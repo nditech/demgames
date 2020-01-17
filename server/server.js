@@ -246,6 +246,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
           });
 
           modifiedQuestion.options = [];
+          modifiedQuestion.weight = [];
 
           if (eachGame.gametype === "scenario") {
             modifiedQuestion.score = 10;
@@ -266,6 +267,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
               modifiedQuestion.options.push(value.choicestatement);
               if (value.answer == 1) {
                 modifiedQuestion.correct_answer.push(i);
+                modifiedQuestion.weight = value.weight;
               }
             }
           }
@@ -739,8 +741,9 @@ app.post(
           game_id: data.game_id,
           difficulty_level: data.level,
           question_statement: data.question,
-          weight: 0,
-          explanation: "explanation",
+          weight: data.weight,
+          second_weight: data.second_weight,
+          //explanation: "",
           isitmedia: 0
         });
 
@@ -762,8 +765,8 @@ app.post(
             questionid: question.id,
             weight:
               choice.option === "A"
-                ? data.first_weight
-                  ? data.first_weight
+                ? data.weight
+                  ? data.weight
                   : 0
                 : data.second_weight
                 ? data.second_weight
@@ -862,8 +865,8 @@ app.get(
     cohort
       .findAll()
       .then(result => {
-            const list = JSON.stringify(result);
-            return res.send(JSON.stringify(result));
+        const list = JSON.stringify(result);
+        return res.send(JSON.stringify(result));
       })
 
       .catch(err => {
@@ -1055,6 +1058,7 @@ app.post(
               difficulty_level: temp.difficulty_level,
               question_statement: temp.question_statement,
               weight: temp.weight,
+              second_weight: second_weight,
               explanation: temp.explanation,
               isitmedia: temp.isitmedia
             },
@@ -1350,7 +1354,7 @@ app.post(
     }
     const { name } = req.body;
     const logo = req.file;
-   
+
     console.log(
       logo.path + " " + logo.originalname + " " + logo.type + " " + logo.size
     );
@@ -1358,12 +1362,12 @@ app.post(
 
     try {
       let oldCohort = await cohort.findOne({
-            where: { name: name }
+        where: { name: name }
       });
       if (oldCohort) {
-            return res
-              .status(404)
-              .send({ message: "cohort with the same name exist" });
+        return res
+          .status(404)
+          .send({ message: "cohort with the same name exist" });
       }
 
       let addedCohort = await cohort.create({
@@ -1372,7 +1376,6 @@ app.post(
       });
 
       return res.status(200).send({ message: "cohort added successfully" });
-    
     } catch (error) {
       console.error(error.message);
       return res.status(500).send({ message: "Server Error" });

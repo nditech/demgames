@@ -65,9 +65,10 @@ class LevelsPage extends React.Component {
     let parScores;
     let moduleId = parseInt(this.props.match.params.moduleId);
     if (gameData[gameData[moduleId - 1]]) {
+      ///gameData[moduleId - 1].levels["0"].par_score = 0;
       parScores = gameData[moduleId - 1].levels.map(level => level.par_score);
+      //parScores[moduleId - 1].levels["0"].par_score = 0;
     }
-
     return parScores;
   };
 
@@ -127,7 +128,7 @@ class LevelsPage extends React.Component {
                   moduleId={moduleId}
                   prevLevelScore={data.id > 1 ? scores[data.id - 2] : 0}
                   currentScore={scores[data.id - 1]}
-                  parScore={parScores ? parScores[data.id - 1] : null}
+                  parScore={(data.id && data.id == '2' && parScores) ? parScores[data.id - 1] : 0}
                   linkedLevel={data.linked_level}
                   description={data.desc}
                   totalScore={data.total_score}

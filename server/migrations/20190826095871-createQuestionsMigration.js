@@ -34,7 +34,13 @@ module.exports = {
       },
       isitmedia:{
           type: Sequelize.INTEGER
-      }
+      },
+      par_score:{
+          type: Sequelize.INTEGER
+      },
+      second_weight:{
+          type: Sequelize.FLOAT(2)
+       }
   }, 
   {
       freezeTableName: true

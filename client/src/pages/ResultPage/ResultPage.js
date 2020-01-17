@@ -20,13 +20,13 @@ class ResultPage extends Component {
 
 	componentDidMount(){
 		
-		console.log(JSON.stringify(this.props.location.state.totalScore));
+		console.log(JSON.stringify(this.props.location.state.finishedScore));
 		
-		console.log(this.props.location.state.moduleId);
+		console.log(this.props.match.params.moduleId);
 
 		console.log(this.props.gameData.gameData);
-		
-		var game_id = 1;
+
+		var game_id = this.props.location.state.gameId;
 		var cohort_id = 1;
 		var temp_cohort = auth0.getCohort();
 
@@ -36,23 +36,24 @@ class ResultPage extends Component {
 
 		for(var game of this.props.gameData.gameData){
 			
-			if(game.id === this.props.location.state.moduleId ){
-				game_id = game.game_id;
-				cohort_id = game.cohort_id ? game.cohort_id:1;
-				console.log(game.game_id + "  ----  " + game.id);
-				console.log("cohort _ id " + game.cohort_id)
-				continue;
-			}
-
 			if(this.props.location.state.moduleScenario){
 				var mod = parseInt(this.props.location.state.moduleId);
 				if(game.game_id === parseInt(this.props.location.state.moduleId)){
-					game_id = game.game_id;
+					//game_id = game.game_id;
 					cohort_id = game.cohort_id ? game.cohort_id:1;
 					continue;
 				}
 			}
+			else if(game.id === this.props.location.state.moduleId){
+                                //game_id = game.game_id;
+                                cohort_id = game.cohort_id ? game.cohort_id:1;
+                                console.log(game.game_id + "  ----  " + game.id);
+                                console.log("cohort _ id " + game.cohort_id)
+                                continue;
+                        }
+
 		}
+                console.log("Finished Score: ", this.props.location.state.finishedScore);
 
 		fetch(config.baseUrl + '/updatePlay',{
 			method: 'post',
@@ -65,7 +66,7 @@ class ResultPage extends Component {
 				player_email:this.props.player_email,
 				game_id:game_id,
 				cohort_id:cohort_id,
-				score:this.props.location.state.totalScore
+				score:this.props.location.state.finishedScore
 			})
 		})
 		.then((res) => {

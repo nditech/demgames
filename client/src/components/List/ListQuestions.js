@@ -34,10 +34,15 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       sortable: true
     },
     {
+      name: "",
+      selector: "second_weight",
+      sortable: false
+    }/*,
+    {
       name: "Explanation",
       selector: "explanation",
       sortable: true
-    }
+    }*/
   ];
 
   const [questionsData, setQuestionsData] = useState({
@@ -54,7 +59,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     scenarioFields: [],
     scenarioEditFields: [],
     previousQuestionText: "",
-    previousChoiceText: ""
+    previousChoiceText: "",
+    weight: "",
+    second_weight: ""
   });
 
   useEffect(() => {
@@ -71,7 +78,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     scenarioFields,
     scenarioEditFields,
     previousQuestionText,
-    previousChoiceText
+    previousChoiceText,
+    weight,
+    second_weight
   } = questionsData;
 
   console.log(
@@ -205,6 +214,13 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         type: "choice",
         title: "Current choice",
         value: correctChoice
+      },
+      {
+        key: "weight",
+        type: "text",
+        title: "Weight",
+        value: weight,
+	editable: false
       }
     ]
   };
@@ -230,7 +246,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       choicesNameArray: choicesName,
       questionDetail: selectedQuestion,
       questionId: selectedQuestion.id,
-      correctChoice: correctChoice
+      correctChoice: correctChoice,
+      weight: selectedQuestion.weight,
+      second_weight: selectedQuestion.second_weight
     });
   };
 
@@ -394,16 +412,16 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           value: ["", ""]
         },
         {
-          key: "first_weight",
+          key: "weight",
           type: "text",
-          title: "Option A Weight",
+          title: "Weight for Choice A",
           editable: true,
           value: ""
         },
         {
           key: "second_weight",
           type: "text",
-          title: "Option B Weight",
+          title: "Weight for Choice B",
           editable: true,
           value: ""
         }
@@ -470,6 +488,20 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         type: "options",
         title: "answers",
         value: choicesNameArray
+      },
+      {
+        key: "weight",
+	type: "text",
+	title: "Weight for Choice A",
+	editable: false,
+	value: questionDetail.weight
+      },
+      {
+        key: "second_weight",
+        type: "text",
+        title: "Weight for Choice B",
+        editable: false,
+        value: questionDetail.second_weight
       }
     ]
   };
@@ -492,7 +524,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         questionDetail: selected_question,
         questionId: selected_question.id,
         previousChoiceText: choice[0].choicestatement,
-        previousQuestionText: previousQuestion.question_statement
+        previousQuestionText: previousQuestion.question_statement//,
+	//weight: weight,
+	//second_weight: second_weight
       });
     } else {
       setQuestionsData({
@@ -502,7 +536,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         questionDetail: selected_question,
         questionId: selected_question.id,
         previousChoiceText: "NA",
-        previousQuestionText: "No Linked Question Found"
+        previousQuestionText: "No Linked Question Found",
+        weight: "",
+	second_weight: ""
       });
     }
   };

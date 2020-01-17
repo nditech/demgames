@@ -385,7 +385,7 @@ class ListGames extends Component {
             >
               Questions
             </div>
-            {this.state.activeTab===1&&this.state.games[this.state.activeIndex]&&this.state.games[this.state.activeIndex].gametype!=="scenario"&&<div className='tab-option'>
+            {this.state.activeTab===1&&this.state.games[this.state.activeIndex]&&<div className='tab-option'>
               <Icon color="primary" className="tab-icons" style={{color:"#0d9eea",cursor:'pointer'}}>file_copy</Icon>
               <span className="tab-icons-details">
                 <Popup
