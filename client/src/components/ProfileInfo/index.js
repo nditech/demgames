@@ -150,13 +150,13 @@ const ProfileInfo = props => {
                     {props.player.player_username || ""}
                   </p>
 
-                  {/* <Link
+                  <Link
                     to="editprofile"
                     disabled={true}
                     className="btn btn-primary w-100 mt-3"
                   >
                     Edit Profile
-                  </Link> */}
+                  </Link>
                 </div>
               </div>
             </div>
@@ -244,7 +244,4 @@ const mapStateToProps = state => ({
 });
 
 // export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
-export default connect(
-  mapStateToProps,
-  null
-)(ProfileInfo);
+export default connect(mapStateToProps, null)(ProfileInfo);

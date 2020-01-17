@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 
@@ -17,6 +16,11 @@ const ListCohorts = () => {
       name: "Name",
       selector: "name",
       sortable: true
+    },
+    {
+      name: "Logo",
+      selector: "logo",
+      sortable: false
     }
   ];
 
@@ -26,6 +30,13 @@ const ListCohorts = () => {
       type: "text",
       title: "Title",
       value: "",
+      editable: true
+    },
+    {
+      key: "logo",
+      type: "file",
+      title: "Logo",
+      value: null,
       editable: true
     }
   ];
@@ -43,7 +54,7 @@ const ListCohorts = () => {
     isConfirmation: true,
     title: "Cohort detail",
     messageBox: false,
-    edit: false,
+    edit: true,
     create: false,
     onDelete: null,
     removeMessage: false
@@ -65,7 +76,7 @@ const ListCohorts = () => {
 
   const [cohortData, setCohortData] = useState({
     cohort: [{}],
-    selectedCohort: { id: "", name: "" }
+    selectedCohort: { id: "", name: "", logo: "" }
   });
 
   const { cohort, selectedCohort } = cohortData;
@@ -78,6 +89,13 @@ const ListCohorts = () => {
         type: "text",
         title: "Title",
         value: selectedCohort.name,
+        editable: true
+      },
+      {
+        key: "logo",
+        type: "text",
+        title: "Logo",
+        value: selectedCohort.logo,
         editable: true
       }
     ]
@@ -95,8 +113,24 @@ const ListCohorts = () => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log("cohort api data -->", JSON.stringify(data));
-        setCohortData({ ...cohortData, cohort: data });
+        const DataUpdate = [];
+
+        Object.keys(data).map((Val, i) => {
+          DataUpdate.push({
+            id: data[i].id,
+            name: data[i].name,
+            logo: (
+              <a
+                href={window.location.origin + "/" + data[i].logo}
+                target="new"
+              >
+                {data[i].logo.split("/")[1].split(".")[0]}
+              </a>
+            )
+          });
+          console.log("Received " + JSON.stringify(DataUpdate) + data[i].logo);
+        });
+        setCohortData({ ...cohortData, cohort: DataUpdate });
       })
       .catch(err => console.log(err));
   };
@@ -119,16 +153,29 @@ const ListCohorts = () => {
     }
   };
 
-  const editCohort = (data = "", id) => {
+  const editCohort = (data = null, id) => {
     console.log("dialogbox data", id, data);
     // return;
-    updateCohort(data.name, id, function() {
+    updateCohort(data.name, data.logo, id, function() {
       setPopupState({ ...popupState, showMessage: false });
       getCohort();
     });
   };
   const editHandle = id => {
     // debugger;
+    /*
+    const textCohort = [{}];
+
+    Object.keys(cohort).map((Val, i) => {
+      textCohort.push({
+        id: cohort[i].id,
+        name: cohort[i].name,
+        logo: cohort[i].logo
+      });
+      console.log(textCohort[i].log.toString());
+    });
+*/
+    /*
     const selected_cohort = cohort.find(item => {
       return item.id === id;
     });
@@ -147,14 +194,15 @@ const ListCohorts = () => {
       onDelete: null,
       removeMessage: false
     });
+    */
   };
 
-  const saveCohort = (data = "") => {
+  const saveCohort = (data = null) => {
     console.log("final data: ", data);
     // return;
     addCohort(data, function() {
       setPopupState({ ...popupState, showMessage: false });
-      getCohort();
+      true;
     });
   };
 
@@ -168,7 +216,7 @@ const ListCohorts = () => {
       isConfirmation: true,
       title: "Cohort detail",
       messageBox: false,
-      edit: false,
+      edit: true,
       create: true,
       onDelete: null,
       removeMessage: false,
@@ -192,7 +240,6 @@ const ListCohorts = () => {
         onCancel={onCancel}
         title={title}
         data={create ? addCohortFields : editCohortFields}
-        // data={create ? scenarioFields : data}
         messageBox={messageBox}
         edit={edit}
         create={create}

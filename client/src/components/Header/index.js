@@ -1,5 +1,5 @@
 import React from "react";
-import NdiLogoUrl from "../../images/ndiLogo.png";
+import NdiLogoUrl from "../../../../client/src/images/ndiLogo.png";
 import "./styles.scss";
 import profileUrl from "../../images/profile.png";
 import Icon from "@material-ui/core/Icon";

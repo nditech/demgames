@@ -1,26 +1,23 @@
 {
   "development": {
-    "username": "user1",
-    "password": "password1",
-    "database": "DemGames",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "username": "root",
+    "password": "Demgames",
+    "database": "DemGamesHI",
+    "host": "localhost",
+    "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": null,
-    "database": "database_test",
+    "password": "Demgames",
+    "database": "DemGamesHI",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "dialect": "mysql"
   },
   "production": {
-    "username": "user1",
-    "password": "password1",
-    "database": "DemGames",
+    "username": "root",
+    "password": "Demgames",
+    "database": "DemGamesHI",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "dialect": "mysql"
   }
 }

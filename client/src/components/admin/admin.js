@@ -26,6 +26,7 @@ import classnames from "classnames";
 import Icon from "@material-ui/core/Icon";
 import { config } from "../../settings";
 
+
 const auth0 = new Auth();
 
 //import NotFound from '../../pages/Landin';
@@ -245,7 +246,7 @@ class Admin extends Component {
       type: "dropdown",
       title: "Style",
       options: [
-	{ id: "", title: "Select Game Color" },
+        { id: "", title: "Select Game Color" },
         { id: "green", title: "Green" },
         { id: "blue", title: "Blue" },
         { id: "orange", title: "Orange" }

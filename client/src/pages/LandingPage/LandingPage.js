@@ -55,7 +55,7 @@ global.fetch = require("node-fetch");
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       open: false,
       color: "blue"
     };
@@ -67,11 +67,12 @@ class LandingPage extends React.Component {
 
   //Fetch complete game data.
   componentWillMount() {
-
-    var cohort = 'default';
-    if(this.props.match) {
-     console.log(this.props.match.params);
-     cohort = this.props.match.params.cohortName ? this.props.match.params.cohortName:'default';
+    var cohort = "default";
+    if (this.props.match) {
+      console.log(this.props.match.params);
+      cohort = this.props.match.params.cohortName
+        ? this.props.match.params.cohortName
+        : "default";
     }
     // fetch('./moduleData.json')
     fetch(config.baseUrl + `/api/v2/game/${cohort}`, {
@@ -232,13 +233,13 @@ class LandingPage extends React.Component {
   };
 
   // colorChange = (color) => {
-    
+
   //   alert(color);
-    
+
   // }
 
- colorChange = color => {
-    this.setState({color:color});
+  colorChange = color => {
+    this.setState({ color: color });
   };
 
   render() {
@@ -249,7 +250,7 @@ class LandingPage extends React.Component {
       <div className="landing-page-wrapper">
         <div className="landing-page-container">
           <div className="game-title-container">
-            <p className="game-title">DemGames - Demo</p>
+            <p className="game-title">DemGames </p>
           </div>
           <div className="game-type-card-container">
             {gameData.length > 0 &&
@@ -305,7 +306,4 @@ LandingPage.propTypes = {
   scoreDetail: PropTypes.object
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LandingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

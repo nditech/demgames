@@ -22,7 +22,10 @@ const authDetail = {
 const ProfileHeader = props => {
   let trigger;
   let options = [];
-  if(props.location.pathname.includes("/landingpage") && props.location.pathname.length >= 14){ 
+  if (
+    props.location.pathname.includes("/landingpage") &&
+    props.location.pathname.length >= 14
+  ) {
     auth0.setCohort(props.location.pathname);
   }
 
@@ -48,18 +51,19 @@ const ProfileHeader = props => {
     }
   };
 
-  const getLogoPath = () =>{
+  const getLogoPath = () => {
     try {
       let cohort_name = auth0.getCohort().split("/landingpage")[0];
-      if(cohort_name) {
-        return "/client/images" + cohort_name +".png";
-      } else {
+      console.log(cohort_name);
+      if (cohort_name === "/first_cohort") {
         return "/client/images/default.png";
-      }
-    } catch(err){
-      return "/client/images/default.png";
+      } else if (cohort_name) {
+        return "/client/src/images" + cohort_name + ".png";
+      } else return "/client/images/default.png";
+    } catch (err) {
+      return "/client/src/images/default.png";
     }
-  }
+  };
 
   const handleAdmin = () => {
     props.history.push("/admin");
@@ -127,7 +131,7 @@ const ProfileHeader = props => {
       <div className="profile-header">
         <a
           // href="/landingpage"
-          href={auth0.getCohort() != null? auth0.getCohort():"/landingpage"}
+          href={auth0.getCohort() != null ? auth0.getCohort() : "/landingpage"}
           style={{ verticalAlign: "middle", paddingRight: "30px" }}
         >
           <Icon>home</Icon>{" "}

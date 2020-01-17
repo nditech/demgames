@@ -4,12 +4,11 @@ import Icon from "@material-ui/core/Icon";
 import Auth from "../../Auth";
 import { config } from "../../settings";
 import DialogBox from "../DialogBox/DialogBox";
-import { updatePlayer , deletePlayer } from "./utility";
+import { updatePlayer, deletePlayer } from "./utility";
 
 const auth0 = new Auth();
 
 const ListPlayers = () => {
-
   const [popupState, setPopupState] = useState({
     showMessage: false,
     confirmButtonValue: "Update",
@@ -24,7 +23,7 @@ const ListPlayers = () => {
     onDelete: null,
     removeMessage: false
   });
-  
+
   const {
     showMessage,
     confirmButtonValue,
@@ -39,14 +38,14 @@ const ListPlayers = () => {
     onDelete,
     removeMessage
   } = popupState;
-  
+
   const [playerData, setPlayerData] = useState({
     player: [{}],
     selectedPlayer: { id: "", name: "" }
   });
-  
+
   const { player, selectedPlayer } = playerData;
-  
+
   const editPlayerFields = {
     id: selectedPlayer.id,
     values: [
@@ -61,9 +60,13 @@ const ListPlayers = () => {
         key: "gender",
         type: "dropdown",
         title: "gender",
-        options:  [{id:"male",title:"male"},{id:"female",title:"female"}],
+        options: [
+          { id: "female", title: "female" },
+          { id: "male", title: "male" },
+          { id: "other", title: "other" }
+        ],
         editable: true,
-        value: "male"
+        value: "female"
       },
       {
         key: "country",
@@ -72,7 +75,13 @@ const ListPlayers = () => {
         value: selectedPlayer.country ? selectedPlayer.country : "",
         editable: true
       },
-      
+      {
+        key: "lastname",
+        type: "text",
+        title: "Last Name",
+        value: selectedPlayer.lastname ? selectedPlayer.lastname : "",
+        editable: true
+      }
     ]
   };
 
@@ -93,8 +102,8 @@ const ListPlayers = () => {
       sortable: true
     },
     {
-      name: "First Name",
-      selector: "firstname",
+      name: "User name",
+      selector: "username",
       sortable: true
     },
     {
@@ -308,7 +317,7 @@ const ListPlayers = () => {
   const onCancel = () => {
     setPopupState({ ...popupState, showMessage: false });
   };
-  
+
   const editPlayer = (data = "", id) => {
     console.log("dialogbox data", id, data);
     updatePlayer(data, id, function() {
@@ -340,7 +349,8 @@ const ListPlayers = () => {
   // }, []);
 
   return (
-    <><DialogBox
+    <>
+      <DialogBox
         confirmButtonValue={confirmButtonValue}
         showMessage={showMessage}
         messageTitle={messageTitle}
@@ -350,7 +360,6 @@ const ListPlayers = () => {
         onCancel={onCancel}
         title={title}
         data={editPlayerFields}
-     
         messageBox={messageBox}
         edit={edit}
         create={create}
