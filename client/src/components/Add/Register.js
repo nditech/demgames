@@ -19,7 +19,7 @@ const Register = ({ setAlert }) => {
     email: "",
     dateOfBirth: new Date(),
     gender: "Female",
-    country: "Afghanistan",
+    country: "USA",
     city: "",
     program: "M&E"
   };

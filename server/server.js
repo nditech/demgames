@@ -136,7 +136,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
   let linkedGames;
   let linkedGamesId = [];
 
-  if (cohort_name !== undefined && cohort_name !== "default") {
+  if (cohort_name !== "undefined" && cohort_name !== "default") {
     temp_cohort = await cohort.findOne({
       where: {
         name: cohort_name
@@ -409,6 +409,7 @@ app.get("/api/users", checkJwt, verifyToken, (req, res) => {
   players
     .findAll()
     .then(result => {
+      console.log(JSON.stringify(result));
       return res.status(200).send(JSON.stringify(result));
     })
     .catch(err => {
@@ -446,6 +447,8 @@ app.post(
       city,
       program
     } = req.body;
+
+    console.log("Checking the data coming" + req.body);
 
     try {
       let user = await players.findOne({ where: { email: email } });
@@ -1539,6 +1542,7 @@ app.get("/api/user/get_profile/:email", async (req, res) => {
     "GET /user/get_profile/:email  -----api ---called" + req.params.email
   );
   let email = req.params.email;
+  console.log(email);
 
   if (!email) {
     return res.status(400).send("email not found on request");
@@ -1546,6 +1550,7 @@ app.get("/api/user/get_profile/:email", async (req, res) => {
   let player = await players.findOne({ where: { email: email }, raw: true });
 
   if (player) {
+    console.log("Ply" + JSON.stringify(player));
     let allPlays = await plays.findAll({
       where: { player_id: player.id },
       include: [
@@ -1560,7 +1565,7 @@ app.get("/api/user/get_profile/:email", async (req, res) => {
     });
 
     const myOrderedArray = _.sortBy(allPlays, o => parseInt(o.score));
-
+    console.log("Odersssss" + JSON.stringify(allPlays));
     return res.status(200).send(JSON.stringify(myOrderedArray));
   } else {
     return res.status(500).send({ message: "not found" });
@@ -1666,7 +1671,8 @@ app.post("/api/updateUser", checkJwt, verifyToken, async (req, res) => {
     country,
     lastname,
     firstname,
-    username
+    username,
+    dateofbirth
   } = req.body;
   console.log(JSON.stringify(req.body));
   try {
@@ -1677,7 +1683,8 @@ app.post("/api/updateUser", checkJwt, verifyToken, async (req, res) => {
         country: country,
         lastname: lastname,
         firstname: firstname,
-        username: username
+        username: username,
+        dateofbirth: dateofbirth
       },
       { where: { id: id } }
     );

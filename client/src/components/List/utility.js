@@ -253,9 +253,10 @@ export const updatePlayer = (data, id, callbackFunction) => {
       lastname: data.lastname,
       firstname: data.firstname,
       country: data.country,
+      city: data.city,
       email: data.email,
       dateofbirth: data.dateofbirth,
-      username: username
+      username: data.username
     })
   })
     .then(res => res.json())

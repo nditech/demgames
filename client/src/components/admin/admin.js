@@ -26,7 +26,6 @@ import classnames from "classnames";
 import Icon from "@material-ui/core/Icon";
 import { config } from "../../settings";
 
-
 const auth0 = new Auth();
 
 //import NotFound from '../../pages/Landin';
@@ -47,6 +46,7 @@ class Admin extends Component {
       family_name: this.props.family_name,
       picture: this.props.picture,
       gender: this.props.gender,
+      dateofbirth: this.props.dateofbirth,
       total: 0,
       program_rank: null,
       total_rank: null,
@@ -86,6 +86,7 @@ class Admin extends Component {
             score: data[0].score,
             total: data[0].total,
             gender: data[0].gender,
+            dateofbirth: data[0].dateofbirth,
             city: data[0].city,
             country: data[0].country,
             program: data[0].program,

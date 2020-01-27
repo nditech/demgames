@@ -11,7 +11,8 @@ import {
   fetchGameData,
   fetchScores,
   fetchAuthDetails,
-  clearAuthDetails
+  clearAuthDetails,
+  fetchRouteDetail
 } from "./actions";
 import PropTypes from "prop-types";
 import GameInfo from "../../components/GameInfo";
@@ -28,6 +29,10 @@ import { da } from "date-fns/locale";
 import ProfileHeader from "../../components/ProfileHeader/ProfileHeader";
 
 const auth0 = new Auth();
+const routeDetail = {
+  cohortPath: "",
+  logoPath: ""
+};
 
 const authDetail = {
   player_given_name: "",
@@ -61,7 +66,6 @@ class LandingPage extends React.Component {
     };
 
     this.colorChange = this.colorChange.bind(this);
-
     //this.handleLogIn=this.handleLogIn.bind(this);
   }
 
@@ -101,10 +105,13 @@ class LandingPage extends React.Component {
       authDetail.player_given_name = auth0.getProfile().given_name;
       authDetail.player_family_name = auth0.getProfile().family_name;
       authDetail.player_picture = auth0.getProfile().picture;
-      authDetail.player_username = auth0.getProfile().nickname;
+      authDetail.player_username =
+        auth0.getProfile().nickname || auth0.getProfile().username;
       authDetail.player_email = auth0.getProfile().email;
       authDetail.player_picture = auth0.getProfile().picture;
       authDetail.player_gender = auth0.getProfile().gender;
+      authDetail.player_dateOfBirth = auth0.getProfile().dateOfBirth;
+
       console.log("auth details below: ----------------- ");
       console.log(auth0.getProfile());
       console.log(auth0.getProfile()["http://demGames.net/roles"]);
@@ -137,14 +144,16 @@ class LandingPage extends React.Component {
                 Accept: "application/json"
               },
               body: JSON.stringify({
-                firstName: authDetail.player_username,
+                firstName: authDetail.player_firstname,
                 email: authDetail.player_email,
-                userName: authDetail.player_username
+                userName: authDetail.player_username,
+                lastName: authDetail.player_lastname,
+                dateOfBirth: authDetail.player_dateOfBirth
               })
             })
               .then(res => res.json())
               .then(data => {
-                console.log("new player registered  ---V");
+                console.log("New player registered  ---V");
                 console.log(data);
               })
               .catch(error => {

@@ -163,19 +163,9 @@ const ListCohorts = () => {
   };
   const editHandle = id => {
     // debugger;
-    /*
-    const textCohort = [{}];
-
-    Object.keys(cohort).map((Val, i) => {
-      textCohort.push({
-        id: cohort[i].id,
-        name: cohort[i].name,
-        logo: cohort[i].logo
-      });
-      console.log(textCohort[i].log.toString());
-    });
-*/
-    /*
+   
+    const textCohort = [{}];   
+    
     const selected_cohort = cohort.find(item => {
       return item.id === id;
     });
@@ -194,7 +184,7 @@ const ListCohorts = () => {
       onDelete: null,
       removeMessage: false
     });
-    */
+    
   };
 
   const saveCohort = (data = null) => {
@@ -254,14 +244,14 @@ const ListCohorts = () => {
         <span> Add Cohort</span>
       </div>
       <ListTable
-        tableData={{
-          title: "List of Cohort",
-          columns: columns,
-          hasActionBtns: true,
-          data: cohort,
-          deleteHandle: deleteHandle,
-          editHandle: editHandle
-        }}
+            tableData={{
+                  title: "List of Cohort",
+                  columns: columns,
+                  hasActionBtns: true,
+                  data: cohort,
+                  deleteHandle: deleteHandle,
+                  editHandle: editHandle
+            }}
       />
     </Fragment>
   );

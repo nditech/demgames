@@ -48,10 +48,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER
       },
       par_score:{
-          type: Sequelize.INTEGER
+          type: DataTypes.INTEGER
       },
       second_weight:{
-          type: Sequelize.FLOAT(2)
+          type: DataTypes.FLOAT(2)
       }
     },
     {

@@ -4,7 +4,8 @@ import profileUrl from "../../images/profile.png";
 import { connect } from "react-redux";
 import moment from "moment";
 import { config } from "../../settings";
-
+import { ListPlayers } from "./../List/ListPlayers";
+import { updatePlayer } from "../List//utility";
 import "./styles.scss";
 
 const ProfileInfo = props => {
@@ -16,10 +17,17 @@ const ProfileInfo = props => {
     progressData: [],
     cohortRank: "0",
     globalRank: "0",
-    cohorts: []
+    cohorts: [],
+    players: []
   });
 
-  const { progressData, cohortRank, globalRank, cohorts } = profileData;
+  const {
+    progressData,
+    cohortRank,
+    globalRank,
+    cohorts,
+    players
+  } = profileData;
 
   const getPlayerProfile = async (email, callbackFunction) => {
     const url = config.baseUrl + `/user/get_profile/${email}`;
@@ -34,8 +42,8 @@ const ProfileInfo = props => {
       .then(res => res.json())
       .then(data => {
         profileProgressData = data;
-        // console.log("profile data -->", JSON.stringify(data));
-        // callbackFunction(data);
+        console.log("profile data of P-->", email, JSON.stringify(data));
+        callbackFunction(data);
       })
       .catch(err => console.log(err));
   };
@@ -107,7 +115,7 @@ const ProfileInfo = props => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log("rank data -->", JSON.stringify(data));
+        console.log("rank data of -->", JSON.stringify(data));
         setRank(data, cohorts, changeCohort);
       })
       .catch(err => console.log(err));
@@ -125,6 +133,30 @@ const ProfileInfo = props => {
   }, []);
 
   console.log("progress data", progressData);
+
+  const editHandle = id => {
+    //alert("inside edit handle and the player id is -- " + id);
+    alert(JSON.stringify(props.player));
+    const selected_player = players.find(item => {
+      return item.id === id;
+    });
+
+    setPlayerData({ ...playerData, selectedPlayer: selected_player });
+    setPopupState({
+      showMessage: true,
+      confirmButtonValue: "Update",
+      messageTitle: "",
+      messageDescription: "",
+      onConfirm: editPlayer,
+      isConfirmation: true,
+      title: "Player detail",
+      messageBox: false,
+      edit: true,
+      create: false,
+      onDelete: null,
+      removeMessage: false
+    });
+  };
 
   return (
     <Fragment>
@@ -151,11 +183,11 @@ const ProfileInfo = props => {
                   </p>
 
                   <Link
-                    to="editprofile"
                     disabled={true}
                     className="btn btn-primary w-100 mt-3"
+                    to={<ListPlayers />}
                   >
-                    Edit Profile
+                    Edit Profiles
                   </Link>
                 </div>
               </div>

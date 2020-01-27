@@ -6,7 +6,7 @@ import { config } from "../../settings";
 import DialogBox from "../DialogBox/DialogBox";
 import { updatePlayer, deletePlayer } from "./utility";
 
-const auth0 = new Auth();
+//const auth0 = new Auth();
 
 const ListPlayers = () => {
   const [popupState, setPopupState] = useState({
@@ -41,7 +41,10 @@ const ListPlayers = () => {
 
   const [playerData, setPlayerData] = useState({
     player: [{}],
-    selectedPlayer: { id: "", name: "" }
+    selectedPlayer: {
+      id: "",
+      firstname: ""
+    }
   });
 
   const { player, selectedPlayer } = playerData;
@@ -59,14 +62,14 @@ const ListPlayers = () => {
       {
         key: "gender",
         type: "dropdown",
-        title: "gender",
+        title: "Gender",
         options: [
           { id: "female", title: "female" },
           { id: "male", title: "male" },
           { id: "other", title: "other" }
         ],
         editable: true,
-        value: "female"
+        value: selectedPlayer.gender ? selectedPlayer.gender : "female"
       },
       {
         key: "country",
@@ -81,6 +84,20 @@ const ListPlayers = () => {
         title: "Last Name",
         value: selectedPlayer.lastname ? selectedPlayer.lastname : "",
         editable: true
+      },
+      {
+        key: "firstname",
+        type: "text",
+        title: "First Name",
+        value: selectedPlayer.firstname ? selectedPlayer.firstname : "",
+        editable: true
+      },
+      {
+        key: "dateofbirth",
+        type: "text",
+        title: "Date of Birth",
+        value: selectedPlayer.dateofbirth ? selectedPlayer.dateofbirth : "",
+        editable: true
       }
     ]
   };
@@ -94,6 +111,11 @@ const ListPlayers = () => {
     {
       name: "Id",
       selector: "id",
+      sortable: true
+    },
+    {
+      name: "First Name",
+      selector: "firstname",
       sortable: true
     },
     {
@@ -120,6 +142,11 @@ const ListPlayers = () => {
       name: "Program",
       selector: "program",
       sortable: true
+    },
+    {
+      name: "Date of Birth",
+      selector: "dateofbirth",
+      sortable: true
     }
   ];
 
@@ -130,8 +157,13 @@ const ListPlayers = () => {
       sortable: true
     },
     {
-      name: "Name",
-      selector: "name",
+      name: "First Name",
+      selector: "firstname",
+      sortable: true
+    },
+    {
+      name: "Last Name",
+      selector: "lastname",
       sortable: true
     },
     {
@@ -151,7 +183,7 @@ const ListPlayers = () => {
     globalleadership: [{}],
     cohortleadership: [{}],
     noOfPlayers: 0,
-    selectedPlayer: { id: "", name: "" }
+    selectedPlayer: { id: "", lastname: "", lastname: "" }
   });
   const [cohort, setCohort] = useState(null);
   const [activeTab, setActiveTab] = useState(1);
@@ -186,6 +218,7 @@ const ListPlayers = () => {
       .catch(err => console.log(err));
     console.log(user);
   };
+
   const getCohort = () => {
     // console.log(this.props.auth);
     const url = config.baseUrl + "/listCohort";
@@ -243,7 +276,7 @@ const ListPlayers = () => {
             let obj = {};
             obj.sl = index + 1;
             obj.id = item.Player.id;
-            obj.name = item.Player.firstname;
+            obj.firstname = item.Player.firstname;
             obj.rank = item.rank;
             obj.score = item.score;
             objArray.push(obj);
@@ -256,7 +289,7 @@ const ListPlayers = () => {
             let obj = {};
             obj.sl = index + 1;
             obj.id = item.Player.id;
-            obj.name = item.Player.firstname;
+            obj.firstname = item.Player.firstname;
             obj.rank = item.rank;
             obj.score = item.score;
             objArray.push(obj);
@@ -319,7 +352,7 @@ const ListPlayers = () => {
   };
 
   const editPlayer = (data = "", id) => {
-    console.log("dialogbox data", id, data);
+    console.log("Dialogbox data", id, data);
     updatePlayer(data, id, function() {
       setPopupState({ ...popupState, showMessage: false });
       getPlayers();
@@ -417,9 +450,9 @@ const ListPlayers = () => {
                   className="cohort-dropdown-value"
                   onChange={e => handleLeaderShip("cohort", e.target.value)}
                 >
-                  {cohort.map(({ id, name }) => (
+                  {cohort.map(({ id, firstname }) => (
                     <option key={id} value={id}>
-                      {name}
+                      {firstname}
                     </option>
                   ))}
                 </select>
