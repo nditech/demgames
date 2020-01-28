@@ -227,11 +227,17 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         });
 
         let newScore = allQuestions.length;
-
+        
         if (newScore !== 0) {
-          level.total_score = newScore * 10;
-          level.par_score = eachGame.par_score;
+          if (eachGame.gametype != "scenario") {
+            for (var j = 0; j < newScore; j++) {
+              level.total_score = allQuestions[j].weight;
+            }
+          }
+          //level.total_score = newScore * eachGame.weight;
+          level.par_score = eachGame.par_score ;
         }
+
 
         var incrementHack = 1;
 
@@ -275,7 +281,27 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
           incrementHack = incrementHack + incrementHack;
           level.questions.push(modifiedQuestion);
         }
-        modifiedGame.levels.push(level);
+
+        function scenarioTotalScore (currentScore, highestScore, currentLevel, currentQuestionId) {
+          for (k of currentLevel.questions[currentQuestionId - 1].options) {
+            var option_weight = k.weight ? k.weight : 0;
+            var option_linkedquestion = k.linked_question ? k.linked_question : null;
+            currentScore = currentScore + option_weight;
+            if (option_linkedquestion != null) {
+              highestScore = scenarioTotalScore(currentScore, highestScore, currentLevel, option_linkedquestion);
+            }
+            else {
+              highestScore = currentScore > highestScore ? currentScore : highestScore;
+            }
+            currentScore = currentScore - option_weight;
+          }
+          return highestScore;
+        }
+
+        if (eachGame.gametype === "scenario") {
+          level.total_score = scenarioTotalScore(0, 0, level, 1);
+        }
+	modifiedGame.levels.push(level);
       }
       gameData.push(modifiedGame);
     }
