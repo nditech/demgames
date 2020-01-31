@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER
       },
       second_weight:{
-          type: Sequelize.FLOAT(2)
+        type: DataTypes.FLOAT(2)
       }
     },
     {
