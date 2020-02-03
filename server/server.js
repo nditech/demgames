@@ -217,8 +217,9 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         if (newScore !== 0) {
           if (eachGame.gametype != "scenario") {
             for (var j = 0; j < newScore; j++) {
-            level.total_score = allQuestions[j].weight;
-          }
+              level.total_score = allQuestions[j].weight;
+            }
+	  }
           level.par_score = eachGame.par_score;
         }
 
