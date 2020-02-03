@@ -51,7 +51,7 @@ class ScenarioLevels extends React.Component {
           moduleId={this.props.match.params.moduleId}
           showScore={false}
           moduleType="scenario"
-          moduleColor={this.props.location.state.style === null?"orange": this.props.location.state.style}
+          moduleColor={this.state.game.style === null?"orange": this.state.game.style}
         />
       );
     }
