@@ -237,19 +237,14 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
 
           modifiedQuestion.options = [];
           modifiedQuestion.weight = [];
-
-          if (eachGame.gametype === "scenario") {
-            modifiedQuestion.score = 10;
-            modifiedQuestion.correct_answer = [];
-          } else {
-            modifiedQuestion.correct_answer = [];
-          }
+          modifiedQuestion.correct_answer = [];
 
           for (const [i, value] of options.entries()) {
             if (eachGame.gametype === "scenario") {
               let linked_option = {};
               linked_option.option = value.choicestatement;
-              linked_option.linked_question = value.linked_question
+              linked_option.weight = value.weight;
+	      linked_option.linked_question = value.linked_question
                 ? value.linked_question - tempQuestion.id + incrementHack
                 : null;
               modifiedQuestion.options.push(linked_option);

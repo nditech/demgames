@@ -165,14 +165,13 @@ export class ScenarioQuesAns extends React.Component {
       redirect,
       parScoreStatus,
       currentScore,
-      totalScore,
       gameId
     } = this.state;
     
     let level = parseInt(this.props.match.params.levelId);
     const parScore = this.getParScores();
     const moduleId = this.getModuleId();
-
+    const totalScore = this.props.gameData.gameData[moduleId - 1].levels[level - 1].total_score;
     return (
       <Fragment>
         <div className="question-main-container">
