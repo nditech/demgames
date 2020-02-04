@@ -202,7 +202,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         level = {};
         level.id = i + 1;
         level.current_score = 0;
-        level.total_score = 10; // no of questions
+        level.total_score = 0;
         level.desc = eachGame.gamedescription;
         level.linked_level = i;
         level.questions = [];
@@ -217,7 +217,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         if (newScore !== 0) {
           if (eachGame.gametype != "scenario") {
             for (var j = 0; j < newScore; j++) {
-              level.total_score = allQuestions[j].weight;
+              level.total_score = level.total_score + allQuestions[j].weight;
             }
 	  }
           level.par_score = eachGame.par_score;

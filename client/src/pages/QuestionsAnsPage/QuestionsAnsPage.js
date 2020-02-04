@@ -276,7 +276,7 @@ export class QuestionsAnsPage extends React.Component {
       const parScores = this.getParScores();
       const scores = this.getScores();
       const score = scores[level - 2];
-      return score >= parScore;
+      return score >= parScores;
     }
     else {
       return true;
