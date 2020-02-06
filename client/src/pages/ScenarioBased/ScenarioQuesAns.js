@@ -172,6 +172,7 @@ export class ScenarioQuesAns extends React.Component {
     const parScore = this.getParScores();
     const moduleId = this.getModuleId();
     const totalScore = this.props.gameData.gameData[moduleId - 1].levels[level - 1].total_score;
+    const color = this.props.gameData.gameData[moduleId - 1].style === null ? "blue" : this.props.gameData.gameData[moduleId - 1].style;
     return (
       <Fragment>
         <div className="question-main-container">
@@ -215,7 +216,7 @@ export class ScenarioQuesAns extends React.Component {
                   <span>Level {"1"} </span>
                 </div>
                 <div className="questions-container">
-                  <p className={`question-label question-label-${this.state.game.style === null ? "blue":this.state.game.style}`}>
+                  <p className={`question-label question-label-${color}`}>
                     {this.state.questionStatement}
                   </p>
                 </div>
@@ -235,7 +236,7 @@ export class ScenarioQuesAns extends React.Component {
                                 option.weight
                               )
                             }
-                            moduleColor={this.state.game.style === null ? "blue":this.state.game.style}
+                            moduleColor={color}
                           />
                         );
                       })}
