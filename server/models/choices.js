@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: "Questions", // <<< Note, its table's name, not object name
-        referencesKey: "id"
+        referencesKey: "id",
+        onDelete: "cascade"
       },
       choicestatement: {
         type: DataTypes.STRING(300)

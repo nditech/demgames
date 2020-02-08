@@ -845,9 +845,7 @@ app.post("/api/updatequestion",
           choicedescription: "",
           choicestatement: choice.value,
           answer: isAnswer,
-          questionid: id,
-          weight: weight,
-          second_weight, second_weight
+          questionid: id
         });
       });
 
