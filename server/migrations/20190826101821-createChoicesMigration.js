@@ -16,8 +16,7 @@ module.exports = {
             references:{
               model: 'Questions',
               key: 'id',
-            },
-            onDelete: 'cascade'
+            }
         },
         choicestatement:{
             type: Sequelize.STRING(300)
