@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import { clearAuthDetails } from "../../pages/LandingPage/actions";
 import Auth from "../../Auth";
 import Icon from "@material-ui/core/Icon";
+import PropTypes from "prop-types";
+
 const auth0 = new Auth();
 
 const authDetail = {
@@ -20,6 +22,9 @@ const authDetail = {
 };
 
 const ProfileHeader = props => {
+  
+  console.log("props in profile header"+JSON.stringify(props));
+
   let trigger;
   let options = [];
   if (
@@ -52,17 +57,23 @@ const ProfileHeader = props => {
   };
 
   const getLogoPath = () => {
+    
     try {
-      let cohort_name = auth0.getCohort().split("/landingpage")[0];
-      console.log(cohort_name);
-      if (cohort_name === "/first_cohort") {
-        return "/client/images/default.png";
-      } else if (cohort_name) {
-        return "/client/src/images" + cohort_name + ".png";
-      } else return "/client/images/default.png";
+          let cohort_name = auth0.getCohort().split("/landingpage")[0];
+          console.log(cohort_name);
+          if (cohort_name === "/first_cohort") {
+            return "/client/images/default.png";
+          } else {
+            return "/"+props.gameData.cohortData.logo;
+          } 
     } catch (err) {
-      return "/client/src/images/default.png";
+          return "/client/src/images/default.png";
     }
+    
+   // console.log(props.gameData.cohortData.logo);
+  //  return "/"+props.gameData.cohortData.logo;
+    
+  
   };
 
   const handleAdmin = () => {
@@ -76,9 +87,8 @@ const ProfileHeader = props => {
   if (auth0.isAuthenticated()) {
     trigger = (
       <span>
-        <Image avatar src={`${props.player.player_picture || profileUrl}`} />{" "}
-        {`${props.player.player_given_name || ""} ${props.player
-          .player_family_name || ""}`}
+        <Image avatar src={`${profileUrl}`} />{" "}
+        {`${props.player_given_name || ""} ${props.player_family_name || ""}`}
       </span>
     );
     options = [
@@ -149,16 +159,28 @@ const ProfileHeader = props => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    clearAuth: authDetail => dispatch(clearAuthDetails(authDetail))
+          getCohorts:cohortData=>dispatch(fetchCohorts(cohortData)),
+          clearAuth: authDetail => dispatch(clearAuthDetails(authDetail))
   };
 };
 
 const mapStateToProps = state => ({
-  player: state.authDetail.authDetail,
-  gameData: state.gameData
+  gameData: state.gameData,
+  cohortData: state.gameData.cohortData,
+  player_given_name: state.authDetail.authDetail.player_given_name,
+  player_picture: state.authDetail.authDetail.player_picture,
+  player_family_name:  state.authDetail.authDetail.player_family_name,
+  player_given_name:  state.authDetail.authDetail.player_given_name
 });
+
+ProfileHeader.propTypes={
+  cohortData: PropTypes.object,
+  getCohorts: PropTypes.func,
+  
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(ProfileHeader));
+

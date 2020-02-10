@@ -2,7 +2,7 @@ import { FETCH_SCORE_DETAIL, FETCH_ROUTE_DETAIL } from "./constants";
 
 const initialState = {
   scoreDetail: [],
-  routeDetail: null
+  routeDetail: {}
 };
 
 const myReducer = (state = initialState, action) => {

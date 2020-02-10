@@ -431,7 +431,7 @@ app.post(
 // @route   GET /users
 // @desc    Get players list from db
 app.get("/api/users", checkJwt, verifyToken, (req, res) => {
-  console.log("GET /users ----api");
+  console.log("POST /users ----api");
   players
     .findAll()
     .then(result => {
@@ -444,15 +444,21 @@ app.get("/api/users", checkJwt, verifyToken, (req, res) => {
     });
 });
 
-app.post(
-  "/api/registerplayer",
-  [
+/*
+
+[
     check("firstName", "First Name is required")
       .not()
       .isEmpty(),
     check("email", "Please include a valid Email").isEmail(),
     check("userName", "Username is required").isLength({ min: 3 })
   ],
+
+
+*/
+app.post(
+  "/api/registerplayer",
+  verifyToken,
   checkJwt,
   async (req, res) => {
     console.log("POST /registerplayer  -------api");
@@ -1692,31 +1698,38 @@ app.post("/api/updateUser", checkJwt, verifyToken, async (req, res) => {
 
   const {
     id,
+    email,
     program,
     gender,
     country,
     lastname,
     firstname,
     username,
-    dateofbirth
+    dateofbirth,
+    city,
+    middlename
   } = req.body;
+
   console.log(JSON.stringify(req.body));
   try {
     let updatedUser = await players.update(
       {
+        email:email,
         program: program,
         gender: gender,
         country: country,
         lastname: lastname,
         firstname: firstname,
         username: username,
-        dateofbirth: dateofbirth
+        dateofbirth: dateofbirth,
+        city:city,
+        middlename:middlename
       },
       { where: { id: id } }
     );
 
     if (updatedUser) {
-      return res.status(200).send({ message: "cohort updated successfully" });
+      return res.status(200).send({ message: "Player updated successfully" });
     } else {
       return res.status(500).send({ message: "Server Error" });
     }

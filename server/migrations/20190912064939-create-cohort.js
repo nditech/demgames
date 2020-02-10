@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       logo: {
-        type: Sequelize.BLOB
+        type: Sequelize.STRING
       }
     });
   },

@@ -79,6 +79,13 @@ const ListPlayers = () => {
         editable: true
       },
       {
+        key: "city",
+        type: "text",
+        title: "City",
+        value: selectedPlayer.city ? selectedPlayer.city : "",
+        editable: true
+      },
+      {
         key: "lastname",
         type: "text",
         title: "Last Name",
@@ -90,6 +97,13 @@ const ListPlayers = () => {
         type: "text",
         title: "First Name",
         value: selectedPlayer.firstname ? selectedPlayer.firstname : "",
+        editable: true
+      },
+      {
+        key: "middlename",
+        type: "text",
+        title: "Middle Name",
+        value: selectedPlayer.middlename ? selectedPlayer.middlename : "",
         editable: true
       },
       {

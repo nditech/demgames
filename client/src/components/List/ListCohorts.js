@@ -1,11 +1,16 @@
 import React, { Fragment, useState, useEffect } from "react";
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 import { addCohort, deleteCohort, updateCohort } from "./utility";
 import { config } from "../../settings";
 
 const ListCohorts = () => {
+  
+  
+  
   const columns = [
     {
       name: "Id",
@@ -118,7 +123,15 @@ const ListCohorts = () => {
         Object.keys(data).map((Val, i) => {
           DataUpdate.push({
             id: data[i].id,
-            name: data[i].name,
+            //name: data[i].name,
+            name: (
+              <a
+                href={window.location.origin + "/" + data[i].name+"/landingpage"}
+                target="_self"
+              >
+                {data[i].name}
+              </a>
+            ),
             logo: (
               <a
                 href={window.location.origin + "/" + data[i].logo}
@@ -128,6 +141,7 @@ const ListCohorts = () => {
               </a>
             )
           });
+          
           console.log("Received " + JSON.stringify(DataUpdate) + data[i].logo);
         });
         setCohortData({ ...cohortData, cohort: DataUpdate });
@@ -241,7 +255,7 @@ const ListCohorts = () => {
         <button className="btn btn-info btn-sm">
           <i className="fa fa-plus"></i>
         </button>
-        <span> Add Cohort</span>
+  <span> Add Cohort </span>
       </div>
       <ListTable
             tableData={{
@@ -255,6 +269,27 @@ const ListCohorts = () => {
       />
     </Fragment>
   );
+}
+
+//export default ListCohorts;
+
+const mapStateToProps = state => ({
+    cohortData:state.cohortData
+    
+});
+
+//Dispatch action to fetch game data and scores.
+const mapDispatchToProps = dispatch => {
+ // console.log(cohortData);
+  return {
+    getCohorts:cohortData=>dispatch(fetchCohorts(cohortData))    
+  };
 };
 
-export default ListCohorts;
+ListCohorts.propTypes = {
+  cohortData: PropTypes.object,
+  getCohorts: PropTypes.func
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListCohorts);
+//export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);;

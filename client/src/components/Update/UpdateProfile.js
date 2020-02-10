@@ -42,7 +42,7 @@ class UpdateProfile extends Component{
    componentDidMount(){
     if(this.props.email!==null)
     {                         
-        fetch(config.baseUrl + `/selectPlayerProfile`, {
+        fetch(config.baseUrl + `/users`, {
         method: 'post',        
         headers: {
           "authorization": "Bearer "+auth0.getAccessToken(),

@@ -7,6 +7,7 @@ import { config } from "../../settings";
 import { ListPlayers } from "./../List/ListPlayers";
 import { updatePlayer } from "../List//utility";
 import "./styles.scss";
+import PropTypes from "prop-types";
 
 const ProfileInfo = props => {
   let profileProgressData = null;
@@ -29,7 +30,7 @@ const ProfileInfo = props => {
     players
   } = profileData;
 
-  const getPlayerProfile = async (email, callbackFunction) => {
+  const getPlayerProfile = async (email, setPlayerProgress) => {
     const url = config.baseUrl + `/user/get_profile/${email}`;
     await fetch(url, {
       method: "get",
@@ -43,24 +44,24 @@ const ProfileInfo = props => {
       .then(data => {
         profileProgressData = data;
         console.log("profile data of P-->", email, JSON.stringify(data));
-        callbackFunction(data);
+        setPlayerProgress(data);
       })
       .catch(err => console.log(err));
   };
 
-  //   const setPlayerProgress = data => {
-  //     let filteredData = data.map(item => {
-  //       return {
-  //         gameName: item["Game.caption"],
-  //         score: item.score,
-  //         cohort: item["Cohort.name"],
-  //         cohort_id: item["Cohort.id"],
-  //         playdate: item.playstartdate
-  //       };
-  //     });
-  //     console.log("fil data", filteredData);
-  //     setProfileData({ ...profileData, progressData: filteredData });
-  //   };
+    const setPlayerProgress = data => {
+       let filteredData = data.map(item => {
+         return {
+           gameName: item["Game.caption"],
+           score: item.score,
+           cohort: item["Cohort.name"],
+           cohort_id: item["Cohort.id"],
+           playdate: item.playstartdate
+         };
+       });
+       console.log("fil data", filteredData);
+       setProfileData({ ...profileData, progressData: filteredData });
+    };
 
   const getCohort = async userEmail => {
     const url = config.baseUrl + `/listCohort`;
@@ -272,8 +273,44 @@ const ProfileInfo = props => {
 };
 
 const mapStateToProps = state => ({
-  player: state.authDetail.authDetail
+  player: state.authDetail.authDetail,
+  player_given_name: state.authDetail.authDetail.player_given_name,
+  player_picture: state.authDetail.authDetail.player_picture,
+  player_family_name:  state.authDetail.authDetail.player_family_name,
+  player_given_name:  state.authDetail.authDetail.player_given_name,
+  player_email:  state.authDetail.authDetail.player_email,
+  gameData: state.gameData,
+  cohortData: state.gameData.cohortData,
+  scoreDetail : state.scoreDetail
 });
 
-// export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
-export default connect(mapStateToProps, null)(ProfileInfo);
+//Dispatch action to fetch game data and scores.
+const mapDispatchToProps = dispatch => {
+ // console.log(scoreDetail);
+ // console.log(cohortData+"cohortData");
+  return {
+    getGameData: gameData => dispatch(fetchGameData(gameData)),
+    getScores: scores => dispatch(fetchScores(scores)),
+    getCohorts:cohortData=>dispatch(fetchCohorts(cohortData)),
+    setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
+    clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
+    setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail))
+  };
+};
+
+ProfileInfo.propTypes = {
+  getGameData: PropTypes.func,
+  getScores: PropTypes.func,
+  gameData: PropTypes.object,
+  authDetail: PropTypes.object,
+  setAuth: PropTypes.func,
+  clearAuth: PropTypes.func,
+  scoreDetail: PropTypes.object,
+  cohortData: PropTypes.object,
+  getCohorts: PropTypes.func,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
+//export default connect(mapStateToProps, null)(ProfileInfo);
+
+

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: DataTypes.STRING,
       logo: {
-        type: DataTypes.BLOB("tiny"),
+        type: DataTypes.STRING,
         allowNull: true
       }
     },

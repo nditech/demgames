@@ -28,8 +28,6 @@ import { config } from "../../settings";
 
 const auth0 = new Auth();
 
-//import NotFound from '../../pages/Landin';
-
 const auth = new Auth();
 const headerTabs = ["games", "players", "cohort"];
 class Admin extends Component {
@@ -55,7 +53,8 @@ class Admin extends Component {
       activePlayerTab: "list",
       activeQuestionTab: "list",
       activeChoiceTab: "list",
-      cohorts: [{ id: "", title: "Select Cohort" }]
+      cohorts: [{ id: "", title: "Select Cohort" }],
+      cohortData:{id:0, name:"",logo:""}
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -66,8 +65,8 @@ class Admin extends Component {
     if (this.props.email !== null) {
       const encodedValue = encodeURIComponent(this.state.email);
       console.log("auth ------------------", auth0.getAccessToken());
-      fetch(config.baseUrl + `/selectPlayerProfile`, {
-        method: "post",
+      fetch(config.baseUrl + `/users`, {
+        method: "get",
         headers: {
           authorization: "Bearer " + auth0.getAccessToken(),
           "Content-Type": "Application/json",
@@ -745,7 +744,9 @@ class Admin extends Component {
 const mapStateToProps = state => ({
   player_given_name: state.authDetail.authDetail.player_given_name,
   player_picture: state.authDetail.authDetail.player_picture,
-  gameData: state.gameData
+  gameData: state.gameData,
+  cohortData:state.cohortData
+
 });
 
 export default connect(mapStateToProps)(Admin);

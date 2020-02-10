@@ -3,7 +3,7 @@ import {
   FETCH_SCORES,
   AUTH0_LOGIN,
   AUTH0_LOGOUT,
-  FETCH_ROUTE_DETAIL
+  FETCH_COHORT
 } from "./constants"; //
 
 export const fetchGameData = gameData => ({
@@ -26,7 +26,7 @@ export const clearAuthDetails = authDetail => ({
   val: authDetail
 });
 
-export const fetchRouteDetail = routeDetail => ({
-  type: FETCH_ROUTE_DETAIL,
-  val: routeDetail
+export const fetchCohorts = cohortData => ({
+  type: FETCH_COHORT,
+  val: cohortData
 });
