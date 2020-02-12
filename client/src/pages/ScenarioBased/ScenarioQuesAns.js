@@ -85,7 +85,6 @@ export class ScenarioQuesAns extends React.Component {
   };
 
   handleScenarioProceed = () => {
-    this.checkParScoreStatus();
     if (this.state.linkedQuestion === null) {
       this.setState({
         redirect: true,
@@ -122,9 +121,9 @@ export class ScenarioQuesAns extends React.Component {
     let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
     console.log("The par score is " + parScores);
     if (currentScore < parScores) {
-      this.setState({ parScoreStatus: false });
+      return false;
     } else {
-      this.setState({ parScoreStatus: true });
+      return true;
     }
   };
 
@@ -163,11 +162,11 @@ export class ScenarioQuesAns extends React.Component {
       showCorrectAns,
       selectedCard,
       redirect,
-      parScoreStatus,
       currentScore,
       gameId
     } = this.state;
-    
+
+    const parScoreStatus = checkParScoreStatus();
     let level = parseInt(this.props.match.params.levelId);
     const parScore = this.getParScores();
     const moduleId = this.getModuleId();
