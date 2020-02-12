@@ -216,7 +216,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         level = {};
         level.id = i + 1;
         level.current_score = 0;
-        level.total_score = 10; // no of questions
+        level.total_score = 0;
         level.desc = eachGame.gamedescription;
         level.linked_level = i;
         level.questions = [];
@@ -231,11 +231,10 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         if (newScore !== 0) {
           if (eachGame.gametype != "scenario") {
             for (var j = 0; j < newScore; j++) {
-              level.total_score = allQuestions[j].weight;
+              level.total_score = level.total_score + allQuestions[j].weight;
             }
-          }
-          //level.total_score = newScore * eachGame.weight;
-          level.par_score = eachGame.par_score ;
+       	  }
+          level.par_score = eachGame.par_score;
         }
 
 
@@ -253,19 +252,14 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
 
           modifiedQuestion.options = [];
           modifiedQuestion.weight = [];
-
-          if (eachGame.gametype === "scenario") {
-            modifiedQuestion.score = 10;
-            modifiedQuestion.correct_answer = [];
-          } else {
-            modifiedQuestion.correct_answer = [];
-          }
+          modifiedQuestion.correct_answer = [];
 
           for (const [i, value] of options.entries()) {
             if (eachGame.gametype === "scenario") {
               let linked_option = {};
               linked_option.option = value.choicestatement;
-              linked_option.linked_question = value.linked_question
+              linked_option.weight = value.weight;
+	      linked_option.linked_question = value.linked_question
                 ? value.linked_question - tempQuestion.id + incrementHack
                 : null;
               modifiedQuestion.options.push(linked_option);
@@ -281,7 +275,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
           incrementHack = incrementHack + incrementHack;
           level.questions.push(modifiedQuestion);
         }
-
+   
         function scenarioTotalScore (currentScore, highestScore, currentLevel, currentQuestionId) {
           for (k of currentLevel.questions[currentQuestionId - 1].options) {
             var option_weight = k.weight ? k.weight : 0;
@@ -301,7 +295,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         if (eachGame.gametype === "scenario") {
           level.total_score = scenarioTotalScore(0, 0, level, 1);
         }
-	modifiedGame.levels.push(level);
+        modifiedGame.levels.push(level);
       }
       gameData.push(modifiedGame);
     }
@@ -872,12 +866,12 @@ app.post("/api/updatequestion", checkJwt, verifyToken, async (req, res) => {
         isAnswer = choice.option.toString() === data.answers.toString() ? 1 : 0;
       }
 
-      await choices.create({
-        choicedescription: "",
-        choicestatement: choice.value,
-        answer: isAnswer,
-        questionid: id,
-        weight: 0
+        await choices.create({
+          choicedescription: "",
+          choicestatement: choice.value,
+          answer: isAnswer,
+          questionid: id
+        });
       });
     });
 

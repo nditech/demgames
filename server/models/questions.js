@@ -47,11 +47,8 @@ module.exports = (sequelize, DataTypes) => {
       isitmedia: {
         type: DataTypes.INTEGER
       },
-      par_score:{
-          type: DataTypes.INTEGER
-      },
       second_weight:{
-          type: DataTypes.FLOAT(2)
+        type: DataTypes.FLOAT(2)
       }
     },
     {

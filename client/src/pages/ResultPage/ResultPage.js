@@ -83,6 +83,7 @@ class ResultPage extends Component {
 		const {
 			level,
 			moduleId,
+			gameId,
 			image,
 			moduleName,
 			messageOne,
@@ -99,9 +100,9 @@ class ResultPage extends Component {
 		} else {
 			totalLevels= this.props.gameData.gameData[moduleId - 1].levels.length;
 		}
-		const backToLevelUrl = `/module/${moduleScenario?'scenario/':""}${moduleId}/levels`;
-		const retryLevelUrl = `/module/${moduleScenario ? 'scenario/' : ''}${moduleId}/level/${level}/questions`;
-		const nextLevelUrl = `/module/${moduleScenario ? 'scenario/' : ''}${moduleId}/level/${level + 1}/questions`;
+		const backToLevelUrl = `/module/${moduleScenario?'scenario/' + gameId:moduleId}/levels`;
+		const retryLevelUrl = `/module/${moduleScenario ? 'scenario/' + gameId:moduleId}/level/${level}/questions`;
+		const nextLevelUrl = `/module/${moduleScenario ? 'scenario/' + gameId:moduleId}/level/${level + 1}/questions`;
 		return (
 			<div className="result-page-container">
 				<div>
