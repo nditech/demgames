@@ -166,7 +166,7 @@ export class ScenarioQuesAns extends React.Component {
       gameId
     } = this.state;
 
-    const parScoreStatus = checkParScoreStatus();
+    const parScoreStatus = this.checkParScoreStatus();
     let level = parseInt(this.props.match.params.levelId);
     const parScore = this.getParScores();
     const moduleId = this.getModuleId();
