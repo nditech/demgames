@@ -11,7 +11,8 @@ import {
   fetchGameData,
   fetchScores,
   fetchAuthDetails,
-  clearAuthDetails
+  clearAuthDetails,
+  fetchCohorts
 } from "./actions";
 import PropTypes from "prop-types";
 import GameInfo from "../../components/GameInfo";
@@ -26,8 +27,15 @@ import UpdatePlayer from "../../components/Update/UpdateProfile";
 import { fetchScoreDetail } from "../../components/ProfileInfo/action";
 import { da } from "date-fns/locale";
 import ProfileHeader from "../../components/ProfileHeader/ProfileHeader";
+import store from "../../store";
 
 const auth0 = new Auth();
+
+const cohortData = {
+  id:0,
+  name: "",
+  logo: ""
+};
 
 const authDetail = {
   player_given_name: "",
@@ -55,26 +63,63 @@ global.fetch = require("node-fetch");
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       open: false,
-      color: "blue"
+      color: "blue",
+      cohortData:{
+        id:0,
+        name:"",
+        logo:""
+      }
     };
 
     this.colorChange = this.colorChange.bind(this);
-
     //this.handleLogIn=this.handleLogIn.bind(this);
   }
 
   //Fetch complete game data.
   componentWillMount() {
+    
+    
+    cohortData.id=0;
+    cohortData.name="default";
+    cohortData.logo="imagedata/ndi1.png";
+    console.log(cohortData);
 
-    var cohort = 'default';
-    if(this.props.match) {
-     console.log(this.props.match.params);
-     cohort = this.props.match.params.cohortName ? this.props.match.params.cohortName:'default';
+    
+      const url = config.baseUrl + "/listCohort";
+      fetch(url, {
+        method: "get",
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("access_token"),
+          "Content-Type": "Application/json",
+          Accept: "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+              cohortData.id=data[0].id,
+              cohortData.name=data[0].name,
+              cohortData.logo=data[0].logo,
+              //console.log(JSON.stringify(cohortData)+JSON.stringify(data[0])),
+              //store.dispatch(fetchCohorts(cohortData)),//store.dispatch.fetchCohorts(cohortData),
+              console.log(this.props.getCohorts(cohortData));
+              //this.setState({cohortData:data[0]});
+              //console.log(this.state.cohortData);
+        })
+        .catch(err => console.log(err));
+    
+       // console.log("Cohort Data-->"+JSON.stringify(this.props.gameData.cohortData));
+    
+      // var cohort = "default";
+    if (this.props.match) {
+      console.log(this.props.match.params);
+      cohortData.name = this.props.match.params.cohortName
+        ? this.props.match.params.cohortName
+        : "default";
     }
     // fetch('./moduleData.json')
-    fetch(config.baseUrl + `/api/v2/game/${cohort}`, {
+    fetch(config.baseUrl + `/api/v2/game/${cohortData.name}`, {
       method: "get",
       headers: {
         authorization: "Bearer " + auth0.getAccessToken(),
@@ -100,10 +145,13 @@ class LandingPage extends React.Component {
       authDetail.player_given_name = auth0.getProfile().given_name;
       authDetail.player_family_name = auth0.getProfile().family_name;
       authDetail.player_picture = auth0.getProfile().picture;
-      authDetail.player_username = auth0.getProfile().nickname;
+      authDetail.player_username =
+        auth0.getProfile().nickname || auth0.getProfile().username;
       authDetail.player_email = auth0.getProfile().email;
       authDetail.player_picture = auth0.getProfile().picture;
       authDetail.player_gender = auth0.getProfile().gender;
+      authDetail.player_dateOfBirth = auth0.getProfile().dateOfBirth;
+
       console.log("auth details below: ----------------- ");
       console.log(auth0.getProfile());
       console.log(auth0.getProfile()["http://demGames.net/roles"]);
@@ -128,22 +176,24 @@ class LandingPage extends React.Component {
           if (!data.email) {
             console.log("email not found --V");
 
-            fetch(config.baseUrl + "/registerplayer", {
-              method: "POST",
+            fetch(config.baseUrl + "/registerplayer",  {
+              method: "post",
               headers: {
                 authorization: "Bearer " + auth0.getAccessToken(),
                 "Content-Type": "Application/json",
                 Accept: "application/json"
               },
               body: JSON.stringify({
-                firstName: authDetail.player_username,
+                firstName: authDetail.player_given_name||authDetail.player_firstname,
                 email: authDetail.player_email,
-                userName: authDetail.player_username
+                userName: authDetail.player_username,
+                lastName: authDetail.player_lastname||authDetail.player_family_name,
+                dateOfBirth: authDetail.player_dateOfBirth
               })
             })
               .then(res => res.json())
               .then(data => {
-                console.log("new player registered  ---V");
+                console.log("New player registered  ---V");
                 console.log(data);
               })
               .catch(error => {
@@ -159,7 +209,7 @@ class LandingPage extends React.Component {
     }
 
     if (auth0.isAuthenticated() === true) {
-      fetch(config.baseUrl + "/selectPlayerProfile", {
+      fetch(config.baseUrl + "/users", {
         method: "post",
         headers: {
           "Content-Type": "Application/json",
@@ -232,13 +282,13 @@ class LandingPage extends React.Component {
   };
 
   // colorChange = (color) => {
-    
+
   //   alert(color);
-    
+
   // }
 
- colorChange = color => {
-    this.setState({color:color});
+  colorChange = color => {
+    this.setState({ color: color });
   };
 
   render() {
@@ -249,7 +299,7 @@ class LandingPage extends React.Component {
       <div className="landing-page-wrapper">
         <div className="landing-page-container">
           <div className="game-title-container">
-            <p className="game-title">DemGames - Demo</p>
+            <p className="game-title">DemGames </p>
           </div>
           <div className="game-type-card-container">
             {gameData.length > 0 &&
@@ -278,17 +328,21 @@ class LandingPage extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  
   player_given_name: state.authDetail.authDetail.player_given_name,
   player_picture: state.authDetail.authDetail.player_picture,
-  gameData: state.gameData
+  gameData: state.gameData,
+  cohortData:state.cohortData
 });
 
 //Dispatch action to fetch game data and scores.
 const mapDispatchToProps = dispatch => {
   console.log(scoreDetail);
+  console.log(cohortData+"cohortData");
   return {
     getGameData: gameData => dispatch(fetchGameData(gameData)),
     getScores: scores => dispatch(fetchScores(scores)),
+    getCohorts:cohortData=>dispatch(fetchCohorts(cohortData)),
     setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
     clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
     setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail))
@@ -302,10 +356,9 @@ LandingPage.propTypes = {
   authDetail: PropTypes.object,
   setAuth: PropTypes.func,
   clearAuth: PropTypes.func,
-  scoreDetail: PropTypes.object
+  scoreDetail: PropTypes.object,
+  cohortData: PropTypes.object,
+  getCohorts: PropTypes.func,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LandingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

@@ -3,6 +3,21 @@ const gameData = require("../data/Module/moduleData.json");
 // const gameData = require('../data/Module/tempData.json');
 const express = require("express");
 const app = express();
+const multer = require("multer");
+const url = require("url");
+const fs = require("fs");
+const storage = multer.diskStorage({
+  destination: function(re, file, cb) {
+    cb(null, "./Imagedata/");
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
+const blobUtil = require("blob-util");
+
 const { check, validationResult } = require("express-validator");
 // models
 const models = require("./models");
@@ -56,8 +71,8 @@ function verifyToken(req, res, next) {
   next();
 }
 
-function restrictGamesList(tempBearedHeader){
-  try{
+function restrictGamesList(tempBearedHeader) {
+  try {
     const bearedHeader = tempBearedHeader;
     const bearer = bearedHeader.split(" ");
     const bearerToken = bearer[1];
@@ -68,7 +83,7 @@ function restrictGamesList(tempBearedHeader){
     } else {
       return true;
     }
-  } catch(err){
+  } catch (err) {
     return true;
     console.log("error while restricting games");
   }
@@ -118,44 +133,43 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
   let cohort_name = req.params.cohort;
   console.log(cohort_name);
   let temp_cohort;
-  let linkedGames ;
+  let linkedGames;
   let linkedGamesId = [];
 
-  if(cohort_name !== undefined && cohort_name !== 'default') {
+  if (cohort_name !== "undefined" && cohort_name !== "default") {
     temp_cohort = await cohort.findOne({
-      where:{
-      name:cohort_name
+      where: {
+        name: cohort_name
       },
-      raw : true
+      raw: true
     });
 
     linkedGames = await cohort_game.findAll({
-      where:{
-        cohort_id:temp_cohort.id
+      where: {
+        cohort_id: temp_cohort.id
       },
-      raw : true
-    })
+      raw: true
+    });
 
-    for(var temp_linkedGames of linkedGames){
+    for (var temp_linkedGames of linkedGames) {
       linkedGamesId.push(temp_linkedGames.game_id);
     }
-
-  } else if(restrictGamesList(req.headers["authorization"])){
+  } else if (restrictGamesList(req.headers["authorization"])) {
     temp_cohort = await cohort.findOne({
-      where:{
-      name:"default"
+      where: {
+        name: "default"
       },
-      raw : true
+      raw: true
     });
 
     linkedGames = await cohort_game.findAll({
-      where:{
-        cohort_id:temp_cohort.id
+      where: {
+        cohort_id: temp_cohort.id
       },
-      raw : true
-    })
+      raw: true
+    });
 
-    for(var temp_linkedGames of linkedGames){
+    for (var temp_linkedGames of linkedGames) {
       linkedGamesId.push(temp_linkedGames.game_id);
     }
   }
@@ -164,15 +178,15 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
     let gameData = [];
     let allGames;
     // first find all games
-    if(linkedGamesId.length >= 1) {
-     allGames = await games.findAll({
-       where : {
-        id:linkedGamesId
-       },
-       raw: true 
+    if (linkedGamesId.length >= 1) {
+      allGames = await games.findAll({
+        where: {
+          id: linkedGamesId
+        },
+        raw: true
       });
     } else {
-      allGames = await games.findAll({raw: true });
+      allGames = await games.findAll({ raw: true });
     }
 
     for (const [index, eachGame] of allGames.entries()) {
@@ -181,10 +195,10 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
       modifiedGame.game_id = eachGame.id;
       modifiedGame.name = eachGame.caption;
       modifiedGame.type = eachGame.gametype;
-      modifiedGame.style = eachGame.style === null ? "blue": eachGame.style;
+      modifiedGame.style = eachGame.style === null ? "blue" : eachGame.style;
       modifiedGame.levels = [];
 
-      if(temp_cohort){
+      if (temp_cohort) {
         modifiedGame.cohort_id = parseInt(temp_cohort.id);
       }
 
@@ -213,15 +227,16 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         });
 
         let newScore = allQuestions.length;
-
+        
         if (newScore !== 0) {
           if (eachGame.gametype != "scenario") {
             for (var j = 0; j < newScore; j++) {
               level.total_score = level.total_score + allQuestions[j].weight;
             }
-	  }
+       	  }
           level.par_score = eachGame.par_score;
         }
+
 
         var incrementHack = 1;
 
@@ -260,7 +275,8 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
           incrementHack = incrementHack + incrementHack;
           level.questions.push(modifiedQuestion);
         }
-	function scenarioTotalScore (currentScore, highestScore, currentLevel, currentQuestionId) {
+   
+        function scenarioTotalScore (currentScore, highestScore, currentLevel, currentQuestionId) {
           for (k of currentLevel.questions[currentQuestionId - 1].options) {
             var option_weight = k.weight ? k.weight : 0;
             var option_linkedquestion = k.linked_question ? k.linked_question : null;
@@ -279,7 +295,6 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         if (eachGame.gametype === "scenario") {
           level.total_score = scenarioTotalScore(0, 0, level, 1);
         }
-
         modifiedGame.levels.push(level);
       }
       gameData.push(modifiedGame);
@@ -291,9 +306,10 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
   }
 });
 
-app.get("/api/listcohort_game", 
-  // checkJwt, 
-  verifyToken, 
+app.get(
+  "/api/listcohort_game",
+  // checkJwt,
+  verifyToken,
   (req, res) => {
     console.log("GET /listcohort_game -----api ---called");
     cohort_game
@@ -306,22 +322,25 @@ app.get("/api/listcohort_game",
         console.log(err);
         return res.status(500).send("Server Error");
       });
-  });
+  }
+);
 
-app.get("/api/listcohort_question", 
-// checkJwt,
- (req, res) => {
-  console.log("GET /listcohort_question -----api ---called");
-  cohort_question
-    .findAll()
-    .then(result => {
-      return res.send(JSON.stringify(result));
-    })
-    .catch(err => {
-      console.error(error.message);
-      return res.status(500).send("Server Error");
-    });
-});
+app.get(
+  "/api/listcohort_question",
+  // checkJwt,
+  (req, res) => {
+    console.log("GET /listcohort_question -----api ---called");
+    cohort_question
+      .findAll()
+      .then(result => {
+        return res.send(JSON.stringify(result));
+      })
+      .catch(err => {
+        console.error(error.message);
+        return res.status(500).send("Server Error");
+      });
+  }
+);
 
 app.post(
   "/api/linkcohort_game",
@@ -406,10 +425,11 @@ app.post(
 // @route   GET /users
 // @desc    Get players list from db
 app.get("/api/users", checkJwt, verifyToken, (req, res) => {
-  console.log("GET /users ----api");
+  console.log("POST /users ----api");
   players
     .findAll()
     .then(result => {
+      console.log(JSON.stringify(result));
       return res.status(200).send(JSON.stringify(result));
     })
     .catch(err => {
@@ -418,15 +438,21 @@ app.get("/api/users", checkJwt, verifyToken, (req, res) => {
     });
 });
 
-app.post(
-  "/api/registerplayer",
-  [
+/*
+
+[
     check("firstName", "First Name is required")
       .not()
       .isEmpty(),
     check("email", "Please include a valid Email").isEmail(),
     check("userName", "Username is required").isLength({ min: 3 })
   ],
+
+
+*/
+app.post(
+  "/api/registerplayer",
+  verifyToken,
   checkJwt,
   async (req, res) => {
     console.log("POST /registerplayer  -------api");
@@ -447,6 +473,8 @@ app.post(
       city,
       program
     } = req.body;
+
+    console.log("Checking the data coming" + req.body);
 
     try {
       let user = await players.findOne({ where: { email: email } });
@@ -477,7 +505,8 @@ app.post(
   }
 );
 
-app.post("/api/registergame", 
+app.post(
+  "/api/registergame",
   [
     check("caption", "Caption is required")
       .not()
@@ -489,17 +518,17 @@ app.post("/api/registergame",
       .not()
       .isEmpty(),
     check("style", "style is required")
-    .not()
-    .isEmpty(),
+      .not()
+      .isEmpty(),
     check("par_score", "par_score is required")
-    .not()
-    .isEmpty(),
+      .not()
+      .isEmpty(),
     check("cohort_id", "cohort_id is required")
-    .not()
-    .isEmpty()
+      .not()
+      .isEmpty()
   ],
-  checkJwt, 
-  verifyToken, 
+  checkJwt,
+  verifyToken,
   async (req, res) => {
     console.log("POST /registergame  -------api");
     const errors = validationResult(req);
@@ -507,21 +536,28 @@ app.post("/api/registergame",
       console.log(errors);
       return res.status(400).json({ errors: errors.array() });
     }
-    const { caption, gamedescription, gametype , cohort_id, style, par_score} = req.body;
+    const {
+      caption,
+      gamedescription,
+      gametype,
+      cohort_id,
+      style,
+      par_score
+    } = req.body;
     try {
       let newGame = await games.create({
         caption: caption,
         gamedescription: gamedescription,
         gametype: gametype,
-        style:style,
-        par_score:par_score
+        style: style,
+        par_score: par_score
       });
-      
-      if(newGame) {
+
+      if (newGame) {
         let newCohortGameLink = await cohort_game.create({
-          game_id:newGame.id,
-          cohort_id:cohort_id
-        })
+          game_id: newGame.id,
+          cohort_id: cohort_id
+        });
       }
 
       return res.send({ message: "game successfully added" });
@@ -529,7 +565,8 @@ app.post("/api/registergame",
       console.error(error.message);
       return res.status(500).send({ message: "Server Error" });
     }
-  });
+  }
+);
 
 app.get("/api/listchoices", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listchoices ");
@@ -543,9 +580,10 @@ app.get("/api/listchoices", checkJwt, verifyToken, (req, res) => {
     });
 });
 
-app.get("/api/listgames", 
-// checkJwt, 
-// verifyToken, 
+app.get(
+  "/api/listgames",
+  // checkJwt,
+  // verifyToken,
   async (req, res) => {
     console.log("GET /listgames -----api");
     games
@@ -554,22 +592,23 @@ app.get("/api/listgames",
           {
             model: cohort_game
           }
-        ],
+        ]
       })
-      .then(async result => { 
+      .then(async result => {
         let returnData = JSON.parse(JSON.stringify(result));
 
-        for(var ob of returnData) {
+        for (var ob of returnData) {
           console.log(ob);
           let temp_cohort_id = ob.Cohort_Game.cohort_id;
 
-          if(temp_cohort_id === null) {
+          if (temp_cohort_id === null) {
             ob.Cohort_Game.name = "default";
           } else {
-            let current_cohort = await cohort.findOne({ where: { id: ob.Cohort_Game.cohort_id }});
+            let current_cohort = await cohort.findOne({
+              where: { id: ob.Cohort_Game.cohort_id }
+            });
             ob.Cohort_Game.name = current_cohort.name;
           }
-
         }
 
         return res.send(JSON.stringify(returnData));
@@ -578,79 +617,69 @@ app.get("/api/listgames",
         console.log("error below");
         console.log(err);
       });
+  }
+);
+
+app.post("/api/addchoice", checkJwt, verifyToken, async (req, res) => {
+  console.log("POST /addchoice  -------api");
+
+  const {
+    choicedescription,
+    choicestatement,
+    isanswer,
+    questionid,
+    weight
+  } = req.body;
+
+  try {
+    await choices.create({
+      choicedescription: choicedescription,
+      choicestatement: choicestatement,
+      answer: isanswer,
+      questionid: questionid,
+      weight: weight
+    });
+
+    return res.send({ message: "choice successfully added" });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).send({ message: "Server Error" });
+  }
 });
 
-app.post("/api/addchoice", 
-  checkJwt, 
-  verifyToken, 
-  async (req, res) => {
-    console.log("POST /addchoice  -------api");
+app.get("/api/listquestions/:gameid", checkJwt, verifyToken, (req, res) => {
+  console.log("GET /listquestions/:gameid ");
+  if (!req.params.gameid) {
+    return res.status(404).json({ msg: "Game Id not found" });
+  }
+  questions
+    .findAll({
+      where: { game_id: req.params.gameid }
+    })
+    .then(result => {
+      return res.send(JSON.stringify(result));
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
 
-    const {
-      choicedescription,
-      choicestatement,
-      isanswer,
-      questionid,
-      weight,
-      second_weight
-    } = req.body;
-
-    try {
-      await choices.create({
-        choicedescription: choicedescription,
-        choicestatement: choicestatement,
-        answer: isanswer,
-        questionid: questionid,
-        weight: weight,
-	second_weight: second_weight
-      });
-
-      return res.send({ message: "choice successfully added" });
-    } catch (error) {
-      console.error(error.message);
-      return res.status(500).send({ message: "Server Error" });
-    }
-  });
-
-app.get("/api/listquestions/:gameid", 
-  checkJwt, 
-  verifyToken, 
-  (req, res) => {
-    console.log("GET /listquestions/:gameid ");
-    if (!req.params.gameid) {
-      return res.status(404).json({ msg: "Game Id not found" });
-    }
-    questions
-      .findAll({
-        where: { game_id: req.params.gameid }
-      })
-      .then(result => {
-        return res.send(JSON.stringify(result));
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  });
-
-app.get("/api/choices/:questionid", 
-  checkJwt, 
-  verifyToken, 
-  (req, res) => {
-    console.log("GET /choices/:questionid ");
-    if (!req.params.questionid) {
-      return res.status(404).json({ msg: "Game Id not found" });
-    }
-    choices
-      .findAll({
-        where: { questionid: req.params.questionid }
-      })
-      .then(result => {
-        return res.send(JSON.stringify(result));
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  });
+app.get("/api/choices/:questionid", checkJwt, verifyToken, (req, res) => {
+  console.log("GET /choices/:questionid ");
+  if (!req.params.questionid) {
+    return res.status(404).json({ msg: "Game Id not found" });
+  }
+  choices
+    .findAll({
+      where: { questionid: req.params.questionid }
+    })
+    .then(result => {
+      return res.send(JSON.stringify(result));
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
 
 app.get(
   "/api/choiceLinkingQuestion/:questionid",
@@ -674,29 +703,27 @@ app.get(
   }
 );
 
-app.post("/api/questions/:id", 
-  checkJwt, 
-  verifyToken, 
-  async (req, res) => {
-    try {
-      const question = await questions.findByPk(req.params.id);
+app.post("/api/questions/:id", checkJwt, verifyToken, async (req, res) => {
+  try {
+    const question = await questions.findByPk(req.params.id);
 
-      if (!question) {
-        return res.status(404).json({ msg: "Question not found" });
-      }
-
-      await questions.destroy({ where: { id: req.params.id } });
-      res.json({ msg: "Question removed" });
-    } catch (err) {
-      console.error(err);
-      if (err.kind === "ObjectId") {
-        return res.status(404).json({ msg: "Question not found" });
-      }
-      return res.status(500).send("Server Error");
+    if (!question) {
+      return res.status(404).json({ msg: "Question not found" });
     }
-  });
 
-app.post("/api/addquestion", 
+    await questions.destroy({ where: { id: req.params.id } });
+    res.json({ msg: "Question removed" });
+  } catch (err) {
+    console.error(err);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Question not found" });
+    }
+    return res.status(500).send("Server Error");
+  }
+});
+
+app.post(
+  "/api/addquestion",
   [
     check("game", "Game name is required")
       .not()
@@ -706,18 +733,18 @@ app.post("/api/addquestion",
       .isEmpty(),
     check("question", "question is required")
       .not()
-      .isEmpty()/*,
+      .isEmpty() /*,
     check("first_weight", "first_weight is required")
     .isNumeric(),
     check("second_weight", "second_weight is required")
     .isNumeric()*/
   ],
-  checkJwt, 
-  verifyToken, 
+  checkJwt,
+  verifyToken,
   async (req, res) => {
     console.log("POST /api/addquestion ");
     const data = req.body.data;
-   
+
     /*if(isNaN(parseInt(data.first_weight))){
       console.log("First weight is not a number");
       return res.status(500).send("First weight is not a number");
@@ -808,38 +835,36 @@ app.post("/api/addquestion",
       }
       return res.status(500).send("Server Error");
     }
-  });
+  }
+);
 
-app.post("/api/updatequestion", 
-  checkJwt, 
-  verifyToken, 
-  async (req, res) => {
-    const data = req.body.data;
-    const id = req.body.id;
+app.post("/api/updatequestion", checkJwt, verifyToken, async (req, res) => {
+  const data = req.body.data;
+  const id = req.body.id;
 
-    try {
-      const question = await questions.findByPk(id);
+  try {
+    const question = await questions.findByPk(id);
 
-      if (!question) {
-        return res.status(404).json({ msg: "Question not found" });
+    if (!question) {
+      return res.status(404).json({ msg: "Question not found" });
+    }
+
+    await questions.update(
+      { question_statement: data.question },
+      {
+        where: { id: id }
       }
+    );
 
-      await questions.update(
-        { question_statement: data.question },
-        {
-          where: { id: id }
-        }
-      );
-
-      // Update choices
-      await choices.destroy({ where: { questionid: id } });
-      data.options.map(async choice => {
-        let isAnswer = 0;
-        if (data.previous_question_choice) {
-          isAnswer = 0;
-        } else {
-          isAnswer = choice.option.toString() === data.answers.toString() ? 1 : 0;
-        }
+    // Update choices
+    await choices.destroy({ where: { questionid: id } });
+    data.options.map(async choice => {
+      let isAnswer = 0;
+      if (data.previous_question_choice) {
+        isAnswer = 0;
+      } else {
+        isAnswer = choice.option.toString() === data.answers.toString() ? 1 : 0;
+      }
 
         await choices.create({
           choicedescription: "",
@@ -848,27 +873,44 @@ app.post("/api/updatequestion",
           questionid: id
         });
       });
+    });
 
-      return res.json({ msg: "Question Updated" });
-    } catch (err) {
-      console.error(err);
-      if (err.kind === "ObjectId") {
-        return res.status(404).json({ msg: "Question not found" });
-      }
-      return res.status(500).send("Server Error");
+    return res.json({ msg: "Question Updated" });
+  } catch (err) {
+    console.error(err);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Question not found" });
     }
-  });
+    return res.status(500).send("Server Error");
+  }
+});
 
-app.get("/api/listCohort", 
-  checkJwt, 
-  // verifyToken, 
+app.get(
+  "/api/listCohort",
+  checkJwt,
+  // verifyToken,
   (req, res) => {
-  console.log("GET /listCohort -----api ---called");
-  cohort
+    console.log("GET /listCohort -----api ---called");
+    cohort
+      .findAll()
+      .then(result => {
+        const list = JSON.stringify(result);
+        return res.send(JSON.stringify(result));
+      })
+
+      .catch(err => {
+        console.log(err);
+        return res.status(500).send("Server Error");
+      });
+  }
+);
+
+app.get("/api/listcohort_game", checkJwt, verifyToken, (req, res) => {
+  console.log("GET /listcohort_game -----api ---called");
+  cohort_game
     .findAll()
     .then(result => {
       return res.send(JSON.stringify(result));
-      // console.log(JSON.stringify(result));
     })
     .catch(err => {
       console.log(err);
@@ -876,25 +918,7 @@ app.get("/api/listCohort",
     });
 });
 
-app.get("/api/listcohort_game", 
-  checkJwt, 
-  verifyToken, 
-  (req, res) => {
-    console.log("GET /listcohort_game -----api ---called");
-    cohort_game
-      .findAll()
-      .then(result => {
-        return res.send(JSON.stringify(result));
-      })
-      .catch(err => {
-        console.log(err);
-        return res.status(500).send("Server Error");
-      });
-  });
-
-app.get("/api/listcohort_question",
- checkJwt, 
- verifyToken, (req, res) => {
+app.get("/api/listcohort_question", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listcohort_question -----api ---called");
   cohort_question
     .findAll()
@@ -1046,7 +1070,7 @@ app.post(
             gamedescription: originalGame.gamedescription,
             gametype: originalGame.gametype,
             style: originalGame.style,
-            par_score:originalGame.par_score
+            par_score: originalGame.par_score
           },
           { transaction },
           { raw: true }
@@ -1063,7 +1087,7 @@ app.post(
               difficulty_level: temp.difficulty_level,
               question_statement: temp.question_statement,
               weight: temp.weight,
-	      second_weight: second_weight,
+              second_weight: second_weight,
               explanation: temp.explanation,
               isitmedia: temp.isitmedia
             },
@@ -1116,36 +1140,40 @@ app.post(
   }
 );
 
-app.get("/api/list_leaderBoard", 
-  checkJwt, 
-  // verifyToken, 
+app.get(
+  "/api/list_leaderBoard",
+  checkJwt,
+  // verifyToken,
   (req, res) => {
-  console.log("GET /list_leaderBoard -----api ---called");
+    console.log("GET /list_leaderBoard -----api ---called");
 
-  plays
-    .findAll({
-      attributes: [[db.sequelize.literal("COALESCE(SUM(score), 0)"), "score"]],
-      include: [
-        {
-          model: players
-        }
-      ],
-      group: ["player_id"]
-    })
-    .then(result => {
-      var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
-      var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()))
-      let mm = sortedArray.map((item, index) => {
-        item.rank = index+1;
-        return item;
+    plays
+      .findAll({
+        attributes: [
+          [db.sequelize.literal("COALESCE(SUM(score), 0)"), "score"]
+        ],
+        include: [
+          {
+            model: players
+          }
+        ],
+        group: ["player_id"]
+      })
+      .then(result => {
+        var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
+        var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()));
+        let mm = sortedArray.map((item, index) => {
+          item.rank = index + 1;
+          return item;
+        });
+        return res.status(200).send(JSON.stringify(mm));
+      })
+      .catch(err => {
+        console.error(err.message);
+        return res.status(500).send("Server Error");
       });
-      return res.status(200).send(JSON.stringify(mm));
-    })
-    .catch(err => {
-      console.error(err.message);
-      return res.status(500).send("Server Error");
-    });
-});
+  }
+);
 
 app.get(
   "/api/list_cohort_leaderBoard/:cohort_id",
@@ -1172,12 +1200,12 @@ app.get(
       })
       .then(result => {
         var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
-        var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()))
+        var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()));
         let arrayWithRanking = sortedArray.map((item, index) => {
-          item.rank = index+1;
+          item.rank = index + 1;
           return item;
         });
-        
+
         return res.status(200).send(JSON.stringify(arrayWithRanking));
       })
       .catch(err => {
@@ -1213,10 +1241,9 @@ app.post(
       .not()
       .isEmpty(),
     check("style", "style is required")
-    .not()
-    .isEmpty(),
-    check("par_score", "par_score is required")
-    .isNumeric()
+      .not()
+      .isEmpty(),
+    check("par_score", "par_score is required").isNumeric()
   ],
   checkJwt,
   verifyToken,
@@ -1232,15 +1259,20 @@ app.post(
     console.log(req.body);
     try {
       let updatedGame = await games.update(
-        { caption: caption, gamedescription: gamedescription, style:style, par_score:par_score },
+        {
+          caption: caption,
+          gamedescription: gamedescription,
+          style: style,
+          par_score: par_score
+        },
         { where: { id: id }, raw: true }
       );
 
-      if(updatedGame !=null ){
+      if (updatedGame != null) {
         return res.status(200).send({ message: "game updated successfully" });
       }
 
-      return res.status(500).send({ message: "Server Error"  });
+      return res.status(500).send({ message: "Server Error" });
     } catch (error) {
       console.error(error.message);
       return res.status(500).send({ message: "Server Error" });
@@ -1311,9 +1343,9 @@ app.post(
     console.log("updating ");
     const { game_id } = req.body;
 
-    if(game_id){
+    if (game_id) {
       let cohort_game_link = await cohort_game.destroy({
-        where:{game_id:game_id}
+        where: { game_id: game_id }
       });
     }
 
@@ -1333,38 +1365,52 @@ app.post(
   }
 );
 
-app.post("/api/AddCohort", 
+app.post(
+  "/api/AddCohort",
+  upload.single("file"),
   [
     check("name", "cohort name is required")
       .not()
       .isEmpty()
   ],
-  checkJwt, 
-  verifyToken, 
+  checkJwt,
+  verifyToken,
   async (req, res) => {
     console.log("POST /AddCohort  -------api");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
     const { name } = req.body;
-    try {
-      let oldCohort = await cohort.findOne({ where: { name: name } });
+    const logo = req.file;
 
+    console.log(
+      logo.path + " " + logo.originalname + " " + logo.type + " " + logo.size
+    );
+    console.log(name);
+
+    try {
+      let oldCohort = await cohort.findOne({
+        where: { name: name }
+      });
       if (oldCohort) {
         return res
           .status(404)
           .send({ message: "cohort with the same name exist" });
       }
-      let addedCohort = await cohort.create({ name: name });
 
-      return res.send({ message: "cohort added successfully" });
+      let addedCohort = await cohort.create({
+        name: name,
+        logo: "Imagedata/" + req.file.originalname
+      });
+
+      return res.status(200).send({ message: "cohort added successfully" });
     } catch (error) {
       console.error(error.message);
       return res.status(500).send({ message: "Server Error" });
     }
-});
+  }
+);
 
 app.post(
   "/api/DeleteCohort",
@@ -1499,30 +1545,30 @@ app.get(
   }
 );
 
-app.post("/api/updatecohort", 
-  checkJwt, 
-  verifyToken, 
-  async (req, res) => {
-    console.log("POST /updatecohort  -------api");
+app.post("/api/updatecohort", checkJwt, verifyToken, async (req, res) => {
+  console.log("POST /updatecohort  -------api");
 
-    const { id, name } = req.body;
+  const { id, name } = req.body;
 
-    try {
-      let updatedGame = await cohort.update(
-        { name: name },
-        { where: { id: id } }
-      );
+  try {
+    let updatedGame = await cohort.update(
+      { name: name },
+      { where: { id: id } }
+    );
 
-      return res.send({ message: "cohort updated successfully" });
-    } catch (error) {
-      console.error(error.message);
-      return res.status(500).send({ message: "Server Error" });
-    }
-  });
+    return res.send({ message: "cohort updated successfully" });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).send({ message: "Server Error" });
+  }
+});
 
 app.get("/api/user/get_profile/:email", async (req, res) => {
-  console.log("GET /user/get_profile/:email  -----api ---called" + req.params.email);
+  console.log(
+    "GET /user/get_profile/:email  -----api ---called" + req.params.email
+  );
   let email = req.params.email;
+  console.log(email);
 
   if (!email) {
     return res.status(400).send("email not found on request");
@@ -1530,134 +1576,161 @@ app.get("/api/user/get_profile/:email", async (req, res) => {
   let player = await players.findOne({ where: { email: email }, raw: true });
 
   if (player) {
+    console.log("Ply" + JSON.stringify(player));
     let allPlays = await plays.findAll({
-      where :{player_id:player.id},
+      where: { player_id: player.id },
       include: [
         {
-          model: cohort,
+          model: cohort
         },
         {
-          model: games,
+          model: games
         }
       ],
-      raw:true
+      raw: true
     });
 
     const myOrderedArray = _.sortBy(allPlays, o => parseInt(o.score));
-
+    console.log("Odersssss" + JSON.stringify(allPlays));
     return res.status(200).send(JSON.stringify(myOrderedArray));
   } else {
     return res.status(500).send({ message: "not found" });
   }
 });
 
-app.get("/api/get_cohort_rank/:email/:cohort_id", 
-  // checkJwt, 
-  // verifyToken, 
+app.get(
+  "/api/get_cohort_rank/:email/:cohort_id",
+  // checkJwt,
+  // verifyToken,
   async (req, res) => {
-  console.log("GET /get_cohort_rank -----api ---called");
-  // if (!req.params.email) {
-  //   return res.status(404).json({ msg: "email not found" });
-  // }
-  let player = await players.findOne({ where: { email: req.params.email }, raw: true });
-
-  if (player) {
-     plays.findAll({
-      where: { cohort_id: parseInt(req.params.cohort_id)},
-      attributes: [
-        [db.sequelize.literal("COALESCE(SUM(score), 0)"), "score"]
-      ],
-      include: [
-        {
-          model: players
-        }
-      ],
-      group: ["player_id"]
-    })
-    .then( result => {
-
-      var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
-
-      var sortedArray = JSON.parse(JSON.stringify(myOrderedArray.reverse()));
-
-      let cohort_rank = sortedArray.findIndex(x => x.Player.email === req.params.email);
-      cohort_rank = cohort_rank + 1;
-      console.log("cohort_rank == " + cohort_rank);
-      let global_rank = 0;
-
-       plays.findAll({
-        attributes: [
-          [db.sequelize.literal("COALESCE(SUM(score), 0)"), "score"]
-        ],
-        include: [
-          {
-            model: players
-          }
-        ],
-        group: ["player_id"]
-      })
-      .then(data => {
-        console.log("global rank ---------");
-
-        var reverseSortedGlobalRank = _.sortBy(data, ob => parseInt(ob.score));
-
-
-        var sortedGlobalRank = reverseSortedGlobalRank.reverse();
-
-        global_rank = sortedGlobalRank.findIndex(playerOb => playerOb.Player.email === req.params.email);
-        global_rank = global_rank + 1;
-        console.log("global_rank == " + global_rank);
-        console.log("cohort_rank == " + cohort_rank)
-
-
-        return res.status(200).send({ 
-          cohort_rank:cohort_rank,
-          global_rank:global_rank
-        });
-
-      })
-      .catch(error =>{
-          return res.status(500).send(error.message);
-      });
-
-    })
-    .catch(err => {
-      console.error();
-      return res.status(500).send(err.message);
+    console.log("GET /get_cohort_rank -----api ---called");
+    // if (!req.params.email) {
+    //   return res.status(404).json({ msg: "email not found" });
+    // }
+    let player = await players.findOne({
+      where: { email: req.params.email },
+      raw: true
     });
 
-  } else {
-    return res.status(500).send({ message: "not found" });
+    if (player) {
+      plays
+        .findAll({
+          where: { cohort_id: parseInt(req.params.cohort_id) },
+          attributes: [
+            [db.sequelize.literal("COALESCE(SUM(score), 0)"), "score"]
+          ],
+          include: [
+            {
+              model: players
+            }
+          ],
+          group: ["player_id"]
+        })
+        .then(result => {
+          var myOrderedArray = _.sortBy(result, o => parseInt(o.score));
+
+          var sortedArray = JSON.parse(
+            JSON.stringify(myOrderedArray.reverse())
+          );
+
+          let cohort_rank = sortedArray.findIndex(
+            x => x.Player.email === req.params.email
+          );
+          cohort_rank = cohort_rank + 1;
+          console.log("cohort_rank == " + cohort_rank);
+          let global_rank = 0;
+
+          plays
+            .findAll({
+              attributes: [
+                [db.sequelize.literal("COALESCE(SUM(score), 0)"), "score"]
+              ],
+              include: [
+                {
+                  model: players
+                }
+              ],
+              group: ["player_id"]
+            })
+            .then(data => {
+              console.log("global rank ---------");
+
+              var reverseSortedGlobalRank = _.sortBy(data, ob =>
+                parseInt(ob.score)
+              );
+
+              var sortedGlobalRank = reverseSortedGlobalRank.reverse();
+
+              global_rank = sortedGlobalRank.findIndex(
+                playerOb => playerOb.Player.email === req.params.email
+              );
+              global_rank = global_rank + 1;
+              console.log("global_rank == " + global_rank);
+              console.log("cohort_rank == " + cohort_rank);
+
+              return res.status(200).send({
+                cohort_rank: cohort_rank,
+                global_rank: global_rank
+              });
+            })
+            .catch(error => {
+              return res.status(500).send(error.message);
+            });
+        })
+        .catch(err => {
+          console.error();
+          return res.status(500).send(err.message);
+        });
+    } else {
+      return res.status(500).send({ message: "not found" });
+    }
   }
-});
+);
 
-app.post("/api/updateUser", 
-  checkJwt, 
-  verifyToken, 
-  async (req, res) => {
-    console.log("POST /api/updateUser  -------api");
+app.post("/api/updateUser", checkJwt, verifyToken, async (req, res) => {
+  console.log("POST /api/updateUser  -------api");
 
-    const { id, program, gender , country } = req.body;
-    console.log(JSON.stringify(req.body));
-    try {
-      let updatedUser = await players.update(
-        { 
-          program: program,
-          gender : gender,
-          country : country
-        },
-        { where: { id: id } }
-      );
+  const {
+    id,
+    email,
+    program,
+    gender,
+    country,
+    lastname,
+    firstname,
+    username,
+    dateofbirth,
+    city,
+    middlename
+  } = req.body;
 
-      if(updatedUser) {
-        return res.status(200).send({ message: "cohort updated successfully" });
-      } else {
-        return res.status(500).send({ message: "Server Error" });
-      }
-    } catch (error) {
-      console.error(error.message);
+  console.log(JSON.stringify(req.body));
+  try {
+    let updatedUser = await players.update(
+      {
+        email:email,
+        program: program,
+        gender: gender,
+        country: country,
+        lastname: lastname,
+        firstname: firstname,
+        username: username,
+        dateofbirth: dateofbirth,
+        city:city,
+        middlename:middlename
+      },
+      { where: { id: id } }
+    );
+
+    if (updatedUser) {
+      return res.status(200).send({ message: "Player updated successfully" });
+    } else {
       return res.status(500).send({ message: "Server Error" });
     }
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).send({ message: "Server Error" });
+  }
 });
 
 app.post(
@@ -1681,12 +1754,11 @@ app.post(
         }
       });
 
-      if(deletedPlayer) {
+      if (deletedPlayer) {
         return res.status(200).send({ message: "player deleted successfully" });
       } else {
         return res.status(500).send({ message: "Server Error" });
       }
-    
     } catch (error) {
       console.error(error.message);
       return res.status(500).send({ message: "Server Error" });
@@ -1694,4 +1766,4 @@ app.post(
   }
 );
 
-app.listen(9000,'127.0.0.1', () => console.log("listening"));
+app.listen(9000, "127.0.0.1", () => console.log("listening"));

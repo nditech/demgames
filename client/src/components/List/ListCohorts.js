@@ -1,12 +1,16 @@
 import React, { Fragment, useState, useEffect } from "react";
-
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 import { addCohort, deleteCohort, updateCohort } from "./utility";
 import { config } from "../../settings";
 
 const ListCohorts = () => {
+  
+  
+  
   const columns = [
     {
       name: "Id",
@@ -17,6 +21,11 @@ const ListCohorts = () => {
       name: "Name",
       selector: "name",
       sortable: true
+    },
+    {
+      name: "Logo",
+      selector: "logo",
+      sortable: false
     }
   ];
 
@@ -26,6 +35,13 @@ const ListCohorts = () => {
       type: "text",
       title: "Title",
       value: "",
+      editable: true
+    },
+    {
+      key: "logo",
+      type: "file",
+      title: "Logo",
+      value: null,
       editable: true
     }
   ];
@@ -43,7 +59,7 @@ const ListCohorts = () => {
     isConfirmation: true,
     title: "Cohort detail",
     messageBox: false,
-    edit: false,
+    edit: true,
     create: false,
     onDelete: null,
     removeMessage: false
@@ -65,7 +81,7 @@ const ListCohorts = () => {
 
   const [cohortData, setCohortData] = useState({
     cohort: [{}],
-    selectedCohort: { id: "", name: "" }
+    selectedCohort: { id: "", name: "", logo: "" }
   });
 
   const { cohort, selectedCohort } = cohortData;
@@ -78,6 +94,13 @@ const ListCohorts = () => {
         type: "text",
         title: "Title",
         value: selectedCohort.name,
+        editable: true
+      },
+      {
+        key: "logo",
+        type: "text",
+        title: "Logo",
+        value: selectedCohort.logo,
         editable: true
       }
     ]
@@ -95,8 +118,33 @@ const ListCohorts = () => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log("cohort api data -->", JSON.stringify(data));
-        setCohortData({ ...cohortData, cohort: data });
+        const DataUpdate = [];
+
+        Object.keys(data).map((Val, i) => {
+          DataUpdate.push({
+            id: data[i].id,
+            //name: data[i].name,
+            name: (
+              <a
+                href={window.location.origin + "/" + data[i].name+"/landingpage"}
+                target="_self"
+              >
+                {data[i].name}
+              </a>
+            ),
+            logo: (
+              <a
+                href={window.location.origin + "/" + data[i].logo}
+                target="new"
+              >
+                {data[i].logo.split("/")[1].split(".")[0]}
+              </a>
+            )
+          });
+          
+          console.log("Received " + JSON.stringify(DataUpdate) + data[i].logo);
+        });
+        setCohortData({ ...cohortData, cohort: DataUpdate });
       })
       .catch(err => console.log(err));
   };
@@ -119,16 +167,19 @@ const ListCohorts = () => {
     }
   };
 
-  const editCohort = (data = "", id) => {
+  const editCohort = (data = null, id) => {
     console.log("dialogbox data", id, data);
     // return;
-    updateCohort(data.name, id, function() {
+    updateCohort(data.name, data.logo, id, function() {
       setPopupState({ ...popupState, showMessage: false });
       getCohort();
     });
   };
   const editHandle = id => {
     // debugger;
+   
+    const textCohort = [{}];   
+    
     const selected_cohort = cohort.find(item => {
       return item.id === id;
     });
@@ -147,14 +198,15 @@ const ListCohorts = () => {
       onDelete: null,
       removeMessage: false
     });
+    
   };
 
-  const saveCohort = (data = "") => {
+  const saveCohort = (data = null) => {
     console.log("final data: ", data);
     // return;
     addCohort(data, function() {
       setPopupState({ ...popupState, showMessage: false });
-      getCohort();
+      true;
     });
   };
 
@@ -168,7 +220,7 @@ const ListCohorts = () => {
       isConfirmation: true,
       title: "Cohort detail",
       messageBox: false,
-      edit: false,
+      edit: true,
       create: true,
       onDelete: null,
       removeMessage: false,
@@ -192,7 +244,6 @@ const ListCohorts = () => {
         onCancel={onCancel}
         title={title}
         data={create ? addCohortFields : editCohortFields}
-        // data={create ? scenarioFields : data}
         messageBox={messageBox}
         edit={edit}
         create={create}
@@ -204,20 +255,41 @@ const ListCohorts = () => {
         <button className="btn btn-info btn-sm">
           <i className="fa fa-plus"></i>
         </button>
-        <span> Add Cohort</span>
+  <span> Add Cohort </span>
       </div>
       <ListTable
-        tableData={{
-          title: "List of Cohort",
-          columns: columns,
-          hasActionBtns: true,
-          data: cohort,
-          deleteHandle: deleteHandle,
-          editHandle: editHandle
-        }}
+            tableData={{
+                  title: "List of Cohort",
+                  columns: columns,
+                  hasActionBtns: true,
+                  data: cohort,
+                  deleteHandle: deleteHandle,
+                  editHandle: editHandle
+            }}
       />
     </Fragment>
   );
+}
+
+//export default ListCohorts;
+
+const mapStateToProps = state => ({
+    cohortData:state.cohortData
+    
+});
+
+//Dispatch action to fetch game data and scores.
+const mapDispatchToProps = dispatch => {
+ // console.log(cohortData);
+  return {
+    getCohorts:cohortData=>dispatch(fetchCohorts(cohortData))    
+  };
 };
 
-export default ListCohorts;
+ListCohorts.propTypes = {
+  cohortData: PropTypes.object,
+  getCohorts: PropTypes.func
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListCohorts);
+//export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);;

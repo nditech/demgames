@@ -4,12 +4,11 @@ import Icon from "@material-ui/core/Icon";
 import Auth from "../../Auth";
 import { config } from "../../settings";
 import DialogBox from "../DialogBox/DialogBox";
-import { updatePlayer , deletePlayer } from "./utility";
+import { updatePlayer, deletePlayer } from "./utility";
 
-const auth0 = new Auth();
+//const auth0 = new Auth();
 
 const ListPlayers = () => {
-
   const [popupState, setPopupState] = useState({
     showMessage: false,
     confirmButtonValue: "Update",
@@ -24,7 +23,7 @@ const ListPlayers = () => {
     onDelete: null,
     removeMessage: false
   });
-  
+
   const {
     showMessage,
     confirmButtonValue,
@@ -39,14 +38,17 @@ const ListPlayers = () => {
     onDelete,
     removeMessage
   } = popupState;
-  
+
   const [playerData, setPlayerData] = useState({
     player: [{}],
-    selectedPlayer: { id: "", name: "" }
+    selectedPlayer: {
+      id: "",
+      firstname: ""
+    }
   });
-  
+
   const { player, selectedPlayer } = playerData;
-  
+
   const editPlayerFields = {
     id: selectedPlayer.id,
     values: [
@@ -60,10 +62,14 @@ const ListPlayers = () => {
       {
         key: "gender",
         type: "dropdown",
-        title: "gender",
-        options:  [{id:"male",title:"male"},{id:"female",title:"female"}],
+        title: "Gender",
+        options: [
+          { id: "female", title: "female" },
+          { id: "male", title: "male" },
+          { id: "other", title: "other" }
+        ],
         editable: true,
-        value: "male"
+        value: selectedPlayer.gender ? selectedPlayer.gender : "female"
       },
       {
         key: "country",
@@ -72,7 +78,41 @@ const ListPlayers = () => {
         value: selectedPlayer.country ? selectedPlayer.country : "",
         editable: true
       },
-      
+      {
+        key: "city",
+        type: "text",
+        title: "City",
+        value: selectedPlayer.city ? selectedPlayer.city : "",
+        editable: true
+      },
+      {
+        key: "lastname",
+        type: "text",
+        title: "Last Name",
+        value: selectedPlayer.lastname ? selectedPlayer.lastname : "",
+        editable: true
+      },
+      {
+        key: "firstname",
+        type: "text",
+        title: "First Name",
+        value: selectedPlayer.firstname ? selectedPlayer.firstname : "",
+        editable: true
+      },
+      {
+        key: "middlename",
+        type: "text",
+        title: "Middle Name",
+        value: selectedPlayer.middlename ? selectedPlayer.middlename : "",
+        editable: true
+      },
+      {
+        key: "dateofbirth",
+        type: "text",
+        title: "Date of Birth",
+        value: selectedPlayer.dateofbirth ? selectedPlayer.dateofbirth : "",
+        editable: true
+      }
     ]
   };
 
@@ -88,13 +128,18 @@ const ListPlayers = () => {
       sortable: true
     },
     {
+      name: "First Name",
+      selector: "firstname",
+      sortable: true
+    },
+    {
       name: "Last Name",
       selector: "lastname",
       sortable: true
     },
     {
-      name: "First Name",
-      selector: "firstname",
+      name: "User name",
+      selector: "username",
       sortable: true
     },
     {
@@ -111,6 +156,11 @@ const ListPlayers = () => {
       name: "Program",
       selector: "program",
       sortable: true
+    },
+    {
+      name: "Date of Birth",
+      selector: "dateofbirth",
+      sortable: true
     }
   ];
 
@@ -121,8 +171,13 @@ const ListPlayers = () => {
       sortable: true
     },
     {
-      name: "Name",
-      selector: "name",
+      name: "First Name",
+      selector: "firstname",
+      sortable: true
+    },
+    {
+      name: "Last Name",
+      selector: "lastname",
       sortable: true
     },
     {
@@ -142,7 +197,7 @@ const ListPlayers = () => {
     globalleadership: [{}],
     cohortleadership: [{}],
     noOfPlayers: 0,
-    selectedPlayer: { id: "", name: "" }
+    selectedPlayer: { id: "", lastname: "", lastname: "" }
   });
   const [cohort, setCohort] = useState(null);
   const [activeTab, setActiveTab] = useState(1);
@@ -177,6 +232,7 @@ const ListPlayers = () => {
       .catch(err => console.log(err));
     console.log(user);
   };
+
   const getCohort = () => {
     // console.log(this.props.auth);
     const url = config.baseUrl + "/listCohort";
@@ -234,7 +290,7 @@ const ListPlayers = () => {
             let obj = {};
             obj.sl = index + 1;
             obj.id = item.Player.id;
-            obj.name = item.Player.firstname;
+            obj.firstname = item.Player.firstname;
             obj.rank = item.rank;
             obj.score = item.score;
             objArray.push(obj);
@@ -247,7 +303,7 @@ const ListPlayers = () => {
             let obj = {};
             obj.sl = index + 1;
             obj.id = item.Player.id;
-            obj.name = item.Player.firstname;
+            obj.firstname = item.Player.firstname;
             obj.rank = item.rank;
             obj.score = item.score;
             objArray.push(obj);
@@ -308,9 +364,9 @@ const ListPlayers = () => {
   const onCancel = () => {
     setPopupState({ ...popupState, showMessage: false });
   };
-  
+
   const editPlayer = (data = "", id) => {
-    console.log("dialogbox data", id, data);
+    console.log("Dialogbox data", id, data);
     updatePlayer(data, id, function() {
       setPopupState({ ...popupState, showMessage: false });
       getPlayers();
@@ -340,7 +396,8 @@ const ListPlayers = () => {
   // }, []);
 
   return (
-    <><DialogBox
+    <>
+      <DialogBox
         confirmButtonValue={confirmButtonValue}
         showMessage={showMessage}
         messageTitle={messageTitle}
@@ -350,7 +407,6 @@ const ListPlayers = () => {
         onCancel={onCancel}
         title={title}
         data={editPlayerFields}
-     
         messageBox={messageBox}
         edit={edit}
         create={create}
@@ -408,9 +464,9 @@ const ListPlayers = () => {
                   className="cohort-dropdown-value"
                   onChange={e => handleLeaderShip("cohort", e.target.value)}
                 >
-                  {cohort.map(({ id, name }) => (
+                  {cohort.map(({ id, firstname }) => (
                     <option key={id} value={id}>
-                      {name}
+                      {firstname}
                     </option>
                   ))}
                 </select>

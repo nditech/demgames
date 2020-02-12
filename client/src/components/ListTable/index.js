@@ -62,9 +62,27 @@ const ListTable = ({
   }
 
   // Table Search
-  let rowdata = JSON.parse(JSON.stringify(data));
+  const rowdata2 = [];
+
+  if (JSON.stringify(data).search("logo") > -1) {
+    Object.keys(data).map((Val, i) => {
+      //if (i !== -1) {
+      console.log(data[i].logo.props);
+      rowdata2.push({
+        id: data[i].id,
+        name: data[i].name,
+        logo: data[i].logo.props.href.substring(
+          data[i].logo.props.href.lastIndexOf("/") + 1
+        )
+      });
+      // }
+    });
+  } else rowdata2.push(JSON.parse(JSON.stringify(data)));
+
   const handleSearch = e => {
     let searchText = e.target.value;
+
+    //   if (searchText.value !== "") {
     let filterdata = [];
     setListState({
       ...listState,
@@ -73,7 +91,7 @@ const ListTable = ({
 
     window.filterDelay && clearTimeout(window.filterDelay);
     window.filterDelay = setTimeout(() => {
-      rowdata.forEach(element => {
+      rowdata2.forEach(element => {
         let valueString = "";
         for (let lindex in element) {
           valueString += " " + element[lindex];
@@ -81,7 +99,8 @@ const ListTable = ({
         if (
           valueString.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
         ) {
-          filterdata.push(element);
+          filterdata.push(data[rowdata2.indexOf(element)]);
+          console.log(rowdata2.indexOf(element));
         }
       });
 
@@ -92,6 +111,16 @@ const ListTable = ({
       });
     }, 300);
     // clearTimeout(filterDelay);
+    /*} else {
+
+            rowdata2 = JSON.stringfy(JSON.stringify(data));
+            setListState({
+              ...listState,
+              filteredData: filterdata,
+              searchText: searchText
+            });
+    }
+  */
   };
 
   return (

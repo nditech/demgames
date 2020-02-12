@@ -4,8 +4,10 @@ import profileUrl from "../../images/profile.png";
 import { connect } from "react-redux";
 import moment from "moment";
 import { config } from "../../settings";
-
+import { ListPlayers } from "./../List/ListPlayers";
+import { updatePlayer } from "../List//utility";
 import "./styles.scss";
+import PropTypes from "prop-types";
 
 const ProfileInfo = props => {
   let profileProgressData = null;
@@ -16,12 +18,19 @@ const ProfileInfo = props => {
     progressData: [],
     cohortRank: "0",
     globalRank: "0",
-    cohorts: []
+    cohorts: [],
+    players: []
   });
 
-  const { progressData, cohortRank, globalRank, cohorts } = profileData;
+  const {
+    progressData,
+    cohortRank,
+    globalRank,
+    cohorts,
+    players
+  } = profileData;
 
-  const getPlayerProfile = async (email, callbackFunction) => {
+  const getPlayerProfile = async (email, setPlayerProgress) => {
     const url = config.baseUrl + `/user/get_profile/${email}`;
     await fetch(url, {
       method: "get",
@@ -34,25 +43,25 @@ const ProfileInfo = props => {
       .then(res => res.json())
       .then(data => {
         profileProgressData = data;
-        // console.log("profile data -->", JSON.stringify(data));
-        // callbackFunction(data);
+        console.log("profile data of P-->", email, JSON.stringify(data));
+        setPlayerProgress(data);
       })
       .catch(err => console.log(err));
   };
 
-  //   const setPlayerProgress = data => {
-  //     let filteredData = data.map(item => {
-  //       return {
-  //         gameName: item["Game.caption"],
-  //         score: item.score,
-  //         cohort: item["Cohort.name"],
-  //         cohort_id: item["Cohort.id"],
-  //         playdate: item.playstartdate
-  //       };
-  //     });
-  //     console.log("fil data", filteredData);
-  //     setProfileData({ ...profileData, progressData: filteredData });
-  //   };
+    const setPlayerProgress = data => {
+       let filteredData = data.map(item => {
+         return {
+           gameName: item["Game.caption"],
+           score: item.score,
+           cohort: item["Cohort.name"],
+           cohort_id: item["Cohort.id"],
+           playdate: item.playstartdate
+         };
+       });
+       console.log("fil data", filteredData);
+       setProfileData({ ...profileData, progressData: filteredData });
+    };
 
   const getCohort = async userEmail => {
     const url = config.baseUrl + `/listCohort`;
@@ -107,7 +116,7 @@ const ProfileInfo = props => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log("rank data -->", JSON.stringify(data));
+        console.log("rank data of -->", JSON.stringify(data));
         setRank(data, cohorts, changeCohort);
       })
       .catch(err => console.log(err));
@@ -125,6 +134,30 @@ const ProfileInfo = props => {
   }, []);
 
   console.log("progress data", progressData);
+
+  const editHandle = id => {
+    //alert("inside edit handle and the player id is -- " + id);
+    alert(JSON.stringify(props.player));
+    const selected_player = players.find(item => {
+      return item.id === id;
+    });
+
+    setPlayerData({ ...playerData, selectedPlayer: selected_player });
+    setPopupState({
+      showMessage: true,
+      confirmButtonValue: "Update",
+      messageTitle: "",
+      messageDescription: "",
+      onConfirm: editPlayer,
+      isConfirmation: true,
+      title: "Player detail",
+      messageBox: false,
+      edit: true,
+      create: false,
+      onDelete: null,
+      removeMessage: false
+    });
+  };
 
   return (
     <Fragment>
@@ -150,13 +183,13 @@ const ProfileInfo = props => {
                     {props.player.player_username || ""}
                   </p>
 
-                  {/* <Link
-                    to="editprofile"
+                  <Link
                     disabled={true}
                     className="btn btn-primary w-100 mt-3"
+                    to={<ListPlayers />}
                   >
-                    Edit Profile
-                  </Link> */}
+                    Edit Profiles
+                  </Link>
                 </div>
               </div>
             </div>
@@ -240,11 +273,44 @@ const ProfileInfo = props => {
 };
 
 const mapStateToProps = state => ({
-  player: state.authDetail.authDetail
+  player: state.authDetail.authDetail,
+  player_given_name: state.authDetail.authDetail.player_given_name,
+  player_picture: state.authDetail.authDetail.player_picture,
+  player_family_name:  state.authDetail.authDetail.player_family_name,
+  player_given_name:  state.authDetail.authDetail.player_given_name,
+  player_email:  state.authDetail.authDetail.player_email,
+  gameData: state.gameData,
+  cohortData: state.gameData.cohortData,
+  scoreDetail : state.scoreDetail
 });
 
-// export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
-export default connect(
-  mapStateToProps,
-  null
-)(ProfileInfo);
+//Dispatch action to fetch game data and scores.
+const mapDispatchToProps = dispatch => {
+ // console.log(scoreDetail);
+ // console.log(cohortData+"cohortData");
+  return {
+    getGameData: gameData => dispatch(fetchGameData(gameData)),
+    getScores: scores => dispatch(fetchScores(scores)),
+    getCohorts:cohortData=>dispatch(fetchCohorts(cohortData)),
+    setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
+    clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
+    setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail))
+  };
+};
+
+ProfileInfo.propTypes = {
+  getGameData: PropTypes.func,
+  getScores: PropTypes.func,
+  gameData: PropTypes.object,
+  authDetail: PropTypes.object,
+  setAuth: PropTypes.func,
+  clearAuth: PropTypes.func,
+  scoreDetail: PropTypes.object,
+  cohortData: PropTypes.object,
+  getCohorts: PropTypes.func,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
+//export default connect(mapStateToProps, null)(ProfileInfo);
+
+

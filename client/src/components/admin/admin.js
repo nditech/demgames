@@ -28,8 +28,6 @@ import { config } from "../../settings";
 
 const auth0 = new Auth();
 
-//import NotFound from '../../pages/Landin';
-
 const auth = new Auth();
 const headerTabs = ["games", "players", "cohort"];
 class Admin extends Component {
@@ -46,6 +44,7 @@ class Admin extends Component {
       family_name: this.props.family_name,
       picture: this.props.picture,
       gender: this.props.gender,
+      dateofbirth: this.props.dateofbirth,
       total: 0,
       program_rank: null,
       total_rank: null,
@@ -54,7 +53,8 @@ class Admin extends Component {
       activePlayerTab: "list",
       activeQuestionTab: "list",
       activeChoiceTab: "list",
-      cohorts: [{ id: "", title: "Select Cohort" }]
+      cohorts: [{ id: "", title: "Select Cohort" }],
+      cohortData:{id:0, name:"",logo:""}
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -65,8 +65,8 @@ class Admin extends Component {
     if (this.props.email !== null) {
       const encodedValue = encodeURIComponent(this.state.email);
       console.log("auth ------------------", auth0.getAccessToken());
-      fetch(config.baseUrl + `/selectPlayerProfile`, {
-        method: "post",
+      fetch(config.baseUrl + `/users`, {
+        method: "get",
         headers: {
           authorization: "Bearer " + auth0.getAccessToken(),
           "Content-Type": "Application/json",
@@ -85,6 +85,7 @@ class Admin extends Component {
             score: data[0].score,
             total: data[0].total,
             gender: data[0].gender,
+            dateofbirth: data[0].dateofbirth,
             city: data[0].city,
             country: data[0].country,
             program: data[0].program,
@@ -245,7 +246,7 @@ class Admin extends Component {
       type: "dropdown",
       title: "Style",
       options: [
-	{ id: "", title: "Select Game Color" },
+        { id: "", title: "Select Game Color" },
         { id: "green", title: "Green" },
         { id: "blue", title: "Blue" },
         { id: "orange", title: "Orange" }
@@ -743,7 +744,9 @@ class Admin extends Component {
 const mapStateToProps = state => ({
   player_given_name: state.authDetail.authDetail.player_given_name,
   player_picture: state.authDetail.authDetail.player_picture,
-  gameData: state.gameData
+  gameData: state.gameData,
+  cohortData:state.cohortData
+
 });
 
 export default connect(mapStateToProps)(Admin);
