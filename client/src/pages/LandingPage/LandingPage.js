@@ -80,38 +80,40 @@ class LandingPage extends React.Component {
   //Fetch complete game data.
   componentWillMount() {
     
-    
+    let cohort_name = auth0.getCohort().split("/landingpage")[0].split("/")[1];
+    console.log("Cohort Name from "+cohort_name);
     cohortData.id=0;
     cohortData.name="default";
     cohortData.logo="imagedata/ndi1.png";
     console.log(cohortData);
-
     
-      const url = config.baseUrl + "/listCohort";
-      fetch(url, {
+    const url = config.baseUrl + "/listCohort/";
+      fetch(url+ cohort_name, {
+      //fetch(config.baseUrl + "/user/findOne/" + authDetail.player_email,  {
         method: "get",
         headers: {
-          authorization: "Bearer " + localStorage.getItem("access_token"),
+         // authorization: "Bearer " + localStorage.getItem("access_token"),
           "Content-Type": "Application/json",
           Accept: "application/json"
         }
       })
         .then(res => res.json())
         .then(data => {
+            if(data.length==0)
+            {
+              console.log("Data Length is not 0");
+              console.log(JSON.stringify(data));
+            }
+            else
+            {
               cohortData.id=data[0].id,
               cohortData.name=data[0].name,
               cohortData.logo=data[0].logo,
-              //console.log(JSON.stringify(cohortData)+JSON.stringify(data[0])),
-              //store.dispatch(fetchCohorts(cohortData)),//store.dispatch.fetchCohorts(cohortData),
-              console.log(this.props.getCohorts(cohortData));
-              //this.setState({cohortData:data[0]});
-              //console.log(this.state.cohortData);
+              console.log("Data Returned Back" + this.props.getCohorts(cohortData));
+            }
         })
         .catch(err => console.log(err));
-    
-       // console.log("Cohort Data-->"+JSON.stringify(this.props.gameData.cohortData));
-    
-      // var cohort = "default";
+
     if (this.props.match) {
       console.log(this.props.match.params);
       cohortData.name = this.props.match.params.cohortName
@@ -127,18 +129,18 @@ class LandingPage extends React.Component {
         Accept: "application/json"
       }
     })
-      .then(response => {
-        if (response.status >= 200 && response.status < 300) {
-          response.json().then(res => {
-            this.props.getGameData(res.gameData);
-            const scores = this.getScores();
-            this.props.getScores(scores);
-          });
-        } else if (response.status === 404) {
-          console.log("Not Found");
-        }
-      })
-      .catch(err => console.log(err));
+    .then(response => {
+      if (response.status >= 200 && response.status < 300) {
+        response.json().then(res => {
+          this.props.getGameData(res.gameData);
+          const scores = this.getScores();
+          this.props.getScores(scores);
+        });
+      } else if (response.status === 404) {
+        console.log("Not Found");
+      }
+    })
+    .catch(err => console.log(err));
 
     //auth0.handleAuthentication();
     if (auth0.isAuthenticated() === true) {
@@ -160,7 +162,7 @@ class LandingPage extends React.Component {
 
       this.props.setAuth(authDetail);
 
-      fetch(config.baseUrl + "/user/findOne/" + authDetail.player_email, {
+      fetch(config.baseUrl + "/user/findOne/" + authDetail.player_email,  {
         method: "get",
         headers: {
           authorization: "Bearer " + auth0.getAccessToken(),
@@ -176,7 +178,7 @@ class LandingPage extends React.Component {
           if (!data.email) {
             console.log("email not found --V");
 
-            fetch(config.baseUrl + "/registerplayer",  {
+            fetch(config.baseUrl + "/registerplayer/"+ cohort_name, {
               method: "post",
               headers: {
                 authorization: "Bearer " + auth0.getAccessToken(),
@@ -210,7 +212,7 @@ class LandingPage extends React.Component {
 
     if (auth0.isAuthenticated() === true) {
       fetch(config.baseUrl + "/users", {
-        method: "post",
+        method: "get",
         headers: {
           "Content-Type": "Application/json",
           Accept: "application/json"
@@ -220,7 +222,6 @@ class LandingPage extends React.Component {
         .then(res => res.json())
         .then(data => {
           console.log(data);
-
           scoreDetail.current = data[0].current;
           scoreDetail.game_id = data[0].game_id;
           scoreDetail.play_id = data[0].id;

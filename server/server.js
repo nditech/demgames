@@ -131,8 +131,10 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
   console.log("GET=   api/v2/game -----api----------------");
 
   let cohort_name = req.params.cohort;
+
+
   console.log(cohort_name);
-  let temp_cohort;
+  let temp_cohort=null;
   let linkedGames;
   let linkedGamesId = [];
 
@@ -143,6 +145,15 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
       },
       raw: true
     });
+
+    if(temp_cohort==null){
+      temp_cohort = await cohort.findOne({
+        where: {
+          name: "First"
+        },
+        raw: true
+      });
+    }
 
     linkedGames = await cohort_game.findAll({
       where: {
@@ -236,7 +247,6 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
        	  }
           level.par_score = eachGame.par_score;
         }
-
 
         var incrementHack = 1;
 
@@ -425,7 +435,7 @@ app.post(
 // @route   GET /users
 // @desc    Get players list from db
 app.get("/api/users", checkJwt, verifyToken, (req, res) => {
-  console.log("POST /users ----api");
+  console.log("get /users ----api");
   players
     .findAll()
     .then(result => {
@@ -438,24 +448,13 @@ app.get("/api/users", checkJwt, verifyToken, (req, res) => {
     });
 });
 
-/*
 
-[
-    check("firstName", "First Name is required")
-      .not()
-      .isEmpty(),
-    check("email", "Please include a valid Email").isEmail(),
-    check("userName", "Username is required").isLength({ min: 3 })
-  ],
-
-
-*/
 app.post(
-  "/api/registerplayer",
+  "/api/registerplayer/:cohort_name",
   verifyToken,
   checkJwt,
   async (req, res) => {
-    console.log("POST /registerplayer  -------api");
+    console.log("POST /registerplayer  -------api" + req.params.cohort_name);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -496,7 +495,7 @@ app.post(
         city: city,
         program: program
       });
-
+     
       return res.send("Player Registered");
     } catch (error) {
       console.error(error.message);
@@ -871,7 +870,7 @@ app.post("/api/updatequestion", checkJwt, verifyToken, async (req, res) => {
           choicestatement: choice.value,
           answer: isAnswer,
           questionid: id
-        });
+        //});
       });
     });
 
@@ -886,25 +885,39 @@ app.post("/api/updatequestion", checkJwt, verifyToken, async (req, res) => {
 });
 
 app.get(
-  "/api/listCohort",
-  checkJwt,
-  // verifyToken,
-  (req, res) => {
-    console.log("GET /listCohort -----api ---called");
+  "/api/listCohort/:cohort_name",    
+  async(req, res) => {
+    console.log("GET /listCohort -----api ---called : "+req.params.cohort_name);
     cohort
-      .findAll()
+      .findAll({
+        where: { name: req.params.cohort_name }
+      })
       .then(result => {
         const list = JSON.stringify(result);
         return res.send(JSON.stringify(result));
-      })
-
+      })      
       .catch(err => {
         console.log(err);
         return res.status(500).send("Server Error");
       });
   }
 );
-
+app.get(
+  "/api/listCohort",    
+  async(req, res) => {
+    console.log("GET /listCohort -----api ---called : ");
+    cohort
+      .findAll()
+      .then(result => {
+        const list = JSON.stringify(result);
+        return res.send(JSON.stringify(result));
+      })      
+      .catch(err => {
+        console.log(err);
+        return res.status(500).send("Server Error");
+      });
+  }
+);
 app.get("/api/listcohort_game", checkJwt, verifyToken, (req, res) => {
   console.log("GET /listcohort_game -----api ---called");
   cohort_game
@@ -1182,6 +1195,8 @@ app.get(
   (req, res) => {
     console.log("GET /list_cohort_leaderBoard -----api ---called");
     let cohort_id = req.params.cohort_id;
+    console.log(cohort_id);
+    
     if (!cohort_id) {
       cohort_id = 1;
     }
@@ -1573,10 +1588,11 @@ app.get("/api/user/get_profile/:email", async (req, res) => {
   if (!email) {
     return res.status(400).send("email not found on request");
   }
+
   let player = await players.findOne({ where: { email: email }, raw: true });
 
   if (player) {
-    console.log("Ply" + JSON.stringify(player));
+    console.log("Player" + JSON.stringify(player));
     let allPlays = await plays.findAll({
       where: { player_id: player.id },
       include: [

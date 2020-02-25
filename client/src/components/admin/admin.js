@@ -25,6 +25,7 @@ import Register from "../Add/Register";
 import classnames from "classnames";
 import Icon from "@material-ui/core/Icon";
 import { config } from "../../settings";
+import PropTypes from "prop-types";
 
 const auth0 = new Auth();
 
@@ -742,11 +743,41 @@ class Admin extends Component {
 }
 
 const mapStateToProps = state => ({
+  player: state.authDetail.authDetail,
   player_given_name: state.authDetail.authDetail.player_given_name,
   player_picture: state.authDetail.authDetail.player_picture,
+  player_family_name:  state.authDetail.authDetail.player_family_name,
+  player_given_name:  state.authDetail.authDetail.player_given_name,
+  player_email:  state.authDetail.authDetail.player_email,
   gameData: state.gameData,
-  cohortData:state.cohortData
-
+  cohortData: state.gameData.cohortData,
+  scoreDetail : state.scoreDetail
 });
 
-export default connect(mapStateToProps)(Admin);
+//Dispatch action to fetch game data and scores.
+const mapDispatchToProps = dispatch => {
+  // console.log(cohortData);
+  // console.log(cohortData+"cohortData");
+   return {
+     getGameData: gameData => dispatch(fetchGameData(gameData)),
+     getScores: scores => dispatch(fetchScores(scores)),
+     getCohorts:cohortData=>dispatch(fetchCohorts(cohortData)),
+     setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
+     clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
+     setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail))
+   };
+ };
+ 
+ Admin.propTypes = {
+   getGameData: PropTypes.func,
+   getScores: PropTypes.func,
+   gameData: PropTypes.object,
+   authDetail: PropTypes.object,
+   setAuth: PropTypes.func,
+   clearAuth: PropTypes.func,
+   scoreDetail: PropTypes.object,
+   cohortData: PropTypes.object,
+   getCohorts: PropTypes.func,
+ };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Admin);

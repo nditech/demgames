@@ -5,6 +5,8 @@ import Auth from "../../Auth";
 import { config } from "../../settings";
 import DialogBox from "../DialogBox/DialogBox";
 import { updatePlayer, deletePlayer } from "./utility";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 //const auth0 = new Auth();
 
@@ -108,7 +110,7 @@ const ListPlayers = () => {
       },
       {
         key: "dateofbirth",
-        type: "text",
+        type: "date",
         title: "Date of Birth",
         value: selectedPlayer.dateofbirth ? selectedPlayer.dateofbirth : "",
         editable: true
@@ -192,12 +194,40 @@ const ListPlayers = () => {
     }
   ];
 
+  const cohortleadershipcolumns = [
+    {
+      name: "ID",
+      selector: "id",
+      sortable: true
+    },
+    {
+      name: "First Name",
+      selector: "firstname",
+      sortable: true
+    },
+    {
+      name: "Last Name",
+      selector: "lastname",
+      sortable: true
+    },
+    {
+      name: "Rank",
+      selector: "rank",
+      sortable: true
+    },
+    {
+      name: "Score",
+      selector: "score",
+      sortable: true
+    }
+  ];
+
   const [playersData, setPlayersData] = useState({
     user: [{}],
     globalleadership: [{}],
     cohortleadership: [{}],
     noOfPlayers: 0,
-    selectedPlayer: { id: "", lastname: "", lastname: "" }
+    selectedPlayer: { id: "", firstname: "", lastname: "" }
   });
   const [cohort, setCohort] = useState(null);
   const [activeTab, setActiveTab] = useState(1);
@@ -267,6 +297,7 @@ const ListPlayers = () => {
         api = config.baseUrl + "/list_leaderBoard";
         break;
       case "cohort":
+        console.log(id);
         api = config.baseUrl + `/list_cohort_leaderBoard/${id ? id : "1"}`;
         break;
       default:
@@ -287,26 +318,29 @@ const ListPlayers = () => {
         if (type === "global") {
           let objArray = [];
           data.map((item, index) => {
-            let obj = {};
-            obj.sl = index + 1;
-            obj.id = item.Player.id;
-            obj.firstname = item.Player.firstname;
-            obj.rank = item.rank;
-            obj.score = item.score;
-            objArray.push(obj);
+              let obj = {};
+              obj.sl = index + 1;
+              obj.id = item.Player.id;
+              obj.firstname = item.Player.firstname;
+              obj.lastname = item.Player.lastname;
+              obj.rank = item.rank;
+              obj.score = item.score;
+              objArray.push(obj);
           });
           setPlayersData({ ...playersData, globalleadership: objArray });
         }
         if (type === "cohort") {
           let objArray = [];
           data.map((item, index) => {
-            let obj = {};
-            obj.sl = index + 1;
-            obj.id = item.Player.id;
-            obj.firstname = item.Player.firstname;
-            obj.rank = item.rank;
-            obj.score = item.score;
-            objArray.push(obj);
+              let obj = {};
+              obj.sl = index + 1;
+              obj.id = item.Player.id;
+              obj.firstname = item.Player.firstname;
+              obj.lastname = item.Player.lastname;
+              obj.rank = item.rank;
+              obj.score = item.score;
+              //obj.cohort = item.cohort;
+              objArray.push(obj);
           });
           setPlayersData({ ...playersData, cohortleadership: objArray });
         }
@@ -328,6 +362,7 @@ const ListPlayers = () => {
     var r = window.confirm(
       "Are you sure you want to delete player with id = " + playerId
     );
+
     if (r === true) {
       deletePlayer(playerId, function() {
         getPlayers();
@@ -446,8 +481,10 @@ const ListPlayers = () => {
           <div
             className={`tab ${activeTab === 3 ? "active" : ""}`}
             onClick={() => {
+              
               setActiveTab(3);
-              handleLeaderShip("cohort");
+              handleLeaderShip("cohort", 2);
+              console.log(JSON.stringify(this.props));
             }}
           >
             Cohort Leadership
@@ -462,35 +499,33 @@ const ListPlayers = () => {
                 <span className="cohort-dropdown-title">Choose Cohort</span>
                 <select
                   className="cohort-dropdown-value"
-                  onChange={e => handleLeaderShip("cohort", e.target.value)}
+                  onChange={(e) => {
+                            console.log(e.target.value  + "Value");
+                            handleLeaderShip("cohort", 2);
+                          } 
+                        }
                 >
-                  {cohort.map(({ id, firstname }) => (
+                  {cohort.map(({ id, name }) => (
                     <option key={id} value={id}>
-                      {firstname}
+                      {name}
                     </option>
                   ))}
                 </select>
+                
               </div>
             )}
             <ListTable
               tableData={{
-                columns:
-                  activeTab === 1
-                    ? columns
-                    : activeTab === 2
-                    ? leadershipcolumns
-                    : leadershipcolumns,
-                confirmMsg: "Are you sure you want to delete the player",
-                hasActionBtns: true,
-                data:
-                  activeTab === 1
-                    ? user
-                    : activeTab === 2
-                    ? globalleadership
-                    : cohortleadership,
-                callbackAfterDelete: getPlayers,
-                deleteHandle: deleteHandle,
-                editHandle: editHandle
+                          columns:
+                            activeTab === 1 ? columns : activeTab === 2 ? leadershipcolumns : cohortleadershipcolumns,
+                            confirmMsg: "Are you sure you want to delete the player",
+                            hasActionBtns: true,
+
+                          data:
+                            activeTab === 1 ? user : activeTab === 2 ? globalleadership : cohortleadership,
+                            callbackAfterDelete: getPlayers,
+                            deleteHandle: deleteHandle,
+                            editHandle: editHandle
               }}
             />
           </div>
@@ -500,4 +535,45 @@ const ListPlayers = () => {
   );
 };
 
-export default ListPlayers;
+//export default ListPlayers;
+
+
+const mapStateToProps = state => ({
+  player: state.authDetail.authDetail,
+  player_given_name: state.authDetail.authDetail.player_given_name,
+  player_picture: state.authDetail.authDetail.player_picture,
+  player_family_name:  state.authDetail.authDetail.player_family_name,
+  player_given_name:  state.authDetail.authDetail.player_given_name,
+  player_email:  state.authDetail.authDetail.player_email,
+  gameData: state.gameData,
+  cohortData: state.gameData.cohortData,
+  scoreDetail : state.scoreDetail
+});
+
+
+const mapDispatchToProps = dispatch => {
+  // console.log(cohortData);
+  // console.log(cohortData+"cohortData");
+   return {
+     getGameData: gameData => dispatch(fetchGameData(gameData)),
+     getScores: scores => dispatch(fetchScores(scores)),
+     getCohorts:cohortData=>dispatch(fetchCohorts(cohortData)),
+     setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
+     clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
+     setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail))
+   };
+ };
+ 
+ ListPlayers.propTypes = {
+   getGameData: PropTypes.func,
+   getScores: PropTypes.func,
+   gameData: PropTypes.object,
+   authDetail: PropTypes.object,
+   setAuth: PropTypes.func,
+   clearAuth: PropTypes.func,
+   scoreDetail: PropTypes.object,
+   cohortData: PropTypes.object,
+   getCohorts: PropTypes.func,
+ };
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListPlayers);

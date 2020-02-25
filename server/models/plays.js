@@ -30,11 +30,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE
         },
         score:{
-            type: DataTypes.DECIMAL(10,0),
+            type: DataTypes.DECIMAL(10,2),
             allowNull: false
         },
         total:{
-            type: DataTypes.DECIMAL(10,0)
+            type: DataTypes.DECIMAL(10, 2)
         },
         program:{
             type: DataTypes.STRING(100)
@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DECIMAL(10,0)
         },
         total_rank:{
-            type: DataTypes.DECIMAL(10.0)
+            type: DataTypes.DECIMAL(10, 2)
         }
 
     }, 

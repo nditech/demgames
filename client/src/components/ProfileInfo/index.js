@@ -10,6 +10,7 @@ import "./styles.scss";
 import PropTypes from "prop-types";
 
 const ProfileInfo = props => {
+  console.log(JSON.stringify(props.cohortData));
   let profileProgressData = null;
   console.log("player email", props.player.player_email);
   let userEmail = props.player.player_email;
@@ -59,7 +60,7 @@ const ProfileInfo = props => {
            playdate: item.playstartdate
          };
        });
-       console.log("fil data", filteredData);
+       console.log("filter data", filteredData);
        setProfileData({ ...profileData, progressData: filteredData });
     };
 
@@ -286,7 +287,7 @@ const mapStateToProps = state => ({
 
 //Dispatch action to fetch game data and scores.
 const mapDispatchToProps = dispatch => {
- // console.log(scoreDetail);
+ // console.log(cohortData);
  // console.log(cohortData+"cohortData");
   return {
     getGameData: gameData => dispatch(fetchGameData(gameData)),

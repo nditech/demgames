@@ -51,12 +51,14 @@ module.exports = (sequelize, DataTypes) => {
           await sequelize.models.Plays.create({
             player_id: player.id,
             game_id: 1,
-            cohort_id: 1,
+            cohort_id: 2,
             score: 0,
             total: 0,
+            program: player.program,
             program_rank: 0,
             total_rank: 0,
-            playstartdate: new Date()
+            playstartdate: new Date(),
+            playdate: new Date()
           });
 
           console.log("player successfully registered  ....");

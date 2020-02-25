@@ -564,6 +564,68 @@ class DialogBox extends Component {
                           </div>
                         );
 
+                        case "date":
+                          return (edit || create) && object.editable ? (
+                            <div key={`date_${index}`} className="dialog-content">
+                              <div className="item-title">{object.title}</div>
+                              <div className="item-separator">:</div>
+                              {object.file? (
+                                <div className="item-value">
+                                  <textarea
+                                    cols="30"
+                                    name={object.title} //object.title
+                                    className={
+                                      object.error
+                                        ? "error dialog-multiline-text"
+                                        : "dialog-multiline-text"
+                                    }
+                                    value={object.date}
+                                    onChange={e =>
+                                      this.valueChange(
+                                        e.target.value,
+                                        object.date
+                                      )
+                                    }
+                                  />
+                                </div>
+                              ) : (
+                                <div
+                                  key={`date_${index}`}
+                                  className="item-value"
+                                >
+                                  <input
+                                    type="date"
+                                    name="object.title"
+                                    value={object.date}
+                                    className={object.error ? "error" : ""}
+                                    onChange={e =>
+                                      this.valueChange(
+                                        e.target.value,
+                                        object.title
+                                      )
+                                    }
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <div
+                              key={`content_view_${index}`}
+                              className="dialog-content"
+                            >
+                              <div className="item-title">{object.title}</div>
+                              <div className="item-separator">:</div>
+                              <div className="item-value">{object.value}</div>
+                            </div>
+                          );   
+
+
+
+
+
+
+
+
                       default:
                         return <div key={`default_${index}`}></div>;
                     }

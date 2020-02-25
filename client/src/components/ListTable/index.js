@@ -137,7 +137,9 @@ const ListTable = ({
           title={title}
           columns={columns}
           data={filteredData ? filteredData : data}
+          onRowClicked={e=>console.log("I am clicked")}
           pagination
+
         />
       </div>
     </div>
