@@ -277,7 +277,12 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         }
 
         if (eachGame.gametype === "scenario") {
+	  try {
           level.total_score = scenarioTotalScore(0, 0, level, 1);
+	  }
+          catch (err) {
+	    level.total_score = 100;
+	  }
         }
 
         modifiedGame.levels.push(level);
