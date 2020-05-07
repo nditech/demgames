@@ -55,7 +55,7 @@ describe('<QuestionsAnsPage/>', () => {
 		wrapper.setState({ selectedAnswer: [ 1 ] });
 		wrapper.instance().checkCorrectAnswer();
 		expect(wrapper.state('answerCorrect')).toBeFalsy();
-		expect(wrapper.state('currentScore')).toBe(-10);
+		expect(wrapper.state('currentScore')).toBe(-0);
 	});
 
 	it('nextQuestion()', () => {

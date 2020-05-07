@@ -11,6 +11,17 @@ import Button from '@material-ui/core/Button';
 import Auth from '../../Auth';
 import { config } from "../../settings";
 import Popup from "reactjs-popup";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import {
+  fetchGameData,
+  fetchScores,
+  fetchAuthDetails,
+  clearAuthDetails,
+  fetchCohorts
+} from "../../pages/LandingPage/actions";
+
+
 const auth0=new Auth();
 
 class ListGames extends Component {
@@ -29,7 +40,8 @@ class ListGames extends Component {
   }
 
   pool(fullUpdate) {
-    const url = config.baseUrl + "/listgames";
+    const idI = 1;//this.props.routeDetail.id;
+    const url = config.baseUrl + "/listgames/:" + this.props.routeDetail.id;
     fetch(url, {
       method: "get",
       headers: {
@@ -40,21 +52,25 @@ class ListGames extends Component {
     })
       .then(res => res.json())
       .then(data => {
+       
         console.log("api data -->", JSON.stringify(data));
+        this.props.setGameData(data);
+        //console.log("Games pooled in"+JSON.stringify(this.props.gameData)+"/n Cohorts :"+JSON.stringify(this.props.routeDetail));
+
         if(fullUpdate)
-        this.setState({
-          games: data,
-          activeGame: data[0].id,
-          activeIndex:0,
-          activeGameDetails: [
-            { key: "Name", value: data[0].caption },
-            { key: "Description", value: data[0].gamedescription },
-            { key: "Game Type", value: data[0].gametype },
-            { key:"Cohort", value: data[0].Cohort_Game.name},
-            { key: "Style", value: data[0].style},
-            {key: "par_score", value: data[0].par_score}
-          ]
-        });
+          this.setState({
+            games: data,
+            activeGame: data[0].id,
+            activeIndex:0,
+            activeGameDetails: [
+              { key: "Name", value: data[0].caption },
+              { key: "Description", value: data[0].gamedescription },
+              { key: "Game Type", value: data[0].gametype },
+              { key:"Cohort", value: data[0].Cohort_Game.name},
+              { key: "Style", value: data[0].style},
+              { key: "par_score", value: data[0].par_score}
+            ]
+          });
         else{
           this.setState({
             games: data
@@ -80,6 +96,7 @@ class ListGames extends Component {
       })
       .catch(err => console.log(err));
   }
+  
   componentDidMount() {
     this.pool(true);
   }
@@ -161,7 +178,8 @@ class ListGames extends Component {
           activeGameDetails: [
             { key: "Name", value: data[this.state.activeIndex].caption },
             { key: "Description", value: data[this.state.activeIndex].gamedescription },
-            { key: "Game Type", value: data[this.state.activeIndex].gametype }
+            { key: "Game Type", value: data[this.state.activeIndex].gametype },
+            { key: "par_score", value: data[this.state.activeIndex].par_score}
           ]
         });
       })
@@ -190,6 +208,7 @@ class ListGames extends Component {
   onCancel = () => {
     this.setState({ showMessage: false });
   };
+
   editGame=(game,id)=>{
     console.log(game,id);
     const data ={
@@ -211,6 +230,18 @@ class ListGames extends Component {
         editable: true
       },
       {
+        key: "gametype",
+        type: "dropdown",
+        title: "Game Type",
+        options: [
+          { id: "", title: "Select Game Type" },
+          { id: "multiplechoice", title: "Multiple Choice" },
+          { id: "scenario", title: "Scenario" }
+        ],
+        value: game[2].value,
+        editable: true
+      },
+      {
         key:"style",
         type:"dropdown",
         title: "Style",
@@ -220,18 +251,19 @@ class ListGames extends Component {
           { id: "blue", title: "Blue" },
           { id: "orange", title: "Orange" }
         ],
-        value: "",
+        value: game[4].value,
         editable: true
       },
       {
         key: "par_score",
         type: "text",
         title: "par_score",
-        value: "",
+        value: game[5].value,
         multiline: true,
         editable: true
       }
     ]};
+  
     this.setState({ data,
       // showMessage:true,
       confirmButtonValue:"UPDATE",
@@ -252,7 +284,15 @@ class ListGames extends Component {
     });
   }
   editGameCb = (data,id) => {
-    const editGameForm={id,caption:data.Title,gamedescription:data.Description, style:data.style, par_score:data.par_score};
+    
+    const editGameForm={
+      id,
+      caption:data.Title,
+      gamedescription:data.Description, 
+      style:data.style, 
+      par_score:data.par_score
+    };
+
     console.log(editGameForm);
     // console.log("game edited. ",data);
     const url = config.baseUrl + '/Updategame';
@@ -385,7 +425,7 @@ class ListGames extends Component {
             >
               Questions
             </div>
-            {this.state.activeTab===1&&this.state.games[this.state.activeIndex]&&<div className='tab-option'>
+            {this.state.activeTab===1 && this.state.games[this.state.activeIndex] && <div className='tab-option'>
               <Icon color="primary" className="tab-icons" style={{color:"#0d9eea",cursor:'pointer'}}>file_copy</Icon>
               <span className="tab-icons-details">
                 <Popup
@@ -413,10 +453,10 @@ class ListGames extends Component {
             </div>}
           </div>
           {this.state.activeTab === 1 && (
-           <Details data={this.state.activeGameDetails} />
+              <Details data={this.state.activeGameDetails} />
           )}
           {this.state.activeTab === 2 && (
-            <ListQuestion activeGameDetails={this.state.activeGameDetails} activeGame={this.state.activeGame} />
+              <ListQuestion activeGameDetails={this.state.activeGameDetails} activeGame={this.state.activeGame} />
           )}
         </div>
       </Fragment>
@@ -431,4 +471,42 @@ class ListGames extends Component {
   }
 }
 
-export default ListGames;
+const mapStateToProps = state => ({
+  authDetail: state.authDetail,
+  gameData: state.gameData,
+  cohortData: state.gameData.cohortData,
+  scoreDetail : state.scoreDetail,
+  routeDetail: state.scoreDetail.routeDetail,
+  selectedPlayer: state.authDetail.selectedPlayer
+});
+
+//Dispatch action to fetch game data and scores.
+const mapDispatchToProps = dispatch => {
+  return {
+    setGameData: gameData => dispatch(fetchGameData(gameData)),
+    getScores: scores => dispatch(fetchScores(scores)),
+    getCohorts:cohortData=>dispatch(fetchCohorts(cohortData)),
+    setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
+    clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
+    setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail)),
+    setPlayers: selectedPlayer=>dispatch(setPlayersDetails(selectedPlayer))
+  };
+};
+
+ListGames.propTypes = {
+  getGameData: PropTypes.func,
+  getScores: PropTypes.func,
+  gameData: PropTypes.object,
+  authDetail: PropTypes.object,
+  setAuth: PropTypes.func,
+  clearAuth: PropTypes.func,
+  scoreDetail: PropTypes.object,
+  cohortData: PropTypes.object,
+  getCohorts: PropTypes.func,
+  setPlayers: PropTypes.func,
+  selectedPlayer: PropTypes.object,
+  routeDetail: PropTypes.object
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListGames);
+//export default ListGames;

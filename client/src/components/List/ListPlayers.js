@@ -7,10 +7,10 @@ import DialogBox from "../DialogBox/DialogBox";
 import { updatePlayer, deletePlayer } from "./utility";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
+import { fetchScoreDetail, updateRouteDetail } from "../../components/ProfileInfo/action";
 //const auth0 = new Auth();
 
-const ListPlayers = () => {
+const ListPlayers = (props) => {
   const [popupState, setPopupState] = useState({
     showMessage: false,
     confirmButtonValue: "Update",
@@ -55,46 +55,6 @@ const ListPlayers = () => {
     id: selectedPlayer.id,
     values: [
       {
-        key: "program",
-        type: "text",
-        title: "Program",
-        value: selectedPlayer.program ? selectedPlayer.program : "",
-        editable: true
-      },
-      {
-        key: "gender",
-        type: "dropdown",
-        title: "Gender",
-        options: [
-          { id: "female", title: "female" },
-          { id: "male", title: "male" },
-          { id: "other", title: "other" }
-        ],
-        editable: true,
-        value: selectedPlayer.gender ? selectedPlayer.gender : "female"
-      },
-      {
-        key: "country",
-        type: "text",
-        title: "Country",
-        value: selectedPlayer.country ? selectedPlayer.country : "",
-        editable: true
-      },
-      {
-        key: "city",
-        type: "text",
-        title: "City",
-        value: selectedPlayer.city ? selectedPlayer.city : "",
-        editable: true
-      },
-      {
-        key: "lastname",
-        type: "text",
-        title: "Last Name",
-        value: selectedPlayer.lastname ? selectedPlayer.lastname : "",
-        editable: true
-      },
-      {
         key: "firstname",
         type: "text",
         title: "First Name",
@@ -109,10 +69,50 @@ const ListPlayers = () => {
         editable: true
       },
       {
+        key: "lastname",
+        type: "text",
+        title: "Last Name",
+        value: selectedPlayer.lastname ? selectedPlayer.lastname : "",
+        editable: true
+      },
+      {
+        key: "gender",
+        type: "dropdown",
+        title: "Gender",
+        options: [
+          { id: "female", title: "Female" },
+          { id: "male", title: "Male" },
+          { id: "other", title: "Other" }
+        ],
+        editable: true,
+        value: selectedPlayer.gender ? selectedPlayer.gender : "Female"
+      },
+      {
         key: "dateofbirth",
         type: "date",
         title: "Date of Birth",
         value: selectedPlayer.dateofbirth ? selectedPlayer.dateofbirth : "",
+        editable: true
+      },
+      {
+        key: "program",
+        type: "text",
+        title: "Program",
+        value: selectedPlayer.program ? selectedPlayer.program : "",
+        editable: true
+      },
+      {
+        key: "city",
+        type: "text",
+        title: "City",
+        value: selectedPlayer.city ? selectedPlayer.city : "",
+        editable: true
+      },
+      {
+        key: "country",
+        type: "text",
+        title: "Country",
+        value: selectedPlayer.country ? selectedPlayer.country : "",
         editable: true
       }
     ]
@@ -229,6 +229,7 @@ const ListPlayers = () => {
     noOfPlayers: 0,
     selectedPlayer: { id: "", firstname: "", lastname: "" }
   });
+  
   const [cohort, setCohort] = useState(null);
   const [activeTab, setActiveTab] = useState(1);
   // const []
@@ -358,7 +359,7 @@ const ListPlayers = () => {
   };
 
   const deleteHandle = playerId => {
-    console.log("cohort id: ", playerId);
+    console.log("player id: ", playerId);
     var r = window.confirm(
       "Are you sure you want to delete player with id = " + playerId
     );
@@ -484,7 +485,7 @@ const ListPlayers = () => {
               
               setActiveTab(3);
               handleLeaderShip("cohort", 2);
-              console.log(JSON.stringify(this.props));
+              console.log(JSON.stringify(props.routeDetail));
             }}
           >
             Cohort Leadership
@@ -535,9 +536,6 @@ const ListPlayers = () => {
   );
 };
 
-//export default ListPlayers;
-
-
 const mapStateToProps = state => ({
   player: state.authDetail.authDetail,
   player_given_name: state.authDetail.authDetail.player_given_name,
@@ -547,7 +545,8 @@ const mapStateToProps = state => ({
   player_email:  state.authDetail.authDetail.player_email,
   gameData: state.gameData,
   cohortData: state.gameData.cohortData,
-  scoreDetail : state.scoreDetail
+  scoreDetail : state.scoreDetail,
+  routeDetail : state.scoreDetail.routeDetail
 });
 
 
@@ -560,7 +559,8 @@ const mapDispatchToProps = dispatch => {
      getCohorts:cohortData=>dispatch(fetchCohorts(cohortData)),
      setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
      clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
-     setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail))
+     setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail)),
+     updateRoute : routeDetail => dispatch(updateRouteDetail(routeDetail))
    };
  };
  
@@ -574,6 +574,8 @@ const mapDispatchToProps = dispatch => {
    scoreDetail: PropTypes.object,
    cohortData: PropTypes.object,
    getCohorts: PropTypes.func,
+   updateRoute: PropTypes.func,
+   routeDetail: PropTypes.object
  };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListPlayers);

@@ -10,6 +10,7 @@ import './styles.scss';
 import '../../commonStyles.scss';
 import PropTypes from 'prop-types';
 import { alignCenter } from './styles';
+
 function Transition(props) {
 	return <Slide direction="up" {...props} />;
 }
@@ -35,8 +36,11 @@ class AnswerInfoPopup extends Component {
 	}
 
 	render() {
-		const { open, handleClose, imageUrl, answerStatus, message, moduleScenario, currentScore, currentQuestionScore } = this.props;
+
+		const { open, handleClose, imageUrl, answerStatus, message, moduleScenario, currentScore, correctAnsWeight, currentQuestionScore } = this.props;
+		console.log(this.props);
 		return (
+			
 			<Dialog
 				className="dialog-content"
 				open={open}
@@ -63,12 +67,14 @@ class AnswerInfoPopup extends Component {
 						{answerStatus ? (
 							<span>
 								<span>earn</span>
-								<span className="correct-points"> {/*moduleScenario ? currentQuestionScore :*/ currentQuestionScore} </span>
+								<span className="correct-points"> {moduleScenario ? currentQuestionScore : currentQuestionScore} </span>
 							</span>
 						) : (
 							<span>
-								<span>lose</span>
-								<span className="wrong-points"> -10</span>
+								<span>miss</span>
+						<span className="wrong-points"> {correctAnsWeight//currentQuestionScore-10
+						}
+						</span>
 							</span>
 						)}{' '}
 						<span>points.</span>{' '}
@@ -95,6 +101,7 @@ AnswerInfoPopup.propTypes = {
 	open: PropTypes.bool,
 	handleClose: PropTypes.func,
 	imageUrl: PropTypes.string,
+	correctAnsWeight:PropTypes.number,
 	answerStatus: PropTypes.bool,
 	message: PropTypes.string,
 	showRightAnswer: PropTypes.func,

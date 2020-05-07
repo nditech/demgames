@@ -200,7 +200,8 @@ export class ScenarioQuesAns extends React.Component {
                         }/${totalScore}.`,
                     messageTwo: parScoreStatus
                       ? `You are in top 100 in the rank.`
-                      : `You need to earn ${parScore}/${totalScore} for Level ${level}.`,
+                      //: `You need to earn ${parScore}/${totalScore} for Level ${level}.`,
+                      : `You need to earn ${(parScores/100*totalScore)} or ${parScores}% out of 100% (${totalScore}) for Level ${level}.`,
                     buttonMessage: !parScoreStatus
                       ? `Retry Level ${level}`
                       : `Continue Level ${level + 1}`

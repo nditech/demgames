@@ -38,8 +38,42 @@ export default class Auth {
     });
   }
 
+  getCohortSelected() {
+    
+    let cohort_name = (window.location.pathname.split("/landingpage")[0].split("/")[1]);
+    console.log("Cohort Name from Auth" + cohort_name);
+/*
+    const url = config.baseUrl + "/listCohort/";
+    fetch(url + cohort_name, {
+            //fetch(config.baseUrl + "/user/findOne/" + authDetail.player_email,  {
+            method: "get",
+            headers: {
+                // authorization: "Bearer " + localStorage.getItem("access_token"),
+                "Content-Type": "Application/json",
+                Accept: "application/json"
+            }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.length == 0) {
+            console.log("Data Length is not 0");
+            console.log(JSON.stringify(data));
+        } else {
+                cohortData.id = data[0].id,
+                cohortData.name = data[0].name,
+                cohortData.logo = data[0].logo,
+                
+                console.log("Data Returned Back" + this.props.getCohorts(cohortData));
+        }
+    })
+    .catch(err => console.log(err));
+  */
+  }
+
   setCohort(cohort) {
+    
     if(localStorage.getItem("cohort_address") !== "/landingpage") {
+      //this.getCohortSelected();
       localStorage.setItem("cohort_address", cohort);
     }
   }
@@ -69,9 +103,8 @@ export default class Auth {
     localStorage.removeItem("access_token");
     localStorage.removeItem("id_token");
     localStorage.removeItem("expires_at");
-    // Remove isLoggedIn flag from localStorage
     localStorage.removeItem("isLoggedIn");
-    location.pathname = LOGIN_FAILURE_PAGE;
+    //location.pathname = LOGIN_FAILURE_PAGE;
   }
 
   signup() {

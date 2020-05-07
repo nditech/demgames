@@ -1,6 +1,7 @@
 // Get all the choices related to a question
 import { config } from "../../settings";
 import { ToastContainer, toast } from "react-toastify";
+toast.configure();
 
 export const getChoices = async (
   questionId,
@@ -251,12 +252,12 @@ export const updatePlayer = (data, id, callbackFunction) => {
       id: id,
       gender: data.gender,
       lastname: data.lastname,
+      middlename:data.middlename,
       firstname: data.firstname,
       country: data.country,
       city: data.city,
       email: data.email,
-      dateofbirth: data.dateofbirth,
-      username: data.username
+      dateofbirth: data.dateofbirth
     })
   })
     .then(res => res.json())

@@ -4,16 +4,53 @@ import profileUrl from "../../images/profile.png";
 import { connect } from "react-redux";
 import moment from "moment";
 import { config } from "../../settings";
-import { ListPlayers } from "./../List/ListPlayers";
-import { updatePlayer } from "../List//utility";
+import { ToastContainer, toast } from "react-toastify";
+import { updatePlayer } from "../List/utility";
 import "./styles.scss";
 import PropTypes from "prop-types";
+import DialogBox from "../DialogBox/DialogBox";
 
-const ProfileInfo = props => {
-  console.log(JSON.stringify(props.cohortData));
-  let profileProgressData = null;
-  console.log("player email", props.player.player_email);
-  let userEmail = props.player.player_email;
+import {
+  fetchGameData,
+  fetchScores,
+  fetchAuthDetails,
+  clearAuthDetails,
+  fetchCohorts
+} from "./action";
+import { fetchScoreDetail, updateRouteDetail, setPlayersDetails } from "../../pages/LandingPage/actions";
+
+
+const ProfileInfo = (props) => {
+  
+  const [popupState, setPopupState] = useState({
+    showMessage: false,
+    confirmButtonValue: "Update",
+    messageTitle: "",
+    messageDescription: "",
+    onConfirm: "",
+    isConfirmation: true,
+    title: "Player detail",
+    messageBox: false,
+    edit: false,
+    create: false,
+    onDelete: null,
+    removeMessage: false
+  });
+
+  const {
+    showMessage,
+    confirmButtonValue,
+    messageTitle,
+    messageDescription,
+    onConfirm,
+    isConfirmation,
+    title,
+    messageBox,
+    edit,
+    create,
+    onDelete,
+    removeMessage
+  } = popupState;
 
   const [profileData, setProfileData] = useState({
     progressData: [],
@@ -31,6 +68,91 @@ const ProfileInfo = props => {
     players
   } = profileData;
 
+
+  const [playerData, setPlayerData] = useState({
+    player: [{}],
+    selectedPlayer: props.selectedPlayer
+  });
+
+  let profileProgressData = null;
+  let userEmail = props.player.player_email;
+
+  const { player, selectedPlayer } = playerData;
+
+  console.log("player email----", props.player.player_email);
+  console.log(JSON.stringify(props.cohortData));
+  
+  const editPlayerFields = {
+    id: props.selectedPlayer.id,
+    values: [
+      {
+        key: "firstname",
+        type: "text",
+        title: "First Name",
+        value: props.selectedPlayer.firstname?props.selectedPlayer.firstname:"",
+        editable: true
+      },
+      {
+        key: "middlename",
+        type: "text",
+        title: "Middle Name",
+        value: props.selectedPlayer.middlename?props.selectedPlayer.middlename:"",
+        editable: true
+      },
+      {
+        key: "lastname",
+        type: "text",
+        title: "Last Name",
+        value: props.selectedPlayer.lastname?props.selectedPlayer.lastname:"",
+        editable: true
+      },
+      {
+        key: "gender",
+        type: "dropdown",
+        title: "Gender",
+        options: [
+          { id: "female", title: "Female" },
+          { id: "male", title: "Male" },
+          { id: "other", title: "Other" }
+        ],
+        editable: true,
+        value: props.selectedPlayer.gender? props.selectedPlayer.gender:"Female",
+      },
+      {
+        key: "dateofbirth",
+        type: "date",
+        title: "Date of Birth",
+        value: props.selectedPlayer.dateOfBirth? props.selectedPlayer.dateofbirth: props.selectedPlayer.dateofbirth,
+        editable: true
+      },
+      {
+        key: "program",
+        type: "text",
+        title: "Program",
+        value: props.selectedPlayer.program? props.selectedPlayer.program:"",
+        editable: true
+      },
+      {
+        key: "city",
+        type: "text",
+        title: "City",
+        value: props.selectedPlayer.city? props.selectedPlayer.city:"",
+        editable: true
+      },      
+      {
+        key: "country",
+        type: "text",
+        title: "Country",
+        value: props.selectedPlayer.country? props.selectedPlayer.country:"",
+        editable: true
+      }
+    ]
+  };
+
+  const onCancel = () => {
+      setPopupState({...popupState, showMessage: false });
+  };
+
   const getPlayerProfile = async (email, setPlayerProgress) => {
     const url = config.baseUrl + `/user/get_profile/${email}`;
     await fetch(url, {
@@ -43,26 +165,32 @@ const ProfileInfo = props => {
     })
       .then(res => res.json())
       .then(data => {
+        console.log("Complete profile data of P-->", email, JSON.stringify(data));
+        //selectedPlayer=data.Player;
+        console.log("Complete player data of P from store-->", email, JSON.stringify(props.authDetail))
         profileProgressData = data;
+        
         console.log("profile data of P-->", email, JSON.stringify(data));
-        setPlayerProgress(data);
+        setPlayerProgress;
       })
       .catch(err => console.log(err));
   };
 
     const setPlayerProgress = data => {
-       let filteredData = data.map(item => {
+      console.log("Data from SeT Player "+data); 
+      let filteredData = data.map(item => {
          return {
            gameName: item["Game.caption"],
            score: item.score,
            cohort: item["Cohort.name"],
            cohort_id: item["Cohort.id"],
-           playdate: item.playstartdate
+           playdate: item.playstartdate,
+           level:item.difficulty_level
          };
        });
        console.log("filter data", filteredData);
        setProfileData({ ...profileData, progressData: filteredData });
-    };
+  };
 
   const getCohort = async userEmail => {
     const url = config.baseUrl + `/listCohort`;
@@ -91,7 +219,8 @@ const ProfileInfo = props => {
           score: item.score,
           cohort: item["Cohort.name"],
           cohort_id: item["Cohort.id"],
-          playdate: item.playstartdate
+          playdate: item.playstartdate,
+          level:item.difficulty_level
         };
       });
     }
@@ -130,38 +259,95 @@ const ProfileInfo = props => {
   };
 
   useEffect(() => {
+    
     getPlayerProfile(userEmail);
     getCohort(userEmail);
+    //getPlayers(userEmail);
   }, []);
 
   console.log("progress data", progressData);
-
-  const editHandle = id => {
-    //alert("inside edit handle and the player id is -- " + id);
-    alert(JSON.stringify(props.player));
-    const selected_player = players.find(item => {
-      return item.id === id;
+  
+  const editPlayer = (data = "", id) => {
+    console.log("Dialogbox data", id, data);
+    console.log("Dialogbox date"+ props.selectedPlayer.dateofbirth + data.dateofbirth);
+    updatePlayer(data, id, function() {
+      setPopupState({ ...popupState, showMessage: false });
+      //setPlayerData({ ...playerData, selectedPlayer: selectedPlayer });
+      getPlayers(props.selectedPlayer.email);
     });
+   
+  };
 
-    setPlayerData({ ...playerData, selectedPlayer: selected_player });
+  const callEditProfile = ()=>  {
+    //const textPlayer = [{}];
+    const selected_player = player.find(item => {
+        return item.email === props.player.player_email;
+    });
+  
+    setPlayerData({...playerData, selectedPlayer: props.selectedPlayer });
     setPopupState({
-      showMessage: true,
-      confirmButtonValue: "Update",
-      messageTitle: "",
-      messageDescription: "",
-      onConfirm: editPlayer,
-      isConfirmation: true,
-      title: "Player detail",
-      messageBox: false,
-      edit: true,
-      create: false,
-      onDelete: null,
-      removeMessage: false
+        showMessage: true,
+        confirmButtonValue: "Update",
+        messageTitle: "Updating the player title",
+        messageDescription: "Updating the player",
+        onConfirm: editPlayer,
+        isConfirmation: true,
+        title: "Player detail",
+        messageBox: false,
+        edit: true,
+        create: false,
+        onDelete: null,
+        removeMessage: false
     });
   };
 
+
+  const getPlayers = (email) => {
+    // console.log(this.props.auth);
+    //const url = config.baseUrl + "/users";
+    fetch(config.baseUrl + "/user/findOne/" + email, {
+      method: "get",
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("access_token"),
+          "Content-Type": "Application/json",
+          Accept: "application/json"
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log("user data from api below --V");
+      console.log(data);
+      if (data.email) {
+        /*  setPlayersData({...playersData, user: data,noOfPlayers: numberOfPlayers }); */
+        props.setPlayers(data);
+      }
+    })
+    .catch(err => console.log(err));
+    console.log("Pooled data"+JSON.stringify(props.selectedPlayer));
+  };
+  
+
   return (
     <Fragment>
+      <
+          DialogBox
+            confirmButtonValue={confirmButtonValue}
+            showMessage={showMessage}
+            messageTitle={messageTitle}
+            messageDescription={messageDescription}
+            onConfirm={onConfirm}
+            isConfirmation={isConfirmation}
+            onCancel={onCancel}
+            title={title}
+            data={editPlayerFields}
+            messageBox={messageBox}
+            edit={edit}
+            create={create}
+            onDelete={onDelete}
+            removeMessage={removeMessage}
+            hasChoices={false}
+      />
+
       <div className="profile-page">
         <div className="container profile-content">
           <div className="row">
@@ -172,25 +358,24 @@ const ProfileInfo = props => {
                   src={`${props.player.player_picture || profileUrl}`}
                 />
                 <div className="card-body">
-                  <h4 className="card-title text-primary">{`${props.player
-                    .player_given_name || ""} ${props.player
-                    .player_family_name || ""}`}</h4>
-                  <p className="card-text mb-1 mt-3 text-secondary">
-                    {"Email : "}
-                    {props.player.player_email || ""}
-                  </p>
-                  <p className="card-text mt-0 text-secondary">
-                    {"User Name : "}
-                    {props.player.player_username || ""}
-                  </p>
-
-                  <Link
-                    disabled={true}
-                    className="btn btn-primary w-100 mt-3"
-                    to={<ListPlayers />}
-                  >
-                    Edit Profiles
-                  </Link>
+                  <div>
+                    <h4 className="card-title text-primary">{`${props.player
+                      .player_given_name || ""} ${props.player
+                      .player_family_name || ""}`}</h4>
+                    <p className="card-text mb-1 mt-3 text-secondary">
+                      {"Email : "}
+                      {props.player.player_email || ""}
+                    </p>
+                    <p className="card-text mt-0 text-secondary">
+                      {"User Name : "}
+                      {props.player.player_username || ""}
+                    </p>
+                  </div>    
+                  <div className = "float-center" onClick = {callEditProfile}>
+                      <button className = "btn btn-info btn-sm" >
+                        Edit Profiles
+                      </button>
+                  </div>                   
                 </div>
               </div>
             </div>
@@ -237,10 +422,11 @@ const ProfileInfo = props => {
                       <table className="table table-striped">
                         <thead>
                           <tr>
-                            <th>Game</th>
-                            <th>Score</th>
                             <th>Cohort</th>
-                            <th>Play Date</th>
+                            <th>Game</th>
+                            <th>Diff. Level</th>                            
+                            <th>Max. Score</th>
+                            <th>Play Date</th>                            
                           </tr>
                         </thead>
                         <tbody>
@@ -248,14 +434,16 @@ const ProfileInfo = props => {
                             progressData.map((item, index) => {
                               return (
                                 <tr key={index}>
-                                  <td>{item.gameName}</td>
-                                  <td>{item.score}</td>
                                   <td>{item.cohort}</td>
+                                  <td>{item.gameName}</td>
+                                  <td>{item.level}</td>
+                                  <td>{item.score}</td>
                                   <td>
                                     {moment(item.playdate).format(
-                                      "Do MMM YYYY, h:mm:ss a"
+                                      "Do MMM YYYY"
                                     )}
                                   </td>
+                                  
                                 </tr>
                               );
                             })}
@@ -280,22 +468,23 @@ const mapStateToProps = state => ({
   player_family_name:  state.authDetail.authDetail.player_family_name,
   player_given_name:  state.authDetail.authDetail.player_given_name,
   player_email:  state.authDetail.authDetail.player_email,
+  authDetail: state.authDetail,
   gameData: state.gameData,
   cohortData: state.gameData.cohortData,
-  scoreDetail : state.scoreDetail
+  scoreDetail : state.scoreDetail,
+  selectedPlayer: state.authDetail.selectedPlayer
 });
 
 //Dispatch action to fetch game data and scores.
 const mapDispatchToProps = dispatch => {
- // console.log(cohortData);
- // console.log(cohortData+"cohortData");
   return {
     getGameData: gameData => dispatch(fetchGameData(gameData)),
     getScores: scores => dispatch(fetchScores(scores)),
     getCohorts:cohortData=>dispatch(fetchCohorts(cohortData)),
     setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
     clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
-    setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail))
+    setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail)),
+    setPlayers: selectedPlayer=>dispatch(setPlayersDetails(selectedPlayer))
   };
 };
 
@@ -309,9 +498,8 @@ ProfileInfo.propTypes = {
   scoreDetail: PropTypes.object,
   cohortData: PropTypes.object,
   getCohorts: PropTypes.func,
+  setPlayers: PropTypes.func,
+  selectedPlayer: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
-//export default connect(mapStateToProps, null)(ProfileInfo);
-
-

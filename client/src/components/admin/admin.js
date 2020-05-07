@@ -26,6 +26,7 @@ import classnames from "classnames";
 import Icon from "@material-ui/core/Icon";
 import { config } from "../../settings";
 import PropTypes from "prop-types";
+import { fetchScoreDetail, updateRouteDetail } from "../../components/ProfileInfo/action";
 
 const auth0 = new Auth();
 
@@ -691,6 +692,7 @@ class Admin extends Component {
                       <Nav pills className="float-right pill-tabs">
                         <NavItem>
                           <NavLink
+                            exact
                             className={classnames({
                               active: this.state.activeChoiceTab === "list"
                             })}
@@ -704,6 +706,7 @@ class Admin extends Component {
                         </NavItem>
                         <NavItem>
                           <NavLink
+                            exact
                             className={classnames({
                               active: this.state.activeChoiceTab === "addNew"
                             })}
@@ -751,7 +754,8 @@ const mapStateToProps = state => ({
   player_email:  state.authDetail.authDetail.player_email,
   gameData: state.gameData,
   cohortData: state.gameData.cohortData,
-  scoreDetail : state.scoreDetail
+  scoreDetail : state.scoreDetail,
+  routeDetail : state.scoreDetail.routeDetail
 });
 
 //Dispatch action to fetch game data and scores.
@@ -764,20 +768,23 @@ const mapDispatchToProps = dispatch => {
      getCohorts:cohortData=>dispatch(fetchCohorts(cohortData)),
      setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
      clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
-     setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail))
+     setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail)),
+     updateRoute: routeDetail => dispatch(updateRouteDetail(routeDetail))
    };
  };
  
  Admin.propTypes = {
-   getGameData: PropTypes.func,
-   getScores: PropTypes.func,
-   gameData: PropTypes.object,
-   authDetail: PropTypes.object,
-   setAuth: PropTypes.func,
-   clearAuth: PropTypes.func,
-   scoreDetail: PropTypes.object,
-   cohortData: PropTypes.object,
-   getCohorts: PropTypes.func,
+    getGameData: PropTypes.func,
+    getScores: PropTypes.func,
+    gameData: PropTypes.object,
+    authDetail: PropTypes.object,
+    setAuth: PropTypes.func,
+    clearAuth: PropTypes.func,
+    scoreDetail: PropTypes.object,
+    cohortData: PropTypes.object,
+    getCohorts: PropTypes.func,
+    routeDetail: PropTypes.object,
+    updateRoute: PropTypes.func
  };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);

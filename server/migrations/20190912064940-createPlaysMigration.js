@@ -60,8 +60,10 @@ module.exports = {
       },
       total_rank:{
           type: Sequelize.DECIMAL(10.0)
+      },
+      difficulty_level:{
+          type: Sequelize.INTEGER
       }
-
   }, 
   {
       freezeTableName: true,

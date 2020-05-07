@@ -26,16 +26,12 @@ function loadFromLocalStorage() {
 
 export const persistedState = loadFromLocalStorage();
 
-
 const initialState = {};
-
 const middleware = [thunk];
-
 const store = createStore(
     rootReducer,
     persistedState,
     composeWithDevTools(applyMiddleware(...middleware))
 );
 store.subscribe(() => saveToLocalStorage(store.getState()));
-
 export default store;

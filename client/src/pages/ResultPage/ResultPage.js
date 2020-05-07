@@ -8,6 +8,7 @@ import { da } from 'date-fns/locale';
 import Auth from '../../Auth';
 
 const auth0=new Auth();
+
 class ResultPage extends Component {
 	constructor(props) {
 		super(props);
@@ -19,15 +20,13 @@ class ResultPage extends Component {
 	};
 
 	componentDidMount(){
-		
 		console.log(JSON.stringify(this.props.location.state.finishedScore));
-		
 		console.log(this.props.match.params.moduleId);
-
 		console.log(this.props.gameData.gameData);
 
 		var game_id = this.props.location.state.gameId;
-		var cohort_id = 1;
+		var cohort_id = this.props.routeDetail.id;
+		
 		var temp_cohort = auth0.getCohort();
 
 		temp_cohort = temp_cohort.split("/")[1];
@@ -47,15 +46,18 @@ class ResultPage extends Component {
 			else if(game.id === this.props.location.state.moduleId){
                                 //game_id = game.game_id;
                                 cohort_id = game.cohort_id ? game.cohort_id:1;
-                                console.log(game.game_id + "  ----  " + game.id);
-                                console.log("cohort _ id " + game.cohort_id)
+                                console.log("Game.game_id "+game.game_id + "  ----  " + game.id);
+								console.log("Cohort _ id " + JSON.stringify(this.props.routeDetail.id));
+								console.log("Player email:"+ this.props.player_email);
+								console.log("Level:"+ this.props.location.state.level);
                                 continue;
                         }
 
 		}
-                console.log("Finished Score: ", this.props.location.state.finishedScore);
+            console.log("Game: ", this.props.location.state.finishedScore);
 
 		fetch(config.baseUrl + '/updatePlay',{
+			
 			method: 'post',
 			headers: {
 					authorization: "Bearer "+auth0.getAccessToken(),
@@ -63,14 +65,16 @@ class ResultPage extends Component {
 					"Accept":"application/json"
 			},
 			body:JSON.stringify({
-				player_email:this.props.player_email,
+				email:this.props.player_email,
 				game_id:game_id,
-				cohort_id:cohort_id,
-				score:this.props.location.state.finishedScore
+				cohort_id:this.props.routeDetail.id,
+				score:this.props.location.state.finishedScore,
+				difficulty_level:this.props.location.state.level
 			})
 		})
 		.then((res) => {
-			 res.json();
+			console.log(this.props.player_email + game_id+ cohort_id +this.props.location.state.finishedScore); 
+			res.json(); 
 		})
 		.then((data) => {
 			console.log(data);
@@ -100,9 +104,9 @@ class ResultPage extends Component {
 		} else {
 			totalLevels= this.props.gameData.gameData[moduleId - 1].levels.length;
 		}
-		const backToLevelUrl = `/module/${moduleScenario?'scenario/' + gameId:moduleId}/levels`;
-		const retryLevelUrl = `/module/${moduleScenario ? 'scenario/' + gameId:moduleId}/level/${level}/questions`;
-		const nextLevelUrl = `/module/${moduleScenario ? 'scenario/' + gameId:moduleId}/level/${level + 1}/questions`;
+		const backToLevelUrl = `/${this.props.routeDetail.name}/module/${moduleScenario?'scenario/' + gameId:moduleId}/levels`;
+		const retryLevelUrl = `/${this.props.routeDetail.name}/module/${moduleScenario ? 'scenario/' + gameId:moduleId}/level/${level}/questions`;
+		const nextLevelUrl = `/${this.props.routeDetail.name}/module/${moduleScenario ? 'scenario/' + gameId:moduleId}/level/${level + 1}/questions`;
 		return (
 			<div className="result-page-container">
 				<div>
@@ -150,16 +154,16 @@ const mapStateToProps = (state) => {
 		player_given_name:state.authDetail.authDetail.player_given_name,
 		player_picture:state.authDetail.authDetail.player_picture,
 		player_email:state.authDetail.authDetail.player_email,
-		gameData: state.gameData 
+		gameData: state.gameData,
+		routeDetail: state.scoreDetail.routeDetail
 	};
 };
 
 ResultPage.propTypes = {
 	getScores: PropTypes.func,
 	location: PropTypes.object,
-	gameData: PropTypes.object
+	gameData: PropTypes.object,
+	routeDetail: PropTypes.object
 };
 
 export default connect(mapStateToProps, null)(ResultPage);
-
-// export default ResultPage;

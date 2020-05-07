@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       freezeTableName: true
     }
   );
+
   cohort.associate = function(models) {
     // associations can be defined here
   };

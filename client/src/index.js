@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Route, BrowserRouter as Router, withRouter } from "react-router-dom";
+import { Route, Switch, BrowserRouter as Router, withRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
@@ -29,63 +29,101 @@ import UpdateGame from "./components/Update/UpdateGame";
 import UpdateQuestion from "./components/Update/UpdateQuestion";
 import UpdateChoice from "./components/Update/UpdateChoice";
 import ProfileHeader from "./components/ProfileHeader/ProfileHeader";
+import { connect } from 'react-redux'
+import PropTypes from "prop-types";
+
+
 const auth0 = new Auth();
-const Routes = () => (
-  <>
-    <Router>
+
+const Routes = ({store} ) => (
+  <Router>
+       <Switch>
       <>
         <ProfileHeader />
-        <Route path="/" exact component={App} />
-        <Route path="/:cohortName/landingpage" exact component={LandingPage} />
-        <Route path="/landingpage" exact component={LandingPage} />
+
         <Route
-          path="/module/:moduleId/level/:levelId/questions/"
           exact
+          path={`/:${store.getState().scoreDetail.routeDetail.name}/module/:moduleId/level/:levelId/questions/`}
           component={QuestionsAnsPage}
         />
-        <Route path="/module/:moduleId/levels" exact component={LevelsPage} />
+        
         <Route
-          path="/module/scenario/:moduleId/levels"
           exact
+          path={`/:${store.getState().scoreDetail.routeDetail.name}/module/scenario/:moduleId/levels`}
           component={ScenarioLevels}
         />
-        <Route
-          path="/module/scenario/:moduleId/level/:levelId/questions"
-          exact
-          component={ScenarioQuesAns}
-        />
-        <Route path="/results" exact component={ResultPage} />
+        
+        <Route 
+          exact 
+          path={`/:${store.getState().scoreDetail.routeDetail.name}/module/:moduleId/levels`} 
+          component={LevelsPage} 
+	      />
+        <Route path={`/:${store.getState().scoreDetail.routeDetail.name}/info`} exact component={CorrectAnswerInfo} />
+        
+        
+
+        <Route  exact path={`/:${store.getState().scoreDetail.routeDetail.name}/profile`} component={ProfileInfo} />
+
+        <Route exact path={`/:${store.getState().scoreDetail.routeDetail.name}/landingpage`} component={LandingPage} />
+        <Route exact path={`/:${store.getState().scoreDetail.routeDetail.name}/result`} component={ResultPage} />
         <Route path="/callback" exact component={Callback} />
-        <Route path="/info" exact component={CorrectAnswerInfo} />
-        <Route path="/profile" exact component={ProfileInfo} />
-        <Route path="/admin" exact component={ 
-           auth0.getProfile() &&
-           auth0.getProfile()["http://demGames.net/roles"] &&
-           auth0.getProfile()["http://demGames.net/roles"][0] === "admin" ? admin:LandingPage
-          
-        } />
-        <Route path="/UpdatePlayer" exact component={UpdatePlayer} />
-        <Route path="/registerplayer" exact component={Register} />
-        <Route path="/addgame" exact component={AddGame} />
-        <Route path="/addquestion" exact component={AddQuestion} />
-        {/* <Route path="/addchoices" exact component={AddChoices}/> */}
-        <Route path="/removeplayer" exact component={RemovePlayer} />
-        <Route path="/removequestion" exact component={RemovePlayer} />
-        <Route path="/updatequestion" exact component={UpdatePlayer} />
-        <Route path="/updategame" exact component={UpdateGame} />
-        <Route path="/updatechoice" exact component={UpdateChoice} />
+        <Route 
+          exact 
+          path={`/:${store.getState().scoreDetail.routeDetail.name}/admin`} component={ 
+            auth0.getProfile() &&
+            auth0.getProfile()["http://demGames.net/roles"] &&
+            auth0.getProfile()["http://demGames.net/roles"][0] === "admin" ? admin:LandingPage
+          } 
+        />
+        <Route exact path={`/:${store.getState().scoreDetail.routeDetail.name}`} component={LandingPage} /> 
+              
+        <Route exact path="/" component={App} />
+        
       </>
-    </Router>
-  </>
+    </Switch>
+  </Router>
 );
+
+const mapStateToProps = store => ({
+    cohortData: store.gameData.cohortData,
+    scoreDetail : store.scoreDetail
+});
+
+//Dispatch action to fetch game data and scores.
+const mapDispatchToProps = dispatch => {
+  return {
+    getGameData: gameData => dispatch(fetchGameData(gameData)),
+    getScores: scores => dispatch(fetchScores(scores)),
+    getCohorts:cohortData=>dispatch(fetchCohorts(cohortData)),
+    setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
+
+    setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail))
+  };
+};
+
+Routes.propTypes = {
+    getGameData: PropTypes.func,
+    getScores: PropTypes.func,
+    gameData: PropTypes.object,
+    authDetail: PropTypes.object,   
+    scoreDetail: PropTypes.object,
+    cohortData: PropTypes.object,
+    getCohorts: PropTypes.func,
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Routes);
+
+
 
 ReactDOM.render(
   <Provider store={store}>
-    <Routes />
+    <Routes store={store}/>
   </Provider>,
-
   document.getElementById("root")
 );
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -63,14 +63,16 @@ export class QuestionsAnsPage extends React.Component {
 
     if (JSON.stringify(selectedValue) === JSON.stringify(correctAns)) {
       this.setState(prevState => ({
-        answerCorrect: true,
-	currentQuestionScore: correctAnsWeightNum,
-        currentScore: prevState.currentScore + correctAnsWeightNum
-      }));
+          answerCorrect: true,
+	        currentQuestionScore: correctAnsWeightNum,
+          currentScore: parseInt(prevState.currentScore) + correctAnsWeightNum
+        })
+      );
+
     } else {
       this.setState(prevState => ({
         answerCorrect: false,
-        currentScore: prevState.currentScore - 10
+        currentScore: prevState.currentScore - 0
       }));
     }
   };
@@ -115,6 +117,7 @@ export class QuestionsAnsPage extends React.Component {
     let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1]
       .questions;
     var totalQuestion = 0;
+
     if (questions && questions.length > 0) {
       totalQuestion = questions.length;
       var correctAns =
@@ -133,8 +136,13 @@ export class QuestionsAnsPage extends React.Component {
     let questions = this.props.gameData.gameData[moduleId - 1].levels[level - 1]
       .questions;
     var totalQuestion = 0;
+    
+    console.log("Questions"+JSON.stringify(this.props));
+
     if (questions && questions.length > 0) {
+     
       totalQuestion = questions.length;
+     
       var correctAnsWeight =
         questionId <= totalQuestion
           ? parseInt(questions[questionId - 1].weight)
@@ -195,9 +203,14 @@ export class QuestionsAnsPage extends React.Component {
       .questions;
     const { questionId } = this.state;
     let correctAnsLength = questions[questionId - 1].correct_answer.length;
+
     if (answerClicked === correctAnsLength) {
       this.setState({ answerClick: true });
     }
+    
+    const totalScore = this.props.gameData.gameData[moduleId - 1].levels[
+        level - 1
+      ].total_score;
     this.checkLevelUnlock();
   };
 
@@ -226,12 +239,16 @@ export class QuestionsAnsPage extends React.Component {
   checkParScoreStatus = () => {
     let moduleId = parseInt(this.props.match.params.moduleId);
     let level = parseInt(this.props.match.params.levelId);
+    const totalScore = this.props.gameData.gameData[moduleId - 1].levels[
+      level - 1
+    ].total_score;
     const { currentScore } = this.state;
     const parScores = this.getParScores();
     let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
     //let prevScore = currentLevelNewScores[level - 1];
-    console.log("The par score is " + parScores);
-    if (currentScore < parScores) {
+    console.log("The par score, current score and totalScore are " + parScores+currentScore+totalScore);
+    if ((currentScore/totalScore*100) < (parScores/100)) {
+    //if ((currentScore) < (parScores)) {
       this.setState({ parScoreStatus: false });
     } else {
       this.setState({ parScoreStatus: true });
@@ -271,12 +288,23 @@ export class QuestionsAnsPage extends React.Component {
   };
 
   checkLevelUnlock = () => {
+    let moduleId = parseInt(this.props.match.params.moduleId);
     let level = parseInt(this.props.match.params.levelId);
+
+    console.log(level);
     if (level > 1) {
       const parScores = this.getParScores();
       const scores = this.getScores();
-      const score = scores[level - 2];
-      return score >= parScores;
+      const totalScore = this.props.gameData.gameData[moduleId - 1].levels[
+        level - 2
+      ].total_score;
+      
+      const score = scores[(level) - 2];
+      
+      console.log("Score is "+score + " Par scores"+ parScores + " Level "+ level+"Total score"+totalScore);
+      //return ((score/totalScore*100) >= (parScores/totalScore));
+      return (score*100/totalScore >= parScores/100);
+    
     }
     else {
       return true;
@@ -333,6 +361,7 @@ export class QuestionsAnsPage extends React.Component {
 
     let moduleId = parseInt(this.props.match.params.moduleId);
     let level = parseInt(this.props.match.params.levelId);
+    const correctAnsWeight=this.getCorrectAnswerWeight();
     const totalQuestion = this.getTotalQuestions();
     const correctAns = this.getCorrectAnswer();
     const ansLength = correctAns !== null && parseInt(correctAns.length);
@@ -353,12 +382,14 @@ export class QuestionsAnsPage extends React.Component {
       <Fragment>
         <div className="question-main-container">
           <Fragment>
-            {!isLevelLocked && <Redirect to={`/module/${moduleId}/levels`} />}
+            {//console.log(this.props)
+            }
+            {!isLevelLocked && <Redirect exact to={`/${this.props.routeDetail.name}/module/${moduleId}/levels`} />}
 
             {totalQuestion > 0 && questionId > totalQuestion && (
               <Redirect
                 to={{
-                  pathname: "/results",
+                  pathname: `/${this.props.routeDetail.name}/result`,
                   state: {
                     player_email: this.props.player_email,
                     moduleId: moduleId,
@@ -379,7 +410,7 @@ export class QuestionsAnsPage extends React.Component {
                         }/${totalScore}.`,
                     messageTwo: parScoreStatus
                       ? `You are in top 100 in the rank.`
-                      : `You need to earn ${parScores}/${totalScore} for Level ${level}.`,
+                      : `You need to earn ${(parScores/100*totalScore)} or ${parScores}% out of 100% (${totalScore}) for Level ${level}.`,
                     buttonMessage: !parScoreStatus
                       ? `Retry Level ${level}`
                       : `Continue Level ${level + 1}`
@@ -463,6 +494,7 @@ export class QuestionsAnsPage extends React.Component {
                 questionId={questionId}
                 totalQuestion={totalQuestion}
                 moduleColor={moduleColor}
+                correctAnsWeight={correctAnsWeight}
               />
             )}
           </Fragment>
@@ -475,6 +507,7 @@ export class QuestionsAnsPage extends React.Component {
               imageUrl={correctAnsUrl}
               nextQuestion={this.nextQuestion}
               currentQuestionScore={currentQuestionScore}
+              correctAnsWeight={correctAnsWeight}
             />
           ) : (
             <AnswerInfoPopup
@@ -486,6 +519,7 @@ export class QuestionsAnsPage extends React.Component {
               showRightAnswer={this.showRightAnswer}
               nextQuestion={this.nextQuestion}
               currentQuestionScore={currentQuestionScore}
+              correctAnsWeight={correctAnsWeight}
             />
           )}
         </div>
@@ -502,7 +536,8 @@ const mapStateToProps = state => {
     player_given_name: state.authDetail.authDetail.player_given_name,
     player_picture: state.authDetail.authDetail.player_picture,
     player_email: state.authDetail.authDetail.player_email,
-    gameData: state.gameData
+    gameData: state.gameData,
+		routeDetail: state.scoreDetail.routeDetail
   };
 };
 

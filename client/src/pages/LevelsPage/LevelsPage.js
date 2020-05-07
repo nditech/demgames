@@ -34,7 +34,8 @@ class LevelsPage extends React.Component {
   };
 
   componentDidMount() {
-    // console.log(this.props);
+
+     console.log("All levels page"+JSON.stringify(this.props));
   }
 
   //Handle info dialog box close.
@@ -138,7 +139,7 @@ class LevelsPage extends React.Component {
                   moduleColor={moduleColor}
                   player_email={
                     this.props.player_email == null
-                      ? "default"
+                      ? "demo"
                       : this.props.player_email
                   }
                 />

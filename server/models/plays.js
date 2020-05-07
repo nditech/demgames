@@ -47,8 +47,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         total_rank:{
             type: DataTypes.DECIMAL(10, 2)
+        },
+        difficulty_level:{
+            type: DataTypes.INTEGER
         }
-
     }, 
     {
         timestamps: false,

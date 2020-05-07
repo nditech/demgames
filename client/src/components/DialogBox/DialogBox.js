@@ -1,8 +1,8 @@
 import "./DialogBox.scss";
-
+import moment from "moment";
 import { Button, Modal } from "react-bootstrap";
 import React, { Component } from "react";
-
+import DatePicker from 'react-datepicker';
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
 
@@ -121,8 +121,11 @@ class DialogBox extends Component {
     this.state = {
       confirmButtonDisable: false,
       choices: 1,
-      data: []
+      data: [],
+      tempDate:""
     };
+
+    this.valueChangeDate=this.valueChangeDate.bind(this);
   }
   initialState = props => {
     // debugger;
@@ -212,6 +215,31 @@ class DialogBox extends Component {
     return confirmButtonDisable;
   };
 
+  valueChangeDate=(date, title="dateofbirth", index=0)=>{
+
+      const { data } = this.state;
+      const val=moment(date).toDate();
+            //val.setMinutes(val.getMinutes()+480);
+ 
+      data.map(item => {           
+        if (item.title === "Date of Birth") {
+         if (item.type === "date") {
+              item.value = val.toUTCString();
+              item.error = item.error ? item.error : [false, false, false, false];
+              item.error = isEmpty(val.toUTCString()) ? true : false;
+        } else
+          {
+            item.value = this.state.tempDate;
+            item["error"] = isEmpty(this.state.tempDate) ? true : false;
+          }
+        }
+    });
+      
+
+    this.setState({ data, confirmButtonDisable: this.validateValues() });
+      
+  };
+
   valueChange = (value, title, index = 0) => {
     const { data } = this.state;
 
@@ -221,7 +249,8 @@ class DialogBox extends Component {
           item.value[index] = value;
           item.error = item.error ? item.error : [false, false, false, false];
           item.error[index] = isEmpty(value) ? true : false;
-        } else {
+        } else
+        {
           item.value = value;
           item["error"] = isEmpty(value) ? true : false;
         }
@@ -485,7 +514,7 @@ class DialogBox extends Component {
                               >
                                 <input
                                   type="text"
-                                  name="object.title"
+                                  name={object.title}
                                   value={object.value}
                                   className={object.error ? "error" : ""}
                                   onChange={e =>
@@ -524,11 +553,11 @@ class DialogBox extends Component {
                                       ? "error dialog-multiline-text"
                                       : "dialog-multiline-text"
                                   }
-                                  value={object.file}
+                                  value={object.value}
                                   onChange={e =>
                                     this.valueChange(
                                       e.target.files,
-                                      object.logo
+                                      object.title
                                     )
                                   }
                                 />
@@ -540,7 +569,7 @@ class DialogBox extends Component {
                               >
                                 <input
                                   type="file"
-                                  name="object.title"
+                                  name={object.title}
                                   value={object.file}
                                   className={object.error ? "error" : ""}
                                   onChange={e =>
@@ -565,38 +594,40 @@ class DialogBox extends Component {
                         );
 
                         case "date":
+                          
                           return (edit || create) && object.editable ? (
-                            <div key={`date_${index}`} className="dialog-content">
+                            <div key="date" className="dialog-content">
                               <div className="item-title">{object.title}</div>
                               <div className="item-separator">:</div>
-                              {object.file? (
+                  
+                              {object.type? (
                                 <div className="item-value">
-                                  <textarea
-                                    cols="30"
+                                  <DatePicker
+                                    utcOffset={0}
+                                    selected={new Date(object.value)}
+                                   // selected={new Date(object.value)}
+                                    dateFormat="MM/dd/yyyy"
                                     name={object.title} //object.title
+                                    value={new Date(object.value).toUTCString()}
+                                    //vaue={object.value}
+                                    onChange={this.valueChangeDate}
+                                    
                                     className={
                                       object.error
                                         ? "error dialog-multiline-text"
                                         : "dialog-multiline-text"
-                                    }
-                                    value={object.date}
-                                    onChange={e =>
-                                      this.valueChange(
-                                        e.target.value,
-                                        object.date
-                                      )
-                                    }
+                                    }                                    
                                   />
                                 </div>
                               ) : (
                                 <div
-                                  key={`date_${index}`}
+                                  key={`date${index}`}
                                   className="item-value"
                                 >
                                   <input
                                     type="date"
-                                    name="object.title"
-                                    value={object.date}
+                                    name={object.title}
+                                    value={object.value}
                                     className={object.error ? "error" : ""}
                                     onChange={e =>
                                       this.valueChange(
@@ -618,14 +649,6 @@ class DialogBox extends Component {
                               <div className="item-value">{object.value}</div>
                             </div>
                           );   
-
-
-
-
-
-
-
-
                       default:
                         return <div key={`default_${index}`}></div>;
                     }

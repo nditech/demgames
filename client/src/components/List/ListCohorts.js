@@ -3,11 +3,12 @@ import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
+import { fetchScoreDetail, updateRouteDetail } from "../../components/ProfileInfo/action";
 import { addCohort, deleteCohort, updateCohort } from "./utility";
 import { config } from "../../settings";
 
 const ListCohorts = (props) => {
+
     const columns = [{
             name: "Id",
             selector: "id",
@@ -59,6 +60,7 @@ const ListCohorts = (props) => {
         onDelete: null,
         removeMessage: false
     });
+
     const {
         showMessage,
         confirmButtonValue,
@@ -82,23 +84,28 @@ const ListCohorts = (props) => {
     const { cohort, selectedCohort } = cohortData;
 
     const editCohortFields = {
+       // console.log(selectedCohort.name.props),
         id: selectedCohort.id,
         values: [{
                 key: "name",
                 type: "text",
                 title: "Title",
-                value: selectedCohort.name,
+                value: String((String(JSON.stringify(selectedCohort.name.props)).split('"'))[3]).split('/')[3],
                 editable: true
             },
             {
                 key: "logo",
-                type: "text",
+                type: "file",
                 title: "Logo",
                 value: selectedCohort.logo,
                 editable: true
             }
         ]
     };
+
+    const getName = n => {
+        return (selected_cohort.name.props.href).split("/")[3];
+    }
 
     const getCohort = () => {
         const url = config.baseUrl + "/listCohort";
@@ -123,22 +130,24 @@ const ListCohorts = (props) => {
                             onClick = {
                                 e => {
                                     console.log(data[i]);
-                                    console.log(this.props.updateRoute);
+                                    props.updateRoute(data[i]);
+                                    console.log(props.scoreDetail);
                                 }
-                            } > { data[i].name } <
-                            /a>
+                            } > { data[i].name } 
+                            </a>
                         ),
+                        //nameOnly:data[i].name,
                         logo: ( <
                             a href = { window.location.origin + "/" + data[i].logo }
                             target = "new"
                             onClick = {
                                 e => {
                                     console.log(data[i]);
-                                    //props.updateRoute(data[i]);
-                                    console.log(props.routeDetail);
+                                    props.updateRoute(data[i]);
+                                    console.log(props.scoreDetail);
                                 }
-                            } > { data[i].logo.split("/")[1].split(".")[0] } <
-                            /a>
+                            } > { data[i].logo.split("/")[1].split(".")[0] } 
+                            </a>
                         )
                     });
 
@@ -175,12 +184,15 @@ const ListCohorts = (props) => {
             getCohort();
         });
     };
+
     const editHandle = id => {
         const textCohort = [{}];
 
         const selected_cohort = cohort.find(item => {
             return item.id === id;
         });
+
+        console.log("Selected Cohort"+ (selected_cohort.name.props.href).split("/")[3]);
 
         setCohortData({...cohortData, selectedCohort: selected_cohort });
         setPopupState({
@@ -231,53 +243,52 @@ const ListCohorts = (props) => {
         addCohortPopup();
     };
 
-    return ( <
-        Fragment >
-        <
-        DialogBox confirmButtonValue = { confirmButtonValue }
-        showMessage = { showMessage }
-        messageTitle = { messageTitle }
-        messageDescription = { messageDescription }
-        onConfirm = { onConfirm }
-        isConfirmation = { isConfirmation }
-        onCancel = { onCancel }
-        title = { title }
-        data = { create ? addCohortFields : editCohortFields }
-        messageBox = { messageBox }
-        edit = { edit }
-        create = { create }
-        onDelete = { onDelete }
-        removeMessage = { removeMessage }
-        hasChoices = { false }
-        /> <
-        div className = "float-right"
-        onClick = { e => addCohortHandle(e) } >
-        <
-        button className = "btn btn-info btn-sm" >
-        <
-        i className = "fa fa-plus" > < /i> < /
-        button > <
-        span > Add Cohort < /span> < /
-        div > <
-        ListTable tableData = {
-            {
-                title: "List of Cohort",
-                columns: columns,
-                hasActionBtns: true,
-                data: cohort,
-                deleteHandle: deleteHandle,
-                editHandle: editHandle
+    return ( 
+        <Fragment>
+            <
+                DialogBox confirmButtonValue = { confirmButtonValue }
+                showMessage = { showMessage }
+                messageTitle = { messageTitle }
+                messageDescription = { messageDescription }
+                onConfirm = { onConfirm }
+                isConfirmation = { isConfirmation }
+                onCancel = { onCancel }
+                title = { title }
+                data = { create ? addCohortFields : editCohortFields }
+                messageBox = { messageBox }
+                edit = { edit }
+                create = { create }
+                onDelete = { onDelete }
+                removeMessage = { removeMessage }
+                hasChoices = { false }
+            /> 
+            <div className = "float-right"
+                onClick = { e => addCohortHandle(e) } >
+                <button className = "btn btn-info btn-sm" >
+                    <i className = "fa fa-plus" > </i> 
+                </button> 
+                <span > Add Cohort </span> 
+            </div> 
+            <ListTable tableData = {
+                {
+                    title: "List of Cohort",
+                    columns: columns,
+                    hasActionBtns: true,
+                    data: cohort,
+                    deleteHandle: deleteHandle,
+                    editHandle: editHandle
+                }
             }
-        }
-        /> < /
-        Fragment >
+            /> 
+        </Fragment>
     );
 }
 
 //export default ListCohorts;
 const mapStateToProps = state => ({
+    routeDetail: state.scoreDetail.routeDetail,
     cohortData: state.gameData.cohortData,
-    routeDetail: state.scoreDetail.routeDetail
+    scoreDetail: state.scoreDetail
 });
 
 //Dispatch action to fetch game data and scores.

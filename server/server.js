@@ -130,7 +130,7 @@ app.get("/api/api/game", async (req, res) => {
 app.get("/api/api/v2/game/:cohort", async (req, res) => {
   console.log("GET=   api/v2/game -----api----------------");
 
-  let cohort_name = req.params.cohort;
+  let cohort_name = req.params.cohort.toLocaleLowerCase();
 
 
   console.log(cohort_name);
@@ -138,7 +138,8 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
   let linkedGames;
   let linkedGamesId = [];
 
-  if (cohort_name !== "undefined" && cohort_name !== "default") {
+  if (cohort_name !== "undefined" && cohort_name !== "demo") {
+    // pulles cohort detail into temp_cohort for a cohort whose is given
     temp_cohort = await cohort.findOne({
       where: {
         name: cohort_name
@@ -146,15 +147,17 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
       raw: true
     });
 
+    // pulles cohort detail into temp_cohort if the cohort name is not known
     if(temp_cohort==null){
       temp_cohort = await cohort.findOne({
         where: {
-          name: "First"
+          name: "Demo"
         },
         raw: true
       });
     }
 
+    //// pulles detail from cohort_game tbale into linked games for a cohort in temp_cohort
     linkedGames = await cohort_game.findAll({
       where: {
         cohort_id: temp_cohort.id
@@ -165,10 +168,13 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
     for (var temp_linkedGames of linkedGames) {
       linkedGamesId.push(temp_linkedGames.game_id);
     }
-  } else if (restrictGamesList(req.headers["authorization"])) {
+
+  } 
+  else if (restrictGamesList(req.headers["authorization"])) {
+   
     temp_cohort = await cohort.findOne({
       where: {
-        name: "default"
+        name: "demo"
       },
       raw: true
     });
@@ -240,7 +246,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
         let newScore = allQuestions.length;
         
         if (newScore !== 0) {
-          if (eachGame.gametype != "scenario") {
+          if (eachGame.gametype !== "scenario") {
             for (var j = 0; j < newScore; j++) {
               level.total_score = level.total_score + allQuestions[j].weight;
             }
@@ -254,6 +260,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
           let modifiedQuestion = {};
           modifiedQuestion.id = questionIndex + 1;
           modifiedQuestion.question = tempQuestion.question_statement;
+          modifiedQuestion.weight = tempQuestion.weight;
 
           let options = await choices.findAll({
             where: { questionid: tempQuestion.id },
@@ -261,14 +268,14 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
           });
 
           modifiedQuestion.options = [];
-          modifiedQuestion.weight = [];
+          //modifiedQuestion.weight = [];
           modifiedQuestion.correct_answer = [];
 
           for (const [i, value] of options.entries()) {
             if (eachGame.gametype === "scenario") {
               let linked_option = {};
               linked_option.option = value.choicestatement;
-              linked_option.weight = value.weight;
+              //linked_option.weight = value.weight;
 	      linked_option.linked_question = value.linked_question
                 ? value.linked_question - tempQuestion.id + incrementHack
                 : null;
@@ -277,7 +284,7 @@ app.get("/api/api/v2/game/:cohort", async (req, res) => {
               modifiedQuestion.options.push(value.choicestatement);
               if (value.answer == 1) {
                 modifiedQuestion.correct_answer.push(i);
-                modifiedQuestion.weight = value.weight;
+                //modifiedQuestion.weight = value.weight;
               }
             }
           }
@@ -580,11 +587,12 @@ app.get("/api/listchoices", checkJwt, verifyToken, (req, res) => {
 });
 
 app.get(
-  "/api/listgames",
+  "/api/listgames/:id",
   // checkJwt,
   // verifyToken,
   async (req, res) => {
     console.log("GET /listgames -----api");
+    //console.log("Cohort data...."+req.params.id);
     games
       .findAll({
         include: [
@@ -594,23 +602,37 @@ app.get(
         ]
       })
       .then(async result => {
+        const responseC=[];
         let returnData = JSON.parse(JSON.stringify(result));
-
+        //console.log("Full Data"+JSON.stringify(result));
         for (var ob of returnData) {
-          console.log(ob);
+      //    console.log(ob);
           let temp_cohort_id = ob.Cohort_Game.cohort_id;
-
-          if (temp_cohort_id === null) {
-            ob.Cohort_Game.name = "default";
-          } else {
+        //  console.log("Temp_cohort_id "+temp_cohort_id+" id "+req.params.id.substring(1));
+          if(ob.Cohort_Game.cohort_id==req.params.id.substring(1))
+          {
+            
             let current_cohort = await cohort.findOne({
               where: { id: ob.Cohort_Game.cohort_id }
             });
+
             ob.Cohort_Game.name = current_cohort.name;
+            responseC.push(ob);
+
+            /*
+            if (temp_cohort_id === null) {
+              ob.Cohort_Game.name = "Demo";
+            } else {
+              let current_cohort = await cohort.findOne({
+                where: { id: (ob.Cohort_Game.cohort_id && req.params.id.substring(1))?req.params.id.substring(1):req.params.id.substring(1) }
+              });
+              ob.Cohort_Game.name = current_cohort.name;
+            }
+            */
           }
         }
-
-        return res.send(JSON.stringify(returnData));
+        console.log("Full "+JSON.stringify(responseC)+(responseC[0].Cohort_Game.cohort_id?responseC[0].Cohort_Game.cohort_id:0));
+        return res.send(JSON.stringify(responseC));
       })
       .catch(err => {
         console.log("error below");
@@ -902,6 +924,7 @@ app.get(
       });
   }
 );
+
 app.get(
   "/api/listCohort",    
   async(req, res) => {
@@ -1238,6 +1261,9 @@ app.get("/api/user/findOne/:email", checkJwt, async (req, res) => {
     return res.status(400).send("email not found on request");
   }
   let player = await players.findOne({ where: { email: email }, raw: true });
+  
+  //console.log(player);
+
   if (player) {
     return res.status(200).send(player);
   } else {
@@ -1298,11 +1324,12 @@ app.post(
 app.post(
   "/api/updatePlay",
   [
-    check("player_email", "Player email is required")
+    check("email", "Player email is required")
       .not()
       .isEmpty(),
     check("game_id", "game id is required").isNumeric(),
-    check("score", "score is required").isNumeric()
+    check("score", "score is required").isNumeric(),
+    check("difficulty_level", "score is required").isNumeric()
   ],
   async (req, res) => {
     console.log("POST /updatePlay  -------api");
@@ -1311,9 +1338,11 @@ app.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { player_email, game_id, cohort_id, score } = req.body;
+    const { email, game_id, cohort_id, score, difficulty_level } = req.body;
 
-    let user = await players.findOne({ where: { email: player_email } });
+    console.log(email + game_id + cohort_id + score+difficulty_level);
+
+    let user = await players.findOne({ where: { email: email } });
 
     let default_cohort_id = 1;
 
@@ -1321,25 +1350,76 @@ app.post(
       default_cohort_id = cohort_id;
     }
 
-    try {
-      let newPlay = await plays.create({
-        player_id: user.id,
-        game_id: game_id,
-        cohort_id: default_cohort_id,
-        score: score,
-        total: 0,
-        program_rank: 0,
-        total_rank: 0,
-        playstartdate: new Date()
-      });
-
-      return res
-        .status(200)
-        .send({ message: "new play created for :" + user.email });
-    } catch (error) {
-      console.error(error.message);
-      return res.status(500).send({ message: "Server Error" });
+    let searchPlay = await plays.findOne({ 
+                                where: { 
+                                            player_id: user.id, 
+                                            game_id : game_id,
+                                            cohort_id : default_cohort_id,
+                                            difficulty_level:difficulty_level
+                                        } 
+                                });
+    if(searchPlay)
+    {
+        console.log("Search PLay findings"+JSON.stringify(searchPlay));
+        if(searchPlay.score<score){
+          try {
+            let updatePlay = await plays.update(
+              {
+                
+                score: score,
+                total: parseInt(searchPlay.total)+parseInt(score),
+                program_rank: 0,
+                total_rank: 0,
+                playdate:new Date(),
+                playstartdate:searchPlay.playstartdate
+              },
+              { 
+                where: { 
+                  player_id: user.id, 
+                  game_id : game_id,
+                  cohort_id : default_cohort_id,
+                  difficulty_level:difficulty_level 
+                }, 
+                raw: true 
+              }
+            );
+      
+            if (updatePlay != null) {
+              return res.status(200).send({ message: "Play stat is updated successfully" });
+            }
+      
+            return res.status(500).send({ message: "Server Error" });
+          } catch (error) {
+            console.error(error.message);
+            return res.status(500).send({ message: "Server Error" });
+          }
+        }
     }
+    else{
+      try {
+        let newPlay = await plays.create({
+          player_id: user.id,
+          game_id: game_id,
+          cohort_id: default_cohort_id,
+          score: score,
+          total: score,
+          program_rank: 0,
+          total_rank: 0,
+          playdate:new Date(),
+          playstartdate:new Date(),
+          difficulty_level:difficulty_level
+        });
+  
+        return res
+          .status(200)
+          .send({ message: "new play created for :" + user.email });
+      } catch (error) {
+        console.error(error.message);
+        return res.status(500).send({ message: "Server Error" });
+      }
+    }    
+
+    
   }
 );
 
@@ -1601,6 +1681,9 @@ app.get("/api/user/get_profile/:email", async (req, res) => {
         },
         {
           model: games
+        },
+        {
+          model:players
         }
       ],
       raw: true
@@ -1707,39 +1790,31 @@ app.post("/api/updateUser", checkJwt, verifyToken, async (req, res) => {
   console.log("POST /api/updateUser  -------api");
 
   const {
-    id,
-    email,
-    program,
-    gender,
-    country,
-    lastname,
-    firstname,
-    username,
-    dateofbirth,
-    city,
-    middlename
+    id
   } = req.body;
 
-  console.log(JSON.stringify(req.body));
+  console.log(JSON.stringify(new Date(req.body.dateofbirth).toISOString()));
+  
   try {
     let updatedUser = await players.update(
       {
-        email:email,
-        program: program,
-        gender: gender,
-        country: country,
-        lastname: lastname,
-        firstname: firstname,
-        username: username,
-        dateofbirth: dateofbirth,
-        city:city,
-        middlename:middlename
+        email:req.body.email,
+        program: req.body.program,
+        gender: req.body.gender,
+        country: req.body.country,
+        lastname: req.body.lastname,
+        firstname: req.body.firstname,
+        username: req.body.username,
+        dateofbirth: new Date(req.body.dateofbirth).toISOString(),
+        city:req.body.city,
+        middlename:req.body.middlename
       },
       { where: { id: id } }
     );
 
     if (updatedUser) {
-      return res.status(200).send({ message: "Player updated successfully" });
+      console.log(updatedUser);
+      return res.status(200).send({ message: "Player detail updated successfully" });
     } else {
       return res.status(500).send({ message: "Server Error" });
     }
@@ -1747,6 +1822,8 @@ app.post("/api/updateUser", checkJwt, verifyToken, async (req, res) => {
     console.error(error.message);
     return res.status(500).send({ message: "Server Error" });
   }
+  
+ //return res.status(200).send({ message: "Player detail updated successfully for now" });
 });
 
 app.post(
