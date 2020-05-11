@@ -1,0 +1,191 @@
+@import "../../sass/variables";
+@import "../../sass/mixins";
+
+.message-dialog-message {
+  .modal-content {
+    width: $modal-width-message-box;
+  }
+}
+.message-dialog-data {
+  .modal-content {
+    width: $fixed-width-modal;
+  }
+}
+
+.message-dialog {
+  .modal-dialog {
+    @include flexbox();
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: $font-family-bold;
+    .error {
+      border: $border-normal solid $red;
+    }
+    .modal-content {
+      @include flexbox();
+      background-color: $white-grey;
+      flex-direction: column;
+      justify-content: center;
+      font-family: $font-family-bold;
+      border-radius: $border-normal * 4;
+      color: $color-dark;
+      @include box-shadow($modal-content-box-shadow);
+      .dialog-header {
+        @include box-shadow($dialog-header-box-shadow);
+        @include flexbox();
+        font-size: $font-size-larger;
+        font-weight: bold;
+        background-color: $white;
+        div {
+          display: inline-block;
+        }
+      }
+      .dialog-body {
+        text-align: center;
+        .item-title {
+          font-family: $font-family-regular;
+          width: $dialog-item-title;
+          display: inline-block;
+          text-align: left;
+          padding-left: $padding;
+          vertical-align: top;
+          font-size: $font-size-large;
+          font-weight: normal;
+        }
+        .item-separator {
+          margin: 0px ($base-margin * 2) 0px $base-margin;
+          display: inline-block;
+          vertical-align: top;
+        }
+        input,
+        textarea {
+          font-size: $font-size-large;
+          font-weight: bold;
+          color: $color-dark;
+          font-family: $font-family-regular;
+        }
+        .item-value {
+          display: inline-block;
+          text-align: left;
+          font-size: $font-size-large;
+          font-weight: bold;
+          width: $max-item-value-width;
+        }
+        .option-title {
+          text-align: right;
+          font-weight: bold;
+        }
+        .dialog-title {
+          font-size: $font-size-larger;
+          line-height: 2;
+          font-weight: bold;
+        }
+        .dropdown-list {
+          min-width: $full-width;
+          color: $color-dark;
+          &:disabled {
+            color: $color-dark;
+          }
+        }
+        .dialog-content {
+          padding: $padding / 3;
+          .dialog-multiline-text {
+            resize: none;
+          }
+        }
+        .dialog-options {
+          background-color: $white;
+          @include box-shadow($dialog-options-box-shadow);
+          margin: $base-margin 0px ($base-margin * 2) 0px;
+        }
+        .option-value {
+          margin: ($base-margin / 3) 0px;
+        }
+        .choices {
+          margin-left: $base-margin;
+          display: inline-block;
+          div {
+            display: inline-block;
+            padding: ($base-margin / 3) ($base-margin / 3 * 2);
+            margin: $base-margin / 3;
+            border-radius: 5px;
+            color: $white;
+          }
+          .unselected {
+            background-color: $light-grey;
+            color: $choice-button-color;
+          }
+          .selected {
+            background-color: $light-blue;
+            color: $white;
+            @include box-shadow($selected-options-box-sadow);
+          }
+        }
+        .remove-message {
+          color: $color-dark;
+          font-size: $font-size-large;
+          font-weight: bold;
+          margin: ($base-margin * 2) $base-margin 0px $base-margin;
+          border-top: $border-normal solid $dark-blue;
+          padding: $padding;
+          display: inline-block;
+        }
+        .dialog-message {
+          color: $color-dark;
+          font-size: $font-size-large;
+          padding: $padding-medium;
+          padding-top: 0;
+          max-width: $modal-width-message-box;
+          overflow: auto;
+          font-weight: bold;
+        }
+        .dialog-note {
+          padding: $base-padding * 1.8;
+          padding-top: 0;
+          font-size: $font-size-small;
+          color: $color-dark;
+        }
+      }
+      .dialog-footer {
+        border: none;
+        @include flexbox();
+        width: $full-width;
+        justify-content: center;
+        padding-top: 0;
+        .dialog-btn {
+          color: $white;
+          border-radius: $border-normal * 2;
+          padding: ($padding / 3) $padding;
+          margin-left: $base-margin;
+          margin-right: $base-margin;
+          font-size: $font-size-large;
+          font-weight: bold;
+          &.cancel {
+            background-color: $clear;
+            color: $white;
+            border-color: $clear;
+          }
+          &.cancel:hover {
+            background-color: $cancel-button-hover;
+            border-color: $cancel-button-hover;
+          }
+          &.confirm {
+            background-color: $light-blue;
+            border-color: $light-blue;
+          }
+          &.confirm:hover {
+            background-color: $confirm-button-hover;
+            border-color: $confirm-button-hover;
+          }
+          :disabled {
+            color: $disable-button-color;
+          }
+        }
+        .dialog-btn:disabled {
+          color: $disable-button-color;
+        }
+      }
+    }
+  }
+}

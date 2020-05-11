@@ -1,138 +1,250 @@
-import React from 'react';
-import arrowBackUrl from '../../images/back.png';
-import editUrl from '../../images/edit.png';
-import changePassUrl from '../../images/changePass.svg';
-import PropTypes from 'prop-types';
+import React, { Fragment, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import profileUrl from "../../images/profile.png";
+import { connect } from "react-redux";
+import moment from "moment";
+import { config } from "../../settings";
 
-import './styles.scss';
+import "./styles.scss";
 
-class ProfileInfo extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = { email: 'example@gmail.com', name: 'example', password: '12341234' };
-		this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
-		this.handleEditClick = this.handleEditClick.bind(this);
-	}
+const ProfileInfo = props => {
+  let profileProgressData = null;
+  console.log("player email", props.player.player_email);
+  let userEmail = props.player.player_email;
 
-	handleEditClick() {
-		this.email.focus();
-	}
+  const [profileData, setProfileData] = useState({
+    progressData: [],
+    cohortRank: "0",
+    globalRank: "0",
+    cohorts: []
+  });
 
-	handleOnKeyUp(target, event) {
-		if (event.keyCode === 13) {
-			switch (target) {
-				case 'email':
-					this.name.focus();
-					break;
-				case 'name':
-					this.password.focus();
-					break;
-				case 'password':
-					this.changePassword.focus();
-					break;
-				default:
-					this.email.focus();
-			}
-		}
-	}
+  const { progressData, cohortRank, globalRank, cohorts } = profileData;
 
-	render() {
-		const { email, name } = this.state;
-		return (
-			<div className="profile-info-container">
-				<div className="profile-form-container">
-					<div className="profile-header">
-						<div className="back-module-container">
-							<button className="back-button" onClick={this.props.history.goBack}>
-								<img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
-							</button>
+  const getPlayerProfile = async (email, callbackFunction) => {
+    const url = config.baseUrl + `/user/get_profile/${email}`;
+    await fetch(url, {
+      method: "get",
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("access_token"),
+        "Content-Type": "Application/json",
+        Accept: "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        profileProgressData = data;
+        // console.log("profile data -->", JSON.stringify(data));
+        // callbackFunction(data);
+      })
+      .catch(err => console.log(err));
+  };
 
-							<p className="my-profile-label">My Profile - Coming Soon</p>
-						</div>
-						<img
-							ref={(input) => {
-								this.edit = input;
-							}}
-							onClick={this.handleEditClick}
-							className="edit-icon"
-							src={editUrl}
-							alt="edit-icon"
-						/>
-					</div>
-					<div className="input-container">
-						<p className="input-label">Your email address</p>
-						<input
-							ref={(input) => {
-								this.email = input;
-							}}
-							className="profile-input"
-							type="text"
-							placeholder={email}
-							onKeyUp={this.handleOnKeyUp.bind(this, 'email')}
-						/>
-						<p className="input-label input-label-name">Your name</p>
-						<input
-							ref={(input) => {
-								this.name = input;
-							}}
-							className="profile-input"
-							type="text"
-							placeholder={name}
-							onKeyUp={this.handleOnKeyUp.bind(this, 'name')}
-						/>
-						<p className="input-label input-label-password">Your password</p>
-						<input
-							ref={(input) => {
-								this.password = input;
-							}}
-							className="profile-input"
-							type="password"
-							placeholder="********"
-							onKeyUp={this.handleOnKeyUp.bind(this, 'password')}
-						/>
-					</div>
-					<div className="change-password-container">
-						<img className="change-password-icon" src={changePassUrl} alt="back-arrow" />
-						<a
-							ref={(input) => {
-								this.changePassword = input;
-							}}
-							className="change-password-link"
-							href="/profile"
-							onClick={this.updateCredentials}
-						>
-							Change password
-						</a>
-					</div>
-				</div>
-				<div>
-					<p className="career-progress-label">Game Progress - Coming Soon</p>
-					<div className="overall-info">
-						<p className="rank-info">You are ranked in top 100</p>
-						<div className="modules-info">
-							<p className="heading">Designing an Argument</p>
-							<p>
-								Currently pursuing <span>Level 1</span>
-							</p>
-							<p>
-								Scored <span>20/100</span> in <span>Level 1</span>
-							</p>
-							<p className="heading">Finding Evidence</p>
-							<p>
-								Currently pursuing <span>Level 1</span>
-							</p>
-							<p className="heading">Finding Flaws in Arguments</p>
-							<p>Not yet started</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
-}
+  //   const setPlayerProgress = data => {
+  //     let filteredData = data.map(item => {
+  //       return {
+  //         gameName: item["Game.caption"],
+  //         score: item.score,
+  //         cohort: item["Cohort.name"],
+  //         cohort_id: item["Cohort.id"],
+  //         playdate: item.playstartdate
+  //       };
+  //     });
+  //     console.log("fil data", filteredData);
+  //     setProfileData({ ...profileData, progressData: filteredData });
+  //   };
 
-ProfileInfo.propTypes = {
-	history: PropTypes.object
+  const getCohort = async userEmail => {
+    const url = config.baseUrl + `/listCohort`;
+    await fetch(url, {
+      method: "get",
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("access_token"),
+        "Content-Type": "Application/json",
+        Accept: "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("cohortsss data -->", JSON.stringify(data));
+        getRank(data[0].id, data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const setRank = (rankObject, cohorts, changeCohort = false) => {
+    let filteredData = progressData;
+    if (!changeCohort) {
+      filteredData = profileProgressData.map(item => {
+        return {
+          gameName: item["Game.caption"],
+          score: item.score,
+          cohort: item["Cohort.name"],
+          cohort_id: item["Cohort.id"],
+          playdate: item.playstartdate
+        };
+      });
+    }
+    setProfileData({
+      ...profileData,
+      progressData: filteredData,
+      cohortRank: rankObject.cohort_rank,
+      globalRank: rankObject.global_rank,
+      cohorts: cohorts
+    });
+  };
+
+  const getRank = (cohortId, cohorts, changeCohort = false) => {
+    console.log("selected cohort id: ", cohortId);
+    const url = config.baseUrl + `/get_cohort_rank/${userEmail}/${cohortId}`;
+    fetch(url, {
+      method: "get",
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("access_token"),
+        "Content-Type": "Application/json",
+        Accept: "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("rank data -->", JSON.stringify(data));
+        setRank(data, cohorts, changeCohort);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const handleCohortChange = e => {
+    let cohortId = e.target.value;
+    getRank(cohortId, cohorts, true);
+    console.log("coh id: ", cohortId);
+  };
+
+  useEffect(() => {
+    getPlayerProfile(userEmail);
+    getCohort(userEmail);
+  }, []);
+
+  console.log("progress data", progressData);
+
+  return (
+    <Fragment>
+      <div className="profile-page">
+        <div className="container profile-content">
+          <div className="row">
+            <div className="col-md-4">
+              <div className="card shadow pt-5">
+                <img
+                  className="card-img-top img-fluid rounded p-1"
+                  src={`${props.player.player_picture || profileUrl}`}
+                />
+                <div className="card-body">
+                  <h4 className="card-title text-primary">{`${props.player
+                    .player_given_name || ""} ${props.player
+                    .player_family_name || ""}`}</h4>
+                  <p className="card-text mb-1 mt-3 text-secondary">
+                    {"Email : "}
+                    {props.player.player_email || ""}
+                  </p>
+                  <p className="card-text mt-0 text-secondary">
+                    {"User Name : "}
+                    {props.player.player_username || ""}
+                  </p>
+
+                  {/* <Link
+                    to="editprofile"
+                    disabled={true}
+                    className="btn btn-primary w-100 mt-3"
+                  >
+                    Edit Profile
+                  </Link> */}
+                </div>
+              </div>
+            </div>
+            <div className="col-md-8 text-center">
+              <div className="row card-row">
+                <div className="col-md-6 shadow bg-primary text-white">
+                  <select
+                    name="cohorts"
+                    className="custom-select mt-3"
+                    onChange={e => handleCohortChange(e)}
+                  >
+                    {cohorts.map((item, index) => {
+                      return (
+                        <option key={index} value={item.id}>
+                          {item.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <div className="card-body text-center">
+                    <h2>Cohort Rank</h2>
+                  </div>
+                  <div className="text-center mb-4">
+                    <h3>{cohortRank}</h3>
+                  </div>
+                </div>
+
+                <div className="col-md-6 shadow bg-primary text-white">
+                  <div className="card-body text-center">
+                    <h2>Global Rank</h2>
+                  </div>
+                  <div className="text-center mb-4">
+                    <h3>{globalRank}</h3>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="shadow progress-status">
+                    <div className="jumbotron">
+                      <h1>Your Progress</h1>
+                    </div>
+                    <div className="table-responsive">
+                      <table className="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Game</th>
+                            <th>Score</th>
+                            <th>Cohort</th>
+                            <th>Play Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {progressData &&
+                            progressData.map((item, index) => {
+                              return (
+                                <tr key={index}>
+                                  <td>{item.gameName}</td>
+                                  <td>{item.score}</td>
+                                  <td>{item.cohort}</td>
+                                  <td>
+                                    {moment(item.playdate).format(
+                                      "Do MMM YYYY, h:mm:ss a"
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Fragment>
+  );
 };
 
-export default ProfileInfo;
+const mapStateToProps = state => ({
+  player: state.authDetail.authDetail
+});
+
+// export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
+export default connect(
+  mapStateToProps,
+  null
+)(ProfileInfo);

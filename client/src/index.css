@@ -12,3 +12,93 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.pill-tabs.nav{
+  margin: 20px;
+  display: block;
+}
+
+div.rdt_TableRow {
+  border: #daeffa solid 1px;
+  border-radius: 7px;
+  margin-bottom: 10px;
+}
+div.hLrWNh {
+  font-size: 16px;
+}
+
+div.inhAeF {
+  font-size: 16px;
+}
+
+.iMLKlc div:first-child {
+  font-size: 16px; 
+  font-weight: 600;
+  color: #707070;
+}
+
+.dt-btn.btn:focus{
+  box-shadow:none;
+}
+
+#root .list-games-wrapper .list-games-container .gamebox.active {
+  background-color: #7c2a82;
+  box-shadow: none;
+  border-bottom: none !important;
+}
+
+#root .list-games-wrapper .list-games-container .gamebox .game-title {
+  left: 16px;
+  right: auto;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.tableSearchBox {
+  float: right;
+  margin-right: 10px;
+}
+
+.ui.dropdown .menu .active.item{
+  font-weight: normal;
+}
+
+.profile-page .jumbotron {
+  padding: 1rem 2rem;
+}
+.profile-page .progress-status {
+  height: 385px;
+}
+
+.profile-page .table-responsive {
+  height: 270px;
+  overflow-y: scroll;
+  overflow: auto;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px;
+}
+
+.main-header .profile-header {
+  min-width: 160px;
+  z-index: 9999999;
+}
+
+.header-wrapper {
+  margin-top: -50px;
+}
+
+.header-wrapper .header-container .header-left .header-buttons {
+  justify-content: center;
+}
+
+.header-wrapper .header-container .header-left .header-button {
+  outline: none;
+}
+
+.card-row{
+  padding: 0px 15px 15px 15px;
+}
