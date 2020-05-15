@@ -10,17 +10,14 @@
     <a href="https://github.com/nditech/demgames-debate/blob/master/LICENSE">
       <img src="https://img.shields.io/badge/license-GPL-red.svg" alt="License"/>
     </a>
-    <a href="https://docs.mongodb.com/">
-      <img src="https://img.shields.io/badge/mongodb-v3.6.5-blue.svg" alt="mongodb"/>
-    </a>
-    <a href="https://www.npmjs.com/package/express">
-      <img src="https://img.shields.io/badge/express-v4.16.3-blue.svg" alt="express"/>
-    </a>
     <a href="https://www.npmjs.com/package/react">
       <img src="https://img.shields.io/badge/react-v14.4.0-blue.svg" alt="react"/>
     </a>
     <a href="https://nodejs.org/en/docs/">
-      <img src="https://img.shields.io/badge/node-v10.3.0-blue.svg" alt="node"/>
+      <img src="https://img.shields.io/badge/node-v10.15.3-blue.svg" alt="node"/>
+    </a>
+    <a href="https://dev.mysql.com/doc/">
+      <img src="https://img.shields.io/badge/mysql-v5.7-blue.svg" alt="node"/>
     </a>
   </p>
   
@@ -35,173 +32,151 @@
   ### Table of Contents
   
   1. [Intro](#intro)
-  1. [Installation](#installation)
-  1. [Local Testing](#local-testing)
-  1. [Changing Content](#changing-content)
-  1. [Deployment](#deployment-to-aws)
-  1. [Troubleshooting](#debugging-and-troubleshooting)
+  1. [Dependencies](#dependencies)
+  1. [Database Setup](#database-setup)
+  1. [Installation and Configuration](#installation-and-configuration)
+  1. [Create Database Schema](#create-database-schema)
+  1. [Deploying the Application](#deploying-the-application)
   1. [Contribution](#contribution)
   
 ### Intro
   
   DemGames is a civic engagement platform that hosts simple games for engagement at scale for civic organizing, political inclusion, and other democratic concepts. Gamified learning platforms offer a unique opportunity to provide light touch, broad reach training for youth with a technology approach that meets them where they are. Games for good can provide basic instruction and reinforce the attitudes and concepts that help young citizens engage in social change. DemGames brings together NDI’s tested civic education best practices with an engaging, fun platform. DemGames makes it easy to set up your own game and gives program implementers an innovative way to reinforce absorption and retention of knowledge while tracking use and learning over time.
-      
-### Installation
+
+### Dependencies
+
+In order to run demgames, the items listed below must be installed. The commands for installing each for Ubuntu are included.
+
+1. Mysql CLI or Mysql Workbench  version - 14.14 Distrib 5.7.27
+
+`sudo apt install mysql-client-5.7 mysql-server-5.7`
+
+2. Node version - 10.15.3 / NPM (comes prepackaged with node) version - 6.4.1
+
+`wget "https://nodejs.org/dist/10.15.3/node-v10.15.3-linux-x64.tar.xz"`
+
+`sudo tar xf node-v10.15.3-linux-x64.tar.xz --directory /usr/local --strip-components 1`
+
+3. Nodemon (required globally) version - 1.19.1
+
+`npm install nodemon -g`
+
+4. Nginx
+
+`sudo apt install nginx`
+
+5. Build-Essential
+
+`sudo apt install build-essential`
+
+6. Python
+
+`sudo apt install python`
+
+7. When installing on a Windows machine: Windows Build Tools
+
+`npm install --global windows-build-tools`
+
+### Database Setup
+The database can either be set up locally or on a separate server. DemGames uses MySQL. Connect to MySQL using `mysql -u your-username -p` and then inputting your password. Initialize the database using:
+
+`create schema DemGames;`
+
+
+### Installation and Configuration
   
-  Make sure you have [Git](https://git-scm.com/downloads), [Node.js](https://nodejs.org/en/download/package-manager/), [npm](https://www.npmjs.com/get-npm), and [nodemon](https://www.npmjs.com/package/nodemon) on your machine. Make sure nodemon is installed globally, using `sudo npm install -g nodemon`
+To download demgames, clone the code using `git clone https://github.com/nditech/demgames.git`
 
-To download and install demgames, use the commands below.   
+After downloading the code, edit demgames/server/config/config.json to input the database credentials. Replace the username, password, database, and host based on your database. If you followed these instructions and ran “create schema DemGames;”, the database should be DemGames. The username and password will be what you used for logging in to the database. The host will be 127.0.0.1 unless your database is located on a separate location from your application.
 
-  ```
-  git clone https://github.com/nditech/demgames-debate
-  cd demgames-debate
-  npm install
-  ```
+##### For running on a server:
+If you are deploying the code on a server, the several additional changes to files will also be needed. If you are deploying the code locally, ignore these steps and move on to the next section.
 
-### Local Testing
+1. In demgames-debate/client/src/settings.js, replace 'http://localhost:9000/api' with '/api'
 
- In order to do local testing or otherwise deploy to code locally on your own computer, edit the file `client/src/pages/LandingPage/LandingPage.js`. Comment out the line `fetch('./moduleData.json')` (by default line 23), and uncomment `fetch('http://localhost:9000/api/game')` (line 24). To run the app, first start the express server by running the following command in the main directory:
+1. In demgames-debate/client/src/Auth.js, go to the line that starts with redirectUri: (currently line 16), and replace "https://localhost:8080/callback" with "https://url-of-your-website/callback"
 
-  ```
-  nodemon server/server.js  
-  ```
+1. In demgames-debate/server/server.js, go to the last line of the file (currently line 1670), and replace 9000, with 9000,'private-ip-of-the-server',
 
-  In another window, start the application with the following command:
+Additionally, run the following command to set the environment variable to production. Note that this will only apply to the current user and be lost if you logout or start a session as a new user, such as root.
 
-  ```
-  npm start
-  ```
+`export NODE_ENV=production`
 
-  The application will then be visible in your browser at localhost:8080. (If it is not running there, check one of the first lines of output from npm start, which will look something like the following: `｢wds｣: Project is running at http://localhost:8080/`. This indicates the port at which the application is running.)
+#### Installation
 
-  By default, your browser will likely block the application from communicating with the express server. To avoid this, start chrome without security enabled by entering the following command in your terminal `google-chrome --disable-web-security --user-data-dir="/tmp/chrome_tmp"`, or download a CORS extension for your browser (such as https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en)
+In order to run the application, first run the following command in the demgames directory in order to install the necessary packages:
 
-### Changing Content
+`npm install`
 
-All content related to levels or questions is stored in the file `data/Module/moduleData.json` in a [JSON format](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON). This file can be edited with any text or code editor. While the file is fairly large and contains many nested sections, new content can be created fairly easily by copying and pasting existing current levels and questions to capture the correct format. Examples of the format for the questions, levels, and overall format are shown below.
-
-#### Question Format
+### Create Database Schema:
+To create the database schema, use the following commands in the demgames directory:
 ```
-                                        {
-                                                "id": 1,
-
-                                                "question": "Resolution",
-                                                "options": [
-                                                        "The topic or claim that is being debated. Example: The death penalty is a justified method of punishment.",
-                                                        "They are laws, decisions of the supreme court and policies of the executive branch that would prevent a new policy from existing.",
-                                                        "This is the Greek word for ethics or character and focuses on demonstrating the reliability, reliability or preparation of the debaters.",
-                                                        "This is the Greek word for logic and focuses on the message and appeals to authority or credibility by offering experience, research or data to support the arguments."
-                                                ],
-                                                "correct_answer": [ 0 ]
-                                        },
+cd server
+npx sequelize-cli db:migrate
+cd ..
 ```
 
-* *id* - the question order, where the questions for a level should have sequential id's starting at 1
-* *question* - the question that will appear at the top
-* *answer* - lists the possible answers that will appear below.
-* *correct_answer* The number in brackets after correct_answer refers to which answer is the correct one. Note that here, the first answer is labeled 0, the second answer is labeled 1, and so on.
+### Deploying the Application:
 
-#### Level Format
+The steps to install the server differ depending on whether you are running it on a server or a local computer. Follow only the section below corresponding to which one you are doing.
 
-                        {
-                                "id": 1,
-                                "current_score": 0,
-                                "par_score": 0,
-                                "total_score": 40,
-                                "desc": "Match definitions in this level to learn debate vocabulary.",
-                                "linked_level": 0,
-                                "questions": [
-                                ]
-                        },
-                                     
-* *id* - the level order, where the levels for a module should have sequential id's starting at 1
-* *current_score* - as of the current software version, should be left at 0 
-* *par_score* - the number of points a player needs to get on the previous level to gain access to this level. Until the user scores that amount on the previous level, they will not be able to access this level (for the first level in a module, this should be 0)
-* *total_score* - this is what will be displayed for each level as the total score. It should equal the number of questions times 10
-* *desc* - the description that will appear on the level selection screen on the button for that level
-* *linked_level* - specifies which level comes before it (and therefore needs to be beaten to unlock this level)
-* *questions* - insert your questions in the bracket here
-* Note that the game sets each right answer as being worth 10 points, and each wrong answer as costing 10 points.
+#### Running on Local Computer:
+You should be able to start the application with the following command:
 
-#### Module Format
+`npm run dev`
 
-        {
-                "id": 1,
-                "name": "Designing an Argument",
-                "style": "blue",
-                "type": "single",
+Alternatively if this does not work, it will also start by running the two commands below in the following order:
 
-                "levels": [
-                ]
-        },
-
-* *id* - the module order, where the modules should be order starting at 1.
-* *name* - the name that will appear in the button for that module on the module selection page
-* *style* - the color the module button will appear as. Can be 'blue', 'green', or 'orange'
-* *type* - what type of levels will be in the module. Options are 'single' for questions in which there is only one right answer, 'multi' for levels where the player should select more than 1 answer per question (*under construction*), or 'scenario' for modules in which the player has multiple choices which puts them on different paths
-* *levels* - insert the levels here
-
-The format for the scenario questions is slightly different, and can be seen by looking at module 3. Also, note that there should be commas after each question, level, and module as seen in the format examples above, except for the last question/level/module, after which there should be no comma.
-
-#### Loading content
-
-After making changes to the data, to test it locally, re-run `nodemon server/server.js` while running `npm start` to load the new content. If the old content is not being replaced by the new content there is likely a caching issue - see [troubleshooting](#debugging-and-troubleshooting) below.
-
-### Deployment to AWS
-
-DemGames is designed to be run out of an object storage service such as Amazon Web Service's S3 Bucket. The instructions below indicate how to deploy the application to S3.
-
-First, the code should be loaded on to your local machine using the installation instructions. Before deploying, if you have  made changes to the code, run `npm run build` (after having previously run `npm install`) in order to update the code in the directory `dist/`. If you have made changes to the game data in `data/Module/moduleData.json`, run `nodemon server/server.js`. In your browser, go to `http://localhost:9000/api/game` and select and copy the contents displayed. Clear the contents of the file `dist/moduleData.json` and paste in the copied content. (Note that for it to work, you sometimes may have to edit the generated policy by going to the line starting with the word Resource, and adding `/*` after the name of S3 bucket within the quotes, so that it looks something like `"Resource": "arn:aws:s3:::example-bucket-name/*",`)
-
-To deploy to AWS, follow the steps below:
-
-1. Create an S3 bucket for storing the contents of the site. You can proceed with the default settings.
-
-2. In order to make the site publically available, go to https://awspolicygen.s3.amazonaws.com/policygen.html. For step 1, select S3 bucket policy. For step 2, select 'Allow' for Effect, enter `*` for Principal, select 'Amazon S3' for AWS Service, select 'GetObject' for Actions, and for Amazon Resource Name enter 'arn:aws:s3:::' followed by the name of your S3 bucket. Click Add Statement and then Generate Policy. Copy the resulting JSON Document. In your S3 bucket, go to the Permissions tab, and then Bucket Policy, and paste the copied text in the Bucket Policy Editor, and then click Save.
-
-3. Copy the contents of the `dist/` directory into the S3 bucket. (This means do not copy the `dist/` directory itself - only the contents inside).
-
-4. Under the properties tab for the S3 bucket, select 'Static website hosting'. Select the option 'Use this bucket to host a website'
-
-5. Enter `index.html` for both 'Index document' and 'Error Document'.
-
-6. The link following the words 'Endpoint :' is the link for the site.
-
-
-### Debugging and Troubleshooting
-
-  The following are some common issues you may run into.
-
-#### Changing name of Module 3
-
-Note that to change the name of Module 3, in addition to editing moduleData.json, you must also put the new name of the level in quotation marks on line 31 of `client/src/components/LevelCard/index.js` shown below:
-
-```                                        pathname: `/module/${moduleName === 'Finding flaws in Argument'```
-
-#### `npm ____` does not work
-
-Remember to run `npm install` before running any part of the application. Commands such as `npm run build` will fail if this has not been run first.
-
-#### Removing partially installed node modules
-
-If npm install fails, after fixing the issue, you may have to remove the directory node_modules. Run `rm -rf node_modules`, and then run `npm install` again.
-
-#### Port 9000 in use
-
-In some cases, you will get the error below, meaning that you need to clear the processes currently running at port 9000.
-  ```
-  // Backend error:
-  Error: listen EADDRINUSE: address already in use :::9000
-  You need to kill port 9000
-  ```
-
-To clear port 9000, use the following command:
-``` 
-$ sudo fuser -k 9000/tcp
 ```
-#### The app is not updating based on changes made
+nodemon server/server.js
+npm run start
+```
 
-If content is not updating when you change the data file, it may be caching on the browser. To avoid this, close all incongito windows and try opening a new incognito session.
+Note that if you have already have the node server running, you may need to kill it and restart it. To do so, run the command below, and then run either set of commands above.
+
+`fuser -k 9000/tcp`
+
+Once the application is running, you can access it by navigating to https://localhost:8080 in your browser. Note that you may need to clear your browser cache to get an updated version of the site. To get content to load, you may also need to install a browser extension to allow CORS or else start a browser session to allow it by running:
+
+`google-chrome --disable-web-security --user-data-dir="/tmp/chrome_tmp"`
+
+
+#### Deploying the Application:
+
+To build the application, run the following command in the demgames directory
+
+`npm run build`
+
+This should update the directory demgames/dist. Move this directory to /var/www/demgames/dist/ using the following command:
+
+`sudo cp ./dist/. /var/www/demgames/dist/ -r`
+
+Then, configure nginx. Below is an example of a sample nginx file. Replace the contents of /etc/nginx/sites-available/default.conf with the file below, then run `service nginx restart`. Then, in the demgames directory, run the node server using `npm run server`. If you navigate to the url of the server, the application should now be running.
+
+
+```
+server {
+        listen 80 default_server;
+        server_name staging.demgames.app;
+        root /var/www/demgames/dist/;
+        index index.html index.htm;
+        error_page 500 /;
+        location / {
+                autoindex on;
+                try_files $uri /index.html;
+        }
+        location /api {
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-for $proxy_add_x_forwarded_for;
+        proxy_set_header X-NginX-Proxy true;
+        proxy_pass http://127.0.0.1:9000/api;
+        proxy_ssl_session_reuse off;
+        proxy_set_header Host $http_host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_redirect off;
+        }
+}
+```
 
 ### Contribution
   
@@ -219,6 +194,5 @@ If content is not updating when you change the data file, it may be caching on t
       > nackerson@ndi.org &nbsp;&middot;&nbsp;
   * <b>Jatin Narang</b>
       > jatin.narang@hashedin.com &nbsp;&middot;&nbsp;
-      
   
   **[⬆ back to top](#documentation)**
