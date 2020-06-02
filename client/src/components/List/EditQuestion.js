@@ -14,45 +14,6 @@ const EditQuestion = ({
   getQuestions,
 }) => {
   const [questionsData, setQuestionsData] = useState(componentData);
-  const {
-    questions,
-    gameId,
-    questionDetail,
-    choices,
-    correctChoice,
-    choicesNameArray,
-    questionId,
-  } = questionsData;
-
-  const editQuestion = (data = "", id) => {
-    const answers = [];
-    if (data) {
-      data.answers.map((item, index) => {
-        answers.push({ option: convertChoice(index), value: item });
-      });
-    }
-    data.answers = answers;
-    const url = `${config.baseUrl  }/updatequestion/`;
-    fetch(url, {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ data, id }),
-    })
-      .then(res => res.json())
-      .then(data => {
-        alert(JSON.stringify(data));
-        onCancel();
-        setPopupState({ ...popupState, showMessage: false });
-
-        getQuestions();
-      })
-      .catch(error => console.log(error)); // eslint-disable-line
-  };
-
   const [popupState, setPopupState] = useState({
     showMessage: false,
     confirmButtonValue: "Update",
@@ -67,6 +28,49 @@ const EditQuestion = ({
     onDelete: null,
     removeMessage: false,
   });
+
+  const {
+    questions,
+    gameId,
+    questionDetail,
+    choices,
+    correctChoice,
+    choicesNameArray,
+    questionId,
+  } = questionsData;
+
+  const editQuestion = (data = "", questionIdToEdit) => {
+    const answers = [];
+    if (data) {
+      data.answers.map((item, index) => {
+        answers.push({ option: convertChoice(index), value: item });
+      });
+    }
+    const dataWithAnswers = {
+      ...data,
+      answers,
+    };
+    const url = `${config.baseUrl  }/updatequestion/`;
+    fetch(url, {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: dataWithAnswers, id: questionIdToEdit }),
+    })
+      .then(res => res.json())
+      .then(responseData => {
+        alert(JSON.stringify(responseData));
+        onCancel();
+        setPopupState({ ...popupState, showMessage: false });
+
+        getQuestions();
+      })
+      .catch(error => console.log(error)); // eslint-disable-line
+  };
+
   const {
     showMessage,
     confirmButtonValue,
@@ -81,11 +85,6 @@ const EditQuestion = ({
     onDelete,
     removeMessage,
   } = popupState;
-
-  useEffect(() => {
-    editHandle(id);
-    // setPopupState({ ...popupState, showMessage: showQuestionEdit });
-  }, []);
 
   const convertChoice = value => {
     return String.fromCharCode(value + 65);
@@ -139,8 +138,8 @@ const EditQuestion = ({
     ],
   };
 
-  const getChoices = (questionId, selectedQuestion) => {
-    const url = `${config.baseUrl  }/choices/${questionId}`;
+  const getChoices = (questionIdToGet, selectedQuestion) => {
+    const url = `${config.baseUrl  }/choices/${questionIdToGet}`;
     fetch(url, {
       method: "get",
       headers: {
@@ -150,14 +149,14 @@ const EditQuestion = ({
       },
     })
       .then(res => res.json())
-      .then(data => {
+      .then(responseData => {
         const choicesName = [];
-        let correctChoice = "";
-        data.map((item, index) => {
+        let correct = "";
+        responseData.map((item, index) => {
           item.option = convertChoice(index);
           choicesName.push(item.choicestatement);
           if (item.answer === 1) {
-            correctChoice = convertChoice(index);
+            correct = convertChoice(index);
           }
         });
 
@@ -167,23 +166,25 @@ const EditQuestion = ({
           choicesNameArray: choicesName,
           questionDetail: selectedQuestion,
           questionId: selectedQuestion.id,
-          correctChoice,
+          correctChoice: correct,
         });
       })
       .catch(err => console.log(err)); // eslint-disable-line
   };
 
-  //   const onCancel = () => {
-  //     setPopupState({ ...popupState, showMessage: false });
-  //   };
-
-  const editHandle = id => {
+  const editHandle = questionIdToHandle => {
     const selectedQuestion = questions.find(item => {
-      return item.id === id;
+      return item.id === questionIdToHandle;
     });
     getChoices(id, selectedQuestion);
     setPopupState({ ...popupState, showMessage: showQuestionEdit });
   };
+
+  useEffect(() => {
+    editHandle(id);
+    // setPopupState({ ...popupState, showMessage: showQuestionEdit });
+  }, []);
+
   return (
     <>
       <DialogBox

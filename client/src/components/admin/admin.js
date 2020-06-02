@@ -331,14 +331,14 @@ class Admin extends Component {
         }
         return res.json();
       })
-      .then((data) => {
+      .then(() => {
         // alert("paused admin");
         this.setState({ showMessage: false, gameAdded: true });
         toast.info("Successfully Added !", {
           position: toast.POSITION.TOP_CENTER,
         });
       })
-      .catch(error =>
+      .catch(() =>
         toast.error("Sorry..there is some technical issue", {
           position: toast.POSITION.TOP_CENTER,
         })
@@ -409,7 +409,7 @@ class Admin extends Component {
       body: JSON.stringify(editGameForm),
     })
       .then(res => res.json())
-      .then(data => {
+      .then(() => {
         this.setState({ showMessage: false, editedDetals: editGameForm });
       })
       .catch(error => console.log(error)); // eslint-disable-line

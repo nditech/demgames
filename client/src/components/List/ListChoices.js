@@ -12,7 +12,7 @@ const ListChoices = () => {
       console.log("will not be deleted"); // eslint-disable-line
     }
   };
-  const editClickHandle = choiceId => {};
+  const editClickHandle = choiceId => { };
 
   const EditButton = props => (
     <button
@@ -87,21 +87,33 @@ const ListChoices = () => {
   const { choices } = choicesData;
 
   const getChoices = () => {
-    const url = `${config.basUrl  }/listchoices`;
+    const url = `${config.basUrl}/listchoices`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
         Accept: "application/json",
       },
     })
       .then(res => res.json())
       .then(data => {
-        data.map(choice =>
-          choice.answer === 1 ? (choice.answer = "yes") : (choice.answer = "no")
-        );
-        setChoicesData({ choices: data });
+        const newChoices = [];
+        data.map(choice => (
+          choice.answer === 1
+            ? (
+              newChoices.push({
+                ...choice,
+                answer: "yes",
+              })
+            ) : (
+              newChoices.push({
+                ...choice,
+                answer: "no",
+              })
+            )
+        ));
+        setChoicesData({ choices: newChoices });
       })
       .catch(err => console.log(err)); // eslint-disable-line
   };

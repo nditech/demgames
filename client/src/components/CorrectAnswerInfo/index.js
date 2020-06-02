@@ -26,8 +26,8 @@ class CorrectAnswerInfo extends Component {
 		);
 
 		let strSelectedAns = '';
-		selectedAnsList[0].map((val) => {
-			return (strSelectedAns = strSelectedAns.concat(`${val  }\n`));
+		selectedAnsList[0].forEach((val) => {
+			strSelectedAns = strSelectedAns.concat(`${val  }\n`);
 		});
 
 		const correctAnsList = [];
@@ -40,8 +40,8 @@ class CorrectAnswerInfo extends Component {
 		);
 
 		let strCorrectAns = '';
-		correctAnsList[0].map((val) => {
-			return (strCorrectAns = strCorrectAns.concat(`${val  }\n`));
+		correctAnsList[0].forEach((val) => {
+			strCorrectAns = strCorrectAns.concat(`${val  }\n`);
 		});
 
 		return (

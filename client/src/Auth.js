@@ -38,33 +38,33 @@ export default class Auth {
     });
   }
 
-  setCohort(cohort) {
-    if(localStorage.getItem("cohort_address") !== "/landingpage") {
+  static setCohort(cohort) {
+    if (localStorage.getItem("cohort_address") !== "/landingpage") {
       localStorage.setItem("cohort_address", cohort);
     }
   }
 
-  getCohort(){
+  static getCohort() {
     if (localStorage.getItem("cohort_address")) {
       return localStorage.getItem("cohort_address");
     }
   }
 
-  setStyle(style){
-    if(style !== null) {
+  static setStyle(style) {
+    if (style !== null) {
       localStorage.setItem("style", style);
     }
   }
 
-  getStyle(){
+  static getStyle() {
     if (localStorage.getItem("style")) {
       return localStorage.getItem("style");
-    } 
-      return "orange";
-    
+    }
+    return "orange";
+
   }
 
-  logout() {
+  static logout() {
     // Remove tokens and expiry time
     localStorage.removeItem("access_token");
     localStorage.removeItem("id_token");
@@ -82,8 +82,8 @@ export default class Auth {
         password: null,
         username: null,
       },
-      function(err) {
-        if (err) return alert(`Something went wrong: ${  err.message}`);
+      function (err) {
+        if (err) return alert(`Something went wrong: ${err.message}`);
         return alert("success signup without login!");
       }
     );
@@ -99,7 +99,7 @@ export default class Auth {
         localStorage.setItem("id_token", authResults.idToken);
         localStorage.setItem("expires_at", expiresAt);
         location.hash = "";
-        location.pathname =localStorage.getItem("cohort_address") ? localStorage.getItem("cohort_address") : LOGIN_SUCCESS_PAGE;
+        location.pathname = localStorage.getItem("cohort_address") ? localStorage.getItem("cohort_address") : LOGIN_SUCCESS_PAGE;
       } else if (error) {
         location.pathname = LOGIN_FAILURE_PAGE;
         console.log(error); // eslint-disable-line
@@ -107,18 +107,18 @@ export default class Auth {
     });
   }
 
-  isAuthenticated() {
+  static isAuthenticated() {
     const expiresAt = JSON.parse(localStorage.getItem("expires_at"));
     return new Date().getTime() < expiresAt;
   }
 
-  getProfile() {
+  static getProfile() {
     if (localStorage.getItem("id_token")) {
       return jwtDecode(localStorage.getItem("id_token"));
     }
   }
 
-  getAccessToken() {
+  static getAccessToken() {
     if (localStorage.getItem("access_token")) {
       return localStorage.getItem("access_token");
     }

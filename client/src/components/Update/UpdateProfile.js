@@ -19,7 +19,6 @@ class UpdateProfile extends Component {
       player_id: null,
       game_id: null,
       email: this.props.player_email || null,
-      player_id: null,
       given_name: this.props.player_given_name || null,
       middle_name: null,
       family_name: this.props.player_family_name || null,

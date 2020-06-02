@@ -84,12 +84,21 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   } = questionsData;
 
   const populateQuestions = data => {
+    const modifiedQuestions = [];
     data.map(obj =>
-      obj.isitmedia === 1 ? (obj.isitmedia = "yes") : (obj.isitmedia = "no")
+      obj.isitmedia === 1
+        ? modifiedQuestions.push({
+          ...obj,
+          isitmedia: 'yes',
+        })
+        : modifiedQuestions.push({
+          ...obj,
+          isitmedia: 'no',
+        })
     );
     setQuestionsData({
       ...questionsData,
-      questions: data,
+      questions: modifiedQuestions,
       gameId: activeGame,
     });
   };
@@ -107,7 +116,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     if (r === true) {
       deleteQuestion(questionId, refreshQuestionList);
     } else {
-      
+
     }
   };
 
@@ -119,7 +128,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       });
     }
     data.options = answers;
-    updateQuestion(data, id, function() {
+    updateQuestion(data, id, function () {
       setPopupState({ ...popupState, showMessage: false });
       refreshQuestionList();
     });
@@ -213,7 +222,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         type: "text",
         title: "Weight",
         value: weight,
-	editable: false,
+        editable: false,
       },
     ],
   };
@@ -246,7 +255,6 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   };
 
   const editHandle = id => {
-    debugger;
     const selectedQuestion = questions.find(item => {
       return item.id === id;
     });
@@ -341,7 +349,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     data.options = answers;
     data.game_id = activeGame;
     // return;
-    addQuestion(data, function() {
+    addQuestion(data, function () {
       setPopupState({ ...popupState, showMessage: false });
       refreshQuestionList();
     });
@@ -477,10 +485,10 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       },
       {
         key: "weight",
-	type: "text",
-	title: "Weight for Choice A",
-	editable: false,
-	value: questionDetail.weight,
+        type: "text",
+        title: "Weight for Choice A",
+        editable: false,
+        value: questionDetail.weight,
       },
       {
         key: "second_weight",
@@ -511,8 +519,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         questionId: selected_question.id,
         previousChoiceText: choice[0].choicestatement,
         previousQuestionText: previousQuestion.question_statement,// ,
-	// weight: weight,
-	// second_weight: second_weight
+        // weight: weight,
+        // second_weight: second_weight
       });
     } else {
       setQuestionsData({
@@ -524,7 +532,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         previousChoiceText: "NA",
         previousQuestionText: "No Linked Question Found",
         weight: "",
-	second_weight: "",
+        second_weight: "",
       });
     }
   };
@@ -596,17 +604,17 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     if (create) {
       if (activeGameType === "scenario") {
         return scenarioFields;
-      } 
-        return fields;
-      
+      }
+      return fields;
+
     } if (edit) {
       if (activeGameType === "scenario") {
         hasChoices = false;
         // return scenarioEditFields;
         return scenario_edit_data;
-      } 
-        return data;
-      
+      }
+      return data;
+
     }
     // create ? (activeGameType === "scenario" ? scenarioFields : fields) : data;
   };

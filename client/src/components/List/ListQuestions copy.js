@@ -75,12 +75,21 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     })
       .then(res => res.json())
       .then(data => {
+        const modifiedQuestions = [];
         data.map(obj =>
-          obj.isitmedia === 1 ? (obj.isitmedia = "yes") : (obj.isitmedia = "no")
+          obj.isitmedia === 1
+            ? modifiedQuestions.push({
+              ...obj,
+              isitmedia: 'yes',
+            })
+            :  modifiedQuestions.push({
+              ...obj,
+              isitmedia: 'no',
+            })
         );
         setQuestionsData({
           ...questionsData,
-          questions: data,
+          questions: modifiedQuestions,
           gameId: activeGame,
         });
       })
