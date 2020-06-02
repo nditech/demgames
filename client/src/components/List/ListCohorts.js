@@ -11,13 +11,13 @@ const ListCohorts = () => {
     {
       name: "Id",
       selector: "id",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Name",
       selector: "name",
-      sortable: true
-    }
+      sortable: true,
+    },
   ];
 
   const addCohortFields = [
@@ -26,8 +26,8 @@ const ListCohorts = () => {
       type: "text",
       title: "Title",
       value: "",
-      editable: true
-    }
+      editable: true,
+    },
   ];
 
   const onCancel = () => {
@@ -46,7 +46,7 @@ const ListCohorts = () => {
     edit: false,
     create: false,
     onDelete: null,
-    removeMessage: false
+    removeMessage: false,
   });
   const {
     showMessage,
@@ -60,12 +60,12 @@ const ListCohorts = () => {
     edit,
     create,
     onDelete,
-    removeMessage
+    removeMessage,
   } = popupState;
 
   const [cohortData, setCohortData] = useState({
     cohort: [{}],
-    selectedCohort: { id: "", name: "" }
+    selectedCohort: { id: "", name: "" },
   });
 
   const { cohort, selectedCohort } = cohortData;
@@ -78,27 +78,26 @@ const ListCohorts = () => {
         type: "text",
         title: "Title",
         value: selectedCohort.name,
-        editable: true
-      }
-    ]
+        editable: true,
+      },
+    ],
   };
 
   const getCohort = () => {
-    const url = config.baseUrl + "/listCohort";
+    const url = `${config.baseUrl  }/listCohort`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("cohort api data -->", JSON.stringify(data));
         setCohortData({ ...cohortData, cohort: data });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // eslint-disable-line
   };
 
   useEffect(() => {
@@ -106,21 +105,19 @@ const ListCohorts = () => {
   }, []);
 
   const deleteHandle = cohortId => {
-    console.log("cohort id: ", cohortId);
-    var r = window.confirm(
-      "Are you sure you want to delete cohort with id=" + cohortId
+    const r = window.confirm(
+      `Are you sure you want to delete cohort with id=${  cohortId}`
     );
     if (r === true) {
       deleteCohort(cohortId, function() {
         getCohort();
       });
     } else {
-      return;
+      
     }
   };
 
   const editCohort = (data = "", id) => {
-    console.log("dialogbox data", id, data);
     // return;
     updateCohort(data.name, id, function() {
       setPopupState({ ...popupState, showMessage: false });
@@ -145,12 +142,11 @@ const ListCohorts = () => {
       edit: true,
       create: false,
       onDelete: null,
-      removeMessage: false
+      removeMessage: false,
     });
   };
 
   const saveCohort = (data = "") => {
-    console.log("final data: ", data);
     // return;
     addCohort(data, function() {
       setPopupState({ ...popupState, showMessage: false });
@@ -172,7 +168,7 @@ const ListCohorts = () => {
       create: true,
       onDelete: null,
       removeMessage: false,
-      isRemove: false
+      isRemove: false,
     });
   };
 
@@ -181,7 +177,7 @@ const ListCohorts = () => {
   };
 
   return (
-    <Fragment>
+    <>
       <DialogBox
         confirmButtonValue={confirmButtonValue}
         showMessage={showMessage}
@@ -202,21 +198,21 @@ const ListCohorts = () => {
       />
       <div className="float-right" onClick={e => addCohortHandle(e)}>
         <button className="btn btn-info btn-sm">
-          <i className="fa fa-plus"></i>
+          <i className="fa fa-plus" />
         </button>
         <span> Add Cohort</span>
       </div>
       <ListTable
         tableData={{
           title: "List of Cohort",
-          columns: columns,
+          columns,
           hasActionBtns: true,
           data: cohort,
-          deleteHandle: deleteHandle,
-          editHandle: editHandle
+          deleteHandle,
+          editHandle,
         }}
       />
-    </Fragment>
+    </>
   );
 };
 

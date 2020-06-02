@@ -1,8 +1,8 @@
 import React, { Fragment, Component } from 'react';
 import './styles.scss';
-import { Card } from '../Card';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Card } from '../Card';
 
 class CorrectAnswerInfo extends Component {
 	render() {
@@ -14,7 +14,7 @@ class CorrectAnswerInfo extends Component {
 			correctAns,
 			selectedAnswer,
 			hideRightAnswer,
-			moduleColor
+			moduleColor,
 		} = this.props;
 		const selectedAnsList = [];
 		selectedAnsList.push(
@@ -27,7 +27,7 @@ class CorrectAnswerInfo extends Component {
 
 		let strSelectedAns = '';
 		selectedAnsList[0].map((val) => {
-			return (strSelectedAns = strSelectedAns.concat(val + '\n'));
+			return (strSelectedAns = strSelectedAns.concat(`${val  }\n`));
 		});
 
 		const correctAnsList = [];
@@ -41,11 +41,11 @@ class CorrectAnswerInfo extends Component {
 
 		let strCorrectAns = '';
 		correctAnsList[0].map((val) => {
-			return (strCorrectAns = strCorrectAns.concat(val + '\n'));
+			return (strCorrectAns = strCorrectAns.concat(`${val  }\n`));
 		});
 
 		return (
-			<Fragment>
+			<>
 				<div className="level-question-detail">
 					<span>Level {level} :</span>
 					<span className="question-number-status">
@@ -58,11 +58,11 @@ class CorrectAnswerInfo extends Component {
 					<Card option={strSelectedAns} moduleColor={moduleColor} />
 					<p className="answer">Correct answer</p>
 					<Card option={strCorrectAns} moduleColor={moduleColor} />
-					<button className={`next-page-button result-next-page-button`} onClick={hideRightAnswer}>
+					<button className="next-page-button result-next-page-button" onClick={hideRightAnswer}>
 						Proceed
 					</button>
 				</div>
-			</Fragment>
+			</>
 		);
 	}
 }
@@ -81,6 +81,6 @@ CorrectAnswerInfo.propTypes = {
 	correctAns: PropTypes.array,
 	selectedAnswer: PropTypes.array,
 	hideRightAnswer: PropTypes.func,
-	gameData: PropTypes.object
+	gameData: PropTypes.object,
 };
 

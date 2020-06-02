@@ -2,14 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Route, BrowserRouter as Router, withRouter } from "react-router-dom";
 import "./index.css";
+import { Provider } from "react-redux";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import LandingPage from "../src/pages/LandingPage/LandingPage";
+import LandingPage from "./pages/LandingPage/LandingPage";
 import LevelsPage from "./pages/LevelsPage/LevelsPage";
 import QuestionsAnsPage from "./pages/QuestionsAnsPage/QuestionsAnsPage";
 import ResultPage from "./pages/ResultPage/ResultPage";
 import CorrectAnswerInfo from "./components/CorrectAnswerInfo";
-import { Provider } from "react-redux";
 import ProfileInfo from "./components/ProfileInfo";
 import store from "./store";
 import ScenarioQuesAns from "./pages/ScenarioBased/ScenarioQuesAns";
@@ -29,6 +29,7 @@ import UpdateGame from "./components/Update/UpdateGame";
 import UpdateQuestion from "./components/Update/UpdateQuestion";
 import UpdateChoice from "./components/Update/UpdateChoice";
 import ProfileHeader from "./components/ProfileHeader/ProfileHeader";
+
 const auth0 = new Auth();
 const Routes = () => (
   <>

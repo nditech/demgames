@@ -10,6 +10,7 @@ import './styles.scss';
 import '../../commonStyles.scss';
 import PropTypes from 'prop-types';
 import { alignCenter } from './styles';
+
 function Transition(props) {
 	return <Slide direction="up" {...props} />;
 }
@@ -63,7 +64,7 @@ class AnswerInfoPopup extends Component {
 						{answerStatus ? (
 							<span>
 								<span>earn</span>
-								<span className="correct-points"> {/*moduleScenario ? currentQuestionScore :*/ currentQuestionScore} </span>
+								<span className="correct-points"> {/* moduleScenario ? currentQuestionScore : */ currentQuestionScore} </span>
 							</span>
 						) : (
 							<span>
@@ -98,7 +99,7 @@ AnswerInfoPopup.propTypes = {
 	answerStatus: PropTypes.bool,
 	message: PropTypes.string,
 	showRightAnswer: PropTypes.func,
-	nextQuestion: PropTypes.func
+	nextQuestion: PropTypes.func,
 };
 
 export default AnswerInfoPopup;

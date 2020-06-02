@@ -4,5 +4,5 @@ import myReducer from '../pages/LandingPage/reducers';
 
 export default combineReducers({
     alert , 
-    myReducer
+    myReducer,
 });

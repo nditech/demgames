@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-//import '../App.css';
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 
 const AddGame = () => {
   const initialState = {
     caption: "",
     gamedescription: "",
-    gametype: "multiplechoice"
+    gametype: "multiplechoice",
   };
 
   const [formData, setFormData] = useState(initialState);
@@ -42,14 +40,13 @@ const AddGame = () => {
   };
 
   const handleSubmit = event => {
-    console.log(formData);
     event.preventDefault();
   };
 
   return (
     <div className="container App">
       <div className="row">
-        <div className="col-md-2"></div>
+        <div className="col-md-2" />
         <div className="col-md-8">
           <form className="mt-5" onSubmit={e => handleSubmit(e)}>
             <input
@@ -68,7 +65,7 @@ const AddGame = () => {
               name="gamedescription"
               value={gamedescription}
               onChange={e => handleChange(e)}
-            ></textarea>
+             />
             <div className="row">
               <div className="form-group col-md-12">
                 <label className="form-label">Game type</label>
@@ -100,7 +97,7 @@ const AddGame = () => {
             </div>
           </form>
         </div>
-        <div className="col-md-2"></div>
+        <div className="col-md-2" />
       </div>
     </div>
   );

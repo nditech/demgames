@@ -9,12 +9,12 @@ const ListTable = ({
     hasActionBtns,
     deleteHandle,
     editHandle,
-    minSearchLength = 3
-  }
+    minSearchLength = 3,
+  },
 }) => {
   const [listState, setListState] = useState({
     filteredData: "",
-    searchText: ""
+    searchText: "",
   });
 
   const { filteredData, searchText } = listState;
@@ -33,7 +33,7 @@ const ListTable = ({
       data-row={JSON.stringify(props)}
       className="dt-btn btn btn-info mr-1"
     >
-      <i className="fa fa-edit"></i>
+      <i className="fa fa-edit" />
     </button>
   );
 
@@ -45,7 +45,7 @@ const ListTable = ({
       data-question-id={props.row.questionid}
       className="dt-btn btn btn-danger"
     >
-      <i className="fa fa-trash"></i>
+      <i className="fa fa-trash" />
     </button>
   );
 
@@ -54,29 +54,29 @@ const ListTable = ({
       name: "Actions",
       button: true,
       cell: row => (
-        <Fragment>
+        <>
           <EditButton row={row} /> <DeleteButton row={row} />
-        </Fragment>
-      )
+        </>
+      ),
     });
   }
 
   // Table Search
-  let rowdata = JSON.parse(JSON.stringify(data));
+  const rowdata = JSON.parse(JSON.stringify(data));
   const handleSearch = e => {
-    let searchText = e.target.value;
-    let filterdata = [];
+    const searchText = e.target.value;
+    const filterdata = [];
     setListState({
       ...listState,
-      searchText: searchText
+      searchText,
     });
 
     window.filterDelay && clearTimeout(window.filterDelay);
     window.filterDelay = setTimeout(() => {
       rowdata.forEach(element => {
         let valueString = "";
-        for (let lindex in element) {
-          valueString += " " + element[lindex];
+        for (const lindex in element) {
+          valueString += ` ${  element[lindex]}`;
         }
         if (
           valueString.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
@@ -88,7 +88,7 @@ const ListTable = ({
       setListState({
         ...listState,
         filteredData: filterdata,
-        searchText: searchText
+        searchText,
       });
     }, 300);
     // clearTimeout(filterDelay);
@@ -107,7 +107,7 @@ const ListTable = ({
         <DataTable
           title={title}
           columns={columns}
-          data={filteredData ? filteredData : data}
+          data={filteredData || data}
           pagination
         />
       </div>

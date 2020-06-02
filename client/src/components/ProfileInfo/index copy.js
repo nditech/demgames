@@ -1,10 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import arrowBackUrl from '../../images/back.png';
 import editUrl from '../../images/edit.png';
 import changePassUrl from '../../images/changePass.svg';
-import PropTypes from 'prop-types';
 import Auth from '../../Auth';
-import { connect } from 'react-redux';
 
 import './styles.scss';
 // const auth0=new Auth();
@@ -18,24 +18,24 @@ import './styles.scss';
 // 				player_gender:""
 // 			};
 
-const scoreDetail={
-				current:0,
-				score:0,
-				play_id:'null',
-				player_id:'null',
-				game_id:null,
-				program:null,
-				total:0,
-				program_rank:null,
-				total_rank:null	
-			};
+const scoreDetail = {
+	current: 0,
+	score: 0,
+	play_id: 'null',
+	player_id: 'null',
+	game_id: null,
+	program: null,
+	total: 0,
+	program_rank: null,
+	total_rank: null,
+};
 class ProfileInfo extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { 
-			email: 'example@gmail.com', 
-			name: this.props.player_given_name, 
-			password: '12341234' 
+		this.state = {
+			email: 'example@gmail.com',
+			name: this.props.player_given_name,
+			password: '12341234',
 		};
 
 		this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
@@ -146,9 +146,9 @@ class ProfileInfo extends React.Component {
 								Currently pursuing <span>Level 1</span>
 							</p>
 							<p> {
-									scoreDetail.current=this.props.current[0][0]
-									
-								}
+								scoreDetail.current = this.props.current[0][0]
+
+							}
 								Scored <span>{this.props.current[0][0]}/100</span> in <span>Level 1</span>
 							</p>
 							<p className="heading">Finding Evidence - Game {this.props.game_id}</p>
@@ -171,40 +171,40 @@ ProfileInfo.propTypes = {
 	getGameData: PropTypes.func,
 	getScores: PropTypes.func,
 	gameData: PropTypes.object,
-	authDetail:PropTypes.object,
+	authDetail: PropTypes.object,
 	setAuth: PropTypes.func,
 	clearAuth: PropTypes.func,
-	scoreDetail:PropTypes.object
+	scoreDetail: PropTypes.object,
 };
 
 
 const mapStateToProps = (state) => ({
-	player_given_name:state.authDetail.authDetail.player_given_name,
-	player_email:state.authDetail.authDetail.player_email,
-	player_picture:state.authDetail.authDetail.player_picture,
+	player_given_name: state.authDetail.authDetail.player_given_name,
+	player_email: state.authDetail.authDetail.player_email,
+	player_picture: state.authDetail.authDetail.player_picture,
 	gameData: state.gameData,
-	player_id:state.scoreDetail.scoreDetail.play_id,
-	
-	total:state.scoreDetail.scoreDetail.total, 
-	total_rank:state.scoreDetail.scoreDetail.total_rank,
-	current:state.gameData.scores,
-	score:state.scoreDetail.scoreDetail.score,
-	play_id:state.scoreDetail.scoreDetail.play_id,
-	player_id:state.scoreDetail.scoreDetail.player_id,
-	game_id:state.scoreDetail.scoreDetail.game_id,
-	program:state.scoreDetail.scoreDetail.program,
-	program_rank:state.scoreDetail.scoreDetail.program_rank
+	player_id: state.scoreDetail.scoreDetail.play_id,
+
+	total: state.scoreDetail.scoreDetail.total,
+	total_rank: state.scoreDetail.scoreDetail.total_rank,
+	current: state.gameData.scores,
+	score: state.scoreDetail.scoreDetail.score,
+	play_id: state.scoreDetail.scoreDetail.play_id,
+	player_id: state.scoreDetail.scoreDetail.player_id,
+	game_id: state.scoreDetail.scoreDetail.game_id,
+	program: state.scoreDetail.scoreDetail.program,
+	program_rank: state.scoreDetail.scoreDetail.program_rank,
 });
 
-//Dispatch action to fetch game data and scores.
+// Dispatch action to fetch game data and scores.
 const mapDispatchToProps = (dispatch) => {
 	return {
 		// getGameData: (gameData) => dispatch(fetchGameData(gameData)),
 		getScores: (scores) => dispatch(fetchScores(scores)),
-		setAuth:(authDetail) => dispatch(fetchAuthDetails(authDetail)),
-		clearAuth:(authDetail)=> dispatch(clearAuthDetails(authDetail)),
-		getScoreDetails:(scoreDetail)=>dispatch(fetchScoreDetails(scoreDetail)),
-		setScoreDetails:(scoreDetail)=>dispatch(fetchScoreDetails(scoreDetail))
+		setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
+		clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
+		getScoreDetails: (scoreDetail) => dispatch(fetchScoreDetails(scoreDetail)),
+		setScoreDetails: (scoreDetail) => dispatch(fetchScoreDetails(scoreDetail)),
 	};
 };
 

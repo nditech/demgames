@@ -5,11 +5,11 @@ import { config } from "../../settings";
 
 const ListChoices = () => {
   const deleteClickHandle = choiceId => {
-    console.log("choice id ------------> ", choiceId);
-    if (window.confirm("Are you sure you want to delete the choice")) {
-      console.log("question will be deleted");
+    console.log("choice id ------------> ", choiceId); // eslint-disable-line
+    if (window.confirm("Are you sure you want to delete the choice")) { // eslint-disable-line
+      console.log("question will be deleted"); // eslint-disable-line
     } else {
-      console.log("will not be deleted");
+      console.log("will not be deleted"); // eslint-disable-line
     }
   };
   const editClickHandle = choiceId => {};
@@ -23,7 +23,7 @@ const ListChoices = () => {
       data-row={JSON.stringify(props)}
       className="dt-btn btn btn-info mr-1"
     >
-      <i className="fa fa-edit"></i>
+      <i className="fa fa-edit" />
     </button>
   );
 
@@ -35,7 +35,7 @@ const ListChoices = () => {
       data-question-id={props.row.questionid}
       className="dt-btn btn btn-danger"
     >
-      <i className="fa fa-trash"></i>
+      <i className="fa fa-trash" />
     </button>
   );
 
@@ -43,43 +43,43 @@ const ListChoices = () => {
     {
       name: "Id",
       selector: "id",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Question Id",
       selector: "questionid",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Choice Statement",
       selector: "choicestatement",
       sortable: true,
-      searchable: true
+      searchable: true,
     },
     {
       name: "Choice Description",
       selector: "choicedescription",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Weight",
       selector: "weight",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Answer",
       selector: "answer",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Actions",
       button: true,
       cell: row => (
-        <Fragment>
+        <>
           <EditButton row={row} /> <DeleteButton row={row} />
-        </Fragment>
-      )
-    }
+        </>
+      ),
+    },
   ];
 
   const [choicesData, setChoicesData] = useState({ choices: [{}] });
@@ -87,25 +87,23 @@ const ListChoices = () => {
   const { choices } = choicesData;
 
   const getChoices = () => {
-    const url = config.basUrl + "/listchoices";
+    const url = `${config.basUrl  }/listchoices`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("api data -->", JSON.stringify(data));
         data.map(choice =>
           choice.answer === 1 ? (choice.answer = "yes") : (choice.answer = "no")
         );
         setChoicesData({ choices: data });
       })
-      .catch(err => console.log(err));
-    console.log(choices);
+      .catch(err => console.log(err)); // eslint-disable-line
   };
 
   useEffect(() => {

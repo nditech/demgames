@@ -15,7 +15,6 @@ const settings = {
   nextArrow: <SliderArrow to="next" />,
 };
 export const Gamebox = ({ games, activeGame, handleGameBoxClick, deleteGame }) => {
-  console.log(games, "games");
   return (
     <div className="list-games-wrapper">
       <div className="list-games-container">
@@ -27,7 +26,7 @@ export const Gamebox = ({ games, activeGame, handleGameBoxClick, deleteGame }) =
                 className={`gamebox ${activeGame === id ? "active" : ""}`}
                 onClick={() => handleGameBoxClick(index)}
               >
-                <span className="game-delete" onClick={(e)=>{e.stopPropagation(); deleteGame(id)}}>x</span>
+                <span className="game-delete" onClick={(e)=>{e.stopPropagation(); deleteGame(id);}}>x</span>
                 <div className="game-title">{caption}</div>
               </div>
               {activeGame === id && <hr />}

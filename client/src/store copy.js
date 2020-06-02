@@ -6,7 +6,7 @@ function saveToLocalStorage(state) {
 		const serializedState = JSON.stringify(state);
 		localStorage.setItem('state', serializedState);
 	} catch (err) {
-		console.log(err);
+		console.log(err); // eslint-disable-line
 	}
 }
 
@@ -16,7 +16,7 @@ function loadFromLocalStorage() {
 		if (serializedState === null) return undefined;
 		return JSON.parse(serializedState);
 	} catch (err) {
-		console.log(err);
+		console.log(err); // eslint-disable-line
 		return undefined;
 	}
 }

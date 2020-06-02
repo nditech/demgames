@@ -3,7 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Auth from "../../Auth";
-import { config } from "../../settings"
+import { config } from "../../settings";
 
 const auth0 = new Auth();
 
@@ -15,7 +15,7 @@ const AddQuestion = () => {
     question_statement: "",
     weight: "",
     explanation: "",
-    isitmedia: ""
+    isitmedia: "",
   };
 
   const [formData, setFormData] = useState(initialState);
@@ -27,7 +27,7 @@ const AddQuestion = () => {
     question_statement,
     weight,
     explanation,
-    isitmedia
+    isitmedia,
   } = formData;
 
   const reset = event => {
@@ -60,26 +60,26 @@ const AddQuestion = () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    fetch(config.baseUrl + "/addquestion", {
+    fetch(`${config.baseUrl  }/addquestion`, {
       method: "POST",
       headers: {
-        authorization: "Bearer " + auth0.getAccessToken(),
+        authorization: `Bearer ${  auth0.getAccessToken()}`,
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formData),
     })
       .then(res => res.json())
       .then(data => {
         alert("Question was successfully added");
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error)); // eslint-disable-line
   };
 
   return (
     <div className="container App">
       <div className="row">
-        <div className="col-md-2"></div>
+        <div className="col-md-2" />
         <div className="col-md-8">
           <form
             className="text-center border border-light p-5"
@@ -145,7 +145,7 @@ const AddQuestion = () => {
               name="explanation"
               value={explanation}
               onChange={e => handleChange(e)}
-            ></textarea>
+             />
             <br />
             <input
               className="form-control mb-1"
@@ -169,7 +169,7 @@ const AddQuestion = () => {
             </button>
           </form>
         </div>
-        <div className="col-md-2"></div>
+        <div className="col-md-2" />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { AUTH0_LOGIN, AUTH0_LOGOUT } from './constants'; //, 
+import { AUTH0_LOGIN, AUTH0_LOGOUT } from './constants'; // , 
 
 const initialState = {
     authDetail:{
@@ -7,24 +7,18 @@ const initialState = {
 				player_email:"",
 				player_username:"",
 				player_picture:"",
-				player_gender:""
-	}
+				player_gender:"",
+	},
 };
 
 const reducerAuth = (state = initialState, action) => {
-	
-	const newState = { ...state };	
-	console.log(newState);
-
+		const newState = { ...state };	
 	switch (action.type) {
-		case AUTH0_LOGIN:state = {...state, authDetail: action.val}
+		case AUTH0_LOGIN:state = {...state, authDetail: action.val};
 			return state;
 		
 		case AUTH0_LOGOUT:
-			state = {...state, authDetail: action.val}
-			console.log(action.val);
-			console.log(state);
-			console.log(initialState);
+			state = {...state, authDetail: action.val};
 			return (state);
 		default:
 			return state;

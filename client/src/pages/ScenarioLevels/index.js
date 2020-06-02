@@ -20,29 +20,30 @@ const authDetail = {
   player_email: "",
   player_username: "",
   player_picture: "",
-  player_gender: ""
+  player_gender: "",
 };
 class ScenarioLevels extends React.Component {
   state = { levels: 0, game: {} };
+
   componentDidMount() {
-    const url = config.baseUrl + `/level_by_game/${this.props.match.params.moduleId}`;
+    const url = `${config.baseUrl  }/level_by_game/${this.props.match.params.moduleId}`;
     fetch(url, {
       method: "GET",
       headers: {
-        authorization: "Bearer " + auth0.getAccessToken(),
+        authorization: `Bearer ${  auth0.getAccessToken()}`,
         Accept: "application/json",
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
         this.setState({ levels: data.length, game: data.game });
-        console.log("level data", data);
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error)); // eslint-disable-line
   }
+
   getLevelComponents() {
-    let elements = [];
+    const elements = [];
     for (let x = 0; x < this.state.levels; x++) {
       elements.push(
         <LevelCard
@@ -57,6 +58,7 @@ class ScenarioLevels extends React.Component {
     }
     return elements;
   }
+
   render() {
     return (
       <div className="landing-page-wrapper">

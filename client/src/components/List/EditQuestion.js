@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import DialogBox from "../DialogBox/DialogBox";
 import Auth from '../../Auth';
 import { config } from "../../settings";
+
 const auth0=new Auth();
 
 const EditQuestion = ({
@@ -10,7 +11,7 @@ const EditQuestion = ({
   activeGameDetails,
   showQuestionEdit,
   onCancel,
-  getQuestions
+  getQuestions,
 }) => {
   const [questionsData, setQuestionsData] = useState(componentData);
   const {
@@ -20,28 +21,26 @@ const EditQuestion = ({
     choices,
     correctChoice,
     choicesNameArray,
-    questionId
+    questionId,
   } = questionsData;
 
   const editQuestion = (data = "", id) => {
-    console.log(data);
-    let answers = [];
+    const answers = [];
     if (data) {
       data.answers.map((item, index) => {
         answers.push({ option: convertChoice(index), value: item });
       });
     }
     data.answers = answers;
-    console.log("options data -----> ", data);
-    let url = config.baseUrl + "/updatequestion/";
+    const url = `${config.baseUrl  }/updatequestion/`;
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ data: data, id: id })
+      body: JSON.stringify({ data, id }),
     })
       .then(res => res.json())
       .then(data => {
@@ -51,7 +50,7 @@ const EditQuestion = ({
 
         getQuestions();
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error)); // eslint-disable-line
   };
 
   const [popupState, setPopupState] = useState({
@@ -66,7 +65,7 @@ const EditQuestion = ({
     edit: true,
     create: false,
     onDelete: null,
-    removeMessage: false
+    removeMessage: false,
   });
   const {
     showMessage,
@@ -80,11 +79,10 @@ const EditQuestion = ({
     edit,
     create,
     onDelete,
-    removeMessage
+    removeMessage,
   } = popupState;
 
   useEffect(() => {
-    console.log("showquestionedit----------", showQuestionEdit);
     editHandle(id);
     // setPopupState({ ...popupState, showMessage: showQuestionEdit });
   }, []);
@@ -110,13 +108,13 @@ const EditQuestion = ({
         key: "game",
         type: "text",
         title: "Game",
-        value: activeGameName
+        value: activeGameName,
       },
       {
         key: "level",
         type: "text",
         title: "Level",
-        value: questionDetail.difficulty_level
+        value: questionDetail.difficulty_level,
       },
       {
         key: "question",
@@ -124,37 +122,36 @@ const EditQuestion = ({
         title: "Question",
         value: questionDetail.question_statement,
         multiline: true,
-        editable: true
+        editable: true,
       },
       {
         key: "answers",
         type: "options",
         title: "answers",
-        value: choicesNameArray
+        value: choicesNameArray,
       },
       {
         key: "current_choice",
         type: "choice",
         title: "Current choice",
-        value: correctChoice
-      }
-    ]
+        value: correctChoice,
+      },
+    ],
   };
 
   const getChoices = (questionId, selectedQuestion) => {
-    const url = config.baseUrl + `/choices/${questionId}`;
+    const url = `${config.baseUrl  }/choices/${questionId}`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("choices data -->", JSON.stringify(data));
-        let choicesName = [];
+        const choicesName = [];
         let correctChoice = "";
         data.map((item, index) => {
           item.option = convertChoice(index);
@@ -170,10 +167,10 @@ const EditQuestion = ({
           choicesNameArray: choicesName,
           questionDetail: selectedQuestion,
           questionId: selectedQuestion.id,
-          correctChoice: correctChoice
+          correctChoice,
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // eslint-disable-line
   };
 
   //   const onCancel = () => {
@@ -181,16 +178,14 @@ const EditQuestion = ({
   //   };
 
   const editHandle = id => {
-    // console.log("id --- ", id);
     const selectedQuestion = questions.find(item => {
       return item.id === id;
     });
     getChoices(id, selectedQuestion);
-    // console.log("question detail selected", questionDetail);
     setPopupState({ ...popupState, showMessage: showQuestionEdit });
   };
   return (
-    <Fragment>
+    <>
       <DialogBox
         confirmButtonValue={confirmButtonValue}
         showMessage={showMessage}
@@ -207,7 +202,7 @@ const EditQuestion = ({
         onDelete={onDelete}
         removeMessage={removeMessage}
       />
-    </Fragment>
+    </>
   );
 };
 

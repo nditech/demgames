@@ -11,14 +11,14 @@ export const ModuleCard = (props) => (
 		to={{
 			pathname: `/module/${props.moduleType==='scenario'?`scenario/${props.gameId}`:props.moduleId}/levels`,
 			item:{moduleType:props.moduleType,
-				style: props.style
+				style: props.style,
 			},
-			state: { style: props.style}
+			state: { style: props.style},
 		}}
 
 		params={{ 
 			moduleType:props.moduleType,
-			style: props.style
+			style: props.style,
 		}}
 	>
 		<button className={`module-card  ${props.style}`}>
@@ -32,5 +32,5 @@ ModuleCard.propTypes = {
 	moduleId: PropTypes.number,
 	moduleName: PropTypes.string,
 	style: PropTypes.string,
-	moduleType:PropTypes.string
+	moduleType:PropTypes.string,
 };

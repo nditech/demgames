@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-//import '../App.css';
+// import '../App.css';
 import {connect} from 'react-redux';
 import Auth from '../../Auth';
 import { config } from "../../settings";
@@ -16,7 +16,7 @@ const AddChoices = () => {
         weight:'',
         isanswer:'',
         questionid:'',
-        questions:[]
+        questions:[],
     };
 
     const [formData, setFormData] = useState(initialState);
@@ -35,19 +35,19 @@ const AddChoices = () => {
 
     const handleChange = (event) => {   
         setFormData({ ...formData, [event.target.name]: event.target.value });       
-   }
+   };
 
    const handleSubmit = (event) => 
    {
        event.preventDefault();
-       fetch(config.baseUrl + '/addchoice', {
+       fetch(`${config.baseUrl  }/addchoice`, {
         method: 'POST',
         headers: {
-             authorization: "Bearer "+auth0.getAccessToken(),
+             authorization: `Bearer ${auth0.getAccessToken()}`,
             'Accept':'application/json',
-            'Content-Type': 'application/json'          
+            'Content-Type': 'application/json',          
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       })
       .then(res=>res.json())
       .then((data)=>{
@@ -55,17 +55,17 @@ const AddChoices = () => {
          alert('The choice was successfully added');
          handleReset();
         })
-      .catch((error)=>console.log(error));         
-    }
+      .catch((error)=>console.log(error));       // eslint-disable-line   
+    };
            
-      let optionItems = formData.questions.map((question) =>
+      const optionItems = formData.questions.map((question) =>
             <option key={question.id} value={question.id}>{question.question_statement}</option>
       );
 
       return (
         <div className=" container App">
         <div className="row">
-            <div className="col-md-2"></div>
+            <div className="col-md-2" />
             <div className="col-md-8">
                <form className="text-center border border-light p-5" onSubmit={e => handleSubmit(e)}> 
                     <div className="row">
@@ -78,8 +78,7 @@ const AddChoices = () => {
                     </div>
 
                     <input className="form-control mb-1" placeholder="Choice statement" type="text" name="choicestatement" value={choicestatement} onChange={e => handleChange(e)}/> <br/>
-                    <textarea className="form-control mb-1" placeholder="Choice description" type="text" name="choicedescription" value={choicedescription} onChange={e => handleChange(e)}> 
-                    </textarea>
+                    <textarea className="form-control mb-1" placeholder="Choice description" type="text" name="choicedescription" value={choicedescription} onChange={e => handleChange(e)} />
                     <input className="form-control mb-1" placeholder="Weight" type="text" name="weight" value={weight} onChange={e => handleChange(e)}/> <br/>
                     <input className="form-control mb-1" placeholder="Is it answer?" type="text" name="isanswer" value={isanswer} onChange={e => handleChange(e)}/> <br/>
                     <div className="text-center mt-12">
@@ -90,6 +89,6 @@ const AddChoices = () => {
         </div>            
         </div>
     );
-}
+};
     
 export default connect(null, {}) (AddChoices);

@@ -8,7 +8,7 @@ import { isEmpty } from "lodash";
 
 const modalStyles = {
   display: "flex",
-  alignItems: "center"
+  alignItems: "center",
 };
 
 /**
@@ -26,14 +26,15 @@ class DialogBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      confirmButtonDisable: false
+      confirmButtonDisable: false,
     };
   }
+
   initialState = props => {
     const { data, edit, create } = props;
 
-    const values = create ? data : data.values,
-      id = data.id;
+    const values = create ? data : data.values;
+      const {id} = data;
     let confirmButtonDisable = false;
     if (create) {
       confirmButtonDisable = true;
@@ -44,14 +45,16 @@ class DialogBox extends Component {
         type: "choice",
         title: "Choose new choice",
         value: "",
-        editable: true
+        editable: true,
       });
     }
     this.setState({ data: values, edit, id, confirmButtonDisable });
   };
+
   componentDidMount = () => {
     this.initialState(this.props);
   };
+
   componentWillReceiveProps = props => {
     this.initialState(props);
   };
@@ -59,6 +62,7 @@ class DialogBox extends Component {
   convertChoice = value => {
     return String.fromCharCode(value + 65);
   };
+
   onConfirm = () => {
     const { edit, create, onConfirm } = this.props;
     const { data, id } = this.state;
@@ -72,6 +76,7 @@ class DialogBox extends Component {
       onConfirm();
     }
   };
+
   valueChange = (value, title, index = 0) => {
     const { data } = this.state;
     data.map(item => {
@@ -81,15 +86,16 @@ class DialogBox extends Component {
           : (item.value = value);
         if (isEmpty(value)) {
           item.type === "options"
-            ? (item["error"] = true)
-            : (item["error"] = true);
+            ? (item.error = true)
+            : (item.error = true);
         } else {
-          item["error"] = false;
+          item.error = false;
         }
       }
     });
     this.setState({ data, confirmButtonDisable: isEmpty(value) });
   };
+
   render() {
     const {
         bsSize,
@@ -106,9 +112,9 @@ class DialogBox extends Component {
         messageBox,
         create,
         onDelete,
-        removeMessage
-      } = this.props,
-      { data, edit, confirmButtonDisable } = this.state;
+        removeMessage,
+      } = this.props;
+      const { data, edit, confirmButtonDisable } = this.state;
     return (
       <div data-test="component-message-dialog">
         <Modal
@@ -265,7 +271,7 @@ class DialogBox extends Component {
                           </div>
                         );
                       default:
-                        return <div></div>;
+                        return <div />;
                     }
                   })}
                 {removeMessage && <div>{removeMessage}</div>}
@@ -315,7 +321,7 @@ DialogBox.propTypes = {
   messageTitle: PropTypes.string,
   onCancel: PropTypes.func,
   onConfirm: PropTypes.func,
-  showMessage: PropTypes.bool
+  showMessage: PropTypes.bool,
 };
 
 DialogBox.defaultProps = {
@@ -329,7 +335,7 @@ DialogBox.defaultProps = {
   messageHeader: "",
   messageNote: "",
   messageTitle: "",
-  showMessage: false
+  showMessage: false,
 };
 
 export default DialogBox;

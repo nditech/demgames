@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import ListTable from "../ListTable";
 import Icon from "@material-ui/core/Icon";
+import ListTable from "../ListTable";
 import Auth from "../../Auth";
 import { config } from "../../settings";
 import DialogBox from "../DialogBox/DialogBox";
@@ -22,7 +22,7 @@ const ListPlayers = () => {
     edit: false,
     create: false,
     onDelete: null,
-    removeMessage: false
+    removeMessage: false,
   });
   
   const {
@@ -37,12 +37,12 @@ const ListPlayers = () => {
     edit,
     create,
     onDelete,
-    removeMessage
+    removeMessage,
   } = popupState;
   
   const [playerData, setPlayerData] = useState({
     player: [{}],
-    selectedPlayer: { id: "", name: "" }
+    selectedPlayer: { id: "", name: "" },
   });
   
   const { player, selectedPlayer } = playerData;
@@ -55,7 +55,7 @@ const ListPlayers = () => {
         type: "text",
         title: "Program",
         value: selectedPlayer.program ? selectedPlayer.program : "",
-        editable: true
+        editable: true,
       },
       {
         key: "gender",
@@ -63,78 +63,78 @@ const ListPlayers = () => {
         title: "gender",
         options:  [{id:"male",title:"male"},{id:"female",title:"female"}],
         editable: true,
-        value: "male"
+        value: "male",
       },
       {
         key: "country",
         type: "text",
         title: "Country",
         value: selectedPlayer.country ? selectedPlayer.country : "",
-        editable: true
+        editable: true,
       },
       
-    ]
+    ],
   };
 
   const columns = [
     {
       name: "Sl. No.",
       selector: "sl",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Id",
       selector: "id",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Last Name",
       selector: "lastname",
-      sortable: true
+      sortable: true,
     },
     {
       name: "First Name",
       selector: "firstname",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Gender",
       selector: "gender",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Country",
       selector: "country",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Program",
       selector: "program",
-      sortable: true
-    }
+      sortable: true,
+    },
   ];
 
   const leadershipcolumns = [
     {
       name: "ID",
       selector: "id",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Name",
       selector: "name",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Rank",
       selector: "rank",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Score",
       selector: "score",
-      sortable: true
-    }
+      sortable: true,
+    },
   ];
 
   const [playersData, setPlayersData] = useState({
@@ -142,7 +142,7 @@ const ListPlayers = () => {
     globalleadership: [{}],
     cohortleadership: [{}],
     noOfPlayers: 0,
-    selectedPlayer: { id: "", name: "" }
+    selectedPlayer: { id: "", name: "" },
   });
   const [cohort, setCohort] = useState(null);
   const [activeTab, setActiveTab] = useState(1);
@@ -151,67 +151,61 @@ const ListPlayers = () => {
   const { user, globalleadership, cohortleadership, noOfPlayers } = playersData;
 
   const getPlayers = () => {
-    // console.log(this.props.auth);
-    const url = config.baseUrl + "/users";
+    const url = `${config.baseUrl  }/users`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        let numberOfPlayers = data.length;
-        console.log("api data -->", JSON.stringify(data));
+        const numberOfPlayers = data.length;
         data.map((item, index) => {
           item.sl = index + 1;
         });
         setPlayersData({
           ...playersData,
           user: data,
-          noOfPlayers: numberOfPlayers
+          noOfPlayers: numberOfPlayers,
         });
       })
-      .catch(err => console.log(err));
-    console.log(user);
+      .catch(err => console.log(err)); // eslint-disable-line
   };
   const getCohort = () => {
-    // console.log(this.props.auth);
-    const url = config.baseUrl + "/listCohort";
+    const url = `${config.baseUrl  }/listCohort`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("api data -->", JSON.stringify(data));
         setCohort(data);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // eslint-disable-line
   };
 
   useEffect(() => {
-    getPlayers();
+    // getPlayers();
     getCohort();
   }, []);
-  // console.log(cohort, "suyash");
   const handleLeaderShip = (type, id) => {
     let api;
     switch (type) {
       case "all":
-        api = config.baseUrl + "/users";
+        api = `${config.baseUrl  }/users`;
         break;
       case "global":
-        api = config.baseUrl + "/list_leaderBoard";
+        api = `${config.baseUrl  }/list_leaderBoard`;
         break;
       case "cohort":
-        api = config.baseUrl + `/list_cohort_leaderBoard/${id ? id : "1"}`;
+        api = `${config.baseUrl  }/list_cohort_leaderBoard/${id || "1"}`;
         break;
       default:
         break;
@@ -219,19 +213,17 @@ const ListPlayers = () => {
     fetch(api, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("api data -->", data);
-
         if (type === "global") {
-          let objArray = [];
+          const objArray = [];
           data.map((item, index) => {
-            let obj = {};
+            const obj = {};
             obj.sl = index + 1;
             obj.id = item.Player.id;
             obj.name = item.Player.firstname;
@@ -242,9 +234,9 @@ const ListPlayers = () => {
           setPlayersData({ ...playersData, globalleadership: objArray });
         }
         if (type === "cohort") {
-          let objArray = [];
+          const objArray = [];
           data.map((item, index) => {
-            let obj = {};
+            const obj = {};
             obj.sl = index + 1;
             obj.id = item.Player.id;
             obj.name = item.Player.firstname;
@@ -261,23 +253,20 @@ const ListPlayers = () => {
           });
           setPlayersData({ ...playersData, user: data });
         }
-
-        console.log("playerrrrrr ---- ", playersData);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // eslint-disable-line
   };
 
   const deleteHandle = playerId => {
-    console.log("cohort id: ", playerId);
-    var r = window.confirm(
-      "Are you sure you want to delete player with id = " + playerId
+    const r = window.confirm(
+      `Are you sure you want to delete player with id = ${  playerId}`
     );
     if (r === true) {
       deletePlayer(playerId, function() {
         getPlayers();
       });
     } else {
-      return;
+      
     }
   };
 
@@ -301,7 +290,7 @@ const ListPlayers = () => {
       edit: true,
       create: false,
       onDelete: null,
-      removeMessage: false
+      removeMessage: false,
     });
   };
 
@@ -310,7 +299,6 @@ const ListPlayers = () => {
   };
   
   const editPlayer = (data = "", id) => {
-    console.log("dialogbox data", id, data);
     updatePlayer(data, id, function() {
       setPopupState({ ...popupState, showMessage: false });
       getPlayers();
@@ -365,7 +353,7 @@ const ListPlayers = () => {
             <div className="playerbox-value">{noOfPlayers}</div>
           </div>
         </div>
-        <div className="graph"></div>
+        <div className="graph" />
       </div>
       <div className="detail-box">
         <div className="tab-container">
@@ -433,8 +421,8 @@ const ListPlayers = () => {
                     ? globalleadership
                     : cohortleadership,
                 callbackAfterDelete: getPlayers,
-                deleteHandle: deleteHandle,
-                editHandle: editHandle
+                deleteHandle,
+                editHandle,
               }}
             />
           </div>

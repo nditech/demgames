@@ -21,4 +21,4 @@ export const Details=({data})=>{
              )}
         </div>
     );
-}
+};

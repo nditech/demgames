@@ -15,5 +15,5 @@ export const Card = (props) => (
 Card.prototypes = {
 	answerClick: PropTypes.bool,
 	option: PropTypes.string,
-	selectedCard: PropTypes.bool
+	selectedCard: PropTypes.bool,
 };

@@ -1,16 +1,17 @@
 import React, { Component, Fragment } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import Popup from "reactjs-popup";
+import Button from '@material-ui/core/Button';
+import Icon from "@material-ui/core/Icon";
 import { Gamebox } from "../Gamebox";
 import { Details } from "../Details";
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ListQuestion from "../List/ListQuestions";
+import ListQuestion from "./ListQuestions";
 import "./styles.scss";
 import DialogBox from "../DialogBox/DialogBox";
-import Icon from "@material-ui/core/Icon";
-import Button from '@material-ui/core/Button';
 import Auth from '../../Auth';
 import { config } from "../../settings";
-import Popup from "reactjs-popup";
+
 const auth0=new Auth();
 
 class ListGames extends Component {
@@ -22,25 +23,24 @@ class ListGames extends Component {
       activeGame: null,
       activeTab: 1,
       loadQuestionsComponent: false,
-      cohorts:[{}]
+      cohorts:[{}],
     };
     this.simpleTable = this.simpleTable.bind(this);
     this.handleGameBoxClick = this.handleGameBoxClick.bind(this);
   }
 
   pool(fullUpdate) {
-    const url = config.baseUrl + "/listgames";
+    const url = `${config.baseUrl  }/listgames`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("api data -->", JSON.stringify(data));
         if(fullUpdate)
         this.setState({
           games: data,
@@ -52,39 +52,38 @@ class ListGames extends Component {
             { key: "Game Type", value: data[0].gametype },
             { key:"Cohort", value: data[0].Cohort_Game.name},
             { key: "Style", value: data[0].style},
-            {key: "par_score", value: data[0].par_score}
-          ]
+            {key: "par_score", value: data[0].par_score},
+          ],
         });
         else{
           this.setState({
-            games: data
+            games: data,
           });
         }
       })
-      .catch(err => console.log(err));
-    // console.log(this.state.games, this.state.activeGame, "fre");
+      .catch(err => console.log(err)); // eslint-disable-line
   
-    const cohort_url = config.baseUrl + "/listCohort";
+    const cohort_url = `${config.baseUrl  }/listCohort`;
     fetch(cohort_url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("api data for cohort", JSON.stringify(data));
         this.setState({cohorts:data});
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // eslint-disable-line
   }
+
   componentDidMount() {
     this.pool(true);
   }
-  shouldComponentUpdate(nextProp,nextState){
-    console.log(nextProp,"----------------------------------------------");
+
+  shouldComponentUpdate(nextProp, nextState){
     if(nextProp.gameAdded)
     {
       nextProp.handleGameStatus();
@@ -104,27 +103,27 @@ class ListGames extends Component {
       
   // }
   copyGameCb=(id)=>{
-    let cohort_id = this.menu.value;
-    const url = config.baseUrl + '/duplicatGame';
+    const cohort_id = this.menu.value;
+    const url = `${config.baseUrl  }/duplicatGame`;
         fetch(url, {
             method: 'POST',
             headers: {
-              authorization: "Bearer "+auth0.getAccessToken(),
+              authorization: `Bearer ${auth0.getAccessToken()}`,
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({game_id:id,cohort_id:cohort_id})
+            body: JSON.stringify({game_id:id,cohort_id}),
         })
             .then(res => res.json())
             .then((data) => {
               const a=[...this.state.games,data];
                 this.setState({games:a});
                 toast.info("Done...", {
-                  position: toast.POSITION.TOP_CENTER
+                  position: toast.POSITION.TOP_CENTER,
                 });
             })
             .catch((error) => toast.error("Sorry...some technical issue", {
-              position: toast.POSITION.TOP_CENTER
+              position: toast.POSITION.TOP_CENTER,
             }));
   }
 
@@ -136,36 +135,35 @@ class ListGames extends Component {
         { key: "Game Type", value: this.state.games[id].gametype },
         { key: "Cohort", value: this.state.games[id].Cohort_Game.name },
         { key: "Style", value: this.state.games[id].style},
-        { key: "par_score", value: this.state.games[id].par_score}
+        { key: "par_score", value: this.state.games[id].par_score},
       ],
       activeGame: this.state.games[id].id,
-      activeIndex:id
+      activeIndex:id,
     });
   };
 
   updateDetails=(data)=>{
-    const url = config.baseUrl + "/listgames";
+    const url = `${config.baseUrl  }/listgames`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("api data -->", JSON.stringify(data));
         this.setState({
           games: data,
           activeGameDetails: [
             { key: "Name", value: data[this.state.activeIndex].caption },
             { key: "Description", value: data[this.state.activeIndex].gamedescription },
-            { key: "Game Type", value: data[this.state.activeIndex].gametype }
-          ]
+            { key: "Game Type", value: data[this.state.activeIndex].gametype },
+          ],
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // eslint-disable-line
     // this.setState({
     //   activeGameDetails: [
     //     { key: "Name", value: data.caption },
@@ -190,8 +188,8 @@ class ListGames extends Component {
   onCancel = () => {
     this.setState({ showMessage: false });
   };
+
   editGame=(game,id)=>{
-    console.log(game,id);
     const data ={
       id,
       values:[
@@ -200,7 +198,7 @@ class ListGames extends Component {
         type: "text",
         title: "Title",
         value: game[0].value,
-        editable:true
+        editable:true,
       },
       {
         key:"Description",
@@ -208,7 +206,7 @@ class ListGames extends Component {
         title: "Description",
         value: game[1].value,
         multiline: true,
-        editable: true
+        editable: true,
       },
       {
         key:"style",
@@ -218,10 +216,10 @@ class ListGames extends Component {
           { id: "", title: "Select Game Color" },
           { id: "green", title: "Green" },
           { id: "blue", title: "Blue" },
-          { id: "orange", title: "Orange" }
+          { id: "orange", title: "Orange" },
         ],
         value: "",
-        editable: true
+        editable: true,
       },
       {
         key: "par_score",
@@ -229,8 +227,8 @@ class ListGames extends Component {
         title: "par_score",
         value: "",
         multiline: true,
-        editable: true
-      }
+        editable: true,
+      },
     ]};
     this.setState({ data,
       // showMessage:true,
@@ -247,23 +245,22 @@ class ListGames extends Component {
       removeMessage: false},()=>{
         this.setState({
           // activeGameTab:tab
-          showMessage: true
+          showMessage: true,
         });
     });
   }
+
   editGameCb = (data,id) => {
     const editGameForm={id,caption:data.Title,gamedescription:data.Description, style:data.style, par_score:data.par_score};
-    console.log(editGameForm);
-    // console.log("game edited. ",data);
-    const url = config.baseUrl + '/Updategame';
+    const url = `${config.baseUrl  }/Updategame`;
         fetch(url, {
             method: 'POST',
             headers: {
-                authorization: "Bearer "+auth0.getAccessToken(),
+                authorization: `Bearer ${auth0.getAccessToken()}`,
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(editGameForm)
+            body: JSON.stringify(editGameForm),
         })
             .then(res => res.json())
             .then((data) => {
@@ -271,15 +268,16 @@ class ListGames extends Component {
               this.updateDetails(editGameForm);
               this.pool(true);
               toast.info("Successfully Updated !", {
-                position: toast.POSITION.TOP_CENTER
+                position: toast.POSITION.TOP_CENTER,
               });
               
               // editGameForm=null;
             })
             .catch((error) => toast.info("Sorry...some technical issue", {
-              position: toast.POSITION.TOP_CENTER
+              position: toast.POSITION.TOP_CENTER,
             }));
   };
+
   removePopup = (id) => {
     this.setState({
       showMessage: true,
@@ -295,34 +293,32 @@ class ListGames extends Component {
       create: false,
       onDelete: null,
       removeMessage: false,
-      isRemove: true
+      isRemove: true,
     });
   };
+
   deleteGame=(id)=>{
-    console.log(id);
     const deleteGameForm={game_id:id};
-    console.log(deleteGameForm);
-    // console.log("game edited. ",data);
-    const url = config.baseUrl + '/DeleteGame';
+    const url = `${config.baseUrl  }/DeleteGame`;
         fetch(url, {
             method: 'POST',
             headers: {
-                authorization: "Bearer "+auth0.getAccessToken(),
+                authorization: `Bearer ${auth0.getAccessToken()}`,
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(deleteGameForm)
+            body: JSON.stringify(deleteGameForm),
         })
             .then(res => res.json())
             .then((data) => {
               this.setState({showMessage:false});
               this.pool(true);
               toast.info("Deleted Successfully !", {
-                position: toast.POSITION.TOP_CENTER
+                position: toast.POSITION.TOP_CENTER,
               });
             })
             .catch((error) => toast.error("Sorry...some technical issue", {
-              position: toast.POSITION.TOP_CENTER
+              position: toast.POSITION.TOP_CENTER,
             }));
   }
 
@@ -342,10 +338,10 @@ class ListGames extends Component {
       fields,
       onDelete,
       removeMessage,
-      isRemove
+      isRemove,
     } = this.state;
     return (
-      <Fragment>
+      <>
         <DialogBox
             confirmButtonValue={confirmButtonValue}
             showMessage={showMessage}
@@ -419,9 +415,10 @@ class ListGames extends Component {
             <ListQuestion activeGameDetails={this.state.activeGameDetails} activeGame={this.state.activeGame} />
           )}
         </div>
-      </Fragment>
+      </>
     );
   }
+
   render() {
     return (
       <div className="App">

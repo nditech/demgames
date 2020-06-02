@@ -1,12 +1,12 @@
 // src/Auth/Auth.js
 /* eslint no-restricted-globals: */
 import auth0 from "auth0-js";
-//import jwtDecode from "jwt-decode";
+// import jwtDecode from "jwt-decode";
 import jwtDecode from "jwt-decode";
 
 // jwtDecode =require(jwt-decode);
 
-let LOGIN_SUCCESS_PAGE = "/landingpage";
+const LOGIN_SUCCESS_PAGE = "/landingpage";
 const LOGIN_FAILURE_PAGE = "/";
 
 export default class Auth {
@@ -16,7 +16,7 @@ export default class Auth {
     redirectUri: "http://localhost:8080/callback",
     audience: "https://demgamestest.auth0.com/api/v2/",
     responseType: "token id_token",
-    scope: "openid profile email address"
+    scope: "openid profile email address",
   });
 
   // auth0 = new auth0.WebAuth({
@@ -34,7 +34,7 @@ export default class Auth {
 
   login() {
     this.auth0.authorize({
-      prompt: "login"
+      prompt: "login",
     });
   }
 
@@ -59,9 +59,9 @@ export default class Auth {
   getStyle(){
     if (localStorage.getItem("style")) {
       return localStorage.getItem("style");
-    } else {
+    } 
       return "orange";
-    }
+    
   }
 
   logout() {
@@ -80,10 +80,10 @@ export default class Auth {
         connection: "demgamesDB",
         email: null,
         password: null,
-        username: null
+        username: null,
       },
       function(err) {
-        if (err) return alert("Something went wrong: " + err.message);
+        if (err) return alert(`Something went wrong: ${  err.message}`);
         return alert("success signup without login!");
       }
     );
@@ -92,7 +92,7 @@ export default class Auth {
   handleAuthentication() {
     this.auth0.parseHash((error, authResults) => {
       if (authResults && authResults.accessToken && authResults.idToken) {
-        let expiresAt = JSON.stringify(
+        const expiresAt = JSON.stringify(
           authResults.expiresIn * 1000 + new Date().getTime()
         );
         localStorage.setItem("access_token", authResults.accessToken);
@@ -102,13 +102,13 @@ export default class Auth {
         location.pathname =localStorage.getItem("cohort_address") ? localStorage.getItem("cohort_address") : LOGIN_SUCCESS_PAGE;
       } else if (error) {
         location.pathname = LOGIN_FAILURE_PAGE;
-        console.log(error);
+        console.log(error); // eslint-disable-line
       }
     });
   }
 
   isAuthenticated() {
-    let expiresAt = JSON.parse(localStorage.getItem("expires_at"));
+    const expiresAt = JSON.parse(localStorage.getItem("expires_at"));
     return new Date().getTime() < expiresAt;
   }
 

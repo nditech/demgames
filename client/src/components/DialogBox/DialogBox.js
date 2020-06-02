@@ -10,7 +10,7 @@ import { getChoices } from "../List/utility";
 
 const modalStyles = {
   display: "flex",
-  alignItems: "center"
+  alignItems: "center",
 };
 /**
  * This component contains few features.
@@ -121,15 +121,16 @@ class DialogBox extends Component {
     this.state = {
       confirmButtonDisable: false,
       choices: 1,
-      data: []
+      data: [],
     };
   }
+
   initialState = props => {
     // debugger;
     const { data, edit, create, hasChoices = true } = props;
-    let val = data.values ? data.values : [];
-    const values = create ? [...data] : [...val],
-      id = data.id;
+    const val = data.values ? data.values : [];
+    const values = create ? [...data] : [...val];
+      const {id} = data;
     let confirmButtonDisable = false;
     this.clearPrevious(values, create, edit, hasChoices);
     if (create) {
@@ -138,10 +139,11 @@ class DialogBox extends Component {
 
     this.setState({ edit, id, confirmButtonDisable, hasChoices });
   };
+
   clearPrevious = (data, createMethod, edit, hasChoices = true) => {
-    let choices = {},
-      choiceLength = 1;
-    let values = data;
+    const choices = {};
+      let choiceLength = 1;
+    const values = data;
     data.map(item => {
       if (item.type === "text" && !item.editable) return;
       if (item.type === "options") {
@@ -154,7 +156,7 @@ class DialogBox extends Component {
             value: "",
             editable: true,
             optional: true,
-            key: item.title
+            key: item.title,
           });
         }
       }
@@ -167,9 +169,11 @@ class DialogBox extends Component {
     });
     this.setState({ choices, data: values });
   };
+
   componentDidMount = () => {
     this.initialState(this.props);
   };
+
   componentWillReceiveProps = props => {
     this.initialState(props);
   };
@@ -180,6 +184,7 @@ class DialogBox extends Component {
   convertChoice = value => {
     return String.fromCharCode(value + 65);
   };
+
   onConfirm = () => {
     const { edit, create, onConfirm } = this.props;
     const { data, id } = this.state;
@@ -205,9 +210,7 @@ class DialogBox extends Component {
         item.value.map(arr => {
           if (arr.trim() === "") confirmButtonDisable = true;
         });
-      } else {
-        if (item.value.toString().trim() === "") confirmButtonDisable = true;
-      }
+      } else if (item.value.toString().trim() === "") confirmButtonDisable = true;
     });
     return confirmButtonDisable;
   };
@@ -220,10 +223,10 @@ class DialogBox extends Component {
         if (item.type === "options") {
           item.value[index] = value;
           item.error = item.error ? item.error : [false, false, false, false];
-          item.error[index] = isEmpty(value) ? true : false;
+          item.error[index] = !!isEmpty(value);
         } else {
           item.value = value;
-          item["error"] = isEmpty(value) ? true : false;
+          item.error = !!isEmpty(value);
         }
       }
     });
@@ -271,9 +274,9 @@ class DialogBox extends Component {
   };
 
   handleChangeQuestion(e) {
-    let fieldName = e.target.name;
+    const fieldName = e.target.name;
     if (fieldName === "previous_question") {
-      let questionId = e.target.value;
+      const questionId = e.target.value;
       getChoices(questionId, null, this.setChoicesForSelectedQuestion);
     }
   }
@@ -294,9 +297,9 @@ class DialogBox extends Component {
         create,
         onDelete,
         removeMessage,
-        isRemove
-      } = this.props,
-      { data, edit, confirmButtonDisable, choices } = this.state;
+        isRemove,
+      } = this.props;
+      const { data, edit, confirmButtonDisable, choices } = this.state;
     return (
       <div data-test="component-message-dialog">
         <Modal
@@ -509,7 +512,7 @@ class DialogBox extends Component {
                           </div>
                         );
                       default:
-                        return <div key={`default_${index}`}></div>;
+                        return <div key={`default_${index}`} />;
                     }
                   })}
                 {removeMessage && (
@@ -536,7 +539,7 @@ class DialogBox extends Component {
               </Button>
             )}
             {isConfirmation && (
-              <Button className={`dialog-btn cancel`} onClick={onCancel}>
+              <Button className="dialog-btn cancel" onClick={onCancel}>
                 {cancelButtonValue}
               </Button>
             )}
@@ -564,7 +567,7 @@ DialogBox.propTypes = {
   edit: PropTypes.bool,
   create: PropTypes.bool,
   removeMessage: PropTypes.string,
-  isRemove: PropTypes.bool
+  isRemove: PropTypes.bool,
 };
 
 DialogBox.defaultProps = {
@@ -581,7 +584,7 @@ DialogBox.defaultProps = {
   edit: false,
   create: false,
   removeMessage: "",
-  isRemove: false
+  isRemove: false,
 };
 
 export default DialogBox;

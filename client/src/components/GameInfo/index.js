@@ -96,7 +96,7 @@ class GameInfo extends Component {
 
 GameInfo.propTypes = {
   open: PropTypes.bool,
-  handleClose: PropTypes.func
+  handleClose: PropTypes.func,
 };
 
 export default GameInfo;

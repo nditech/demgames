@@ -15,7 +15,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     {
       name: "Question",
       selector: "question_statement",
-      sortable: true
+      sortable: true,
     },
     // {
     //   name: "Game Id",
@@ -26,18 +26,18 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     {
       name: "Difficulty Level",
       selector: "difficulty_level",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Weight",
       selector: "weight",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Explanation",
       selector: "explanation",
-      sortable: true
-    }
+      sortable: true,
+    },
   ];
 
   const [questionsData, setQuestionsData] = useState({
@@ -46,11 +46,11 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     questionId: null,
     questionDetail: {
       difficulty_level: "",
-      question_statement: ""
+      question_statement: "",
     },
     choices: [],
     choicesNameArray: [],
-    correctChoice: ""
+    correctChoice: "",
   });
   const {
     questions,
@@ -59,38 +59,32 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     choices,
     correctChoice,
     choicesNameArray,
-    questionId
+    questionId,
   } = questionsData;
 
-  console.log(
-    "question =----------------------------------------------------------detail....",
-    questionDetail
-  );
 
   const getQuestions = () => {
-    const url = config.baseUrl + `/listquestions/${activeGame}`;
+    const url = `${config.baseUrl  }/listquestions/${activeGame}`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("api data -->", JSON.stringify(data));
         data.map(obj =>
           obj.isitmedia === 1 ? (obj.isitmedia = "yes") : (obj.isitmedia = "no")
         );
         setQuestionsData({
           ...questionsData,
           questions: data,
-          gameId: activeGame
+          gameId: activeGame,
         });
       })
-      .catch(err => console.log(err));
-    console.log(questions);
+      .catch(err => console.log(err)); // eslint-disable-line
   };
   useEffect(() => {
     getQuestions();
@@ -101,24 +95,23 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   }
 
   const deleteHandle = questionId => {
-    console.log("choice id ------------> ", questionId);
     if (window.confirm("Are you sure you want to delete the question")) {
-      let url = config.baseUrl + "/questions/" + questionId;
+      const url = `${config.baseUrl  }/questions/${  questionId}`;
       fetch(url, {
         method: "POST",
         headers: {
-          authorization: "Bearer " + localStorage.getItem("access_token"),
+          authorization: `Bearer ${  localStorage.getItem("access_token")}`,
           Accept: "application/json",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ questionId: questionId })
+        body: JSON.stringify({ questionId }),
       })
         .then(res => res.json())
         .then(data => {
           alert(JSON.stringify(data));
           getQuestions();
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log(error)); // eslint-disable-line
     }
   };
 
@@ -127,24 +120,22 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   };
 
   const editQuestion = (data = "", id) => {
-    console.log(data);
-    let answers = [];
+    const answers = [];
     if (data) {
       data.answers.map((item, index) => {
         answers.push({ option: convertChoice(index), value: item });
       });
     }
     data.answers = answers;
-    console.log("options data -----> ", data);
-    let url = config.baseUrl + "/updatequestion/";
+    const url = `${config.baseUrl  }/updatequestion/`;
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ data: data, id: id })
+      body: JSON.stringify({ data, id }),
     })
       .then(res => res.json())
       .then(data => {
@@ -152,7 +143,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         setPopupState({ ...popupState, showMessage: false });
         getQuestions();
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error)); // eslint-disable-line
   };
 
   //   Questions and choices
@@ -169,7 +160,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     edit: true,
     create: false,
     onDelete: null,
-    removeMessage: false
+    removeMessage: false,
   });
   const {
     showMessage,
@@ -183,7 +174,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     edit,
     create,
     onDelete,
-    removeMessage
+    removeMessage,
   } = popupState;
 
   let activeGameName;
@@ -201,13 +192,13 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         key: "game",
         type: "text",
         title: "Game",
-        value: activeGameName
+        value: activeGameName,
       },
       {
         key: "level",
         type: "text",
         title: "Level",
-        value: questionDetail.difficulty_level
+        value: questionDetail.difficulty_level,
       },
       {
         key: "question",
@@ -215,37 +206,36 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         title: "Question",
         value: questionDetail.question_statement,
         multiline: true,
-        editable: true
+        editable: true,
       },
       {
         key: "answers",
         type: "options",
         title: "answers",
-        value: choicesNameArray
+        value: choicesNameArray,
       },
       {
         key: "current_choice",
         type: "choice",
         title: "Current choice",
-        value: correctChoice
-      }
-    ]
+        value: correctChoice,
+      },
+    ],
   };
 
   const getChoices = (questionId, selectedQuestion) => {
-    const url = config.baseUrl + `/choices/${questionId}`;
+    const url = `${config.baseUrl  }/choices/${questionId}`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("choices data -->", JSON.stringify(data));
-        let choicesName = [];
+        const choicesName = [];
         let correctChoice = "";
         data.map((item, index) => {
           item.option = convertChoice(index);
@@ -261,10 +251,10 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           choicesNameArray: choicesName,
           questionDetail: selectedQuestion,
           questionId: selectedQuestion.id,
-          correctChoice: correctChoice
+          correctChoice,
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // eslint-disable-line
   };
 
   const onCancel = () => {
@@ -272,17 +262,15 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   };
 
   const editHandle = id => {
-    // console.log("id --- ", id);
     const selectedQuestion = questions.find(item => {
       return item.id === id;
     });
     getChoices(id, selectedQuestion);
-    // console.log("question detail selected", questionDetail);
     setPopupState({ ...popupState, showMessage: true });
   };
 
   return (
-    <Fragment>
+    <>
       <DialogBox
         confirmButtonValue={confirmButtonValue}
         showMessage={showMessage}
@@ -301,15 +289,15 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       />
       <ListTable
         tableData={{
-          columns: columns,
+          columns,
           title: "List of Questions",
           hasActionBtns: true,
           rowdata: questions,
-          deleteHandle: deleteHandle,
-          editHandle: editHandle
+          deleteHandle,
+          editHandle,
         }}
       />
-    </Fragment>
+    </>
   );
 };
 

@@ -5,13 +5,13 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 const styles = {
 	root: {
-		flexGrow: 1
-	}
+		flexGrow: 1,
+	},
 };
 
 class ProgressBar extends React.Component {
 	state = {
-		completed: 0
+		completed: 0,
 	};
 
 	componentDidMount() {
@@ -38,7 +38,7 @@ class ProgressBar extends React.Component {
 
 ProgressBar.propTypes = {
 	classes: PropTypes.object.isRequired,
-	progress: PropTypes.number
+	progress: PropTypes.number,
 };
 
 export default withStyles(styles)(ProgressBar);

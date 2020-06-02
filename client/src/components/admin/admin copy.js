@@ -1,7 +1,21 @@
 import React, { Component, Fragment } from "react";
 import { Route, Switch, Link, BrowserRouter as Router } from "react-router-dom";
+import {
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink,
+  Card,
+  Button,
+  CardTitle,
+  CardText,
+  Row,
+  Col,
+} from "reactstrap";
+import classnames from "classnames";
 import ListPlayers from "../List/ListPlayers";
-import UpdatePlayer from "../../components/Update/UpdateProfile";
+import UpdatePlayer from "../Update/UpdateProfile";
 import Register from "../Add/Register";
 import AddGame from "../Add/AddGame";
 import AddChoices from "../Add/AddChoices";
@@ -16,24 +30,10 @@ import UpdateGame from "../Update/UpdateGame";
 import UpdateQuestion from "../Update/UpdateQuestion";
 import UpdateChoice from "../Update/UpdateChoice";
 // Bootstrap
-import {
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
-  Card,
-  Button,
-  CardTitle,
-  CardText,
-  Row,
-  Col
-} from "reactstrap";
-import classnames from "classnames";
-//import NotFound from '../../pages/Landin';
+// import NotFound from '../../pages/Landin';
 
 import Auth from "../../Auth";
-//import notfound from './NotFound';
+// import notfound from './NotFound';
 import Callback from "../../pages/LandingPage/callback";
 
 const auth = new Auth();
@@ -56,7 +56,7 @@ class Admin extends Component {
       activeGameTab: "list",
       activePlayerTab: "list",
       activeQuestionTab: "list",
-      activeChoiceTab: "list"
+      activeChoiceTab: "list",
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -69,15 +69,14 @@ class Admin extends Component {
       fetch(`http://localhost:9000/selectPlayerProfile`, {
         method: "post",
         headers: {
-          authorization: "Bearer "+auth0.getAccessToken(),
+          authorization: `Bearer ${auth0.getAccessToken()}`,
           "Content-Type": "Application/json",
-          Accept: "application/json"
+          Accept: "application/json",
         },
-        body: JSON.stringify(this.state)
+        body: JSON.stringify(this.state),
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
           this.setState({
             play_id: data[0].play_id,
             player_id: data[0].player_id,
@@ -91,10 +90,10 @@ class Admin extends Component {
             program: data[0].program,
             program_rank: data[0].program_rank,
             total_rank: data[0].total_rank,
-            email: data[0].email
+            email: data[0].email,
           });
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log(error)); // eslint-disable-line
     }
   }
 
@@ -102,7 +101,7 @@ class Admin extends Component {
     e.preventDefault();
     const sc = e.target.value;
     this.setState({
-      score: sc
+      score: sc,
     });
   }
 
@@ -110,59 +109,61 @@ class Admin extends Component {
     e.preventDefault();
 
     this.setState({
-      total: Number(this.state.score) + Number(this.state.total)
+      total: Number(this.state.score) + Number(this.state.total),
     });
 
     const url = "http://localhost:9000/updateplayerscore";
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer "+auth0.getAccessToken(),
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state),
-      mode: "cors"
+      mode: "cors",
     })
       .then(res => res.json())
-      .then(data => {
-        console.log(data);
-      })
-      .catch(error => console.log(error));
+      .then(data => data)
+      .catch(error => console.log(error)); // eslint-disable-line
   }
 
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
-        activeTab: tab
+        activeTab: tab,
       });
     }
   }
+
   toggleGame(tab) {
     if (this.state.activeGameTab !== tab) {
       this.setState({
-        activeGameTab: tab
+        activeGameTab: tab,
       });
     }
   }
+
   togglePlayer(tab) {
     if (this.state.activePlayerTab !== tab) {
       this.setState({
-        activePlayerTab: tab
+        activePlayerTab: tab,
       });
     }
   }
+
   toggleQuestion(tab) {
     if (this.state.activeQuestionTab !== tab) {
       this.setState({
-        activeQuestionTab: tab
+        activeQuestionTab: tab,
       });
     }
   }
+
   toggleChoice(tab) {
     if (this.state.activeChoiceTab !== tab) {
       this.setState({
-        activeChoiceTab: tab
+        activeChoiceTab: tab,
       });
     }
   }
@@ -170,13 +171,13 @@ class Admin extends Component {
   render() {
     return (
       <Router>
-        <Fragment>
+        <>
           <div className="container">
             <Nav tabs>
               <NavItem>
                 <NavLink
                   className={classnames({
-                    active: this.state.activeTab === "games"
+                    active: this.state.activeTab === "games",
                   })}
                   onClick={() => {
                     this.toggle("games");
@@ -188,7 +189,7 @@ class Admin extends Component {
               <NavItem>
                 <NavLink
                   className={classnames({
-                    active: this.state.activeTab === "players"
+                    active: this.state.activeTab === "players",
                   })}
                   onClick={() => {
                     this.toggle("players");
@@ -200,7 +201,7 @@ class Admin extends Component {
               <NavItem>
                 <NavLink
                   className={classnames({
-                    active: this.state.activeTab === "questions"
+                    active: this.state.activeTab === "questions",
                   })}
                   onClick={() => {
                     this.toggle("questions");
@@ -212,7 +213,7 @@ class Admin extends Component {
               <NavItem>
                 <NavLink
                   className={classnames({
-                    active: this.state.activeTab === "choices"
+                    active: this.state.activeTab === "choices",
                   })}
                   onClick={() => {
                     this.toggle("choices");
@@ -230,7 +231,7 @@ class Admin extends Component {
                       <NavItem>
                         <NavLink
                           className={classnames({
-                            active: this.state.activeGameTab === "list"
+                            active: this.state.activeGameTab === "list",
                           })}
                           onClick={() => {
                             this.toggleGame("list");
@@ -243,7 +244,7 @@ class Admin extends Component {
                       <NavItem>
                         <NavLink
                           className={classnames({
-                            active: this.state.activeGameTab === "addNew"
+                            active: this.state.activeGameTab === "addNew",
                           })}
                           onClick={() => {
                             this.toggleGame("addNew");
@@ -280,7 +281,7 @@ class Admin extends Component {
                       <NavItem>
                         <NavLink
                           className={classnames({
-                            active: this.state.activePlayerTab === "list"
+                            active: this.state.activePlayerTab === "list",
                           })}
                           onClick={() => {
                             this.togglePlayer("list");
@@ -293,7 +294,7 @@ class Admin extends Component {
                       <NavItem>
                         <NavLink
                           className={classnames({
-                            active: this.state.activePlayerTab === "addNew"
+                            active: this.state.activePlayerTab === "addNew",
                           })}
                           onClick={() => {
                             this.togglePlayer("addNew");
@@ -330,7 +331,7 @@ class Admin extends Component {
                       <NavItem>
                         <NavLink
                           className={classnames({
-                            active: this.state.activeQuestionTab === "list"
+                            active: this.state.activeQuestionTab === "list",
                           })}
                           onClick={() => {
                             this.toggleQuestion("list");
@@ -343,7 +344,7 @@ class Admin extends Component {
                       <NavItem>
                         <NavLink
                           className={classnames({
-                            active: this.state.activeQuestionTab === "addNew"
+                            active: this.state.activeQuestionTab === "addNew",
                           })}
                           onClick={() => {
                             this.toggleQuestion("addNew");
@@ -380,7 +381,7 @@ class Admin extends Component {
                       <NavItem>
                         <NavLink
                           className={classnames({
-                            active: this.state.activeChoiceTab === "list"
+                            active: this.state.activeChoiceTab === "list",
                           })}
                           onClick={() => {
                             this.toggleChoice("list");
@@ -393,7 +394,7 @@ class Admin extends Component {
                       <NavItem>
                         <NavLink
                           className={classnames({
-                            active: this.state.activeChoiceTab === "addNew"
+                            active: this.state.activeChoiceTab === "addNew",
                           })}
                           onClick={() => {
                             this.toggleChoice("addNew");
@@ -462,7 +463,7 @@ class Admin extends Component {
                             <Route path="/updatechoice" component={UpdateChoice} />
                         </Switch> */}
           </div>
-        </Fragment>
+        </>
       </Router>
     );
   }

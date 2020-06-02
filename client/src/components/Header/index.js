@@ -6,7 +6,6 @@ import Icon from "@material-ui/core/Icon";
 import { Link } from "react-router-dom";
 
 export const Header = ({ headerTabs, toggleTab, activeTab, name, image }) => {
-  console.log(name, image, "header");
   return (
     <div className="header-wrapper">
       <div className="header-container">

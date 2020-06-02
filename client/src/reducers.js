@@ -8,7 +8,7 @@ export const rootReducer = combineReducers(
 	{
 			gameData: landingPageReducer,
 			authDetail:landingPageAuthReducer,
-			scoreDetail:profileinfoReducer
+			scoreDetail:profileinfoReducer,
 	}
 );
 

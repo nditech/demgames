@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setAlert } from '../../actions/alert';
 import DatePicker from 'react-datepicker';
+import { setAlert } from '../../actions/alert';
 import { countryList } from './countryList';
-//import "react-datepicker/dist/react-datepicker.css";
+// import "react-datepicker/dist/react-datepicker.css";
 import { config } from "../../settings";
 import Auth from '../../Auth';
 
@@ -22,7 +22,7 @@ const Register = ({ setAlert }) => {
         gender: "Female",
         country: "Afghanistan",
         city: "",
-        program: "M&E"
+        program: "M&E",
     };
 
     const [formData, setFormData] = useState(initialState);
@@ -37,7 +37,7 @@ const Register = ({ setAlert }) => {
         gender,
         country,
         city,
-        program
+        program,
     } = formData;
 
     const handleDate = date => setFormData({ ...formData, dateOfBirth: date });
@@ -46,40 +46,38 @@ const Register = ({ setAlert }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('state----Form---data-----', formData);
 
         const submitData = () => {
 
-            const url = config.baseUrl + '/registerplayer';
+            const url = `${config.baseUrl  }/registerplayer`;
 
             fetch(url, {
                 method: 'POST',
                 headers: {
-                    authorization: "Bearer "+auth0.getAccessToken(),
+                    authorization: `Bearer ${auth0.getAccessToken()}`,
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(formData),
             })
                 .then((res) => {
                     return (res.json());
                 })
-                .then((data) => { alert(data.message) })
-                .catch((error) => console.log(error));
-
-        }
+                .then((data) => { alert(data.message); })
+                .catch((error) => console.log(error)); // eslint-disable-line
+        };
         submitData();
     };
 
     const reset = (e) => {
         e.preventDefault();
         setFormData(initialState);
-    }
+    };
 
     return (
         <div className=" container App">
             <div className="row">
-                <div className="col-md-2"></div>
+                <div className="col-md-2" />
                 <div className="col-md-8">
                     <form className="text-center border border-info mt-3 mb-3 p-2" onSubmit={e => handleSubmit(e)}>
                         <input type="text" name="firstName" value={firstName} onChange={e => handleChange(e)} className="form-control mb-1" placeholder="First Name" />
@@ -102,7 +100,7 @@ const Register = ({ setAlert }) => {
                         <div className="row">
                             <div className="form-group col-md-12">
                             <div>Date of Birth:</div>
-                            <DatePicker className="form-control custom-select custom-select-sm" name="dateOfBirth" onChange={e => handleDate(e)} selected={dateOfBirth} isClearable={true} placeholderText={"MM/DD/YYYY"} /> <br />
+                            <DatePicker className="form-control custom-select custom-select-sm" name="dateOfBirth" onChange={e => handleDate(e)} selected={dateOfBirth} isClearable placeholderText="MM/DD/YYYY" /> <br />
                             </div>
                             </div>
 
@@ -136,7 +134,7 @@ const Register = ({ setAlert }) => {
             </div>
         </div>
     );
-}
+};
 
 Register.propTypes = {
     setAlert: PropTypes.func.isRequired,

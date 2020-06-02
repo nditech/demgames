@@ -1,8 +1,8 @@
 import React from 'react';
-import Enzyme from 'enzyme';
+import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
-import { shallow } from 'enzyme';
+
 import { QuestionsAnsPage } from './QuestionsAnsPage';
 import { gameData } from './data';
 
@@ -11,9 +11,9 @@ let store;
 
 const defaultProps = {
 	// history: createMemoryHistory(),
-	gameData: { gameData: gameData },
+	gameData: { gameData },
 	location: { pathname: '/terms', search: '', state: '', hash: '' },
-	match: { params: { moduleId: '1', levelId: 1, questionId: 1 }, isExact: true, path: '/terms', url: '/terms' }
+	match: { params: { moduleId: '1', levelId: 1, questionId: 1 }, isExact: true, path: '/terms', url: '/terms' },
 };
 
 describe('<QuestionsAnsPage/>', () => {

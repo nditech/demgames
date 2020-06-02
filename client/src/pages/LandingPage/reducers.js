@@ -1,8 +1,8 @@
-import { FETCH_GAME_DATA, FETCH_SCORES } from './constants'; //, 
+import { FETCH_GAME_DATA, FETCH_SCORES } from './constants'; // , 
 
 const initialState = {
 	gameData: [],
-	scores: []
+	scores: [],
 };
 
 const myReducer = (state = initialState, action) => {
@@ -13,10 +13,10 @@ const myReducer = (state = initialState, action) => {
 	
 	switch (action.type) {
 	
-		case FETCH_GAME_DATA: state = { ...state, gameData: action.val}
+		case FETCH_GAME_DATA: state = { ...state, gameData: action.val};
 		return state;
 		
-		case FETCH_SCORES:state = {...state, scores: action.val}
+		case FETCH_SCORES:state = {...state, scores: action.val};
 			return state;
 
 		default:

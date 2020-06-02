@@ -1,43 +1,41 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import profileUrl from "../../images/profile.png";
 import { connect } from "react-redux";
 import moment from "moment";
+import profileUrl from "../../images/profile.png";
 import { config } from "../../settings";
 
 import "./styles.scss";
 
 const ProfileInfo = props => {
   let profileProgressData = null;
-  console.log("player email", props.player.player_email);
-  let userEmail = props.player.player_email;
+  const userEmail = props.player.player_email;
 
   const [profileData, setProfileData] = useState({
     progressData: [],
     cohortRank: "0",
     globalRank: "0",
-    cohorts: []
+    cohorts: [],
   });
 
   const { progressData, cohortRank, globalRank, cohorts } = profileData;
 
   const getPlayerProfile = async (email, callbackFunction) => {
-    const url = config.baseUrl + `/user/get_profile/${email}`;
+    const url = `${config.baseUrl  }/user/get_profile/${email}`;
     await fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
         profileProgressData = data;
-        // console.log("profile data -->", JSON.stringify(data));
         // callbackFunction(data);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // eslint-disable-line
   };
 
   //   const setPlayerProgress = data => {
@@ -50,26 +48,24 @@ const ProfileInfo = props => {
   //         playdate: item.playstartdate
   //       };
   //     });
-  //     console.log("fil data", filteredData);
   //     setProfileData({ ...profileData, progressData: filteredData });
   //   };
 
   const getCohort = async userEmail => {
-    const url = config.baseUrl + `/listCohort`;
+    const url = `${config.baseUrl  }/listCohort`;
     await fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("cohortsss data -->", JSON.stringify(data));
         getRank(data[0].id, data);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // eslint-disable-line
   };
 
   const setRank = (rankObject, cohorts, changeCohort = false) => {
@@ -81,7 +77,7 @@ const ProfileInfo = props => {
           score: item.score,
           cohort: item["Cohort.name"],
           cohort_id: item["Cohort.id"],
-          playdate: item.playstartdate
+          playdate: item.playstartdate,
         };
       });
     }
@@ -90,33 +86,30 @@ const ProfileInfo = props => {
       progressData: filteredData,
       cohortRank: rankObject.cohort_rank,
       globalRank: rankObject.global_rank,
-      cohorts: cohorts
+      cohorts,
     });
   };
 
   const getRank = (cohortId, cohorts, changeCohort = false) => {
-    console.log("selected cohort id: ", cohortId);
-    const url = config.baseUrl + `/get_cohort_rank/${userEmail}/${cohortId}`;
+    const url = `${config.baseUrl  }/get_cohort_rank/${userEmail}/${cohortId}`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("rank data -->", JSON.stringify(data));
         setRank(data, cohorts, changeCohort);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // eslint-disable-line
   };
 
   const handleCohortChange = e => {
-    let cohortId = e.target.value;
+    const cohortId = e.target.value;
     getRank(cohortId, cohorts, true);
-    console.log("coh id: ", cohortId);
   };
 
   useEffect(() => {
@@ -124,10 +117,8 @@ const ProfileInfo = props => {
     getCohort(userEmail);
   }, []);
 
-  console.log("progress data", progressData);
-
   return (
-    <Fragment>
+    <>
       <div className="profile-page">
         <div className="container profile-content">
           <div className="row">
@@ -235,12 +226,12 @@ const ProfileInfo = props => {
           </div>
         </div>
       </div>
-    </Fragment>
+    </>
   );
 };
 
 const mapStateToProps = state => ({
-  player: state.authDetail.authDetail
+  player: state.authDetail.authDetail,
 });
 
 // export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);

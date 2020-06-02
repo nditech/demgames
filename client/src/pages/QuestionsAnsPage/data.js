@@ -22,9 +22,9 @@ export const gameData = [
 							'The topic or claim that is being debated. Example: The death penalty is a justified method of punishment.',
 							'They are laws, decisions of the supreme court and policies of the executive branch that would prevent a new policy from existing.',
 							'This is the Greek word for ethics or character and focuses on demonstrating the reliability, reliability or preparation of the debaters.',
-							'This is the Greek word for logic and focuses on the message and appeals to authority or credibility by offering experience, research or data to support the arguments.'
+							'This is the Greek word for logic and focuses on the message and appeals to authority or credibility by offering experience, research or data to support the arguments.',
 						],
-						correct_answer: [ 0 ]
+						correct_answer: [0],
 					},
 					{
 						id: 2,
@@ -33,9 +33,9 @@ export const gameData = [
 							'Information used to support a claim.',
 							'They are ways of thinking that would block certain policies or laws. The president (and the cabinet), the leaders of the Congress, the judges of the court, the groups of interest and the public in general have the power to avoid that the policies exist.',
 							'This is the Greek word that means both experience and suffering and during a debate focuses on convincing the audience with emotion.',
-							'A controversial statement that a debater supports or refutes with evidence and reasoning.'
+							'A controversial statement that a debater supports or refutes with evidence and reasoning.',
 						],
-						correct_answer: [ 0 ]
+						correct_answer: [0],
 					},
 					{
 						id: 3,
@@ -44,9 +44,9 @@ export const gameData = [
 							"The process of attacking an opponent's arguments",
 							'Information used to support a claim.',
 							'This is the Greek word that means both experience and suffering and during a debate focuses on convincing the audience with emotion.',
-							'A controversial statement that a debater supports or refutes with evidence and reasoning.'
+							'A controversial statement that a debater supports or refutes with evidence and reasoning.',
 						],
-						correct_answer: [ 0 ]
+						correct_answer: [0],
 					},
 					{
 						id: 4,
@@ -55,9 +55,9 @@ export const gameData = [
 							'A controversial statement that a debater supports or refutes with evidence and reasoning',
 							"The process of attacking an opponent's arguments",
 							'This is the Greek word that means both experience and suffering and during a debate focuses on convincing the audience with emotion.',
-							'A controversial statement that a debater supports or refutes with evidence and reasoning.'
+							'A controversial statement that a debater supports or refutes with evidence and reasoning.',
 						],
-						correct_answer: [ 0 ]
+						correct_answer: [0],
 					},
 					{
 						id: 5,
@@ -66,9 +66,9 @@ export const gameData = [
 							'A controversial statement that a debater supports or refutes with evidence and reasoning',
 							"The process of attacking an opponent's arguments",
 							'This is the Greek word that means both experience and suffering and during a debate focuses on convincing the audience with emotion.',
-							'A controversial statement that a debater supports or refutes with evidence and reasoning.'
+							'A controversial statement that a debater supports or refutes with evidence and reasoning.',
 						],
-						correct_answer: [ 0 ]
+						correct_answer: [0],
 					},
 					{
 						id: 6,
@@ -77,11 +77,11 @@ export const gameData = [
 							'A controversial statement that a debater supports or refutes with evidence and reasoning',
 							"The process of attacking an opponent's arguments",
 							'This is the Greek word that means both experience and suffering and during a debate focuses on convincing the audience with emotion.',
-							'A controversial statement that a debater supports or refutes with evidence and reasoning.'
+							'A controversial statement that a debater supports or refutes with evidence and reasoning.',
 						],
-						correct_answer: [ 0 ]
-					}
-				]
+						correct_answer: [0],
+					},
+				],
 			},
 			{
 				id: 2,
@@ -98,9 +98,9 @@ export const gameData = [
 						options: [
 							' Ethos (Ethics) - We have an obligation to protect other species and the planet for our children and future generations.',
 							'Pathos (Emotion) - Pollution causes animals to suffocate and die, birds to be covered with tar and unable to fly and disease for our nation.',
-							'Logos (Logic) - Pollution is a systemic risk to our ecosystem, causing thousands of children to become ill each year, which results in millions of dollars in medical bills. '
+							'Logos (Logic) - Pollution is a systemic risk to our ecosystem, causing thousands of children to become ill each year, which results in millions of dollars in medical bills. ',
 						],
-						correct_answer: [ 0 ]
+						correct_answer: [0],
 					},
 					{
 						id: 2,
@@ -108,9 +108,9 @@ export const gameData = [
 						options: [
 							'Ethos (Ethics) - Researchers illustrate that paying teachers more increases long-term socioeconomic gains for students and their families which we need to increase the prosperity of our country.',
 							'Pathos (Emotion) - Teachers often work long hours and spend more time with their students than their own family. Teachers have the added responsibility of educating the future generation.',
-							'Logos (Logic) - 75% of teachers take home 20% less than they need to support themselves and their families.'
+							'Logos (Logic) - 75% of teachers take home 20% less than they need to support themselves and their families.',
 						],
-						correct_answer: [ 0 ]
+						correct_answer: [0],
 					},
 					{
 						id: 3,
@@ -118,11 +118,11 @@ export const gameData = [
 						options: [
 							'Ethos (Ethics) - According to researchers, the death penalty does not deter crime and we as citizens can utilize more human methods to rehabilitate those that break the law.',
 							'Pathos (Emotion) - Innocent lives are taken by the death penalty and families are forced to deal with the trauma of losing a loved one.',
-							'Logos (Logic) - In 10% of death penalty cases, innocent people are mistakenly identified as guilty.'
+							'Logos (Logic) - In 10% of death penalty cases, innocent people are mistakenly identified as guilty.',
 						],
-						correct_answer: [ 0 ]
-					}
-				]
+						correct_answer: [0],
+					},
+				],
 			},
 			{
 				id: 3,
@@ -135,16 +135,16 @@ export const gameData = [
 					{
 						id: 1,
 						question: 'level3 question1',
-						options: [ 'level3  A', 'level3 B', 'level3 C', 'level3 D' ],
-						correct_answer: [ 0 ]
+						options: ['level3  A', 'level3 B', 'level3 C', 'level3 D'],
+						correct_answer: [0],
 					},
 					{
 						id: 2,
 						question: 'level3 question2',
-						options: [ 'level3 X', 'level3 Y', 'level3 Z', 'level3 A' ],
-						correct_answer: [ 0 ]
-					}
-				]
+						options: ['level3 X', 'level3 Y', 'level3 Z', 'level3 A'],
+						correct_answer: [0],
+					},
+				],
 			},
 			{
 				id: 4,
@@ -157,18 +157,18 @@ export const gameData = [
 					{
 						id: 1,
 						question: '',
-						options: [ 'level4  A', 'level4 B', 'level4 C', 'level4 D' ],
-						correct_answer: [ 0 ]
+						options: ['level4  A', 'level4 B', 'level4 C', 'level4 D'],
+						correct_answer: [0],
 					},
 					{
 						id: 2,
 						question: '',
-						options: [ 'level4  A', 'level4 B', 'level4 C', 'level4 D' ],
-						correct_answer: [ 0 ]
-					}
-				]
-			}
-		]
+						options: ['level4  A', 'level4 B', 'level4 C', 'level4 D'],
+						correct_answer: [0],
+					},
+				],
+			},
+		],
 	},
 	{
 		id: 2,
@@ -192,9 +192,9 @@ export const gameData = [
 						options: [
 							'Affirmation: The death penalty should be upheld.',
 							'Evidence: Innocent people are mistakenly killed by the death penalty.',
-							'Reasoning: The criminal justice system makes errors that cannot be remedied once people are killed.'
+							'Reasoning: The criminal justice system makes errors that cannot be remedied once people are killed.',
 						],
-						correct_answer: [ 0 ]
+						correct_answer: [0],
 					},
 					{
 						id: 2,
@@ -203,9 +203,9 @@ export const gameData = [
 						options: [
 							'Affirmation:  A certain amount of air pollution is necessary for economic activity.',
 							'Evidence: Technology available today allow firms to manufacture goods and services without releasing harmful toxins into the air.',
-							'Reasoning: In order to have the basic goods and services needed to sustain life, small amounts of pollution is acceptable.'
+							'Reasoning: In order to have the basic goods and services needed to sustain life, small amounts of pollution is acceptable.',
 						],
-						correct_answer: [ 0 ]
+						correct_answer: [0],
 					},
 					{
 						id: 3,
@@ -214,11 +214,11 @@ export const gameData = [
 						options: [
 							'Affirmation: Teachers need additional support in the classroom.',
 							'Evidence: A higher student teacher ratio results in higher test scores.',
-							'Reasoning: A higher student teacher ratio results in higher test scores.'
+							'Reasoning: A higher student teacher ratio results in higher test scores.',
 						],
-						correct_answer: [ 0 ]
-					}
-				]
+						correct_answer: [0],
+					},
+				],
 			},
 			{
 				id: 2,
@@ -231,16 +231,16 @@ export const gameData = [
 					{
 						id: 1,
 						question: 'level2 question1',
-						options: [ 'level2  A', 'level2 B', 'level2 C', 'level2 D' ],
-						correct_answer: [ 0, 1 ]
+						options: ['level2  A', 'level2 B', 'level2 C', 'level2 D'],
+						correct_answer: [0, 1],
 					},
 					{
 						id: 2,
 						question: 'level2 question2',
-						options: [ 'level2 X', 'level2 Y', 'level2 Z', 'level2 A' ],
-						correct_answer: [ 0, 1 ]
-					}
-				]
+						options: ['level2 X', 'level2 Y', 'level2 Z', 'level2 A'],
+						correct_answer: [0, 1],
+					},
+				],
 			},
 			{
 				id: 3,
@@ -253,18 +253,18 @@ export const gameData = [
 					{
 						id: 1,
 						question: 'level3 question1',
-						options: [ 'level3  A', 'level3 B', 'level3 C', 'level3 D' ],
-						correct_answer: [ 0, 1 ]
+						options: ['level3  A', 'level3 B', 'level3 C', 'level3 D'],
+						correct_answer: [0, 1],
 					},
 					{
 						id: 2,
 						question: 'level3 question2',
-						options: [ 'level3 X', 'level3 Y', 'level3 Z', 'level3 A' ],
-						correct_answer: [ 0, 1 ]
-					}
-				]
-			}
-		]
+						options: ['level3 X', 'level3 Y', 'level3 Z', 'level3 A'],
+						correct_answer: [0, 1],
+					},
+				],
+			},
+		],
 	},
 	{
 		id: 3,
@@ -288,21 +288,21 @@ export const gameData = [
 							{
 								option:
 									'In Guatemala, no forum currently exists to bring together decision makers and youth to capture youth concerns.',
-								linked_question: 9
+								linked_question: 9,
 							},
 							{
 								option:
 									'My parents never accurately represent my concerns. How can adults represent youth concerns?',
-								linked_question: 3
-							}
-						]
+								linked_question: 3,
+							},
+						],
 					},
 					{
 						id: 2,
 						question:
 							'Your opponents note that in a past assembly meeting, young people were invited to speak about youth issues. This evidence refutes the claim that decision makers only take into account parents’ opinions.The evidence you provided was not strong enough to refute your opponents claims.',
-						options: [ { option: '', linked_question: null }, { option: '', linked_question: null } ],
-						score: 5
+						options: [{ option: '', linked_question: null }, { option: '', linked_question: null }],
+						score: 5,
 					},
 					{
 						id: 3,
@@ -312,14 +312,14 @@ export const gameData = [
 							{
 								option:
 									'In those past five assembly meetings, four of the five mentions on “youth issues” were voted down without debate by the assembly. ',
-								linked_question: 4
+								linked_question: 4,
 							},
 							{
 								option:
 									'Parents legally represent young people, how youth issues are addressed in assembly meetings is reflective of parents opinions',
-								linked_question: 2
-							}
-						]
+								linked_question: 2,
+							},
+						],
 					},
 					{
 						id: 4,
@@ -329,14 +329,14 @@ export const gameData = [
 							{
 								option:
 									'In the past five years, amendments passed on youth unemployment have yielded less than a 2% increase in jobs for young people. Passing amendments on youth issues without engaging them meaningfully results in laws that don’t fully address the reality of the problem.',
-								linked_question: 5
+								linked_question: 5,
 							},
 							{
 								option:
 									'Including youth issues in one amendment does not erase the need for youth quotas. Youth need real representation and a seat at the table.',
-								linked_question: 6
-							}
-						]
+								linked_question: 6,
+							},
+						],
 					},
 					{
 						id: 5,
@@ -346,14 +346,14 @@ export const gameData = [
 							{
 								option:
 									'Youth quotas are not only about representing youth issues. Youth quotas represent an opportunity to demonstrate public acknowledgement of equal value and political know how. This contributes to inclusive societal norms and benefits for society as a whole.',
-								linked_question: 7
+								linked_question: 7,
 							},
 							{
 								option:
 									'Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ',
-								linked_question: 7
-							}
-						]
+								linked_question: 7,
+							},
+						],
 					},
 					{
 						id: 6,
@@ -363,28 +363,28 @@ export const gameData = [
 							{
 								option:
 									'Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ',
-								linked_question: 7
+								linked_question: 7,
 							},
 							{
 								option:
 									'Youth quotas are an effective use of assembly seats because they help marginalized populations, such as youth, participate and have their concerns heard.',
-								linked_question: 8
-							}
-						]
+								linked_question: 8,
+							},
+						],
 					},
 					{
 						id: 7,
 						question:
 							'Your opponent responds by acknowledging the merits of your argument and requesting additional time to conduct further research for a rebuttal.',
-						options: [ { option: '', linked_question: null }, { option: '', linked_question: null } ],
-						score: 10
+						options: [{ option: '', linked_question: null }, { option: '', linked_question: null }],
+						score: 10,
 					},
 					{
 						id: 8,
 						question:
 							'Your opponent responds by saying quotas may give a voice to different populations, but also runs the risk of increased marginalization in the political space. You both agree to conduct more research.',
-						options: [ { option: '', linked_question: null }, { option: '', linked_question: null } ],
-						score: 15
+						options: [{ option: '', linked_question: null }, { option: '', linked_question: null }],
+						score: 15,
 					},
 					{
 						id: 9,
@@ -394,14 +394,14 @@ export const gameData = [
 							{
 								option:
 									'National surveys have limitations and don’t capture information from all youth demographics. Research shows that youth in rural environments are often undersampled and misrepresented.',
-								linked_question: 10
+								linked_question: 10,
 							},
 							{
 								option:
 									'Simply gathering youth concerns does not ensure decision-maker accountability. They do not capture youth voice.',
-								linked_question: 11
-							}
-						]
+								linked_question: 11,
+							},
+						],
 					},
 					{
 						id: 10,
@@ -411,14 +411,14 @@ export const gameData = [
 							{
 								option:
 									'You state that while youth quotas are not able to capture all youth concerns, a small budget could be set aside for a youth and adult coalition to conduct research. This unites members of the national legislative body with a common goal of more inclusively representing constituents and provides space for young elected officials.',
-								linked_question: 14
+								linked_question: 14,
 							},
 							{
 								option:
 									'National surveys are a good start, but that information does not produce the same outcomes as young people at the table working collaboratively with decisions makers.',
-								linked_question: 13
-							}
-						]
+								linked_question: 13,
+							},
+						],
 					},
 					{
 						id: 11,
@@ -428,14 +428,14 @@ export const gameData = [
 							{
 								option:
 									'Occasional outcomes that benefit youth do not demonstrate the full picture. Research states that decision making bodies have miscalculated what youth need repetitively over the past decade resulting in initiatives like a youth center built last year that sits in disuse and disrepair.',
-								linked_question: 13
+								linked_question: 13,
 							},
 							{
 								option:
 									'Youth centers are not what young people need, they need basic needs like employment and adequate healthcare!',
-								linked_question: 12
-							}
-						]
+								linked_question: 12,
+							},
+						],
 					},
 					{
 						id: 12,
@@ -444,14 +444,14 @@ export const gameData = [
 						options: [
 							{
 								option: '',
-								linked_question: null
+								linked_question: null,
 							},
 							{
 								option: '',
-								linked_question: null
-							}
+								linked_question: null,
+							},
 						],
-						score: 10
+						score: 10,
 					},
 					{
 						id: 13,
@@ -461,14 +461,14 @@ export const gameData = [
 							{
 								option:
 									'You state that societal outcomes do not always benefit young people the same as other members of society. Youth quotas can help establish youth-inclusive practices that demonstrate faith in young people’s abilities to contribute.',
-								linked_question: 14
+								linked_question: 14,
 							},
 							{
 								option:
 									'You state that youth quotas are not only for youth. Youth participation in the national assembly demonstrates the assets and capacity youth have which has positive outcomes on all of society. This is demonstrated by youth quotas in other countries around the world.',
-								linked_question: 15
-							}
-						]
+								linked_question: 15,
+							},
+						],
 					},
 					{
 						id: 14,
@@ -477,14 +477,14 @@ export const gameData = [
 						options: [
 							{
 								option: '',
-								linked_question: null
+								linked_question: null,
 							},
 							{
 								option: '',
-								linked_question: null
-							}
+								linked_question: null,
+							},
 						],
-						score: 15
+						score: 15,
 					},
 					{
 						id: 15,
@@ -493,16 +493,16 @@ export const gameData = [
 						options: [
 							{
 								option: '',
-								linked_question: null
+								linked_question: null,
 							},
 							{
 								option: '',
-								linked_question: null
-							}
+								linked_question: null,
+							},
 						],
-						score: 10
-					}
-				]
+						score: 10,
+					},
+				],
 			},
 			{
 				id: 2,
@@ -520,21 +520,21 @@ export const gameData = [
 							{
 								option:
 									'In Guatemala, no forum currently exists to bring together decision makers and youth to capture youth concerns.',
-								linked_question: 9
+								linked_question: 9,
 							},
 							{
 								option:
 									'My parents never accurately represent my concerns. How can adults represent youth concerns?',
-								linked_question: 3
-							}
-						]
+								linked_question: 3,
+							},
+						],
 					},
 					{
 						id: 2,
 						question:
 							'Your opponents note that in a past assembly meeting, young people were invited to speak about youth issues. This evidence refutes the claim that decision makers only take into account parents’ opinions.The evidence you provided was not strong enough to refute your opponents claims.',
-						options: [ { option: '', linked_question: null }, { option: '', linked_question: null } ],
-						score: 5
+						options: [{ option: '', linked_question: null }, { option: '', linked_question: null }],
+						score: 5,
 					},
 					{
 						id: 3,
@@ -544,14 +544,14 @@ export const gameData = [
 							{
 								option:
 									'In those past five assembly meetings, four of the five mentions on “youth issues” were voted down without debate by the assembly. ',
-								linked_question: 4
+								linked_question: 4,
 							},
 							{
 								option:
 									'Parents legally represent young people, how youth issues are addressed in assembly meetings is reflective of parents opinions',
-								linked_question: 2
-							}
-						]
+								linked_question: 2,
+							},
+						],
 					},
 					{
 						id: 4,
@@ -561,14 +561,14 @@ export const gameData = [
 							{
 								option:
 									'In the past five years, amendments passed on youth unemployment have yielded less than a 2% increase in jobs for young people. Passing amendments on youth issues without engaging them meaningfully results in laws that don’t fully address the reality of the problem.',
-								linked_question: 5
+								linked_question: 5,
 							},
 							{
 								option:
 									'Including youth issues in one amendment does not erase the need for youth quotas. Youth need real representation and a seat at the table.',
-								linked_question: 6
-							}
-						]
+								linked_question: 6,
+							},
+						],
 					},
 					{
 						id: 5,
@@ -578,14 +578,14 @@ export const gameData = [
 							{
 								option:
 									'Youth quotas are not only about representing youth issues. Youth quotas represent an opportunity to demonstrate public acknowledgement of equal value and political know how. This contributes to inclusive societal norms and benefits for society as a whole.',
-								linked_question: 7
+								linked_question: 7,
 							},
 							{
 								option:
 									'Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ',
-								linked_question: 7
-							}
-						]
+								linked_question: 7,
+							},
+						],
 					},
 					{
 						id: 6,
@@ -595,28 +595,28 @@ export const gameData = [
 							{
 								option:
 									'Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ',
-								linked_question: 7
+								linked_question: 7,
 							},
 							{
 								option:
 									'Youth quotas are an effective use of assembly seats because they help marginalized populations, such as youth, participate and have their concerns heard.',
-								linked_question: 8
-							}
-						]
+								linked_question: 8,
+							},
+						],
 					},
 					{
 						id: 7,
 						question:
 							'Your opponent responds by acknowledging the merits of your argument and requesting additional time to conduct further research for a rebuttal.',
-						options: [ { option: '', linked_question: null }, { option: '', linked_question: null } ],
-						score: 10
+						options: [{ option: '', linked_question: null }, { option: '', linked_question: null }],
+						score: 10,
 					},
 					{
 						id: 8,
 						question:
 							'Your opponent responds by saying quotas may give a voice to different populations, but also runs the risk of increased marginalization in the political space. You both agree to conduct more research.',
-						options: [ { option: '', linked_question: null }, { option: '', linked_question: null } ],
-						score: 15
+						options: [{ option: '', linked_question: null }, { option: '', linked_question: null }],
+						score: 15,
 					},
 					{
 						id: 9,
@@ -626,14 +626,14 @@ export const gameData = [
 							{
 								option:
 									'National surveys have limitations and don’t capture information from all youth demographics. Research shows that youth in rural environments are often undersampled and misrepresented.',
-								linked_question: 10
+								linked_question: 10,
 							},
 							{
 								option:
 									'Simply gathering youth concerns does not ensure decision-maker accountability. They do not capture youth voice.',
-								linked_question: 11
-							}
-						]
+								linked_question: 11,
+							},
+						],
 					},
 					{
 						id: 10,
@@ -643,14 +643,14 @@ export const gameData = [
 							{
 								option:
 									'You state that while youth quotas are not able to capture all youth concerns, a small budget could be set aside for a youth and adult coalition to conduct research. This unites members of the national legislative body with a common goal of more inclusively representing constituents and provides space for young elected officials.',
-								linked_question: 14
+								linked_question: 14,
 							},
 							{
 								option:
 									'National surveys are a good start, but that information does not produce the same outcomes as young people at the table working collaboratively with decisions makers.',
-								linked_question: 13
-							}
-						]
+								linked_question: 13,
+							},
+						],
 					},
 					{
 						id: 11,
@@ -660,14 +660,14 @@ export const gameData = [
 							{
 								option:
 									'Occasional outcomes that benefit youth do not demonstrate the full picture. Research states that decision making bodies have miscalculated what youth need repetitively over the past decade resulting in initiatives like a youth center built last year that sits in disuse and disrepair.',
-								linked_question: 13
+								linked_question: 13,
 							},
 							{
 								option:
 									'Youth centers are not what young people need, they need basic needs like employment and adequate healthcare!',
-								linked_question: 12
-							}
-						]
+								linked_question: 12,
+							},
+						],
 					},
 					{
 						id: 12,
@@ -676,14 +676,14 @@ export const gameData = [
 						options: [
 							{
 								option: '',
-								linked_question: null
+								linked_question: null,
 							},
 							{
 								option: '',
-								linked_question: null
-							}
+								linked_question: null,
+							},
 						],
-						score: 10
+						score: 10,
 					},
 					{
 						id: 13,
@@ -693,14 +693,14 @@ export const gameData = [
 							{
 								option:
 									'You state that societal outcomes do not always benefit young people the same as other members of society. Youth quotas can help establish youth-inclusive practices that demonstrate faith in young people’s abilities to contribute.',
-								linked_question: 14
+								linked_question: 14,
 							},
 							{
 								option:
 									'You state that youth quotas are not only for youth. Youth participation in the national assembly demonstrates the assets and capacity youth have which has positive outcomes on all of society. This is demonstrated by youth quotas in other countries around the world.',
-								linked_question: 15
-							}
-						]
+								linked_question: 15,
+							},
+						],
 					},
 					{
 						id: 14,
@@ -709,14 +709,14 @@ export const gameData = [
 						options: [
 							{
 								option: '',
-								linked_question: null
+								linked_question: null,
 							},
 							{
 								option: '',
-								linked_question: null
-							}
+								linked_question: null,
+							},
 						],
-						score: 15
+						score: 15,
 					},
 					{
 						id: 15,
@@ -725,16 +725,16 @@ export const gameData = [
 						options: [
 							{
 								option: '',
-								linked_question: null
+								linked_question: null,
 							},
 							{
 								option: '',
-								linked_question: null
-							}
+								linked_question: null,
+							},
 						],
-						score: 10
-					}
-				]
+						score: 10,
+					},
+				],
 			},
 			{
 				id: 3,
@@ -752,21 +752,21 @@ export const gameData = [
 							{
 								option:
 									'In Guatemala, no forum currently exists to bring together decision makers and youth to capture youth concerns.',
-								linked_question: 9
+								linked_question: 9,
 							},
 							{
 								option:
 									'My parents never accurately represent my concerns. How can adults represent youth concerns?',
-								linked_question: 3
-							}
-						]
+								linked_question: 3,
+							},
+						],
 					},
 					{
 						id: 2,
 						question:
 							'Your opponents note that in a past assembly meeting, young people were invited to speak about youth issues. This evidence refutes the claim that decision makers only take into account parents’ opinions.The evidence you provided was not strong enough to refute your opponents claims.',
-						options: [ { option: '', linked_question: null }, { option: '', linked_question: null } ],
-						score: 5
+						options: [{ option: '', linked_question: null }, { option: '', linked_question: null }],
+						score: 5,
 					},
 					{
 						id: 3,
@@ -776,14 +776,14 @@ export const gameData = [
 							{
 								option:
 									'In those past five assembly meetings, four of the five mentions on “youth issues” were voted down without debate by the assembly. ',
-								linked_question: 4
+								linked_question: 4,
 							},
 							{
 								option:
 									'Parents legally represent young people, how youth issues are addressed in assembly meetings is reflective of parents opinions',
-								linked_question: 2
-							}
-						]
+								linked_question: 2,
+							},
+						],
 					},
 					{
 						id: 4,
@@ -793,14 +793,14 @@ export const gameData = [
 							{
 								option:
 									'In the past five years, amendments passed on youth unemployment have yielded less than a 2% increase in jobs for young people. Passing amendments on youth issues without engaging them meaningfully results in laws that don’t fully address the reality of the problem.',
-								linked_question: 5
+								linked_question: 5,
 							},
 							{
 								option:
 									'Including youth issues in one amendment does not erase the need for youth quotas. Youth need real representation and a seat at the table.',
-								linked_question: 6
-							}
-						]
+								linked_question: 6,
+							},
+						],
 					},
 					{
 						id: 5,
@@ -810,14 +810,14 @@ export const gameData = [
 							{
 								option:
 									'Youth quotas are not only about representing youth issues. Youth quotas represent an opportunity to demonstrate public acknowledgement of equal value and political know how. This contributes to inclusive societal norms and benefits for society as a whole.',
-								linked_question: 7
+								linked_question: 7,
 							},
 							{
 								option:
 									'Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ',
-								linked_question: 7
-							}
-						]
+								linked_question: 7,
+							},
+						],
 					},
 					{
 						id: 6,
@@ -827,28 +827,28 @@ export const gameData = [
 							{
 								option:
 									'Youth candidates will still have expectations and requirements to ensure a quality, capable candidate can be voted for in a democratic process. ',
-								linked_question: 7
+								linked_question: 7,
 							},
 							{
 								option:
 									'Youth quotas are an effective use of assembly seats because they help marginalized populations, such as youth, participate and have their concerns heard.',
-								linked_question: 8
-							}
-						]
+								linked_question: 8,
+							},
+						],
 					},
 					{
 						id: 7,
 						question:
 							'Your opponent responds by acknowledging the merits of your argument and requesting additional time to conduct further research for a rebuttal.',
-						options: [ { option: '', linked_question: null }, { option: '', linked_question: null } ],
-						score: 10
+						options: [{ option: '', linked_question: null }, { option: '', linked_question: null }],
+						score: 10,
 					},
 					{
 						id: 8,
 						question:
 							'Your opponent responds by saying quotas may give a voice to different populations, but also runs the risk of increased marginalization in the political space. You both agree to conduct more research.',
-						options: [ { option: '', linked_question: null }, { option: '', linked_question: null } ],
-						score: 15
+						options: [{ option: '', linked_question: null }, { option: '', linked_question: null }],
+						score: 15,
 					},
 					{
 						id: 9,
@@ -858,14 +858,14 @@ export const gameData = [
 							{
 								option:
 									'National surveys have limitations and don’t capture information from all youth demographics. Research shows that youth in rural environments are often undersampled and misrepresented.',
-								linked_question: 10
+								linked_question: 10,
 							},
 							{
 								option:
 									'Simply gathering youth concerns does not ensure decision-maker accountability. They do not capture youth voice.',
-								linked_question: 11
-							}
-						]
+								linked_question: 11,
+							},
+						],
 					},
 					{
 						id: 10,
@@ -875,14 +875,14 @@ export const gameData = [
 							{
 								option:
 									'You state that while youth quotas are not able to capture all youth concerns, a small budget could be set aside for a youth and adult coalition to conduct research. This unites members of the national legislative body with a common goal of more inclusively representing constituents and provides space for young elected officials.',
-								linked_question: 14
+								linked_question: 14,
 							},
 							{
 								option:
 									'National surveys are a good start, but that information does not produce the same outcomes as young people at the table working collaboratively with decisions makers.',
-								linked_question: 13
-							}
-						]
+								linked_question: 13,
+							},
+						],
 					},
 					{
 						id: 11,
@@ -892,14 +892,14 @@ export const gameData = [
 							{
 								option:
 									'Occasional outcomes that benefit youth do not demonstrate the full picture. Research states that decision making bodies have miscalculated what youth need repetitively over the past decade resulting in initiatives like a youth center built last year that sits in disuse and disrepair.',
-								linked_question: 13
+								linked_question: 13,
 							},
 							{
 								option:
 									'Youth centers are not what young people need, they need basic needs like employment and adequate healthcare!',
-								linked_question: 12
-							}
-						]
+								linked_question: 12,
+							},
+						],
 					},
 					{
 						id: 12,
@@ -908,14 +908,14 @@ export const gameData = [
 						options: [
 							{
 								option: '',
-								linked_question: null
+								linked_question: null,
 							},
 							{
 								option: '',
-								linked_question: null
-							}
+								linked_question: null,
+							},
 						],
-						score: 10
+						score: 10,
 					},
 					{
 						id: 13,
@@ -925,14 +925,14 @@ export const gameData = [
 							{
 								option:
 									'You state that societal outcomes do not always benefit young people the same as other members of society. Youth quotas can help establish youth-inclusive practices that demonstrate faith in young people’s abilities to contribute.',
-								linked_question: 14
+								linked_question: 14,
 							},
 							{
 								option:
 									'You state that youth quotas are not only for youth. Youth participation in the national assembly demonstrates the assets and capacity youth have which has positive outcomes on all of society. This is demonstrated by youth quotas in other countries around the world.',
-								linked_question: 15
-							}
-						]
+								linked_question: 15,
+							},
+						],
 					},
 					{
 						id: 14,
@@ -941,14 +941,14 @@ export const gameData = [
 						options: [
 							{
 								option: '',
-								linked_question: null
+								linked_question: null,
 							},
 							{
 								option: '',
-								linked_question: null
-							}
+								linked_question: null,
+							},
 						],
-						score: 15
+						score: 15,
 					},
 					{
 						id: 15,
@@ -957,18 +957,17 @@ export const gameData = [
 						options: [
 							{
 								option: '',
-								linked_question: null
+								linked_question: null,
 							},
 							{
 								option: '',
-								linked_question: null
-							}
+								linked_question: null,
+							},
 						],
-						score: 10
-					}
-				]
-			}
-		]
-	}
+						score: 10,
+					},
+				],
+			},
+		],
+	},
 ];
-	

@@ -1,17 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import './styles.scss';
-import lockIconUrl from '../../images/lock.png';
 import PropTypes from 'prop-types';
+import lockIconUrl from '../../images/lock.png';
 
 class LevelCard extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
-	}
-
-	componentDidMount(){
-		console.log(this.props.type);
 	}
 
 	render() {
@@ -28,7 +24,7 @@ class LevelCard extends Component {
 			showScore=true,
 			moduleColor,
 			player_email,
-			moduleType
+			moduleType,
 		} = this.props;
 		const lock = level > 1 && prevLevelScore < parScore;
 		return (
@@ -38,7 +34,7 @@ class LevelCard extends Component {
 					pathname: `/module/${moduleType === 'scenario'
 						? 'scenario/'
 						: ''}${moduleId}/level/${level}/questions/`,
-					state: { moduleColor: moduleColor}
+					state: { moduleColor},
 				}}
 			>
 				<button className={`level-card level-card-${moduleColor} card-lock-${lock}`} type="button">
@@ -79,7 +75,7 @@ LevelCard.propTypes = {
 	moduleId: PropTypes.number,
 	prevLevelScore: PropTypes.number,
 	moduleColor: PropTypes.string,
-	moduleType: PropTypes.string
+	moduleType: PropTypes.string,
 };
 
 export default LevelCard;
