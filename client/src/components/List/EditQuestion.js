@@ -39,6 +39,10 @@ const EditQuestion = ({
     questionId,
   } = questionsData;
 
+  const convertChoice = value => {
+    return String.fromCharCode(value + 65);
+  };
+  
   const editQuestion = (data = "", questionIdToEdit) => {
     const answers = [];
     if (data) {
@@ -86,14 +90,10 @@ const EditQuestion = ({
     removeMessage,
   } = popupState;
 
-  const convertChoice = value => {
-    return String.fromCharCode(value + 65);
-  };
-
   //   Questions and choices
 
   let activeGameName;
-  activeGameDetails.map(item => {
+  activeGameDetails.map(item => { // eslint-disable-line
     if (item.key === "Name") {
       activeGameName = item.value;
     }
