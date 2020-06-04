@@ -79,8 +79,6 @@ class UpdateProfile extends Component {
   }
 
   handleDate(date) {
-    // const d = moment(date).format("MM/DD/YYYY");
-
     this.setState({
       dateOfBirth: date,
     });
@@ -218,45 +216,45 @@ class UpdateProfile extends Component {
               {this.state.total_rank}
             </li>
           </p>
-          <label>
+          <label htmlFor="id">
             Id
-            <input type="text" name="player_id" value={this.state.player_id} onChange={this.handleChange} />
+            <input id="id" type="text" name="player_id" value={this.state.player_id} onChange={this.handleChange} />
             {' '}
             <br />
           </label>
-          <label>
+          <label htmlFor="first-name">
             First name
-            <input type="text" name="given_name" value={this.state.given_name} onChange={this.handleChange} />
+            <input id="first-name" type="text" name="given_name" value={this.state.given_name} onChange={this.handleChange} />
             {' '}
             <br />
           </label>
-          <label>
+          <label htmlFor="middle-name">
             Middle name
-            <input type="text" name="middle_name" value={this.state.middle_name} onChange={this.handleChange} />
+            <input id="middle-name" type="text" name="middle_name" value={this.state.middle_name} onChange={this.handleChange} />
             {' '}
             <br />
           </label>
-          <label>
+          <label htmlFor="family-name">
             Family name
-            <input type="text" name="family_name" value={this.state.family_name} onChange={this.handleChange} />
+            <input id="family-name" type="text" name="family_name" value={this.state.family_name} onChange={this.handleChange} />
             {' '}
             <br />
           </label>
-          <label>
+          <label htmlFor="user-name">
             User name
-            <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
+            <input id="user-name" type="text" name="username" value={this.state.username} onChange={this.handleChange} />
             {' '}
             <br />
           </label>
-          <label>
+          <label htmlFor="gender">
             Gender
-            <input type="text" name="gender" value={this.state.gender} onChange={this.handleChange} />
+            <input id="gender" type="text" name="gender" value={this.state.gender} onChange={this.handleChange} />
             {' '}
             <br />
           </label>
-          <label>
+          <label htmlFor="program">
             Program
-            <input type="text" name="program" value={this.state.program} onChange={this.handleChange} />
+            <input id="program" type="text" name="program" value={this.state.program} onChange={this.handleChange} />
             {' '}
             <br />
           </label>
@@ -273,16 +271,16 @@ class UpdateProfile extends Component {
             />
             <br />
           </label>
-          <label>
+          <label htmlFor="city">
             City
-            <input type="text" name="city" value={this.state.city} onChange={this.handleChange} />
+            <input id="city" type="text" name="city" value={this.state.city} onChange={this.handleChange} />
             {' '}
             <br />
           </label>
-          <label>
+          <label htmlFor="country">
             {' '}
             Country
-            <select name="country" value={this.state.selectValue} onChange={this.handleChange}>
+            <select id="country" name="country" value={this.state.selectValue} onChange={this.handleChange}>
               <option value="Afghanistan">Afghanistan</option>
               <option value="Albania">Albania</option>
               <option value="Algeria">Algeria</option>
@@ -355,7 +353,6 @@ class UpdateProfile extends Component {
               <option value="Guatemala">Guatemala</option>
               <option value="Guinea">Guinea</option>
               <option value="GuineaBissau">Guinea-Bissau</option>
-
               <option value="Guyana">Guyana</option>
               <option value="Haiti">Haiti</option>
               <option value="Honduras">Honduras</option>
@@ -374,7 +371,6 @@ class UpdateProfile extends Component {
               <option value="Kazakhstan">Kazakhstan</option>
               <option value="Kenya">Kenya</option>
               <option value="Kiribati">Kiribati</option>
-
               <option value="NorthKorea">Korea, North</option>
               <option value="SouthKorea">Korea, North</option>
               <option value="Kosovo">Kosovo</option>
@@ -430,7 +426,6 @@ class UpdateProfile extends Component {
               <option value="Romania">Romania</option>
               <option value="Russia">Russia</option>
               <option value="Rwanda">Rwanda</option>
-
               <option value="SaintKittsandNevis">Saint Kitts and Nevis</option>
               <option value="SaintLucia">Saint Lucia</option>
               <option value="SaintVincentandtheGrenadines">Saint Vincent and the Grenadines</option>
@@ -484,15 +479,15 @@ class UpdateProfile extends Component {
             </select>
             <br />
           </label>
-          <label>
+          <label htmlFor="email">
             email
-            <input type="text" name="email" value={this.state.email} onChange={this.handleChange} />
+            <input id="email" type="text" name="email" value={this.state.email} onChange={this.handleChange} />
             {' '}
             <br />
           </label>
           <button type="submit">Update Profile</button>
           <div>
-            <button>Log out</button>
+            <button type="submit">Log out</button>
           </div>
         </form>
       </div>
@@ -508,24 +503,43 @@ const mapStateToProps = (state) => ({
   player_username: state.authDetail.authDetail.player_username,
   player_gender: state.authDetail.authDetail.player_gender,
   player_dateOfBirth: state.authDetail.authDetail.player_dateOfBirth,
-  //	gameData: state.gameData
 });
 
 // Dispatch action to fetch game data and scores.
 const mapDispatchToProps = (dispatch) => ({
-  //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-  //		getScores: (scores) => dispatch(fetchScores(scores)),
   setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
   clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
 });
 
 UpdateProfile.propTypes = {
-  //	getGameData: PropTypes.func,
-  //	getScores: PropTypes.func,
-  //	gameData: PropTypes.object,
-  authDetail: PropTypes.object,
-  //	setAuth: PropTypes.func,
-  //	clearAuth: PropTypes.func
+  authDetail: PropTypes.shape({}).isRequired,
+  player_email: PropTypes.string,
+  player_given_name: PropTypes.string,
+  player_family_name: PropTypes.string,
+  player_username: PropTypes.string,
+  picture: PropTypes.string,
+  player_gender: PropTypes.string,
+  player_dateOfBirth: PropTypes.string,
+  city: PropTypes.string,
+  country: PropTypes.string,
+  program: PropTypes.string,
+  email: PropTypes.string,
+  given_name: PropTypes.string,
+};
+
+UpdateProfile.defaultProps = {
+  player_given_name: null,
+  player_family_name: null,
+  player_username: null,
+  picture: null,
+  player_gender: null,
+  player_dateOfBirth: null,
+  city: null,
+  country: null,
+  program: null,
+  player_email: null,
+  email: null,
+  given_name: null,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateProfile);

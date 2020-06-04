@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import moment from 'moment';
 import Auth from '../../Auth';
 import { config } from "../../settings";
 
@@ -48,7 +46,7 @@ class UpdateChoice extends Component {
     }
   }
 
-  handleReset(e) {
+  handleReset() {
     this.setState({
       search: {
         id: '',
@@ -159,45 +157,45 @@ class UpdateChoice extends Component {
     return (
       <div>
         <form className="searchChoice">
-          <label>
+          <label htmlFor="choice-id">
             Choice id
-            <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} />
+            <input id="choice-id" type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} />
             {' '}
             <br />
           </label>
-          <label>
-            <input type="button" name="Search" onClick={this.handleSearch} value="Search" />
+          <label htmlFor="buttons">
+            <input id="buttons" type="button" name="Search" onClick={this.handleSearch} value="Search" />
             <input type="button" name="reset" onClick={this.handleReset} value="Reset" />
           </label>
         </form>
         <div>
           <form className="choiceForm" onSubmit={this.handleSubmit}>
-            <label>
+            <label htmlFor="question-id">
               Question id
-              <input type="text" name="questionid" value={this.state.choice.questionid} onChange={this.handleChange} />
+              <input id="question-id" type="text" name="questionid" value={this.state.choice.questionid} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="choice-statement">
               Choice statement
-              <input type="text" name="choicestatement" value={this.state.choice.choicestatement} onChange={this.handleChange} />
+              <input id="choice-statement" type="text" name="choicestatement" value={this.state.choice.choicestatement} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="choice-description">
               Choice description
-              <textarea type="text" name="choicedescription" value={this.state.choice.choicedescription} onChange={this.handleChange} />
+              <textarea id="choice-description" type="text" name="choicedescription" value={this.state.choice.choicedescription} onChange={this.handleChange} />
               <br />
             </label>
-            <label>
+            <label htmlFor="weight">
               Weight
-              <input type="text" name="weight" value={this.state.choice.weight} onChange={this.handleChange} />
+              <input id="weight" type="text" name="weight" value={this.state.choice.weight} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="is-it-answer">
               is it answer
-              <input type="text" name="answer" value={this.state.choice.isanswer} onChange={this.handleChange} />
+              <input id="is-it-answer" ctype="text" name="answer" value={this.state.choice.isanswer} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
@@ -209,18 +207,6 @@ class UpdateChoice extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  /*    player_given_name:state.authDetail.authDetail.player_given_name,
-      player_family_name:state.authDetail.authDetail.player_given_name,
-      player_picture:state.authDetail.authDetail.player_picture,
-      player_email:state.authDetail.authDetail.player_email,
-      player_username:state.authDetail.authDetail.player_username,
-      player_gender:state.authDetail.authDetail.player_gender,
-      player_dateOfBirth:state.authDetail.authDetail.player_dateOfBirth
-  //	gameData: state.gameData
-  */
-});
-
 // Dispatch action to fetch game data and scores.
 const mapDispatchToProps = (dispatch) => ({
   //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
@@ -230,12 +216,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 UpdateChoice.propTypes = {
-  //	getGameData: PropTypes.func,
-  //	getScores: PropTypes.func,
-  //	gameData: PropTypes.object,
-  authDetail: PropTypes.object,
-  //	setAuth: PropTypes.func,
-  //	clearAuth: PropTypes.func
+  authDetail: PropTypes.shape({}).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateChoice);
+export default connect(null, mapDispatchToProps)(UpdateChoice);

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import moment from 'moment';
 import Auth from '../../Auth';
 import { config } from "../../settings";
 
@@ -47,7 +45,7 @@ class UpdateGame extends Component {
     }
   }
 
-  handleReset(e) {
+  handleReset() {
     this.setState({
       search: {
         id: '',
@@ -149,32 +147,32 @@ class UpdateGame extends Component {
     return (
       <div>
         <form className="searchPlayer">
-          <label>
+          <label htmlFor="search-player-game-id">
             Game id
-            <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} />
+            <input id="search-player-game-id" type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} />
             {' '}
             <br />
           </label>
-          <label>
-            <input type="button" name="Search" onClick={this.handleSearch} value="Search" />
+          <label htmlFor="search-player-buttons">
+            <input id="search-player-buttons" type="button" name="Search" onClick={this.handleSearch} value="Search" />
             <input type="button" name="reset" onClick={this.handleReset} value="Reset" />
           </label>
         </form>
         <div>
           <form className="questionForm" onSubmit={this.handleSubmit}>
-            <label>
+            <label htmlFor="question-form-game-id">
               Game id
-              <input type="text" name="id" value={this.state.game.id} onChange={this.handleChange} />
+              <input id="question-form-game-id" type="text" name="id" value={this.state.game.id} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="question-form-caption">
               Caption
-              <input type="text" name="caption" value={this.state.game.caption} onChange={this.handleChange} />
+              <input id="question-form-game-caption" type="text" name="caption" value={this.state.game.caption} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="question-form-game-description">
               Game description
               <textarea type="text" name="gamedescription" value={this.state.game.gamedescription} onChange={this.handleChange} />
               <br />
@@ -187,33 +185,14 @@ class UpdateGame extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  /*    player_given_name:state.authDetail.authDetail.player_given_name,
-      player_family_name:state.authDetail.authDetail.player_given_name,
-      player_picture:state.authDetail.authDetail.player_picture,
-      player_email:state.authDetail.authDetail.player_email,
-      player_username:state.authDetail.authDetail.player_username,
-      player_gender:state.authDetail.authDetail.player_gender,
-      player_dateOfBirth:state.authDetail.authDetail.player_dateOfBirth
-  //	gameData: state.gameData
-  */
-});
-
 // Dispatch action to fetch game data and scores.
 const mapDispatchToProps = (dispatch) => ({
-  //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-  //		getScores: (scores) => dispatch(fetchScores(scores)),
   setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
   clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
 });
 
 UpdateGame.propTypes = {
-  //	getGameData: PropTypes.func,
-  //	getScores: PropTypes.func,
-  //	gameData: PropTypes.object,
-  authDetail: PropTypes.object,
-  //	setAuth: PropTypes.func,
-  //	clearAuth: PropTypes.func
+  authDetail: PropTypes.shape({}).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateGame);
+export default connect(null, mapDispatchToProps)(UpdateGame);

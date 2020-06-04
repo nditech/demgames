@@ -1,22 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import arrowBackUrl from '../../images/back.png';
 import editUrl from '../../images/edit.png';
 import changePassUrl from '../../images/changePass.svg';
-import Auth from '../../Auth';
 
 import './styles.scss';
-// const auth0=new Auth();
-
-// const authDetail={
-// 				player_given_name:"",
-// 				player_family_name:"",
-// 				player_email:"",
-// 				player_username:"",
-// 				player_picture:"",
-// 				player_gender:""
-// 			};
 
 let scoreDetail = {
   current: 0,
@@ -66,7 +54,6 @@ class ProfileInfo extends React.Component {
   }
 
   render() {
-    const { email, name } = this.state;
     const { current } = this.props;
     scoreDetail = {
       ...scoreDetail,
@@ -78,7 +65,7 @@ class ProfileInfo extends React.Component {
         <div className="profile-form-container">
           <div className="profile-header">
             <div className="back-module-container">
-              <button className="back-button" onClick={this.props.history.goBack}>
+              <button type="submit" className="back-button" onClick={this.props.history.goBack}>
                 <img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
               </button>
               <p className="my-profile-label">
@@ -87,15 +74,20 @@ class ProfileInfo extends React.Component {
                 Profile
               </p>
             </div>
-            <img
-              ref={(input) => {
-                this.edit = input;
-              }}
+            <div
+              role="button"
+              tabIndex={0}
               onClick={this.handleEditClick}
-              className="edit-icon"
-              src={editUrl}
-              alt="edit-icon"
-            />
+            >
+              <img
+                ref={(input) => {
+                  this.edit = input;
+                }}
+                className="edit-icon"
+                src={editUrl}
+                alt="edit-icon"
+              />
+            </div>
           </div>
           <div className="input-container">
             <p className="input-label">Your email address</p>
@@ -206,42 +198,24 @@ class ProfileInfo extends React.Component {
 }
 
 ProfileInfo.propTypes = {
-  history: PropTypes.object,
-  getGameData: PropTypes.func,
-  getScores: PropTypes.func,
-  gameData: PropTypes.object,
-  authDetail: PropTypes.object,
-  setAuth: PropTypes.func,
-  clearAuth: PropTypes.func,
-  scoreDetail: PropTypes.object,
+  history: PropTypes.shape({
+    goBack: PropTypes.func,
+  }).isRequired,
+  getGameData: PropTypes.func.isRequired,
+  getScores: PropTypes.func.isRequired,
+  gameData: PropTypes.shape({}).isRequired,
+  authDetail: PropTypes.shape({}).isRequired,
+  setAuth: PropTypes.func.isRequired,
+  clearAuth: PropTypes.shape({}).isRequired,
+  scoreDetail: PropTypes.shape({}).isRequired,
+  total: PropTypes.string.isRequired,
+  game_id: PropTypes.string.isRequired,
+  player_email: PropTypes.string.isRequired,
+  player_id: PropTypes.string.isRequired,
+  player_given_name: PropTypes.string.isRequired,
+  total_rank: PropTypes.string.isRequired,
+  program_rank: PropTypes.string.isRequired,
+  current: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
 };
 
-
-const mapStateToProps = (state) => ({
-  player_given_name: state.authDetail.authDetail.player_given_name,
-  player_email: state.authDetail.authDetail.player_email,
-  player_picture: state.authDetail.authDetail.player_picture,
-  gameData: state.gameData,
-  player_id: state.scoreDetail.scoreDetail.play_id,
-  total: state.scoreDetail.scoreDetail.total,
-  total_rank: state.scoreDetail.scoreDetail.total_rank,
-  current: state.gameData.scores,
-  score: state.scoreDetail.scoreDetail.score,
-  play_id: state.scoreDetail.scoreDetail.play_id,
-  game_id: state.scoreDetail.scoreDetail.game_id,
-  program: state.scoreDetail.scoreDetail.program,
-  program_rank: state.scoreDetail.scoreDetail.program_rank,
-});
-
-// Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => ({
-  // getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-  getScores: (scores) => dispatch(fetchScores(scores)),
-  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-  getScoreDetails: (scoreDetail) => dispatch(fetchScoreDetails(scoreDetail)),
-  setScoreDetails: (scoreDetail) => dispatch(fetchScoreDetails(scoreDetail)),
-});
-
-// export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
 export default ProfileInfo;

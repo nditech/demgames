@@ -17,6 +17,7 @@ Card.propTypes = {
   option: PropTypes.string,
   selectedCard: PropTypes.bool,
   moduleColor: PropTypes.string,
+  color: PropTypes.string,
   handleClick: PropTypes.func.isRequired,
 };
 
@@ -24,5 +25,6 @@ Card.defaultProps = {
   answerClick: null,
   option: null,
   selectedCard: null,
+  color: null,
   moduleColor: null,
 };

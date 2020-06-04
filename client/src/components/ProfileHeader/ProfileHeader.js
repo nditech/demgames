@@ -1,10 +1,9 @@
 import React from "react";
-// import { Redirect } from "react-router-dom";
+import PropTypes from 'prop-types';
 import { withRouter } from "react-router";
 import { Dropdown, Image } from "semantic-ui-react";
 import { connect } from "react-redux";
 import Icon from "@material-ui/core/Icon";
-import NdiLogoUrl from "../../images/ndiLogo.png";
 import profileUrl from "../../images/profile.png";
 import { clearAuthDetails } from "../../pages/LandingPage/actions";
 import Auth from "../../Auth";
@@ -127,7 +126,6 @@ const ProfileHeader = props => {
       </div>
       <div className="profile-header">
         <a
-          // href="/landingpage"
           href={auth0.getCohort() != null ? auth0.getCohort() : "/landingpage"}
           style={{ verticalAlign: "middle", paddingRight: "30px" }}
         >
@@ -146,13 +144,32 @@ const ProfileHeader = props => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
+  clearAuth: () => dispatch(clearAuthDetails(authDetail)),
 });
 
 const mapStateToProps = state => ({
   player: state.authDetail.authDetail,
   gameData: state.gameData,
 });
+
+ProfileHeader.propTypes = {
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }).isRequired,
+  clearAuth: PropTypes.func.isRequired,
+  player: PropTypes.shape({
+    player_given_name: PropTypes.string,
+    player_family_name: PropTypes.string,
+    player_picture: PropTypes.string,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
+
+ProfileHeader.defaultProps = {
+
+};
 
 export default connect(
   mapStateToProps,

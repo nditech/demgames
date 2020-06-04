@@ -1,8 +1,4 @@
 import React from "react";
-import ndiLogoUrl from "../../images/ndiLogo.png";
-import arrowBackUrl from "../../images/back.png";
-import profileUrl from "../../images/profile.png";
-import infoUrl from "../../images/info.png";
 import LevelCard from "../../components/LevelCard";
 import "../../commonStyles.scss";
 import "./styles.scss";
@@ -50,7 +46,7 @@ class LevelsPage extends React.Component {
 
   // Get Scores for each levels of a particular module.
   getScores = () => {
-    const moduleId = parseInt(this.props.match.params.moduleId);
+    const moduleId = parseInt(this.props.match.params.moduleId, 10);
     const scores = this.props.gameData.scores[moduleId - 1];
     return scores;
   };
@@ -59,7 +55,7 @@ class LevelsPage extends React.Component {
   getParScores = () => {
     const { gameData } = this.props;
     let parScores;
-    const moduleId = parseInt(this.props.match.params.moduleId);
+    const moduleId = parseInt(this.props.match.params.moduleId, 10);
     if (gameData[gameData[moduleId - 1]]) {
       // /gameData[moduleId - 1].levels["0"].par_score = 0;
       parScores = gameData[moduleId - 1].levels.map(level => level.par_score);
@@ -84,8 +80,6 @@ class LevelsPage extends React.Component {
       authDetail.player_username = "";
       authDetail.player_picture = "";
       authDetail.player_gender = "";
-
-      // this.props.clearAuth(authDetail);
       auth0.logout();
     }
   };
@@ -96,7 +90,7 @@ class LevelsPage extends React.Component {
     const { gameData } = this.props;
     const scores = this.getScores();
     const parScores = this.getParScores();
-    const moduleId = parseInt(this.props.match.params.moduleId);
+    const moduleId = parseInt(this.props.match.params.moduleId, 10);
     const moduleName = moduleNames[moduleId - 1];
     let levels; let moduleColor; let moduleType;
     if (gameData.gameData[moduleId - 1]) {
@@ -115,9 +109,9 @@ class LevelsPage extends React.Component {
           <div className="game-type-card-container">
             {levels
               && levels.length > 0
-              && levels.map((data, key) => (
+              && levels.map((data) => (
                 <LevelCard
-                  key={key}
+                  key={data.id}
                   level={data.id}
                   moduleId={moduleId}
                   prevLevelScore={data.id > 1 ? scores[data.id - 2] : 0}
@@ -154,13 +148,34 @@ const mapStateToProps = state => ({
 
 // Dispatch action to fetch game data and scores.
 const mapDispatchToProps = dispatch => ({
-  setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
-  clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
+  setAuth: () => dispatch(fetchAuthDetails(authDetail)),
+  clearAuth: () => dispatch(clearAuthDetails(authDetail)),
 });
 
 LevelsPage.propTypes = {
-  gameData: PropTypes.object,
-  match: PropTypes.object,
+  gameData: PropTypes.shape({
+    gameData: PropTypes.arrayOf(PropTypes.shape({
+      levels: PropTypes.string,
+      style: PropTypes.string,
+      type: PropTypes.string,
+    })),
+    scores: PropTypes.arrayOf(PropTypes.number),
+    params: PropTypes.shape({
+      moduleId: PropTypes.string,
+    }),
+  }),
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      moduleId: PropTypes.string,
+    }),
+  }),
+  player_email: PropTypes.string,
+};
+
+LevelsPage.defaultProps = {
+  gameData: null,
+  match: null,
+  player_email: null,
 };
 
 export default connect(

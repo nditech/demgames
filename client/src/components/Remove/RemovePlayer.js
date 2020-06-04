@@ -198,7 +198,7 @@ class RemovePlayer extends Component {
       .catch((error) => console.log(error)); // eslint-disable-line
   }
 
-  handleReset(e) {
+  handleReset() {
     this.setState({
       search: {
         player_id: '',
@@ -212,95 +212,94 @@ class RemovePlayer extends Component {
     return (
       <div>
         <form className="searchPlayer">
-          <label>
+          <label htmlFor="player-id">
             Player id
-            <input type="text" name="player_id" value={this.state.search.player_id} onChange={this.handleSearchChange} />
+            <input id="player-id" type="text" name="player_id" value={this.state.search.player_id} onChange={this.handleSearchChange} />
             {' '}
             <br />
           </label>
-          <label>
+          <label htmlFor="username">
             User name
-            <input type="text" name="username" value={this.state.search.username} onChange={this.handleSearchChange} />
+            <input id="username" type="text" name="username" value={this.state.search.username} onChange={this.handleSearchChange} />
             {' '}
             <br />
           </label>
-          <label>
+          <label htmlFor="player-email">
             email
-            <input type="text" name="email" value={this.state.search.email} onChange={this.handleSearchChange} />
+            <input id="player-id" type="text" name="email" value={this.state.search.email} onChange={this.handleSearchChange} />
             {' '}
             <br />
           </label>
-          <label>
-            <input type="button" name="Delete" onClick={this.handleSearch} value="Search" />
+          <label htmlFor="buttons">
+            <input id="buttons" type="button" name="Delete" onClick={this.handleSearch} value="Search" />
             <input type="button" name="reset" onClick={this.handleReset} value="Reset" />
           </label>
         </form>
         <div>
           <form className="playerScore" onSubmit={this.handleSubmit}>
-            <label>
+            <label htmlFor="player-id">
               Id
-              <input type="text" name="player_id" value={this.state.player.player_id} onChange={this.handleChange} />
+              <input id="player-id" type="text" name="player_id" value={this.state.player.player_id} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="firstname">
               First name
-              <input type="text" name="given_name" value={this.state.player.given_name} onChange={this.handleChange} />
+              <input id="firstname" type="text" name="given_name" value={this.state.player.given_name} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="middlename">
               Middle name
-              <input type="text" name="middle_name" value={this.state.player.middle_name} onChange={this.handleChange} />
+              <input id="middlename" type="text" name="middle_name" value={this.state.player.middle_name} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="familyname">
               Family name
-              <input type="text" name="family_name" value={this.state.player.family_name} onChange={this.handleChange} />
+              <input id="familyname" type="text" name="family_name" value={this.state.player.family_name} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="username">
               User name
-              <input type="text" name="username" value={this.state.player.username} onChange={this.handleChange} />
+              <input id="username" type="text" name="username" value={this.state.player.username} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="gender">
               Gender
-              <input type="text" name="gender" value={this.state.player.gender} onChange={this.handleChange} />
+              <input id="gender" type="text" name="gender" value={this.state.player.gender} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="program">
               Program
-              <input type="text" name="program" value={this.state.player.program} onChange={this.handleChange} />
+              <input id="program" type="text" name="program" value={this.state.player.program} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
             <label>
               Date of Birth
               <DatePicker
+                id="birth"
                 name="dateOfBirth"
-
                 value={this.state.player.dateOfBirth}
-
                 isClearable
                 dateFormat="MM/dd/yyyy"
               />
               <br />
             </label>
-            <label>
+            <label htmlFor="city">
               City
-              <input type="text" name="city" value={this.state.player.city} onChange={this.handleChange} />
+              <input id="city" type="text" name="city" value={this.state.player.city} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="country">
               {' '}
               Country
-              <select name="country" value={this.state.player.country} onChange={this.handleChange} defaultValue={this.state.player.country}>
+              <select id="country" name="country" value={this.state.player.country} onChange={this.handleChange} defaultValue={this.state.player.country}>
                 <option value="Afghanistan">Afghanistan</option>
                 <option value="Albania">Albania</option>
                 <option value="Algeria">Algeria</option>
@@ -499,15 +498,15 @@ class RemovePlayer extends Component {
               </select>
               <br />
             </label>
-            <label>
+            <label htmlFor="email">
               email
-              <input type="text" name="email" value={this.state.player.email} onChange={this.handleChange} />
+              <input id="email" type="text" name="email" value={this.state.player.email} onChange={this.handleChange} />
               {' '}
               <br />
             </label>
             <button type="submit">Delete user</button>
             <div>
-              <button>Log out</button>
+              <button type="submit">Log out</button>
             </div>
           </form>
         </div>
@@ -516,34 +515,15 @@ class RemovePlayer extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  /*
-     player_given_name:state.authDetail.authDetail.player_given_name,
-     player_family_name:state.authDetail.authDetail.player_given_name,
-     player_picture:state.authDetail.authDetail.player_picture,
-     player_email:state.authDetail.authDetail.player_email,
-     player_username:state.authDetail.authDetail.player_username,
-     player_gender:state.authDetail.authDetail.player_gender,
-     player_dateOfBirth:state.authDetail.authDetail.player_dateOfBirth
- //	gameData: state.gameData
- */
-});
-
 // Dispatch action to fetch game data and scores.
 const mapDispatchToProps = (dispatch) => ({
-  //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-  //		getScores: (scores) => dispatch(fetchScores(scores)),
   setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
   clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
 });
 
 RemovePlayer.propTypes = {
-  //	getGameData: PropTypes.func,
-  //	getScores: PropTypes.func,
-  //	gameData: PropTypes.object,
-  authDetail: PropTypes.object,
-  //	setAuth: PropTypes.func,
-  //	clearAuth: PropTypes.func
+  authDetail: PropTypes.shape({}).isRequired,
+  given_name: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RemovePlayer);
+export default connect(null, mapDispatchToProps)(RemovePlayer);

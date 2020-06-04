@@ -2,10 +2,8 @@ import React from 'react';
 import './styles.scss';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { type } from 'os';
 
 export const ModuleCard = (props) => (
-
   <Link
     className="module-card-link"
     to={{
@@ -22,7 +20,7 @@ export const ModuleCard = (props) => (
 		  style: props.style,
     }}
   >
-    <button className={`module-card  ${props.style}`}>
+    <button type="submit" className={`module-card  ${props.style}`}>
       <p>{props.moduleName}</p>
     </button>
   </Link>
@@ -30,8 +28,9 @@ export const ModuleCard = (props) => (
 );
 
 ModuleCard.propTypes = {
-  moduleId: PropTypes.number,
-  moduleName: PropTypes.string,
-  style: PropTypes.string,
-  moduleType: PropTypes.string,
+  moduleId: PropTypes.number.isRequired,
+  moduleName: PropTypes.string.isRequired,
+  style: PropTypes.string.isRequired,
+  moduleType: PropTypes.string.isRequired,
+  gameId: PropTypes.string.isRequired,
 };

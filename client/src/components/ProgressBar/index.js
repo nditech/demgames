@@ -10,35 +10,37 @@ const styles = {
 };
 
 class ProgressBar extends React.Component {
-	state = {
-	  completed: 0,
-	};
+  state = {
+    completed: 0,
+  };
 
-	componentDidMount() {
-	  this.timer = setInterval(this.progress, 500);
-	}
+  componentDidMount() {
+    this.timer = setInterval(this.progress, 500);
+  }
 
-	componentWillUnmount() {
-	  clearInterval(this.timer);
-	}
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
 
-	progress = (props) => {
-	  this.setState({ completed: this.props.progress });
-	};
+  progress = () => {
+    this.setState({ completed: this.props.progress });
+  };
 
-	render() {
-	  const { classes } = this.props;
-	  return (
-  <div className={classes.root}>
-    <LinearProgress variant="determinate" value={this.state.completed} />
-  </div>
-	  );
-	}
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <LinearProgress variant="determinate" value={this.state.completed} />
+      </div>
+    );
+  }
 }
 
 ProgressBar.propTypes = {
-  classes: PropTypes.object.isRequired,
-  progress: PropTypes.number,
+  classes: PropTypes.shape({
+    root: PropTypes.string.isRequired,
+  }).isRequired,
+  progress: PropTypes.number.isRequired,
 };
 
 export default withStyles(styles)(ProgressBar);

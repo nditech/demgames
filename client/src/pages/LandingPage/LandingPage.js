@@ -1,7 +1,4 @@
 import React from "react";
-import NdiLogoUrl from "../../images/ndiLogo.png";
-import infoUrl from "../../images/info.png";
-import profileUrl from "../../images/profile.png";
 import { ModuleCard } from "../../components/ModuleCard";
 import "../../commonStyles.scss";
 import "./styles.scss";
@@ -15,17 +12,8 @@ import {
 } from "./actions";
 import PropTypes from "prop-types";
 import GameInfo from "../../components/GameInfo";
-import * as jwtDecode from "jwt-decode";
 import Auth from "../../Auth";
-import { bindActionCreators } from "redux";
-// import {connect} from 'react-redux';
-import { Link } from "react-router-dom";
-import profile from "../../components/ProfileInfo";
-import admin from "../../components/admin/admin";
-import UpdatePlayer from "../../components/Update/UpdateProfile";
 import { fetchScoreDetail } from "../../components/ProfileInfo/action";
-import { da } from "date-fns/locale";
-import ProfileHeader from "../../components/ProfileHeader/ProfileHeader";
 
 const auth0 = new Auth();
 
@@ -132,7 +120,7 @@ class LandingPage extends React.Component {
               }),
             })
               .then(res => res.json())
-              .then(data => data)
+              .then(responseData => responseData)
               .catch(error => {
                 console.log(error); // eslint-disable-line
               });
@@ -213,13 +201,7 @@ class LandingPage extends React.Component {
     }
   };
 
-  // colorChange = (color) => {
-
-  //   alert(color);
-
-  // }
-
- colorChange = color => {
+ colorChange = (color) => {
    this.setState({ color });
  };
 
@@ -234,7 +216,7 @@ class LandingPage extends React.Component {
          </div>
          <div className="game-type-card-container">
            {gameData.length > 0
-              && gameData.map((modules, key) => (
+              && gameData.map((modules) => (
                 <ModuleCard
                   key={modules.id}
                   moduleId={modules.id}
@@ -268,19 +250,40 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getGameData: gameData => dispatch(fetchGameData(gameData)),
   getScores: scores => dispatch(fetchScores(scores)),
-  setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
-  clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
-  setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail)),
+  setAuth: () => dispatch(fetchAuthDetails(authDetail)),
+  clearAuth: () => dispatch(clearAuthDetails(authDetail)),
+  setScoreDetail: () => dispatch(fetchScoreDetail(scoreDetail)),
 });
 
 LandingPage.propTypes = {
   getGameData: PropTypes.func,
   getScores: PropTypes.func,
-  gameData: PropTypes.object,
-  authDetail: PropTypes.object,
+  gameData: PropTypes.shape({
+    gameData: PropTypes.arrayOf(PropTypes.shape({})),
+  }),
+  authDetail: PropTypes.shape({}),
   setAuth: PropTypes.func,
   clearAuth: PropTypes.func,
-  scoreDetail: PropTypes.object,
+  setScoreDetail: PropTypes.func.isRequired,
+  scoreDetail: PropTypes.shape({}),
+  player_email: PropTypes.string,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      cohortName: PropTypes.string,
+    }),
+  }),
+};
+
+LandingPage.defaultProps = {
+  getGameData: null,
+  getScores: null,
+  gameData: null,
+  authDetail: null,
+  setAuth: null,
+  clearAuth: null,
+  scoreDetail: null,
+  player_email: null,
+  match: null,
 };
 
 export default connect(

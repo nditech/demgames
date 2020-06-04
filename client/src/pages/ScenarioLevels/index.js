@@ -1,27 +1,13 @@
 import React from "react";
-import ndiLogoUrl from "../../images/ndiLogo.png";
-import arrowBackUrl from "../../images/back.png";
-import profileUrl from "../../images/profile.png";
-import infoUrl from "../../images/info.png";
+import PropTypes from 'prop-types';
 import LevelCard from "../../components/LevelCard";
 import "../../commonStyles.scss";
 import "../LevelsPage/styles.scss";
-import { connect } from "react-redux";
-import GameInfo from "../../components/GameInfo";
-import PropTypes, { element } from "prop-types";
 import Auth from "../../Auth";
 import { config } from "../../settings";
 
 const auth0 = new Auth();
 
-const authDetail = {
-  player_given_name: "",
-  player_family_name: "",
-  player_email: "",
-  player_username: "",
-  player_picture: "",
-  player_gender: "",
-};
 class ScenarioLevels extends React.Component {
   state = { levels: 0, game: {} };
 
@@ -68,26 +54,6 @@ class ScenarioLevels extends React.Component {
             {this.state.game.caption}
           </p>
           <div className="game-type-card-container">
-            {/* {levels &&
-		    				levels.length > 0 &&
-		    				levels.map((data, key) => (
-		    					<LevelCard
-		    						key={key}
-		    						level={data.id}
-		    						moduleId={moduleId}
-		    						prevLevelScore={data.id > 1 ? scores[data.id - 2] : 0}
-		    						currentScore={scores[data.id - 1]}
-		    						parScore={parScores ? parScores[data.id - 1]: null}
-		    						linkedLevel={data.linked_level}
-		    						description={data.desc}
-		    						totalScore={data.total_score}
-		    						questions={data.questions}
-		    						moduleName={moduleName}
-		    						moduleType={moduleType}
-		    						moduleColor={moduleColor}
-		    						player_email={this.props.player_email == null ? "default":this.props.player_email }
-		    					/>
-                            ))} */}
             {this.getLevelComponents()}
           </div>
         </div>
@@ -95,5 +61,14 @@ class ScenarioLevels extends React.Component {
     );
   }
 }
+
+
+ScenarioLevels.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      moduleId: PropTypes.number,
+    }),
+  }).isRequired,
+};
 
 export default ScenarioLevels;

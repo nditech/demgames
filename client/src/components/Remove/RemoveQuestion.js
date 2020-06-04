@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import moment from 'moment';
 import Auth from '../../Auth';
 import { config } from "../../settings";
 
@@ -107,7 +105,7 @@ class RemoveQuestion extends Component {
       .catch((error) => console.log(error)); // eslint-disable-line
   }
 
-  handleReset(e) {
+  handleReset() {
     this.setState({
       search: {
         id: '',
@@ -119,57 +117,57 @@ class RemoveQuestion extends Component {
     return (
       <div>
         <form className="searchPlayer">
-          <label>
+          <label htmlFor="choice-id">
             Choice id
-            <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} />
+            <input id="choice-id" type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} />
             {' '}
             <br />
           </label>
-          <label>
-            <input type="button" name="Search" onClick={this.handleSearch} value="Search" />
+          <label htmlFor="buttons">
+            <input id="buttons" type="button" name="Search" onClick={this.handleSearch} value="Search" />
             <input type="button" name="reset" onClick={this.handleReset} value="Reset" />
           </label>
         </form>
         <div>
           <form className="questionForm" onSubmit={this.handleSubmit}>
-            <label>
+            <label htmlFor="question-id">
               Question id
-              <input type="text" name="gameid" value={this.state.question.gameid} />
+              <input id="question-id" type="text" name="gameid" value={this.state.question.gameid} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="game-id">
               Game id
-              <input type="text" name="gameid" value={this.state.question.gameid} />
+              <input id="game-id" type="text" name="gameid" value={this.state.question.gameid} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="question-statement">
               Question statement
-              <input type="text" name="question_statement" value={this.state.question.question_statement} />
+              <input id="question-statement" type="text" name="question_statement" value={this.state.question.question_statement} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="question-explanatiion">
               Question explanation
-              <textarea type="text" name="explanation" value={this.state.question.explanation} />
+              <textarea id="question-explanatiion" type="text" name="explanation" value={this.state.question.explanation} />
               <br />
             </label>
-            <label>
+            <label htmlFor="difficulty-test">
               Difficulty level
-              <input type="text" name="difficulty_level" value={this.state.question.difficulty_level} />
+              <input id="difficulty-test" type="text" name="difficulty_level" value={this.state.question.difficulty_level} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="weight">
               Weight
-              <input type="text" name="weight" value={this.state.question.weight} />
+              <input id="weight" type="text" name="weight" value={this.state.question.weight} />
               {' '}
               <br />
             </label>
-            <label>
+            <label htmlFor="is-it-media">
               is it media
-              <input type="text" name="answer" value={this.state.question.isitmedia} />
+              <input id="is-it-media" type="text" name="answer" value={this.state.question.isitmedia} />
               {' '}
               <br />
             </label>
@@ -181,19 +179,6 @@ class RemoveQuestion extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  /*
-     player_given_name:state.authDetail.authDetail.player_given_name,
-     player_family_name:state.authDetail.authDetail.player_given_name,
-     player_picture:state.authDetail.authDetail.player_picture,
-     player_email:state.authDetail.authDetail.player_email,
-     player_username:state.authDetail.authDetail.player_username,
-     player_gender:state.authDetail.authDetail.player_gender,
-     player_dateOfBirth:state.authDetail.authDetail.player_dateOfBirth
- //	gameData: state.gameData
- */
-});
-
 // Dispatch action to fetch game data and scores.
 const mapDispatchToProps = (dispatch) => ({
   //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
@@ -203,12 +188,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 RemoveQuestion.propTypes = {
-  //	getGameData: PropTypes.func,
-  //	getScores: PropTypes.func,
-  //	gameData: PropTypes.object,
-  authDetail: PropTypes.object,
-  //	setAuth: PropTypes.func,
-  //	clearAuth: PropTypes.func
+  authDetail: PropTypes.shape({}).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RemoveQuestion);
+export default connect(null, mapDispatchToProps)(RemoveQuestion);

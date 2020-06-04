@@ -1,4 +1,5 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 import {
@@ -71,16 +72,13 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     questions,
     gameId,
     questionDetail,
-    choices,
     correctChoice,
     choicesNameArray,
     questionId,
     scenarioFields,
-    scenarioEditFields,
     previousQuestionText,
     previousChoiceText,
     weight,
-    second_weight,
   } = questionsData;
 
   const populateQuestions = data => {
@@ -109,10 +107,10 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     refreshQuestionList();
   }
 
-  const deleteHandle = questionId => {
+  const deleteHandle = choiceId => {
     const r = window.confirm("Are you sure you want to delete the Question ?");
     if (r === true) {
-      deleteQuestion(questionId, refreshQuestionList);
+      deleteQuestion(choiceId, refreshQuestionList);
     } else {
 
     }
@@ -227,24 +225,24 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     setPopupState({ ...popupState, showMessage: false });
   };
 
-  const populateChoices = (data, selectedQuestion) => {
+  const populateChoices = (choicesData, selectedQuestion) => {
     const choicesName = [];
-    let correctChoice = "";
-    data.map((item, index) => {
+    let correctChoiceToPopulate = "";
+    choicesData.map((item, index) => {
       item.option = convertChoice(index);
       choicesName.push(item.choicestatement);
       if (item.answer === 1) {
-        correctChoice = convertChoice(index);
+        correctChoiceToPopulate = convertChoice(index);
       }
     });
 
     setQuestionsData({
       ...questionsData,
-      choices: data,
+      choices: choicesData,
       choicesNameArray: choicesName,
       questionDetail: selectedQuestion,
       questionId: selectedQuestion.id,
-      correctChoice,
+      correctChoice: correctChoiceToPopulate,
       weight: selectedQuestion.weight,
       second_weight: selectedQuestion.second_weight,
     });
@@ -315,35 +313,16 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     },
   ];
 
-  // const setChoicesForSelectedQuestion = choices => {
-  //   for (let i = 0; i < scenarioFields.length; i++) {
-  //     if (scenarioFields[i].key === "previous_question_choice") {
-  //       // Insert choices data
-  //       scenarioFields[i].options = choices.map(choice => {
-  //         return { id: choice.id, title: choice.choicestatement };
-  //       });
-  //     }
-  //   }
-  //   setQuestionsData({ ...questionsData, scenarioFields: scenarioFields });
-  // };
-
-  // const handleChangeQuestion = e => {
-  //   let questionId = e.target.value;
-  //   getChoices(questionId, null, setChoicesForSelectedQuestion);
-  // };
-
-  const saveQuestion = (data = "") => {
-    // return;
+  const saveQuestion = (gameData = "") => {
     const answers = [];
-    if (data) {
-      data.options.map((item, index) => {
+    if (gameData) {
+      gameData.options.map((item, index) => {
         answers.push({ option: convertChoice(index), value: item });
       });
     }
-    data.options = answers;
-    data.game_id = activeGame;
-    // return;
-    addQuestion(data, () => {
+    gameData.options = answers;
+    gameData.game_id = activeGame;
+    addQuestion(gameData, () => {
       setPopupState({ ...popupState, showMessage: false });
       refreshQuestionList();
     });
@@ -352,7 +331,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   const previousQuestions = questions.map(item => ({ id: item.id, title: item.question_statement }));
   previousQuestions.unshift({ id: "", title: "Select Question" });
 
-  const addQuestionHandle = e => {
+  const addQuestionHandle = () => {
     if (activeGameType === "scenario") {
       const scenario_data = [
         {
@@ -508,9 +487,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         questionDetail: selected_question,
         questionId: selected_question.id,
         previousChoiceText: choice[0].choicestatement,
-        previousQuestionText: previousQuestion.question_statement, // ,
-        // weight: weight,
-        // second_weight: second_weight
+        previousQuestionText: previousQuestion.question_statement,
       });
     } else {
       setQuestionsData({
@@ -538,16 +515,11 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     getChoiceLinkingQuestion(selectedQuestion.id, getQuestionLinkedToChoice);
   };
 
-  const populateScenarioChoices = (data, selectedQuestion) => {
-    // return;
+  const populateScenarioChoices = (choicesData, selectedQuestion) => {
     const choicesName = [];
-    // let correctChoice = "";
-    data.map((item, index) => {
+    choicesData.map((item, index) => {
       item.option = convertChoice(index);
       choicesName.push(item.choicestatement);
-      // if (item.answer === 1) {
-      //   correctChoice = convertChoice(index);
-      // }
     });
 
     getChoiceLinkedToQuestion(data, choicesName, selectedQuestion);
@@ -556,8 +528,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   const editScenarioHandle = id => {
     try {
       if (activeGameType === "scenario") {
-        const previousQuestions = questions.map(item => ({ id: item.id, title: item.question_statement }));
-        previousQuestions.unshift({ id: "", title: "Select Question" });
+        const previousQuestionsToEdit = questions.map(item => ({ id: item.id, title: item.question_statement }));
+        previousQuestionsToEdit.unshift({ id: "", title: "Select Question" });
         const selectedQuestion = questions.find(item => item.id === id);
         getChoices(id, selectedQuestion, populateScenarioChoices);
 
@@ -625,8 +597,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           hasChoices={hasChoices}
         />
       )}
-      <div className="float-right" onClick={e => addQuestionHandle(e)}>
-        <button className="btn btn-info btn-sm">
+      <div role="button" tabIndex={0} className="float-right" onClick={e => addQuestionHandle(e)}>
+        <button type="submit" className="btn btn-info btn-sm">
           <i className="fa fa-plus" />
         </button>
         <span> Add Question</span>
@@ -644,6 +616,18 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       />
     </>
   );
+};
+
+ListQuestions.propTypes = {
+  activeGame: PropTypes.string,
+  activeGameDetails: PropTypes.arrayOf(
+    PropTypes.shape({}),
+  ),
+};
+
+ListQuestions.defaultProps = {
+  activeGameDetails: null,
+  activeGame: null,
 };
 
 export default ListQuestions;

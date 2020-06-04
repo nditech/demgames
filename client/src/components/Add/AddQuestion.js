@@ -82,9 +82,10 @@ const AddQuestion = () => {
             className="text-center border border-light p-5"
             onSubmit={e => handleSubmit(e)}
           >
-            <label className="mr-3">
+            <label htmlFor="mr-3" className="mr-3">
               Game type
               <select
+                id="mr-3"
                 className="custom-select custom-select-sm"
                 name="gametype"
                 value={gametype}

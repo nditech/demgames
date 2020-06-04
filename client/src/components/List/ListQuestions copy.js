@@ -1,4 +1,5 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 import { config } from "../../settings";
@@ -6,23 +7,11 @@ import { config } from "../../settings";
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
   // Set data table columns
   const columns = [
-    // {
-    //   name: "Id",
-    //   selector: "id",
-    //   sortable: true
-    // },
-
     {
       name: "Question",
       selector: "question_statement",
       sortable: true,
     },
-    // {
-    //   name: "Game Id",
-    //   selector: "game_id",
-    //   sortable: true
-    // },
-
     {
       name: "Difficulty Level",
       selector: "difficulty_level",
@@ -56,7 +45,6 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     questions,
     gameId,
     questionDetail,
-    choices,
     correctChoice,
     choicesNameArray,
     questionId,
@@ -101,9 +89,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     getQuestions();
   }
 
-  const deleteHandle = questionId => {
+  const deleteHandle = choiceId => {
     if (window.confirm("Are you sure you want to delete the question")) {
-      const url = `${config.baseUrl}/questions/${questionId}`;
+      const url = `${config.baseUrl}/questions/${choiceId}`;
       fetch(url, {
         method: "POST",
         headers: {
@@ -111,7 +99,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ questionId }),
+        body: JSON.stringify({ choiceId }),
       })
         .then(res => res.json())
         .then(data => {
@@ -143,8 +131,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       body: JSON.stringify({ data, id }),
     })
       .then(res => res.json())
-      .then(data => {
-        alert(JSON.stringify(data));
+      .then(responseData => {
+        alert(JSON.stringify(responseData));
         setPopupState({ ...popupState, showMessage: false });
         getQuestions();
       })
@@ -228,8 +216,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     ],
   };
 
-  const getChoices = (questionId, selectedQuestion) => {
-    const url = `${config.baseUrl}/choices/${questionId}`;
+  const getChoices = (questionIdToGetChoice, selectedQuestion) => {
+    const url = `${config.baseUrl}/choices/${questionIdToGetChoice}`;
     fetch(url, {
       method: "get",
       headers: {
@@ -239,24 +227,24 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       },
     })
       .then(res => res.json())
-      .then(data => {
+      .then(responseData => {
         const choicesName = [];
-        let correctChoice = "";
-        data.map((item, index) => {
+        let correctChoiceToSet = "";
+        responseData.map((item, index) => {
           item.option = convertChoice(index);
           choicesName.push(item.choicestatement);
           if (item.answer === 1) {
-            correctChoice = convertChoice(index);
+            correctChoiceToSet = convertChoice(index);
           }
         });
 
         setQuestionsData({
           ...questionsData,
-          choices: data,
+          choices: responseData,
           choicesNameArray: choicesName,
           questionDetail: selectedQuestion,
           questionId: selectedQuestion.id,
-          correctChoice,
+          correctChoice: correctChoiceToSet,
         });
       })
       .catch(err => console.log(err)); // eslint-disable-line
@@ -302,6 +290,18 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       />
     </>
   );
+};
+
+ListQuestions.propTypes = {
+  activeGame: PropTypes.string,
+  activeGameDetails: PropTypes.arrayOf(
+    PropTypes.shape({}),
+  ),
+};
+
+ListQuestions.defaultProps = {
+  activeGameDetails: null,
+  activeGame: null,
 };
 
 export default ListQuestions;

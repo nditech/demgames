@@ -1,4 +1,3 @@
-// Bootstrap
 import {
   Col,
   Nav,
@@ -11,13 +10,13 @@ import {
 import { connect } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import classnames from "classnames";
 import Icon from "@material-ui/core/Icon";
 import AddChoices from "../Add/AddChoices";
 import Auth from "../../Auth";
-// import notfound from './NotFound';
 import DialogBox from "../DialogBox/DialogBox";
 import { Header } from "../Header";
 import ListGames from "../List/ListGames";
@@ -60,7 +59,6 @@ class Admin extends Component {
 
   componentDidMount() {
     if (this.props.email !== null) {
-      const encodedValue = encodeURIComponent(this.state.email);
       fetch(`${config.baseUrl}/selectPlayerProfile`, {
         method: "post",
         headers: {
@@ -507,10 +505,6 @@ class Admin extends Component {
     });
   };
 
-  remove = () => {
-    const { id } = this.state.data;
-  };
-
   onCancel = () => {
     this.setState({ showMessage: false });
   };
@@ -733,5 +727,20 @@ const mapStateToProps = state => ({
   player_picture: state.authDetail.authDetail.player_picture,
   gameData: state.gameData,
 });
+
+Admin.propTypes = {
+  email: PropTypes.string,
+  given_name: PropTypes.string.isRequired,
+  family_name: PropTypes.string.isRequired,
+  picture: PropTypes.string.isRequired,
+  gender: PropTypes.string.isRequired,
+  player_given_name: PropTypes.string.isRequired,
+  player_picture: PropTypes.string.isRequired,
+};
+
+
+Admin.defaultProps = {
+  email: null,
+};
 
 export default connect(mapStateToProps)(Admin);

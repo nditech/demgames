@@ -1,8 +1,4 @@
-import { AUTH0_LOGIN, AUTH0_LOGOUT } from './constants'; // ,
-
-const initialState = {
-  authDetail: {},
-};
+import { AUTH0_LOGIN, AUTH0_LOGOUT } from './constants';
 
 const reducerLevelAuth = (state = {}, action) => {
   switch (action.type) {

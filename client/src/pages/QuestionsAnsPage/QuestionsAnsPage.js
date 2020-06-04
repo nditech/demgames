@@ -192,7 +192,7 @@ export class QuestionsAnsPage extends React.Component {
     this.checkLevelUnlock();
   };
 
-  handleAnswerClick = key => e => {
+  handleAnswerClick = key => () => {
     let { clickedOptions, selectedAnswer } = this.state;
     clickedOptions.push(key);
     const selectedValue = key;
@@ -215,11 +215,8 @@ export class QuestionsAnsPage extends React.Component {
 
   // Checks if current score + previous score is less than parScore and return parScoreStatus.
   checkParScoreStatus = () => {
-    const moduleId = parseInt(this.props.match.params.moduleId, 10);
-    const level = parseInt(this.props.match.params.levelId, 10);
     const { currentScore } = this.state;
     const parScores = this.getParScores();
-    const currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
     if (currentScore < parScores) {
       this.setState({ parScoreStatus: false });
     } else {
@@ -318,7 +315,7 @@ export class QuestionsAnsPage extends React.Component {
     const level = parseInt(this.props.match.params.levelId, 10);
     const totalQuestion = this.getTotalQuestions();
     const correctAns = this.getCorrectAnswer();
-    const ansLength = correctAns !== null && parseInt(correctAns.length);
+    const ansLength = correctAns !== null && parseInt(correctAns.length, 10);
     const progress = this.getProgress();
     const parScores = this.getParScores();
     const moduleNames = this.getModuleNames();
@@ -466,7 +463,7 @@ export class QuestionsAnsPage extends React.Component {
               message="Your answer is correct"
               answerStatus
               handleClose={this.handleClose}
-              imageUrl={correctAnsUrl}
+              imageUrl=""
               nextQuestion={this.nextQuestion}
               currentQuestionScore={currentQuestionScore}
             />
@@ -503,11 +500,27 @@ const mapDispatchToProps = dispatch => ({
 });
 
 QuestionsAnsPage.propTypes = {
-  gameData: PropTypes.shape({}),
-  match: PropTypes.shape({}),
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      moduleId: PropTypes.string,
+      levelId: PropTypes.string,
+    }),
+  }),
+  gameData: PropTypes.shape({
+    scores: PropTypes.arrayOf(PropTypes.number),
+    gameData: PropTypes.arrayOf(
+      PropTypes.shape({
+        style: PropTypes.string,
+        game_id: PropTypes.string,
+        levels: PropTypes.arrayOf(
+          PropTypes.arrayOf(PropTypes.shape),
+        ),
+      }),
+    ),
+  }),
   getScores: PropTypes.func.isRequired,
+  player_email: PropTypes.string.isRequired,
 };
-
 QuestionsAnsPage.defaultProps = {
   gameData: null,
   match: null,

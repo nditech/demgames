@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 import DialogBox from "../DialogBox/DialogBox";
 import { config } from "../../settings";
 
@@ -196,6 +197,24 @@ const EditQuestion = ({
       />
     </>
   );
+};
+
+EditQuestion.propTypes = {
+  id: PropTypes.string,
+  componentData: PropTypes.shape({}),
+  activeGameDetails: PropTypes.arrayOf(PropTypes.shape({})),
+  showQuestionEdit: PropTypes.bool,
+  onCancel: PropTypes.func,
+  getQuestions: PropTypes.func,
+};
+
+EditQuestion.defaultProps = {
+  id: null,
+  componentData: null,
+  activeGameDetails: null,
+  showQuestionEdit: false,
+  onCancel: null,
+  getQuestions: null,
 };
 
 export default EditQuestion;

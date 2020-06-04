@@ -1,16 +1,15 @@
 import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import configureStore from 'redux-mock-store';
+// import configureStore from 'redux-mock-store';
 
 import { ScenarioQuesAns } from './ScenarioQuesAns';
 import { gameData } from '../QuestionsAnsPage/data';
 
 Enzyme.configure({ adapter: new Adapter() });
-let store;
+// let store;
 
 const defaultProps = {
-  // history: createMemoryHistory(),
   gameData: { gameData },
   location: {
     pathname: '/terms', search: '', state: '', hash: '',
@@ -21,17 +20,10 @@ const defaultProps = {
 };
 
 describe('<ScenarioQuesAns/>', () => {
-  beforeEach(() => {
-    const mockStore = configureStore();
+  // beforeEach(() => {
+  //   const mockStore = configureStore();
 
-    store = mockStore({});
-  });
-
-  // it('nextQuestion()', () => {
-  // 	const wrapper = shallow(<ScenarioQuesAns {...defaultProps} />);
-  // 	expect(wrapper.state('questionId')).toBe(1);
-  // 	wrapper.instance().nextQuestion();
-  // 	expect(wrapper.state('questionId')).toBe(2);
+  //   store = mockStore({});
   // });
 
   it('handleNextClick()', () => {

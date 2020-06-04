@@ -112,6 +112,7 @@ AnswerInfoPopup.propTypes = {
   message: PropTypes.string,
   showRightAnswer: PropTypes.func,
   nextQuestion: PropTypes.func,
+  moduleScenario: PropTypes.bool,
   currentQuestionScore: PropTypes.number.isRequired,
 };
 
@@ -123,6 +124,7 @@ AnswerInfoPopup.defaultProps = {
   message: null,
   showRightAnswer: null,
   nextQuestion: null,
+  moduleScenario: false,
 };
 
 export default AnswerInfoPopup;

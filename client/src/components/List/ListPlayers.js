@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Icon from "@material-ui/core/Icon";
 import ListTable from "../ListTable";
-import Auth from "../../Auth";
 import { config } from "../../settings";
 import DialogBox from "../DialogBox/DialogBox";
 import { updatePlayer, deletePlayer } from "./utility";
-
-const auth0 = new Auth();
 
 const ListPlayers = () => {
   const [popupState, setPopupState] = useState({
@@ -44,7 +40,7 @@ const ListPlayers = () => {
     selectedPlayer: { id: "", name: "" },
   });
 
-  const { player, selectedPlayer } = playerData;
+  const { selectedPlayer } = playerData;
 
   const editPlayerFields = {
     id: selectedPlayer.id,
@@ -358,6 +354,8 @@ const ListPlayers = () => {
       <div className="detail-box">
         <div className="tab-container">
           <div
+            role="button"
+            tabIndex={0}
             className={`tab ${activeTab === 1 ? "active" : ""}`}
             onClick={() => {
               setActiveTab(1);
@@ -367,6 +365,8 @@ const ListPlayers = () => {
             All Players
           </div>
           <div
+            role="button"
+            tabIndex={0}
             className={`tab ${activeTab === 2 ? "active" : ""}`}
             onClick={() => {
               setActiveTab(2);
@@ -376,6 +376,8 @@ const ListPlayers = () => {
             Global Leadership
           </div>
           <div
+            role="button"
+            tabIndex={0}
             className={`tab ${activeTab === 3 ? "active" : ""}`}
             onClick={() => {
               setActiveTab(3);

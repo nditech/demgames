@@ -1,13 +1,13 @@
 import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import configureStore from 'redux-mock-store';
+// import configureStore from 'redux-mock-store';
 
 import { QuestionsAnsPage } from './QuestionsAnsPage';
 import { gameData } from './data';
 
 Enzyme.configure({ adapter: new Adapter() });
-let store;
+// let store;
 
 const defaultProps = {
   // history: createMemoryHistory(),
@@ -21,11 +21,10 @@ const defaultProps = {
 };
 
 describe('<QuestionsAnsPage/>', () => {
-  beforeEach(() => {
-    const mockStore = configureStore();
-
-    store = mockStore({});
-  });
+  // beforeEach(() => {
+  //  const mockStore = configureStore();
+  //  store = mockStore({});
+  // });
 
   it('showRightAnswer()', () => {
     const wrapper = shallow(<QuestionsAnsPage {...defaultProps} />);

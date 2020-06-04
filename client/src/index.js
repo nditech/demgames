@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Route, BrowserRouter as Router, withRouter } from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import { Provider } from "react-redux";
 import App from "./App";
@@ -23,10 +23,7 @@ import Auth from "./Auth";
 import Callback from "./pages/LandingPage/callback";
 import ScenarioLevels from "./pages/ScenarioLevels";
 import RemovePlayer from "./components/Remove/RemovePlayer";
-import RemoveChoice from "./components/Remove/RemoveChoice";
-import RemoveQuestion from "./components/Remove/RemoveQuestion";
 import UpdateGame from "./components/Update/UpdateGame";
-import UpdateQuestion from "./components/Update/UpdateQuestion";
 import UpdateChoice from "./components/Update/UpdateChoice";
 import ProfileHeader from "./components/ProfileHeader/ProfileHeader";
 

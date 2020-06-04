@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './styles.scss';
 import PropTypes from 'prop-types';
@@ -20,10 +20,8 @@ class LevelCard extends Component {
       totalScore,
       moduleId,
       prevLevelScore,
-      moduleName,
-      showScore = true,
+      showScore,
       moduleColor,
-      player_email,
       moduleType,
     } = this.props;
     const lock = level > 1 && prevLevelScore < parScore;
@@ -85,16 +83,21 @@ class LevelCard extends Component {
 }
 
 LevelCard.propTypes = {
-  level: PropTypes.number,
-  currentScore: PropTypes.number,
-  parScore: PropTypes.number,
-  linkedLevel: PropTypes.number,
-  description: PropTypes.string,
-  totalScore: PropTypes.number,
-  moduleId: PropTypes.number,
-  prevLevelScore: PropTypes.number,
-  moduleColor: PropTypes.string,
-  moduleType: PropTypes.string,
+  level: PropTypes.number.isRequired,
+  currentScore: PropTypes.number.isRequired,
+  parScore: PropTypes.number.isRequired,
+  linkedLevel: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
+  totalScore: PropTypes.number.isRequired,
+  moduleId: PropTypes.number.isRequired,
+  prevLevelScore: PropTypes.number.isRequired,
+  moduleColor: PropTypes.string.isRequired,
+  moduleType: PropTypes.string.isRequired,
+  showScore: PropTypes.bool,
+};
+
+LevelCard.defaultProps = {
+  showScore: true,
 };
 
 export default LevelCard;

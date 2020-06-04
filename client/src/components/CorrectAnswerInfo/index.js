@@ -80,8 +80,24 @@ CorrectAnswerInfo.propTypes = {
   moduleId: PropTypes.number.isRequired,
   totalQuestion: PropTypes.number.isRequired,
   correctAns: PropTypes.arrayOf.isRequired,
-  selectedAnswer: PropTypes.arrayOf.isRequired,
+  selectedAnswer: PropTypes.arrayOf(
+    PropTypes.string,
+  ).isRequired,
   hideRightAnswer: PropTypes.func.isRequired,
   moduleColor: PropTypes.string.isRequired,
-  gameData: PropTypes.shape({}).isRequired,
+  gameData: PropTypes.shape({
+    gameData: PropTypes.arrayOf(
+      PropTypes.shape({
+        levels: PropTypes.arrayOf(
+          PropTypes.shape({
+            questions: PropTypes.arrayOf(
+              PropTypes.shape({
+                options: PropTypes.shape({}),
+              }),
+            ),
+          }),
+        ),
+      }),
+    ),
+  }).isRequired,
 };

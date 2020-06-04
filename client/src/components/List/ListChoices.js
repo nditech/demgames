@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import PropTypes from 'prop-types';
 import DataTable from "react-data-table-component";
 import { config } from "../../settings";
 
@@ -14,7 +14,7 @@ const ListChoices = () => {
   };
   const editClickHandle = () => { };
 
-  const EditButton = props => (
+  const EditButton = (props) => (
     <button
       type="button"
       onClick={() => editClickHandle(props.row.id)}
@@ -138,6 +138,17 @@ const ListChoices = () => {
       <div>{simpleTable()}</div>
     </div>
   );
+};
+
+ListChoices.propTypes = {
+  row: PropTypes.shape({
+    questionid: PropTypes.string,
+    id: PropTypes.string,
+  }),
+};
+
+ListChoices.defaultProps = {
+  row: null,
 };
 
 export default ListChoices;

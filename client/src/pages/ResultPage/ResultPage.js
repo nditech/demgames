@@ -3,7 +3,6 @@ import congoUrl from '../../images/congratulations.png';
 import './styles.scss';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { da } from 'date-fns/locale';
 import { config } from '../../settings';
 import Auth from '../../Auth';
 
@@ -17,20 +16,15 @@ class ResultPage extends Component {
   componentDidMount() {
     const game_id = this.props.location.state.gameId;
     let cohort_id = 1;
-    let temp_cohort = auth0.getCohort();
-
-    temp_cohort = temp_cohort.split("/")[1];
 
     for (const game of this.props.gameData.gameData) {
       if (this.props.location.state.moduleScenario) {
-        const mod = parseInt(this.props.location.state.moduleId);
-        if (game.game_id === parseInt(this.props.location.state.moduleId)) {
+        if (game.game_id === parseInt(this.props.location.state.moduleId, 10)) {
           // game_id = game.game_id;
           cohort_id = game.cohort_id ? game.cohort_id : 1;
           continue;
         }
       } else if (game.id === this.props.location.state.moduleId) {
-        // game_id = game.game_id;
         cohort_id = game.cohort_id ? game.cohort_id : 1;
         continue;
       }
@@ -109,21 +103,21 @@ class ResultPage extends Component {
         </div>
         {!parScoreStatus ? (
           <a className="retry-levels-link" href={retryLevelUrl}>
-            <button className="retry-level">
+            <button className="retry-level" type="submit">
               Retry Level
               {level}
             </button>
           </a>
         ) : level + 1 <= totalLevels ? (
           <a className="back-to-all-levels-link" href={nextLevelUrl}>
-            <button className="retry-level">
+            <button className="retry-level" type="submit">
               Move To Level
               {level + 1}
             </button>
           </a>
         ) : (
           <a className="back-to-all-levels-link" href={auth0.getCohort() != null ? auth0.getCohort() : "/"}>
-            <button className="retry-level">All Games</button>
+            <button className="retry-level" type="submit">All Games</button>
           </a>
         )}
       </div>
@@ -139,11 +133,33 @@ const mapStateToProps = (state) => ({
 });
 
 ResultPage.propTypes = {
-  getScores: PropTypes.func,
-  location: PropTypes.object,
-  gameData: PropTypes.object,
+  getScores: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      level: PropTypes.string,
+      moduleId: PropTypes.string,
+      gameId: PropTypes.string,
+      image: PropTypes.string,
+      moduleName: PropTypes.string,
+      messageOne: PropTypes.string,
+      messageTwo: PropTypes.string,
+      messageThree: PropTypes.string,
+      moduleScenario: PropTypes.string,
+      parScoreStatus: PropTypes.string,
+      expression: PropTypes.string,
+      finishedScore: PropTypes.number,
+    }),
+  }).isRequired,
+  gameData: PropTypes.shape({
+    gameData: PropTypes.arrayOf(
+      PropTypes.shape({
+        levels: PropTypes.arrayOf(
+          PropTypes.arrayOf(PropTypes.shape),
+        ),
+      }),
+    ),
+  }).isRequired,
+  player_email: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, null)(ResultPage);
-
-// export default ResultPage;

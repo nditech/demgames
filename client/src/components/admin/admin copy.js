@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { BrowserRouter as Router } from "react-router-dom";
 import {
   TabContent,
@@ -423,5 +424,18 @@ class Admin extends Component {
     );
   }
 }
+
+Admin.propTypes = {
+  email: PropTypes.string,
+  given_name: PropTypes.string.isRequired,
+  family_name: PropTypes.string.isRequired,
+  picture: PropTypes.string.isRequired,
+  gender: PropTypes.string.isRequired,
+};
+
+
+Admin.defaultProps = {
+  email: null,
+};
 
 export default Admin;

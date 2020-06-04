@@ -12,7 +12,6 @@ const initialState = {
 };
 
 const reducerAuth = (state = initialState, action) => {
-  const newState = { ...state };
   switch (action.type) {
     case AUTH0_LOGIN: state = { ...state, authDetail: action.val };
       return state;
