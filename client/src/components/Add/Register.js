@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import { setAlert } from '../../actions/alert';
 import { countryList } from './countryList';
@@ -10,7 +9,6 @@ import Auth from '../../Auth';
 const auth0 = new Auth();
 
 const Register = () => {
-
   const initialState = {
     firstName: "",
     middleName: "",
@@ -47,21 +45,18 @@ const Register = () => {
     event.preventDefault();
 
     const submitData = () => {
-
       const url = `${config.baseUrl}/registerplayer`;
 
       fetch(url, {
         method: 'POST',
         headers: {
           authorization: `Bearer ${auth0.getAccessToken()}`,
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       })
-        .then((res) => {
-          return (res.json());
-        })
+        .then((res) => (res.json()))
         .then((data) => { alert(data.message); })
         .catch((error) => console.log(error)); // eslint-disable-line
     };
@@ -87,8 +82,8 @@ const Register = () => {
 
             <div className="row">
               <div className="form-group col-md-12">
-                <label className="form-label" >Gender:</label>
-                <select className="custom-select custom-select-sm" name="gender" value={gender} onChange={e => handleChange(e)} >
+                <label className="form-label">Gender:</label>
+                <select className="custom-select custom-select-sm" name="gender" value={gender} onChange={e => handleChange(e)}>
                   <option value="Female">Female</option>
                   <option value="Male">Male</option>
                   <option value="Other">Other</option>
@@ -99,14 +94,16 @@ const Register = () => {
             <div className="row">
               <div className="form-group col-md-12">
                 <div>Date of Birth:</div>
-                <DatePicker className="form-control custom-select custom-select-sm" name="dateOfBirth" onChange={e => handleDate(e)} selected={dateOfBirth} isClearable placeholderText="MM/DD/YYYY" /> <br />
+                <DatePicker className="form-control custom-select custom-select-sm" name="dateOfBirth" onChange={e => handleDate(e)} selected={dateOfBirth} isClearable placeholderText="MM/DD/YYYY" />
+                {' '}
+                <br />
               </div>
             </div>
 
             <div className="row">
               <div className="form-group col-md-12">
-                <label className="form-label" >Country</label>
-                <select className="form-control custom-select custom-select-sm" name="country" value={country} onChange={e => handleChange(e)} >
+                <label className="form-label">Country</label>
+                <select className="form-control custom-select custom-select-sm" name="country" value={country} onChange={e => handleChange(e)}>
                   {countryList.map(countryItem => <option value={countryItem.replace(' ', '')}>{country}</option>)}
                 </select>
               </div>
@@ -117,8 +114,8 @@ const Register = () => {
 
             <div className="row">
               <div className="form-group col-md-12">
-                <label className="form-label" >Program</label>
-                <select className="custom-select custom-select-sm" name="program" value={program} onChange={e => handleChange(e)} >
+                <label className="form-label">Program</label>
+                <select className="custom-select custom-select-sm" name="program" value={program} onChange={e => handleChange(e)}>
                   <option value="M&E">Monitoring & Evaluation</option>
                   <option value="Elections">Elections</option>
                   <option value="Governance">Governance</option>
@@ -127,16 +124,15 @@ const Register = () => {
               </div>
             </div>
 
-            <button className="btn btn-info" type="submit">Save</button> | <button className="btn btn-warning" type="button" onClick={e => reset(e)}>Reset</button>
+            <button className="btn btn-info" type="submit">Save</button>
+            {' '}
+            |
+            <button className="btn btn-warning" type="button" onClick={e => reset(e)}>Reset</button>
           </form>
         </div>
       </div>
     </div>
   );
-};
-
-Register.propTypes = {
-  authDetail: PropTypes.object,
 };
 
 export default connect(null, { setAlert })(Register);

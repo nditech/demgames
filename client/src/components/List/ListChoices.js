@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import DataTable from "react-data-table-component";
 import { config } from "../../settings";
@@ -12,12 +12,12 @@ const ListChoices = () => {
       console.log("will not be deleted"); // eslint-disable-line
     }
   };
-  const editClickHandle = choiceId => { };
+  const editClickHandle = () => { };
 
   const EditButton = props => (
     <button
       type="button"
-      onClick={e => editClickHandle(props.row.id)}
+      onClick={() => editClickHandle(props.row.id)}
       data-id={props.row.id}
       data-question-id={props.row.questionid}
       data-row={JSON.stringify(props)}
@@ -30,7 +30,7 @@ const ListChoices = () => {
   const DeleteButton = props => (
     <button
       type="button"
-      onClick={e => deleteClickHandle(props.row.id)}
+      onClick={() => deleteClickHandle(props.row.id)}
       data-id={props.row.id}
       data-question-id={props.row.questionid}
       className="dt-btn btn btn-danger"
@@ -76,7 +76,9 @@ const ListChoices = () => {
       button: true,
       cell: row => (
         <>
-          <EditButton row={row} /> <DeleteButton row={row} />
+          <EditButton row={row} />
+          {' '}
+          <DeleteButton row={row} />
         </>
       ),
     },
@@ -122,16 +124,14 @@ const ListChoices = () => {
     getChoices();
   }, []);
 
-  const simpleTable = () => {
-    return (
-      <DataTable
-        title="List of Choices"
-        columns={columns}
-        data={choices}
-        pagination
-      />
-    );
-  };
+  const simpleTable = () => (
+    <DataTable
+      title="List of Choices"
+      columns={columns}
+      data={choices}
+      pagination
+    />
+  );
 
   return (
     <div className="App">

@@ -37,7 +37,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       name: "",
       selector: "second_weight",
       sortable: false,
-    },/* ,
+    }, /* ,
     {
       name: "Explanation",
       selector: "explanation",
@@ -85,17 +85,15 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
 
   const populateQuestions = data => {
     const modifiedQuestions = [];
-    data.map(obj =>
-      obj.isitmedia === 1
-        ? modifiedQuestions.push({
-          ...obj,
-          isitmedia: 'yes',
-        })
-        : modifiedQuestions.push({
-          ...obj,
-          isitmedia: 'no',
-        })
-    );
+    data.map(obj => (obj.isitmedia === 1
+      ? modifiedQuestions.push({
+        ...obj,
+        isitmedia: 'yes',
+      })
+      : modifiedQuestions.push({
+        ...obj,
+        isitmedia: 'no',
+      })));
     setQuestionsData({
       ...questionsData,
       questions: modifiedQuestions,
@@ -128,15 +126,13 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       });
     }
     data.options = answers;
-    updateQuestion(data, id, function () {
+    updateQuestion(data, id, () => {
       setPopupState({ ...popupState, showMessage: false });
       refreshQuestionList();
     });
   };
 
-  const convertChoice = value => {
-    return String.fromCharCode(value + 65);
-  };
+  const convertChoice = value => String.fromCharCode(value + 65);
 
   //   Questions and choices
 
@@ -171,8 +167,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
 
   let activeGameName;
   let activeGameType;
-  activeGameDetails &&
-    activeGameDetails.map(item => {
+  activeGameDetails
+    && activeGameDetails.map(item => {
       if (item.key === "Name") {
         activeGameName = item.value;
       }
@@ -255,9 +251,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   };
 
   const editHandle = id => {
-    const selectedQuestion = questions.find(item => {
-      return item.id === id;
-    });
+    const selectedQuestion = questions.find(item => item.id === id);
     getChoices(id, selectedQuestion, populateChoices);
     setPopupState({
       showMessage: true,
@@ -349,15 +343,13 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     data.options = answers;
     data.game_id = activeGame;
     // return;
-    addQuestion(data, function () {
+    addQuestion(data, () => {
       setPopupState({ ...popupState, showMessage: false });
       refreshQuestionList();
     });
   };
 
-  const previousQuestions = questions.map(item => {
-    return { id: item.id, title: item.question_statement };
-  });
+  const previousQuestions = questions.map(item => ({ id: item.id, title: item.question_statement }));
   previousQuestions.unshift({ id: "", title: "Select Question" });
 
   const addQuestionHandle = e => {
@@ -507,9 +499,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   const getQuestionLinkedToChoice = choice => {
     if (choice.length > 0) {
       const previousQuestionId = choice[0].QuestionId;
-      const previousQuestion = questions.find(question => {
-        return question.id === previousQuestionId;
-      });
+      const previousQuestion = questions.find(question => question.id === previousQuestionId);
 
       setQuestionsData({
         ...questionsData,
@@ -518,7 +508,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         questionDetail: selected_question,
         questionId: selected_question.id,
         previousChoiceText: choice[0].choicestatement,
-        previousQuestionText: previousQuestion.question_statement,// ,
+        previousQuestionText: previousQuestion.question_statement, // ,
         // weight: weight,
         // second_weight: second_weight
       });
@@ -540,7 +530,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   const getChoiceLinkedToQuestion = (
     choices,
     choicesName,
-    selectedQuestion
+    selectedQuestion,
   ) => {
     choice_linked = choices[0];
     choice_name = choicesName;
@@ -566,13 +556,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   const editScenarioHandle = id => {
     try {
       if (activeGameType === "scenario") {
-        const previousQuestions = questions.map(item => {
-          return { id: item.id, title: item.question_statement };
-        });
+        const previousQuestions = questions.map(item => ({ id: item.id, title: item.question_statement }));
         previousQuestions.unshift({ id: "", title: "Select Question" });
-        const selectedQuestion = questions.find(item => {
-          return item.id === id;
-        });
+        const selectedQuestion = questions.find(item => item.id === id);
         getChoices(id, selectedQuestion, populateScenarioChoices);
 
         setQuestionsData({
@@ -606,7 +592,6 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         return scenarioFields;
       }
       return fields;
-
     } if (edit) {
       if (activeGameType === "scenario") {
         hasChoices = false;
@@ -614,7 +599,6 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         return scenario_edit_data;
       }
       return data;
-
     }
     // create ? (activeGameType === "scenario" ? scenarioFields : fields) : data;
   };

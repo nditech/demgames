@@ -10,7 +10,6 @@ import { config } from "../../settings";
 const auth0 = new Auth();
 
 
-
 class RemovePlayer extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +36,7 @@ class RemovePlayer extends Component {
       },
     };
 
-    // this.getInitialState=this.getInitialState.bind(this);                  
+    // this.getInitialState=this.getInitialState.bind(this);
 
     //       this.handleReset=this.handleReset.bind(this);
     this.handleReset = this.handleReset.bind(this);
@@ -115,7 +114,7 @@ class RemovePlayer extends Component {
       headers: {
         authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state.player),
       mode: 'cors',
@@ -130,8 +129,7 @@ class RemovePlayer extends Component {
   }
 
   res() {
-    if (this.props.given_name !== 'undefined')
-      return (this.props.given_name);
+    if (this.props.given_name !== 'undefined') return (this.props.given_name);
     return ('');
   }
 
@@ -161,19 +159,17 @@ class RemovePlayer extends Component {
         });
         break;
       default:
-
     }
   }
 
 
   handleSearch() {
-
     fetch(`${config.baseUrl}/selectProfileforDel`, {
       method: 'post',
       headers: {
         authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state.search),
     })
@@ -181,9 +177,7 @@ class RemovePlayer extends Component {
       .then((data) => {
         if (data.message === 'Not found') {
           alert("player with specified Id/Email/Username not found");
-        }
-
-        else {
+        } else {
           this.setState({
             player: {
               player_id: data[0].id,
@@ -200,7 +194,6 @@ class RemovePlayer extends Component {
             },
           });
         }
-
       })
       .catch((error) => console.log(error)); // eslint-disable-line
   }
@@ -219,14 +212,23 @@ class RemovePlayer extends Component {
     return (
       <div>
         <form className="searchPlayer">
-          <label>Player id
-                                <input type="text" name="player_id" value={this.state.search.player_id} onChange={this.handleSearchChange} /> <br />
+          <label>
+            Player id
+            <input type="text" name="player_id" value={this.state.search.player_id} onChange={this.handleSearchChange} />
+            {' '}
+            <br />
           </label>
-          <label>User name
-                                <input type="text" name="username" value={this.state.search.username} onChange={this.handleSearchChange} /> <br />
+          <label>
+            User name
+            <input type="text" name="username" value={this.state.search.username} onChange={this.handleSearchChange} />
+            {' '}
+            <br />
           </label>
-          <label>email
-                                <input type="text" name="email" value={this.state.search.email} onChange={this.handleSearchChange} /> <br />
+          <label>
+            email
+            <input type="text" name="email" value={this.state.search.email} onChange={this.handleSearchChange} />
+            {' '}
+            <br />
           </label>
           <label>
             <input type="button" name="Delete" onClick={this.handleSearch} value="Search" />
@@ -235,110 +237,273 @@ class RemovePlayer extends Component {
         </form>
         <div>
           <form className="playerScore" onSubmit={this.handleSubmit}>
-            <label>Id
-                                <input type="text" name="player_id" value={this.state.player.player_id} onChange={this.handleChange} /> <br />
+            <label>
+              Id
+              <input type="text" name="player_id" value={this.state.player.player_id} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
-            <label>First name
-                                <input type="text" name="given_name" value={this.state.player.given_name} onChange={this.handleChange} /> <br />
+            <label>
+              First name
+              <input type="text" name="given_name" value={this.state.player.given_name} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
-            <label>Middle name
-                                <input type="text" name="middle_name" value={this.state.player.middle_name} onChange={this.handleChange} /> <br />
+            <label>
+              Middle name
+              <input type="text" name="middle_name" value={this.state.player.middle_name} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
-            <label>Family name
-                                <input type="text" name="family_name" value={this.state.player.family_name} onChange={this.handleChange} /> <br />
+            <label>
+              Family name
+              <input type="text" name="family_name" value={this.state.player.family_name} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
-            <label>User name
-                                <input type="text" name="username" value={this.state.player.username} onChange={this.handleChange} /> <br />
+            <label>
+              User name
+              <input type="text" name="username" value={this.state.player.username} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
-            <label>Gender
-                                <input type="text" name="gender" value={this.state.player.gender} onChange={this.handleChange} /> <br />
+            <label>
+              Gender
+              <input type="text" name="gender" value={this.state.player.gender} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
-            <label>Program
-                                <input type="text" name="program" value={this.state.player.program} onChange={this.handleChange} /> <br />
+            <label>
+              Program
+              <input type="text" name="program" value={this.state.player.program} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
-            <label>Date of Birth
-                                <DatePicker name="dateOfBirth"
+            <label>
+              Date of Birth
+              <DatePicker
+                name="dateOfBirth"
 
                 value={this.state.player.dateOfBirth}
 
                 isClearable
                 dateFormat="MM/dd/yyyy"
-              /><br />
+              />
+              <br />
             </label>
-            <label>City
-                                <input type="text" name="city" value={this.state.player.city} onChange={this.handleChange} /> <br />
+            <label>
+              City
+              <input type="text" name="city" value={this.state.player.city} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
-            <label> Country
-                        <select name="country" value={this.state.player.country} onChange={this.handleChange} defaultValue={this.state.player.country}>
-                <option value="Afghanistan">Afghanistan</option><option value="Albania">Albania</option><option value="Algeria">Algeria</option>
-                <option value="Andorra">Andorra</option><option value="Angola">Angola</option><option value="AntiguaandBarbuda">Antigua and Barbuda</option>
-                <option value="Argentina">Argentina</option><option value="Armenia">Armenia</option><option value="Australia">Australia</option>
-                <option value="Afghanistan">Afghanistan</option><option value="Azerbaijan">Azerbaijan</option><option value="Bahamas">Bahamas</option>
-                <option value="Bahrain">Bahrain</option><option value="Bangladesh">Bangladesh</option><option value="Barbados">Barbados</option>
-                <option value="Belarus">Belarus</option><option value="Belgium">Belgium</option><option value="Belize">Belize</option>
-                <option value="Benin">Benin</option><option value="Bhutan">Bhutan</option><option value="Bolivia">Bolivia</option>
-                <option value="BosniaandHerzegovina">Bosnia and Herzegovina</option><option value="Botswana">Botswana</option><option value="Brazil">Brazil</option>
-                <option value="Brunei">Brunei</option><option value="Bulgaria">Bulgaria</option><option value="BurkinaFaso">Burkina Faso</option>
-                <option value="Burundi">Burundi</option><option value="CaboVerde">Cabo Verde</option><option value="Cambodia">Cambodia</option>
-                <option value="Cameroon">Cameroon</option><option value="Canada">Canada</option><option value="CentralAfricanRepublic">Central African Republic</option>
-                <option value="Chad">Chad</option><option value="Chile">Chile</option><option value="China">China</option>
-                <option value="Colombia">Colombia</option><option value="Comoros">Comoros</option><option value="Democratic Republic of the Congo">Congo, Democratic Republic of the</option>
-                <option value="Republic of the Congo">Congo, Republic of the</option><option value="CostaRica">Costa Rica</option><option value="Côted’Ivoire">Côte d’Ivoire</option>
-                <option value="Croatia">Croatia</option><option value="Cuba">Cuba</option><option value="Cyprus">Cyprus</option>
-                <option value="CzechRepublic">Czech Republic</option><option value="Denmark">Denmark</option><option value="Djibouti">Djibouti</option>
-                <option value="Dominica">Dominica</option><option value="DominicanRepublic">Dominican Republic</option><option value="EastTimor">East Timor</option>
-                <option value="Ecuador">Ecuador</option><option value="Egypt">Egypt</option><option value="ElSalvador">El Salvador</option>
-                <option value="EquatorialGuinea">Equatorial Guinea</option><option value="Eritrea">Eritrea</option><option value="Estonia">Estonia</option>
-                <option value="Eswatini">Eswatini</option><option value="Ethiopia">Ethiopia</option><option value="Fiji">Fiji</option>
-                <option value="Finland">Finland</option><option value="France">France</option><option value="Gabon">Gabon</option>
-                <option value="Gambia">Gambia</option><option value="Georgia">Georgia</option><option value="Germany">Germany</option>
-                <option value="Ghana">Ghana</option><option value="Greece">Greece</option><option value="Grenada">Grenada</option>
-                <option value="Guatemala">Guatemala</option><option value="Guinea">Guinea</option><option value="GuineaBissau">Guinea-Bissau</option>
-                <option value="Guyana">Guyana</option><option value="Haiti">Haiti</option><option value="Honduras">Honduras</option>
-                <option value="Hungary">Hungary</option><option value="Iceland">Iceland</option><option value="India">India</option>
-                <option value="Indonesia">Indonesia</option><option value="Iran">Iran</option><option value="Iraq">Iraq</option>
-                <option value="Ireland">Ireland</option><option value="Israel">Israel</option><option value="Italy">Italy</option>
-                <option value="Jamaica">Jamaica</option><option value="Japan">Japan</option><option value="Jordan">Jordan</option>
-                <option value="Kazakhstan">Kazakhstan</option><option value="Kenya">Kenya</option><option value="Kiribati">Kiribati</option>
-                <option value="NorthKorea">Korea, North</option><option value="SouthKorea">Korea, North</option><option value="Kosovo">Kosovo</option>
-                <option value="Kuwait">Kuwait</option><option value="Kyrgyzstan">Kyrgyzstan</option><option value="Laos">Laos</option>
-                <option value="Latvia">Latvia</option><option value="Lebanon">Lebanon</option><option value="Lesotho">Lesotho</option>
-                <option value="Liberia">Liberia</option><option value="Libya">Libya</option><option value="Liechtenstein">Liechtenstein</option>
-                <option value="Lithuania">Lithuania</option><option value="Luxembourg">Luxembourg</option><option value="Madagascar">Madagascar</option>
-                <option value="Malawi">Malawi</option><option value="Maldives">Maldives</option><option value="Mali">Mali</option>
-                <option value="Malta">Malta</option><option value="MarshallIslands">Marshall Islands</option><option value="Mauritania">Mauritania</option>
-                <option value="Mauritius">Mauritius</option><option value="Mexico">Mexico</option><option value="Micronesia">Micronesia, Federated States of</option>
-                <option value="Moldova">Moldova</option><option value="Monaco">Monaco</option><option value="Mongolia">Mongolia</option>
-                <option value="Montenegro">Montenegro</option><option value="Morocco">Morocco</option><option value="Mozambique">Mozambique</option>
-                <option value="Myanmar">Myanmar</option><option value="Namibia">Namibia</option><option value="Nauru">Nauru</option>
-                <option value="Nepal">Nepal</option><option value="Netherlands">Netherlands</option><option value="NewZealand">New Zealand</option>
-                <option value="Nicaragua">Nicaragua</option><option value="Niger">Niger</option><option value="Nigeria">Nigeria</option>
-                <option value="NorthMacedonia">Macedonia, North</option><option value="Norway">Norway</option><option value="Oman">Oman</option>
-                <option value="Pakistan">Pakistan</option><option value="Palau">Palau</option><option value="Panama">Panama</option>
-                <option value="PapuaNewGuinea">Papua New Guinea</option><option value="Paraguay">Paraguay</option><option value="Peru">Peru</option>
-                <option value="Philippines">Philippines</option><option value="Poland">Poland</option><option value="Portugal">Portugal</option>
-                <option value="Qatar">Qatar</option><option value="Romania">Romania</option><option value="Russia">Russia</option><option value="Rwanda">Rwanda</option>
-                <option value="SaintKittsandNevis">Saint Kitts and Nevis</option><option value="SaintLucia">Saint Lucia</option><option value="SaintVincentandtheGrenadines">Saint Vincent and the Grenadines</option>
-                <option value="Samoa">Samoa</option><option value="SanMarino">San Marino</option><option value="SaoTomeandPrincipe">Sao Tome and Principe</option>
-                <option value="SaudiArabia">Saudi Arabia</option><option value="Senegal">Senegal</option><option value="Serbia">Serbia</option>
-                <option value="Seychelles">Seychelles</option><option value="SierraLeone">Sierra Leone</option><option value="Singapore">Singapore</option>
-                <option value="Slovakia">Slovakia</option><option value="Slovenia">Slovenia</option><option value="SolomonIslands">Solomon Islands</option>
-                <option value="Somalia">Somalia</option><option value="SouthAfrica">South Africa</option><option value="Spain">Spain</option>
-                <option value="SriLanka">Sri Lanka</option><option value="Sudan">Sudan</option><option value="SouthSudan">Sudan, South</option>
-                <option value="Suriname">Suriname</option><option value="Sweden">Sweden</option><option value="Switzerland">Switzerland</option>
-                <option value="Syria">Syria</option><option value="Taiwan">Taiwan</option><option value="Tajikistan">Tajikistan</option>
-                <option value="Tanzania">Tanzania</option><option value="Thailand">Thailand</option><option value="Togo">Togo</option>
-                <option value="Tonga">Tonga</option><option value="TrinidadandTobago">Trinidad and Tobago</option><option value="Tunisia">Tunisia</option>
-                <option value="Turkey">Turkey</option><option value="Turkmenistan">Turkmenistan</option><option value="Tuvalu">Tuvalu</option>
-                <option value="Uganda">Uganda</option><option value="Ukraine">Ukraine</option><option value="UnitedArabEmirates">United Arab Emirates</option>
-                <option value="UnitedKingdom">United Kingdom</option><option value="UnitedStates">United States</option><option value="Uruguay">Uruguay</option>
-                <option value="Uzbekistan">Uzbekistan</option><option value="Vanuatu">Vanuatu</option><option value="VaticanCity">Vatican City</option>
-                <option value="Venezuela">Venezuela</option><option value="Vietnam">Vietnam</option><option value="Yemen">Yemen</option>
-                <option value="Zambia">Zambia</option><option value="Zimbabwe">Zimbabwe</option>
-              </select><br />
+            <label>
+              {' '}
+              Country
+              <select name="country" value={this.state.player.country} onChange={this.handleChange} defaultValue={this.state.player.country}>
+                <option value="Afghanistan">Afghanistan</option>
+                <option value="Albania">Albania</option>
+                <option value="Algeria">Algeria</option>
+                <option value="Andorra">Andorra</option>
+                <option value="Angola">Angola</option>
+                <option value="AntiguaandBarbuda">Antigua and Barbuda</option>
+                <option value="Argentina">Argentina</option>
+                <option value="Armenia">Armenia</option>
+                <option value="Australia">Australia</option>
+                <option value="Afghanistan">Afghanistan</option>
+                <option value="Azerbaijan">Azerbaijan</option>
+                <option value="Bahamas">Bahamas</option>
+                <option value="Bahrain">Bahrain</option>
+                <option value="Bangladesh">Bangladesh</option>
+                <option value="Barbados">Barbados</option>
+                <option value="Belarus">Belarus</option>
+                <option value="Belgium">Belgium</option>
+                <option value="Belize">Belize</option>
+                <option value="Benin">Benin</option>
+                <option value="Bhutan">Bhutan</option>
+                <option value="Bolivia">Bolivia</option>
+                <option value="BosniaandHerzegovina">Bosnia and Herzegovina</option>
+                <option value="Botswana">Botswana</option>
+                <option value="Brazil">Brazil</option>
+                <option value="Brunei">Brunei</option>
+                <option value="Bulgaria">Bulgaria</option>
+                <option value="BurkinaFaso">Burkina Faso</option>
+                <option value="Burundi">Burundi</option>
+                <option value="CaboVerde">Cabo Verde</option>
+                <option value="Cambodia">Cambodia</option>
+                <option value="Cameroon">Cameroon</option>
+                <option value="Canada">Canada</option>
+                <option value="CentralAfricanRepublic">Central African Republic</option>
+                <option value="Chad">Chad</option>
+                <option value="Chile">Chile</option>
+                <option value="China">China</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Comoros">Comoros</option>
+                <option value="Democratic Republic of the Congo">Congo, Democratic Republic of the</option>
+                <option value="Republic of the Congo">Congo, Republic of the</option>
+                <option value="CostaRica">Costa Rica</option>
+                <option value="Côted’Ivoire">Côte d’Ivoire</option>
+                <option value="Croatia">Croatia</option>
+                <option value="Cuba">Cuba</option>
+                <option value="Cyprus">Cyprus</option>
+                <option value="CzechRepublic">Czech Republic</option>
+                <option value="Denmark">Denmark</option>
+                <option value="Djibouti">Djibouti</option>
+                <option value="Dominica">Dominica</option>
+                <option value="DominicanRepublic">Dominican Republic</option>
+                <option value="EastTimor">East Timor</option>
+                <option value="Ecuador">Ecuador</option>
+                <option value="Egypt">Egypt</option>
+                <option value="ElSalvador">El Salvador</option>
+                <option value="EquatorialGuinea">Equatorial Guinea</option>
+                <option value="Eritrea">Eritrea</option>
+                <option value="Estonia">Estonia</option>
+                <option value="Eswatini">Eswatini</option>
+                <option value="Ethiopia">Ethiopia</option>
+                <option value="Fiji">Fiji</option>
+                <option value="Finland">Finland</option>
+                <option value="France">France</option>
+                <option value="Gabon">Gabon</option>
+                <option value="Gambia">Gambia</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Germany">Germany</option>
+                <option value="Ghana">Ghana</option>
+                <option value="Greece">Greece</option>
+                <option value="Grenada">Grenada</option>
+                <option value="Guatemala">Guatemala</option>
+                <option value="Guinea">Guinea</option>
+                <option value="GuineaBissau">Guinea-Bissau</option>
+                <option value="Guyana">Guyana</option>
+                <option value="Haiti">Haiti</option>
+                <option value="Honduras">Honduras</option>
+                <option value="Hungary">Hungary</option>
+                <option value="Iceland">Iceland</option>
+                <option value="India">India</option>
+                <option value="Indonesia">Indonesia</option>
+                <option value="Iran">Iran</option>
+                <option value="Iraq">Iraq</option>
+                <option value="Ireland">Ireland</option>
+                <option value="Israel">Israel</option>
+                <option value="Italy">Italy</option>
+                <option value="Jamaica">Jamaica</option>
+                <option value="Japan">Japan</option>
+                <option value="Jordan">Jordan</option>
+                <option value="Kazakhstan">Kazakhstan</option>
+                <option value="Kenya">Kenya</option>
+                <option value="Kiribati">Kiribati</option>
+                <option value="NorthKorea">Korea, North</option>
+                <option value="SouthKorea">Korea, North</option>
+                <option value="Kosovo">Kosovo</option>
+                <option value="Kuwait">Kuwait</option>
+                <option value="Kyrgyzstan">Kyrgyzstan</option>
+                <option value="Laos">Laos</option>
+                <option value="Latvia">Latvia</option>
+                <option value="Lebanon">Lebanon</option>
+                <option value="Lesotho">Lesotho</option>
+                <option value="Liberia">Liberia</option>
+                <option value="Libya">Libya</option>
+                <option value="Liechtenstein">Liechtenstein</option>
+                <option value="Lithuania">Lithuania</option>
+                <option value="Luxembourg">Luxembourg</option>
+                <option value="Madagascar">Madagascar</option>
+                <option value="Malawi">Malawi</option>
+                <option value="Maldives">Maldives</option>
+                <option value="Mali">Mali</option>
+                <option value="Malta">Malta</option>
+                <option value="MarshallIslands">Marshall Islands</option>
+                <option value="Mauritania">Mauritania</option>
+                <option value="Mauritius">Mauritius</option>
+                <option value="Mexico">Mexico</option>
+                <option value="Micronesia">Micronesia, Federated States of</option>
+                <option value="Moldova">Moldova</option>
+                <option value="Monaco">Monaco</option>
+                <option value="Mongolia">Mongolia</option>
+                <option value="Montenegro">Montenegro</option>
+                <option value="Morocco">Morocco</option>
+                <option value="Mozambique">Mozambique</option>
+                <option value="Myanmar">Myanmar</option>
+                <option value="Namibia">Namibia</option>
+                <option value="Nauru">Nauru</option>
+                <option value="Nepal">Nepal</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="NewZealand">New Zealand</option>
+                <option value="Nicaragua">Nicaragua</option>
+                <option value="Niger">Niger</option>
+                <option value="Nigeria">Nigeria</option>
+                <option value="NorthMacedonia">Macedonia, North</option>
+                <option value="Norway">Norway</option>
+                <option value="Oman">Oman</option>
+                <option value="Pakistan">Pakistan</option>
+                <option value="Palau">Palau</option>
+                <option value="Panama">Panama</option>
+                <option value="PapuaNewGuinea">Papua New Guinea</option>
+                <option value="Paraguay">Paraguay</option>
+                <option value="Peru">Peru</option>
+                <option value="Philippines">Philippines</option>
+                <option value="Poland">Poland</option>
+                <option value="Portugal">Portugal</option>
+                <option value="Qatar">Qatar</option>
+                <option value="Romania">Romania</option>
+                <option value="Russia">Russia</option>
+                <option value="Rwanda">Rwanda</option>
+                <option value="SaintKittsandNevis">Saint Kitts and Nevis</option>
+                <option value="SaintLucia">Saint Lucia</option>
+                <option value="SaintVincentandtheGrenadines">Saint Vincent and the Grenadines</option>
+                <option value="Samoa">Samoa</option>
+                <option value="SanMarino">San Marino</option>
+                <option value="SaoTomeandPrincipe">Sao Tome and Principe</option>
+                <option value="SaudiArabia">Saudi Arabia</option>
+                <option value="Senegal">Senegal</option>
+                <option value="Serbia">Serbia</option>
+                <option value="Seychelles">Seychelles</option>
+                <option value="SierraLeone">Sierra Leone</option>
+                <option value="Singapore">Singapore</option>
+                <option value="Slovakia">Slovakia</option>
+                <option value="Slovenia">Slovenia</option>
+                <option value="SolomonIslands">Solomon Islands</option>
+                <option value="Somalia">Somalia</option>
+                <option value="SouthAfrica">South Africa</option>
+                <option value="Spain">Spain</option>
+                <option value="SriLanka">Sri Lanka</option>
+                <option value="Sudan">Sudan</option>
+                <option value="SouthSudan">Sudan, South</option>
+                <option value="Suriname">Suriname</option>
+                <option value="Sweden">Sweden</option>
+                <option value="Switzerland">Switzerland</option>
+                <option value="Syria">Syria</option>
+                <option value="Taiwan">Taiwan</option>
+                <option value="Tajikistan">Tajikistan</option>
+                <option value="Tanzania">Tanzania</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Togo">Togo</option>
+                <option value="Tonga">Tonga</option>
+                <option value="TrinidadandTobago">Trinidad and Tobago</option>
+                <option value="Tunisia">Tunisia</option>
+                <option value="Turkey">Turkey</option>
+                <option value="Turkmenistan">Turkmenistan</option>
+                <option value="Tuvalu">Tuvalu</option>
+                <option value="Uganda">Uganda</option>
+                <option value="Ukraine">Ukraine</option>
+                <option value="UnitedArabEmirates">United Arab Emirates</option>
+                <option value="UnitedKingdom">United Kingdom</option>
+                <option value="UnitedStates">United States</option>
+                <option value="Uruguay">Uruguay</option>
+                <option value="Uzbekistan">Uzbekistan</option>
+                <option value="Vanuatu">Vanuatu</option>
+                <option value="VaticanCity">Vatican City</option>
+                <option value="Venezuela">Venezuela</option>
+                <option value="Vietnam">Vietnam</option>
+                <option value="Yemen">Yemen</option>
+                <option value="Zambia">Zambia</option>
+                <option value="Zimbabwe">Zimbabwe</option>
+              </select>
+              <br />
             </label>
-            <label>email
-                                <input type="text" name="email" value={this.state.player.email} onChange={this.handleChange} /> <br />
+            <label>
+              email
+              <input type="text" name="email" value={this.state.player.email} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
             <button type="submit">Delete user</button>
             <div>
@@ -365,14 +530,12 @@ const mapStateToProps = (state) => ({
 });
 
 // Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => {
-  return {
-    //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-    //		getScores: (scores) => dispatch(fetchScores(scores)),
-    setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-    clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+  //		getScores: (scores) => dispatch(fetchScores(scores)),
+  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
+  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
+});
 
 RemovePlayer.propTypes = {
   //	getGameData: PropTypes.func,

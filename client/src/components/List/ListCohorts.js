@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
@@ -30,10 +30,6 @@ const ListCohorts = () => {
     },
   ];
 
-  const onCancel = () => {
-    setPopupState({ ...popupState, showMessage: false });
-  };
-
   const [popupState, setPopupState] = useState({
     showMessage: false,
     confirmButtonValue: "Update",
@@ -48,6 +44,11 @@ const ListCohorts = () => {
     onDelete: null,
     removeMessage: false,
   });
+
+  const onCancel = () => {
+    setPopupState({ ...popupState, showMessage: false });
+  };
+
   const {
     showMessage,
     confirmButtonValue,
@@ -84,11 +85,11 @@ const ListCohorts = () => {
   };
 
   const getCohort = () => {
-    const url = `${config.baseUrl  }/listCohort`;
+    const url = `${config.baseUrl}/listCohort`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
         Accept: "application/json",
       },
@@ -106,30 +107,26 @@ const ListCohorts = () => {
 
   const deleteHandle = cohortId => {
     const r = window.confirm(
-      `Are you sure you want to delete cohort with id=${  cohortId}`
+      `Are you sure you want to delete cohort with id=${cohortId}`,
     );
     if (r === true) {
-      deleteCohort(cohortId, function() {
+      deleteCohort(cohortId, () => {
         getCohort();
       });
-    } else {
-      
     }
   };
 
   const editCohort = (data = "", id) => {
     // return;
-    updateCohort(data.name, id, function() {
+    updateCohort(data.name, id, () => {
       setPopupState({ ...popupState, showMessage: false });
       getCohort();
     });
   };
   const editHandle = id => {
     // debugger;
-    const selected_cohort = cohort.find(item => {
-      return item.id === id;
-    });
-    setCohortData({ ...cohortData, selectedCohort: selected_cohort });
+    const selectedCohortToSet = cohort.find(item => item.id === id);
+    setCohortData({ ...cohortData, selectedCohort: selectedCohortToSet });
     setPopupState({
       showMessage: true,
       confirmButtonValue: "Update",
@@ -148,7 +145,7 @@ const ListCohorts = () => {
 
   const saveCohort = (data = "") => {
     // return;
-    addCohort(data, function() {
+    addCohort(data, () => {
       setPopupState({ ...popupState, showMessage: false });
       getCohort();
     });
@@ -188,7 +185,6 @@ const ListCohorts = () => {
         onCancel={onCancel}
         title={title}
         data={create ? addCohortFields : editCohortFields}
-        // data={create ? scenarioFields : data}
         messageBox={messageBox}
         edit={edit}
         create={create}
@@ -196,8 +192,13 @@ const ListCohorts = () => {
         removeMessage={removeMessage}
         hasChoices={false}
       />
-      <div className="float-right" onClick={e => addCohortHandle(e)}>
-        <button className="btn btn-info btn-sm">
+      <div
+        className="float-right"
+        onClick={e => addCohortHandle(e)}
+        role="button"
+        tabIndex={0}
+      >
+        <button type="submit" className="btn btn-info btn-sm">
           <i className="fa fa-plus" />
         </button>
         <span> Add Cohort</span>

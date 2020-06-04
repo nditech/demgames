@@ -64,11 +64,11 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
 
 
   const getQuestions = () => {
-    const url = `${config.baseUrl  }/listquestions/${activeGame}`;
+    const url = `${config.baseUrl}/listquestions/${activeGame}`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
         Accept: "application/json",
       },
@@ -76,17 +76,15 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       .then(res => res.json())
       .then(data => {
         const modifiedQuestions = [];
-        data.map(obj =>
-          obj.isitmedia === 1
-            ? modifiedQuestions.push({
-              ...obj,
-              isitmedia: 'yes',
-            })
-            :  modifiedQuestions.push({
-              ...obj,
-              isitmedia: 'no',
-            })
-        );
+        data.map(obj => (obj.isitmedia === 1
+          ? modifiedQuestions.push({
+            ...obj,
+            isitmedia: 'yes',
+          })
+          : modifiedQuestions.push({
+            ...obj,
+            isitmedia: 'no',
+          })));
         setQuestionsData({
           ...questionsData,
           questions: modifiedQuestions,
@@ -105,11 +103,11 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
 
   const deleteHandle = questionId => {
     if (window.confirm("Are you sure you want to delete the question")) {
-      const url = `${config.baseUrl  }/questions/${  questionId}`;
+      const url = `${config.baseUrl}/questions/${questionId}`;
       fetch(url, {
         method: "POST",
         headers: {
-          authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+          authorization: `Bearer ${localStorage.getItem("access_token")}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -124,9 +122,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     }
   };
 
-  const convertChoice = value => {
-    return String.fromCharCode(value + 65);
-  };
+  const convertChoice = value => String.fromCharCode(value + 65);
 
   const editQuestion = (data = "", id) => {
     const answers = [];
@@ -136,11 +132,11 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       });
     }
     data.answers = answers;
-    const url = `${config.baseUrl  }/updatequestion/`;
+    const url = `${config.baseUrl}/updatequestion/`;
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -233,11 +229,11 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   };
 
   const getChoices = (questionId, selectedQuestion) => {
-    const url = `${config.baseUrl  }/choices/${questionId}`;
+    const url = `${config.baseUrl}/choices/${questionId}`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
         Accept: "application/json",
       },
@@ -271,9 +267,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   };
 
   const editHandle = id => {
-    const selectedQuestion = questions.find(item => {
-      return item.id === id;
-    });
+    const selectedQuestion = questions.find(item => item.id === id);
     getChoices(id, selectedQuestion);
     setPopupState({ ...popupState, showMessage: true });
   };

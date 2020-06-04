@@ -26,11 +26,11 @@ class ScenarioLevels extends React.Component {
   state = { levels: 0, game: {} };
 
   componentDidMount() {
-    const url = `${config.baseUrl  }/level_by_game/${this.props.match.params.moduleId}`;
+    const url = `${config.baseUrl}/level_by_game/${this.props.match.params.moduleId}`;
     fetch(url, {
       method: "GET",
       headers: {
-        authorization: `Bearer ${  auth0.getAccessToken()}`,
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -52,8 +52,8 @@ class ScenarioLevels extends React.Component {
           moduleId={this.props.match.params.moduleId}
           showScore={false}
           moduleType="scenario"
-          moduleColor={this.state.game.style === null?"orange": this.state.game.style}
-        />
+          moduleColor={this.state.game.style === null ? "orange" : this.state.game.style}
+        />,
       );
     }
     return elements;
@@ -63,7 +63,10 @@ class ScenarioLevels extends React.Component {
     return (
       <div className="landing-page-wrapper">
         <div className="landing-page-container">
-          <p className="game-title"> {this.state.game.caption}</p>
+          <p className="game-title">
+            {' '}
+            {this.state.game.caption}
+          </p>
           <div className="game-type-card-container">
             {/* {levels &&
 		    				levels.length > 0 &&

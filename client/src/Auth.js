@@ -1,10 +1,7 @@
-// src/Auth/Auth.js
 /* eslint no-restricted-globals: */
-import auth0 from "auth0-js";
-// import jwtDecode from "jwt-decode";
-import jwtDecode from "jwt-decode";
 
-// jwtDecode =require(jwt-decode);
+import auth0 from "auth0-js";
+import jwtDecode from "jwt-decode";
 
 const LOGIN_SUCCESS_PAGE = "/landingpage";
 const LOGIN_FAILURE_PAGE = "/";
@@ -19,52 +16,39 @@ export default class Auth {
     scope: "openid profile email address",
   });
 
-  // auth0 = new auth0.WebAuth({
-  //   domain: 'pankaj-hashedin.auth0.com',
-  //  clientID: '8APzGywrBbRrfx5BEx5iHFV6Zq3GWQai',
-  //  redirectUri: 'http://localhost:8080/callback',
-  //  audience:'https://pankaj-hashedin.auth0.com/api/v2/',
-  //  responseType: 'token id_token',
-  //  scope: 'openid profile email address'
-  // });
-
-  constructor() {
-    this.login = this.login.bind(this);
-  }
-
-  login() {
+  login = () => {
     this.auth0.authorize({
       prompt: "login",
     });
   }
 
-  static setCohort(cohort) {
+  setCohort = (cohort) => {
     if (localStorage.getItem("cohort_address") !== "/landingpage") {
       localStorage.setItem("cohort_address", cohort);
     }
   }
 
-  static getCohort() {
+  getCohort = () => {
     if (localStorage.getItem("cohort_address")) {
       return localStorage.getItem("cohort_address");
     }
+    return null;
   }
 
-  static setStyle(style) {
+  setStyle = (style) => {
     if (style !== null) {
       localStorage.setItem("style", style);
     }
   }
 
-  static getStyle() {
+  getStyle = () => {
     if (localStorage.getItem("style")) {
       return localStorage.getItem("style");
     }
     return "orange";
-
   }
 
-  static logout() {
+  logout = () => {
     // Remove tokens and expiry time
     localStorage.removeItem("access_token");
     localStorage.removeItem("id_token");
@@ -82,10 +66,10 @@ export default class Auth {
         password: null,
         username: null,
       },
-      function (err) {
+      (err) => {
         if (err) return alert(`Something went wrong: ${err.message}`);
         return alert("success signup without login!");
-      }
+      },
     );
   }
 
@@ -93,7 +77,7 @@ export default class Auth {
     this.auth0.parseHash((error, authResults) => {
       if (authResults && authResults.accessToken && authResults.idToken) {
         const expiresAt = JSON.stringify(
-          authResults.expiresIn * 1000 + new Date().getTime()
+          authResults.expiresIn * 1000 + new Date().getTime(),
         );
         localStorage.setItem("access_token", authResults.accessToken);
         localStorage.setItem("id_token", authResults.idToken);
@@ -107,18 +91,18 @@ export default class Auth {
     });
   }
 
-  static isAuthenticated() {
+  isAuthenticated = () => {
     const expiresAt = JSON.parse(localStorage.getItem("expires_at"));
     return new Date().getTime() < expiresAt;
   }
 
-  static getProfile() {
+  getProfile = () => {
     if (localStorage.getItem("id_token")) {
       return jwtDecode(localStorage.getItem("id_token"));
     }
   }
 
-  static getAccessToken() {
+  getAccessToken = () => {
     if (localStorage.getItem("access_token")) {
       return localStorage.getItem("access_token");
     }

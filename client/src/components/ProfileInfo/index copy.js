@@ -81,7 +81,11 @@ class ProfileInfo extends React.Component {
               <button className="back-button" onClick={this.props.history.goBack}>
                 <img className="back-icon" src={arrowBackUrl} alt="back-arrow" />
               </button>
-              <p className="my-profile-label">{this.props.player_given_name} Profile</p>
+              <p className="my-profile-label">
+                {this.props.player_given_name}
+                {' '}
+                Profile
+              </p>
             </div>
             <img
               ref={(input) => {
@@ -136,28 +140,63 @@ class ProfileInfo extends React.Component {
               onClick={this.updateCredentials}
             >
               Change password
-						</a>
+            </a>
           </div>
         </div>
         <div>
-          <p className="career-progress-label">Hi {this.props.player_given_name} your game progress is as follows</p>
+          <p className="career-progress-label">
+            Hi
+            {this.props.player_given_name}
+            {' '}
+            your game progress is as follows
+          </p>
           <div className="overall-info">
-            <p className="rank-info">You are ranked {this.props.total_rank} overall and {this.props.program_rank} from your program</p>
+            <p className="rank-info">
+              You are ranked
+              {this.props.total_rank}
+              {' '}
+              overall and
+              {this.props.program_rank}
+              {' '}
+              from your program
+            </p>
             <div className="modules-info">
-              <p className="heading">Designing an Argument - Game {this.props.game_id}</p>
-              <p>
-                Currently pursuing <span>Level 1</span>
+              <p className="heading">
+                Designing an Argument - Game
+                {this.props.game_id}
               </p>
               <p>
-								Scored <span>{this.props.current[0][0]}/100</span> in <span>Level 1</span>
+                Currently pursuing
+                {' '}
+                <span>Level 1</span>
               </p>
-              <p className="heading">Finding Evidence - Game {this.props.game_id}</p>
               <p>
-                Currently pursuing <span>Level 1</span>
+                Scored
+                {' '}
+                <span>
+                  {this.props.current[0][0]}
+                  /100
+                </span>
+                {' '}
+                in
+                <span>Level 1</span>
+              </p>
+              <p className="heading">
+                Finding Evidence - Game
+                {this.props.game_id}
+              </p>
+              <p>
+                Currently pursuing
+                {' '}
+                <span>Level 1</span>
               </p>
               <p className="heading">Finding Flaws in Arguments</p>
               <p>Not yet started</p>
-              <p> Your over all score is {this.props.total}</p>
+              <p>
+                {' '}
+                Your over all score is
+                {this.props.total}
+              </p>
             </div>
           </div>
         </div>
@@ -195,16 +234,14 @@ const mapStateToProps = (state) => ({
 });
 
 // Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-    getScores: (scores) => dispatch(fetchScores(scores)),
-    setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-    clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-    getScoreDetails: (scoreDetail) => dispatch(fetchScoreDetails(scoreDetail)),
-    setScoreDetails: (scoreDetail) => dispatch(fetchScoreDetails(scoreDetail)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  // getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+  getScores: (scores) => dispatch(fetchScores(scores)),
+  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
+  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
+  getScoreDetails: (scoreDetail) => dispatch(fetchScoreDetails(scoreDetail)),
+  setScoreDetails: (scoreDetail) => dispatch(fetchScoreDetails(scoreDetail)),
+});
 
 // export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
 export default ProfileInfo;

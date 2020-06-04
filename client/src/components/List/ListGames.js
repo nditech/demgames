@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import { ToastContainer, toast } from 'react-toastify';
+import React, { Component } from "react";
+import { toast } from 'react-toastify';
 import Popup from "reactjs-popup";
 import Button from '@material-ui/core/Button';
 import Icon from "@material-ui/core/Icon";
@@ -22,7 +22,7 @@ class ListGames extends Component {
       activeGameDetails: [],
       activeGame: null,
       activeTab: 1,
-      loadQuestionsComponent: false,
+      // loadQuestionsComponent: false,
       cohorts: [{}],
     };
     this.simpleTable = this.simpleTable.bind(this);
@@ -41,7 +41,7 @@ class ListGames extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        if (fullUpdate)
+        if (fullUpdate) {
           this.setState({
             games: data,
             activeGame: data[0].id,
@@ -55,7 +55,7 @@ class ListGames extends Component {
               { key: "par_score", value: data[0].par_score },
             ],
           });
-        else {
+        } else {
           this.setState({
             games: data,
           });
@@ -91,27 +91,17 @@ class ListGames extends Component {
     return true;
   }
 
-  // shouldComponentUpdate(nextProp, nextState){
-  //   // debugger;
-  //   if(nextProp.editedDetals)
-  //   {console.log(nextProp.editedDetals.caption!==this.state.activeGameDetails[0].value||nextProp.editedDetals.gamedescription!==this.state.activeGameDetails[1].value,"..............................");
-  //   if(nextProp.editedDetals.caption!==nextState.activeGameDetails[0].value || nextProp.editedDetals.gamedescription!==nextState.activeGameDetails[1].value)
-  //   {this.updateDetails(nextProp.editedDetals);}
-  //   }
-  //   return true;
-
-  // }
   copyGameCb = (id) => {
-    const cohort_id = this.menu.value;
+    const cohortId = this.menu.value;
     const url = `${config.baseUrl}/duplicatGame`;
     fetch(url, {
       method: 'POST',
       headers: {
         authorization: `Bearer ${auth0.getAccessToken()}`,
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ game_id: id, cohort_id }),
+      body: JSON.stringify({ game_id: id, cohortId }),
     })
       .then(res => res.json())
       .then((data) => {
@@ -121,7 +111,7 @@ class ListGames extends Component {
           position: toast.POSITION.TOP_CENTER,
         });
       })
-      .catch((error) => toast.error("Sorry...some technical issue", {
+      .catch(() => toast.error("Sorry...some technical issue", {
         position: toast.POSITION.TOP_CENTER,
       }));
   }
@@ -141,7 +131,7 @@ class ListGames extends Component {
     });
   };
 
-  updateDetails = (data) => {
+  updateDetails = () => {
     const url = `${config.baseUrl}/listgames`;
     fetch(url, {
       method: "get",
@@ -163,27 +153,8 @@ class ListGames extends Component {
         });
       })
       .catch(err => console.log(err)); // eslint-disable-line
-    // this.setState({
-    //   activeGameDetails: [
-    //     { key: "Name", value: data.caption },
-    //     { key: "Description", value: data.gamedescription },
-    //     { key: "Game Type", value: this.state.activeGameDetails[2].value }
-    //   ],
-    //   games:[...this.state.games,this.state.games[this.state.activeIndex]=data]
-    // });
   }
 
-  // updateDetails=(data)=>{
-  //   debugger;
-  //   this.setState({
-  //     activeGameDetails: [
-  //       { key: "Name", value: data.caption },
-  //       { key: "Description", value: data.gamedescription },
-  //       { key: "Game Type", value: this.state.activeGameDetails[2].value }
-  //     ],
-  //     games:[...this.state.games,this.state.games[this.state.activeIndex]=data]
-  //   },()=>console.log(this.state.activeGameDetails,this.state.games,"..............................."));
-  // }
   onCancel = () => {
     this.setState({ showMessage: false });
   };
@@ -228,11 +199,10 @@ class ListGames extends Component {
           multiline: true,
           editable: true,
         },
-      ]
+      ],
     };
     this.setState({
       data,
-      // showMessage:true,
       confirmButtonValue: "UPDATE",
       messageTitle: "",
       messageDescription: "",
@@ -243,7 +213,7 @@ class ListGames extends Component {
       edit: true,
       create: false,
       onDelete: null,
-      removeMessage: false
+      removeMessage: false,
     }, () => {
       this.setState({
         // activeGameTab:tab
@@ -253,19 +223,21 @@ class ListGames extends Component {
   }
 
   editGameCb = (data, id) => {
-    const editGameForm = { id, caption: data.Title, gamedescription: data.Description, style: data.style, par_score: data.par_score };
+    const editGameForm = {
+      id, caption: data.Title, gamedescription: data.Description, style: data.style, par_score: data.par_score,
+    };
     const url = `${config.baseUrl}/Updategame`;
     fetch(url, {
       method: 'POST',
       headers: {
         authorization: `Bearer ${auth0.getAccessToken()}`,
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(editGameForm),
     })
       .then(res => res.json())
-      .then((data) => {
+      .then(() => {
         this.setState({ showMessage: false });
         this.updateDetails(editGameForm);
         this.pool(true);
@@ -275,7 +247,7 @@ class ListGames extends Component {
 
         // editGameForm=null;
       })
-      .catch((error) => toast.info("Sorry...some technical issue", {
+      .catch(() => toast.info("Sorry...some technical issue", {
         position: toast.POSITION.TOP_CENTER,
       }));
   };
@@ -306,20 +278,20 @@ class ListGames extends Component {
       method: 'POST',
       headers: {
         authorization: `Bearer ${auth0.getAccessToken()}`,
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(deleteGameForm),
     })
       .then(res => res.json())
-      .then((data) => {
+      .then(() => {
         this.setState({ showMessage: false });
         this.pool(true);
         toast.info("Deleted Successfully !", {
           position: toast.POSITION.TOP_CENTER,
         });
       })
-      .catch((error) => toast.error("Sorry...some technical issue", {
+      .catch(() => toast.error("Sorry...some technical issue", {
         position: toast.POSITION.TOP_CENTER,
       }));
   }
@@ -370,24 +342,30 @@ class ListGames extends Component {
         <div className="detail-box">
           <div className="tab-container">
             <div
+              role="button"
+              tabIndex={0}
               className={`tab ${this.state.activeTab === 1 ? "active" : ""}`}
               onClick={() => this.setState({ activeTab: 1 })}
             >
               Game Details
             </div>
             <div
+              role="button"
+              tabIndex={0}
               className={`tab ${this.state.activeTab === 2 ? "active" : ""}`}
-              onClick={() =>
-                this.setState({ activeTab: 2, loadQuestionsComponent: true })
-              }
+              onClick={() => this.setState({
+                activeTab: 2,
+                // loadQuestionsComponent: true
+              })}
             >
               Questions
             </div>
-            {this.state.activeTab === 1 && this.state.games[this.state.activeIndex] && <div className='tab-option'>
+            {this.state.activeTab === 1 && this.state.games[this.state.activeIndex] && (
+            <div className="tab-option">
               <Icon color="primary" className="tab-icons" style={{ color: "#0d9eea", cursor: 'pointer' }}>file_copy</Icon>
               <span className="tab-icons-details">
                 <Popup
-                  trigger={<button className="button"> Duplicate Game </button>}
+                  trigger={<button className="button" type="submit"> Duplicate Game </button>}
                   position="top center"
                   closeOnDocumentClick
                 >
@@ -397,18 +375,18 @@ class ListGames extends Component {
 
                   <div>
                     <select className="buttonA" name="cohorts" ref={(input) => { this.menu = input; }}>
-                      {this.state.cohorts.map(function (object, i) {
-                        return <option value={object.id} key={object.id}>{object.name}</option>;
-                      })}
-                    </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <Button className="button" color="primary" onClick={() => this.copyGameCb(this.state.activeGame)}> Copy </Button>
+                      {this.state.cohorts.map((object) => <option value={object.id} key={object.id}>{object.name}</option>)}
+                    </select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Button className="button" color="primary" onClick={() => this.copyGameCb(this.state.activeGame)}> Copy </Button>
                   </div>
                 </Popup>
 
               </span>
               <Icon color="primary" onClick={() => this.editGame(this.state.activeGameDetails, this.state.activeGame)} style={{ color: "#0d9eea", cursor: 'pointer' }}>edit</Icon>
               <span className="tab-icons-details">Edit Game details</span>
-            </div>}
+            </div>
+            )}
           </div>
           {this.state.activeTab === 1 && (
             <Details data={this.state.activeGameDetails} />

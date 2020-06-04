@@ -1,11 +1,8 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Card } from "../../components/Card";
-import arrowBackUrl from "../../images/back.png";
-import infoUrl from "../../images/info.png";
-import correctAnsUrl from "../../images/correct.png";
 import wrongAnsUrl from "../../images/wrong.png";
 import oopsUrl from "../../images/oops.png";
 import hurreyUrl from "../../images/hurrey.png";
@@ -15,7 +12,6 @@ import { fetchScores } from "../LandingPage/actions";
 import ProgressBar from "../../components/ProgressBar";
 import "./styles.scss";
 import GameInfo from "../../components/GameInfo";
-import profileUrl from "../../images/profile.png";
 
 export class QuestionsAnsPage extends React.Component {
   constructor(props) {
@@ -51,20 +47,20 @@ export class QuestionsAnsPage extends React.Component {
     this.setState({ showCorrectAns: false });
     this.nextQuestion();
   };
-  
+
   // Checks for correct answer and add or reduces scores.
   checkCorrectAnswer = () => {
     const correctAns = this.getCorrectAnswer();
     const selectedValue = this.state.selectedAnswer;
     const correctAnsWeight = this.getCorrectAnswerWeight();
-    const correctAnsWeightNum = parseInt(correctAnsWeight) > 0 ? parseInt(correctAnsWeight) : 0;
+    const correctAnsWeightNum = parseInt(correctAnsWeight, 10) > 0 ? parseInt(correctAnsWeight, 10) : 0;
     selectedValue.sort();
     correctAns.sort();
 
     if (JSON.stringify(selectedValue) === JSON.stringify(correctAns)) {
       this.setState(prevState => ({
         answerCorrect: true,
-	currentQuestionScore: correctAnsWeightNum,
+        currentQuestionScore: correctAnsWeightNum,
         currentScore: prevState.currentScore + correctAnsWeightNum,
       }));
     } else {
@@ -110,16 +106,15 @@ export class QuestionsAnsPage extends React.Component {
   // Return Correct answer for current question.
   getCorrectAnswer = () => {
     const { questionId } = this.state;
-    const moduleId = parseInt(this.props.match.params.moduleId);
-    const level = parseInt(this.props.match.params.levelId);
-    const {questions} = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
+    const moduleId = parseInt(this.props.match.params.moduleId, 10);
+    const level = parseInt(this.props.match.params.levelId, 10);
+    const { questions } = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
     let totalQuestion = 0;
     if (questions && questions.length > 0) {
       totalQuestion = questions.length;
-      const correctAns =
-        questionId <= totalQuestion
-          ? questions[questionId - 1].correct_answer
-          : null;
+      const correctAns = questionId <= totalQuestion
+        ? questions[questionId - 1].correct_answer
+        : null;
       return correctAns;
     }
   };
@@ -127,16 +122,15 @@ export class QuestionsAnsPage extends React.Component {
   // Finds the points for the correct answer
   getCorrectAnswerWeight = () => {
     const { questionId } = this.state;
-    const moduleId = parseInt(this.props.match.params.moduleId);
-    const level = parseInt(this.props.match.params.levelId);
-    const {questions} = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
+    const moduleId = parseInt(this.props.match.params.moduleId, 10);
+    const level = parseInt(this.props.match.params.levelId, 10);
+    const { questions } = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
     let totalQuestion = 0;
     if (questions && questions.length > 0) {
       totalQuestion = questions.length;
-      const correctAnsWeight =
-        questionId <= totalQuestion
-          ? parseInt(questions[questionId - 1].weight)
-          : 0;
+      const correctAnsWeight = questionId <= totalQuestion
+        ? parseInt(questions[questionId - 1].weight, 10)
+        : 0;
       return correctAnsWeight;
     }
   };
@@ -144,9 +138,9 @@ export class QuestionsAnsPage extends React.Component {
   // Return progress for current level.
   getProgress = () => {
     const { questionId } = this.state;
-    const moduleId = parseInt(this.props.match.params.moduleId);
-    const level = parseInt(this.props.match.params.levelId);
-    const {questions} = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
+    const moduleId = parseInt(this.props.match.params.moduleId, 10);
+    const level = parseInt(this.props.match.params.levelId, 10);
+    const { questions } = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
     let totalQuestion = 0;
     if (questions && questions.length > 0) {
       totalQuestion = questions.length;
@@ -187,9 +181,9 @@ export class QuestionsAnsPage extends React.Component {
   // Listens to no of answers clicked and compare it with actual number of answers for a
   // particular question and if it gets equal it locks the options cards.
   checkAnsClicked = answerClicked => {
-    const moduleId = parseInt(this.props.match.params.moduleId);
-    const level = parseInt(this.props.match.params.levelId);
-    const {questions} = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
+    const moduleId = parseInt(this.props.match.params.moduleId, 10);
+    const level = parseInt(this.props.match.params.levelId, 10);
+    const { questions } = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
     const { questionId } = this.state;
     const correctAnsLength = questions[questionId - 1].correct_answer.length;
     if (answerClicked === correctAnsLength) {
@@ -215,18 +209,17 @@ export class QuestionsAnsPage extends React.Component {
       () => {
         const { answerClicked } = this.state;
         this.checkAnsClicked(answerClicked);
-      }
+      },
     );
   };
 
   // Checks if current score + previous score is less than parScore and return parScoreStatus.
   checkParScoreStatus = () => {
-    const moduleId = parseInt(this.props.match.params.moduleId);
-    const level = parseInt(this.props.match.params.levelId);
+    const moduleId = parseInt(this.props.match.params.moduleId, 10);
+    const level = parseInt(this.props.match.params.levelId, 10);
     const { currentScore } = this.state;
     const parScores = this.getParScores();
     const currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
-    // let prevScore = currentLevelNewScores[level - 1];
     if (currentScore < parScores) {
       this.setState({ parScoreStatus: false });
     } else {
@@ -236,19 +229,17 @@ export class QuestionsAnsPage extends React.Component {
 
   // Get list of module names.
   getModuleNames = () => {
-    const {gameData} = this.props.gameData;
+    const { gameData } = this.props.gameData;
     const moduleNames = [];
-    gameData.map(modules => {
-      return moduleNames.push(modules.name);
-    });
+    gameData.map(modules => moduleNames.push(modules.name));
     return moduleNames;
   };
 
   // Returns number of questions for current level.
   getTotalQuestions = () => {
-    const moduleId = parseInt(this.props.match.params.moduleId);
-    const level = parseInt(this.props.match.params.levelId);
-    const {questions} = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
+    const moduleId = parseInt(this.props.match.params.moduleId, 10);
+    const level = parseInt(this.props.match.params.levelId, 10);
+    const { questions } = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
     let totalQuestion = 0;
     if (questions && questions.length > 0) {
       totalQuestion = questions.length;
@@ -258,36 +249,35 @@ export class QuestionsAnsPage extends React.Component {
 
   // Get list of parScores for a module.
   getParScores = () => {
-    const {moduleId} = this.props.match.params;
-    const level = parseInt(this.props.match.params.levelId);
-    const currentLevel = this.props.gameData.gameData[moduleId - 1].levels[level - 1]; 
+    const { moduleId } = this.props.match.params;
+    const level = parseInt(this.props.match.params.levelId, 10);
+    const currentLevel = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
     const parScores = currentLevel.par_score > 0 ? currentLevel.par_score : 0;
     return parScores;
   };
 
   checkLevelUnlock = () => {
-    const level = parseInt(this.props.match.params.levelId);
+    const level = parseInt(this.props.match.params.levelId, 10);
     if (level > 1) {
       const parScores = this.getParScores();
       const scores = this.getScores();
       const score = scores[level - 2];
       return score >= parScores;
     }
-    
-      return true;
-    
+
+    return true;
   };
 
   // Get Scores for each levels of a particular module.
   getScores = () => {
-    const moduleId = parseInt(this.props.match.params.moduleId);
+    const moduleId = parseInt(this.props.match.params.moduleId, 10);
     const scores = this.props.gameData.scores[moduleId - 1];
     return scores;
   };
 
   handleUpdateScore = () => {
-    const moduleId = parseInt(this.props.match.params.moduleId);
-    const level = parseInt(this.props.match.params.levelId);
+    const moduleId = parseInt(this.props.match.params.moduleId, 10);
+    const level = parseInt(this.props.match.params.levelId, 10);
     const { currentScore } = this.state;
     const totalScore = this.props.gameData.gameData[moduleId - 1].levels[
       level - 1
@@ -297,12 +287,11 @@ export class QuestionsAnsPage extends React.Component {
     const currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
     const prevScore = currentLevelNewScores[level - 1];
 
-    currentLevelNewScores[level - 1] =
-      newScore > 0
-        ? prevScore + newScore <= totalScore
-          ? prevScore + newScore
-          : totalScore
-        : prevScore;
+    currentLevelNewScores[level - 1] = newScore > 0
+      ? prevScore + newScore <= totalScore
+        ? prevScore + newScore
+        : totalScore
+      : prevScore;
 
     this.props.gameData.scores[moduleId - 1] = currentLevelNewScores;
     this.props.getScores(this.props.gameData.scores);
@@ -322,20 +311,18 @@ export class QuestionsAnsPage extends React.Component {
       infoOpen,
       selectedCard,
       moduleScenario,
-      gameId,
       currentQuestionScore,
     } = this.state;
 
-    const moduleId = parseInt(this.props.match.params.moduleId);
-    const level = parseInt(this.props.match.params.levelId);
+    const moduleId = parseInt(this.props.match.params.moduleId, 10);
+    const level = parseInt(this.props.match.params.levelId, 10);
     const totalQuestion = this.getTotalQuestions();
     const correctAns = this.getCorrectAnswer();
     const ansLength = correctAns !== null && parseInt(correctAns.length);
     const progress = this.getProgress();
     const parScores = this.getParScores();
     const moduleNames = this.getModuleNames();
-    const backUrl = `/module/${moduleId}/levels`;
-    const {questions} = this.props.gameData.gameData[moduleId - 1].levels[
+    const { questions } = this.props.gameData.gameData[moduleId - 1].levels[
       level - 1
     ];
     const moduleColor = this.props.gameData.gameData[moduleId - 1].style;
@@ -343,7 +330,7 @@ export class QuestionsAnsPage extends React.Component {
       level - 1
     ].total_score;
     const isLevelLocked = this.checkLevelUnlock();
- 
+
     return (
       <>
         <div className="question-main-container">
@@ -362,16 +349,16 @@ export class QuestionsAnsPage extends React.Component {
                     finishedScore: currentScore,
                     moduleName: moduleNames[moduleId - 1],
                     level,
-		    gameId: this.props.gameData.gameData[moduleId - 1].game_id,
+                    gameId: this.props.gameData.gameData[moduleId - 1].game_id,
                     image: parScoreStatus ? hurreyUrl : oopsUrl,
                     expression: parScoreStatus ? `Hurray!` : `Oh!`,
                     messageOne: parScoreStatus
                       ? `You have scored  ${
-                          currentScore > 0 ? currentScore : currentScore
-                        }/${totalScore}.`
+                        currentScore > 0 ? currentScore : currentScore
+                      }/${totalScore}.`
                       : `You have scored only  ${
-                          currentScore > 0 ? currentScore : 0
-                        }/${totalScore}.`,
+                        currentScore > 0 ? currentScore : 0
+                      }/${totalScore}.`,
                     messageTwo: parScoreStatus
                       ? `You are in top 100 in the rank.`
                       : `You need to earn ${parScores}/${totalScore} for Level ${level}.`,
@@ -384,13 +371,24 @@ export class QuestionsAnsPage extends React.Component {
             )}
 
             {!showCorrectAns ? (
-              totalQuestion > 0 &&
-              questionId <= totalQuestion && (
+              totalQuestion > 0
+              && questionId <= totalQuestion && (
                 <div>
                   <div className="level-question-detail">
-                    <span>Level {level} :</span>
+                    <span>
+                      Level
+                      {level}
+                      {' '}
+                      :
+                    </span>
                     <span className="question-number-status">
-                      Question {questionId} out of {totalQuestion}
+                      Question
+                      {' '}
+                      {questionId}
+                      {' '}
+                      out of
+                      {' '}
+                      {totalQuestion}
                     </span>
                   </div>
                   <div className="progress-bar-container">
@@ -400,32 +398,32 @@ export class QuestionsAnsPage extends React.Component {
                     <p
                       className={`question-label question-label-${moduleColor}`}
                     >
-                      {questions &&
-                        questions.length > 0 &&
-                        questions[questionId - 1].question}
+                      {questions
+                        && questions.length > 0
+                        && questions[questionId - 1].question}
                     </p>
                   </div>
                   <div className="answer-container">
                     {!showAnswer && (
                       <p className="select-label">
-                        Select{" "}
+                        Select
+                        {" "}
                         {ansLength > 1
-                          ? `${ansLength  } answers.`
+                          ? `${ansLength} answers.`
                           : " the right answer."}
                       </p>
                     )}
                     <div className="options-card-container">
-                      {questions &&
-                        questions.length > 0 &&
-                        questions[questionId - 1].options.map((option, key) => (
+                      {questions
+                        && questions.length > 0
+                        && questions[questionId - 1].options.map((option, key) => (
                           <Card
-                            key={key}
+                            key={option}
                             option={option}
                             correct_answer={
                               questions[questionId - 1].correctAns
                             }
                             answerClick={answerClick}
-                            // selectedCard={clickedOptions.includes(key)}
                             selectedCard={selectedCard === key}
                             handleClick={this.handleAnswerClick(key)}
                             moduleColor={moduleColor}
@@ -436,6 +434,7 @@ export class QuestionsAnsPage extends React.Component {
 
                   {answerClick && (
                     <button
+                      type="submit"
                       className={`next-page-button next-page-button-${answerClick}`}
                       onClick={
                         moduleScenario
@@ -492,27 +491,29 @@ export class QuestionsAnsPage extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    player_given_name: state.authDetail.authDetail.player_given_name,
-    player_picture: state.authDetail.authDetail.player_picture,
-    player_email: state.authDetail.authDetail.player_email,
-    gameData: state.gameData,
-  };
-};
+const mapStateToProps = state => ({
+  player_given_name: state.authDetail.authDetail.player_given_name,
+  player_picture: state.authDetail.authDetail.player_picture,
+  player_email: state.authDetail.authDetail.player_email,
+  gameData: state.gameData,
+});
 
-const mapDispatchToProps = dispatch => {
-  return {
-    getScores: scores => dispatch(fetchScores(scores)),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  getScores: scores => dispatch(fetchScores(scores)),
+});
 
 QuestionsAnsPage.propTypes = {
-  gameData: PropTypes.object,
-  match: PropTypes.object,
+  gameData: PropTypes.shape({}),
+  match: PropTypes.shape({}),
+  getScores: PropTypes.func.isRequired,
+};
+
+QuestionsAnsPage.defaultProps = {
+  gameData: null,
+  match: null,
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(QuestionsAnsPage);

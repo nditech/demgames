@@ -55,7 +55,9 @@ const ListTable = ({
       button: true,
       cell: row => (
         <>
-          <EditButton row={row} /> <DeleteButton row={row} />
+          <EditButton row={row} />
+          {' '}
+          <DeleteButton row={row} />
         </>
       ),
     });
@@ -76,7 +78,7 @@ const ListTable = ({
       rowdata.forEach(element => {
         let valueString = "";
         for (const lindex in element) {
-          valueString += ` ${  element[lindex]}`;
+          valueString += ` ${element[lindex]}`;
         }
         if (
           valueString.toLowerCase().indexOf(searchText.toLowerCase()) !== -1

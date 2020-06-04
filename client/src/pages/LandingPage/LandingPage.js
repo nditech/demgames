@@ -55,7 +55,7 @@ global.fetch = require("node-fetch");
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       open: false,
       color: "blue",
     };
@@ -67,16 +67,15 @@ class LandingPage extends React.Component {
 
   // Fetch complete game data.
   componentWillMount() {
-
     let cohort = 'default';
-    if(this.props.match) {
-     cohort = this.props.match.params.cohortName ? this.props.match.params.cohortName:'default';
+    if (this.props.match) {
+      cohort = this.props.match.params.cohortName ? this.props.match.params.cohortName : 'default';
     }
     // fetch('./moduleData.json')
-    fetch(`${config.baseUrl  }/api/v2/game/${cohort}`, {
+    fetch(`${config.baseUrl}/api/v2/game/${cohort}`, {
       method: "get",
       headers: {
-        authorization: `Bearer ${  auth0.getAccessToken()}`,
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
         Accept: "application/json",
       },
@@ -106,10 +105,10 @@ class LandingPage extends React.Component {
 
       this.props.setAuth(authDetail);
 
-      fetch(`${config.baseUrl  }/user/findOne/${  authDetail.player_email}`, {
+      fetch(`${config.baseUrl}/user/findOne/${authDetail.player_email}`, {
         method: "get",
         headers: {
-          authorization: `Bearer ${  auth0.getAccessToken()}`,
+          authorization: `Bearer ${auth0.getAccessToken()}`,
           "Content-Type": "Application/json",
           Accept: "application/json",
         },
@@ -119,10 +118,10 @@ class LandingPage extends React.Component {
           if (!data.email) {
             console.log("email not found --V"); // eslint-disable-line
 
-            fetch(`${config.baseUrl  }/registerplayer`, {
+            fetch(`${config.baseUrl}/registerplayer`, {
               method: "POST",
               headers: {
-                authorization: `Bearer ${  auth0.getAccessToken()}`,
+                authorization: `Bearer ${auth0.getAccessToken()}`,
                 "Content-Type": "Application/json",
                 Accept: "application/json",
               },
@@ -147,7 +146,7 @@ class LandingPage extends React.Component {
     }
 
     if (auth0.isAuthenticated() === true) {
-      fetch(`${config.baseUrl  }/selectPlayerProfile`, {
+      fetch(`${config.baseUrl}/selectPlayerProfile`, {
         method: "post",
         headers: {
           "Content-Type": "Application/json",
@@ -177,9 +176,7 @@ class LandingPage extends React.Component {
     const allScores = [];
     this.props.gameData.gameData.map(modules => {
       allScores.push(
-        modules.levels.map(level => {
-          return level.current_score;
-        })
+        modules.levels.map(level => level.current_score),
       );
     });
     return allScores;
@@ -217,27 +214,27 @@ class LandingPage extends React.Component {
   };
 
   // colorChange = (color) => {
-    
+
   //   alert(color);
-    
+
   // }
 
  colorChange = color => {
-    this.setState({color});
-  };
+   this.setState({ color });
+ };
 
-  render() {
-    const {gameData} = this.props.gameData;
-    const { open } = this.state;
-    return (
-      <div className="landing-page-wrapper">
-        <div className="landing-page-container">
-          <div className="game-title-container">
-            <p className="game-title">DemGames - Demo</p>
-          </div>
-          <div className="game-type-card-container">
-            {gameData.length > 0 &&
-              gameData.map((modules, key) => (
+ render() {
+   const { gameData } = this.props.gameData;
+   const { open } = this.state;
+   return (
+     <div className="landing-page-wrapper">
+       <div className="landing-page-container">
+         <div className="game-title-container">
+           <p className="game-title">DemGames - Demo</p>
+         </div>
+         <div className="game-type-card-container">
+           {gameData.length > 0
+              && gameData.map((modules, key) => (
                 <ModuleCard
                   key={modules.id}
                   moduleId={modules.id}
@@ -253,12 +250,12 @@ class LandingPage extends React.Component {
                   }
                 />
               ))}
-          </div>
-        </div>
-        {open && <GameInfo open={open} handleClose={this.handleClose} />}
-      </div>
-    );
-  }
+         </div>
+       </div>
+       {open && <GameInfo open={open} handleClose={this.handleClose} />}
+     </div>
+   );
+ }
 }
 
 const mapStateToProps = state => ({
@@ -268,15 +265,13 @@ const mapStateToProps = state => ({
 });
 
 // Dispatch action to fetch game data and scores.
-const mapDispatchToProps = dispatch => {
-  return {
-    getGameData: gameData => dispatch(fetchGameData(gameData)),
-    getScores: scores => dispatch(fetchScores(scores)),
-    setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
-    clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
-    setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail)),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  getGameData: gameData => dispatch(fetchGameData(gameData)),
+  getScores: scores => dispatch(fetchScores(scores)),
+  setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
+  clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
+  setScoreDetail: scoreDetail => dispatch(fetchScoreDetail(scoreDetail)),
+});
 
 LandingPage.propTypes = {
   getGameData: PropTypes.func,
@@ -290,5 +285,5 @@ LandingPage.propTypes = {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(LandingPage);

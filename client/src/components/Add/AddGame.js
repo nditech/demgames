@@ -56,7 +56,8 @@ const AddGame = () => {
               name="caption"
               value={caption}
               onChange={e => handleChange(e)}
-            />{" "}
+            />
+            {" "}
             <br />
             <textarea
               className="form-control mb-1"
@@ -65,7 +66,7 @@ const AddGame = () => {
               name="gamedescription"
               value={gamedescription}
               onChange={e => handleChange(e)}
-             />
+            />
             <div className="row">
               <div className="form-group col-md-12">
                 <label className="form-label">Game type</label>
@@ -85,8 +86,10 @@ const AddGame = () => {
             <div className="text-center mt-12">
               <button className="btn btn-info" type="submit">
                 Save
-              </button>{" "}
-              |{" "}
+              </button>
+              {" "}
+              |
+              {" "}
               <button
                 className="btn btn-warning"
                 type="button"
@@ -105,5 +108,5 @@ const AddGame = () => {
 
 export default connect(
   null,
-  {}
+  {},
 )(AddGame);

@@ -4,41 +4,41 @@ import { withStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 const styles = {
-	root: {
-		flexGrow: 1,
-	},
+  root: {
+    flexGrow: 1,
+  },
 };
 
 class ProgressBar extends React.Component {
 	state = {
-		completed: 0,
+	  completed: 0,
 	};
 
 	componentDidMount() {
-		this.timer = setInterval(this.progress, 500);
+	  this.timer = setInterval(this.progress, 500);
 	}
 
 	componentWillUnmount() {
-		clearInterval(this.timer);
+	  clearInterval(this.timer);
 	}
 
 	progress = (props) => {
-		this.setState({ completed: this.props.progress });
+	  this.setState({ completed: this.props.progress });
 	};
 
 	render() {
-		const { classes } = this.props;
-		return (
-			<div className={classes.root}>
-				<LinearProgress variant="determinate" value={this.state.completed} />
-			</div>
-		);
+	  const { classes } = this.props;
+	  return (
+  <div className={classes.root}>
+    <LinearProgress variant="determinate" value={this.state.completed} />
+  </div>
+	  );
 	}
 }
 
 ProgressBar.propTypes = {
-	classes: PropTypes.object.isRequired,
-	progress: PropTypes.number,
+  classes: PropTypes.object.isRequired,
+  progress: PropTypes.number,
 };
 
 export default withStyles(styles)(ProgressBar);

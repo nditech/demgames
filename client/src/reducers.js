@@ -5,11 +5,11 @@ import landingPageAuthReducer from './pages/LandingPage/reducerAuth';
 import profileinfoReducer from './components/ProfileInfo/reducers';
 
 export const rootReducer = combineReducers(
-	{
-			gameData: landingPageReducer,
-			authDetail:landingPageAuthReducer,
-			scoreDetail:profileinfoReducer,
-	}
+  {
+    gameData: landingPageReducer,
+    authDetail: landingPageAuthReducer,
+    scoreDetail: profileinfoReducer,
+  },
 );
 
 export default rootReducer;

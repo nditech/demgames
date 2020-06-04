@@ -96,13 +96,12 @@ class UpdateGame extends Component {
   }
 
   handleSearch() {
-
     fetch(`${config.baseUrl}/selectGameforDel`, {
       method: 'post',
       headers: {
         authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state.search),
     })
@@ -110,8 +109,7 @@ class UpdateGame extends Component {
       .then((data) => {
         if (data.message === 'Not found') {
           alert("Game with specified Id is not found");
-        }
-        else {
+        } else {
           this.setState({
             game: {
               id: data[0].id,
@@ -133,7 +131,7 @@ class UpdateGame extends Component {
       headers: {
         authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state.game),
       mode: 'cors',
@@ -151,8 +149,11 @@ class UpdateGame extends Component {
     return (
       <div>
         <form className="searchPlayer">
-          <label>Game id
-                        <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} /> <br />
+          <label>
+            Game id
+            <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} />
+            {' '}
+            <br />
           </label>
           <label>
             <input type="button" name="Search" onClick={this.handleSearch} value="Search" />
@@ -161,14 +162,21 @@ class UpdateGame extends Component {
         </form>
         <div>
           <form className="questionForm" onSubmit={this.handleSubmit}>
-            <label>Game id
-                        <input type="text" name="id" value={this.state.game.id} onChange={this.handleChange} /> <br />
+            <label>
+              Game id
+              <input type="text" name="id" value={this.state.game.id} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
-            <label>Caption
-                        <input type="text" name="caption" value={this.state.game.caption} onChange={this.handleChange} /> <br />
+            <label>
+              Caption
+              <input type="text" name="caption" value={this.state.game.caption} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
-            <label>Game description
-                        <textarea type="text" name="gamedescription" value={this.state.game.gamedescription} onChange={this.handleChange} />
+            <label>
+              Game description
+              <textarea type="text" name="gamedescription" value={this.state.game.gamedescription} onChange={this.handleChange} />
               <br />
             </label>
             <button type="submit">Update game</button>
@@ -187,19 +195,17 @@ const mapStateToProps = (state) => ({
       player_username:state.authDetail.authDetail.player_username,
       player_gender:state.authDetail.authDetail.player_gender,
       player_dateOfBirth:state.authDetail.authDetail.player_dateOfBirth
-  //	gameData: state.gameData 
+  //	gameData: state.gameData
   */
 });
 
 // Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => {
-  return {
-    //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-    //		getScores: (scores) => dispatch(fetchScores(scores)),
-    setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-    clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+  //		getScores: (scores) => dispatch(fetchScores(scores)),
+  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
+  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
+});
 
 UpdateGame.propTypes = {
   //	getGameData: PropTypes.func,

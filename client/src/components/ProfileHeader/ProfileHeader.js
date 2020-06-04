@@ -23,7 +23,7 @@ const authDetail = {
 const ProfileHeader = props => {
   let trigger;
   let options = [];
-  if(props.location.pathname.includes("/landingpage") && props.location.pathname.length >= 14){ 
+  if (props.location.pathname.includes("/landingpage") && props.location.pathname.length >= 14) {
     auth0.setCohort(props.location.pathname);
   }
 
@@ -48,15 +48,14 @@ const ProfileHeader = props => {
     }
   };
 
-  const getLogoPath = () =>{
+  const getLogoPath = () => {
     try {
       const cohort_name = auth0.getCohort().split("/landingpage")[0];
-      if(cohort_name) {
-        return `/client/images${  cohort_name }.png`;
-      } 
-        return "/client/images/default.png";
-      
-    } catch(err){
+      if (cohort_name) {
+        return `/client/images${cohort_name}.png`;
+      }
+      return "/client/images/default.png";
+    } catch (err) {
       return "/client/images/default.png";
     }
   };
@@ -71,7 +70,8 @@ const ProfileHeader = props => {
   if (auth0.isAuthenticated()) {
     trigger = (
       <span>
-        <Image avatar src={`${props.player.player_picture || profileUrl}`} />{" "}
+        <Image avatar src={`${props.player.player_picture || profileUrl}`} />
+        {" "}
         {`${props.player.player_given_name || ""} ${props.player
           .player_family_name || ""}`}
       </span>
@@ -92,9 +92,9 @@ const ProfileHeader = props => {
     ];
 
     if (
-      auth0.getProfile() &&
-      auth0.getProfile()["http://demGames.net/roles"] &&
-      auth0.getProfile()["http://demGames.net/roles"][0] === "admin"
+      auth0.getProfile()
+      && auth0.getProfile()["http://demGames.net/roles"]
+      && auth0.getProfile()["http://demGames.net/roles"][0] === "admin"
     ) {
       options.unshift({
         key: "adminPage",
@@ -106,7 +106,9 @@ const ProfileHeader = props => {
   } else {
     trigger = (
       <span>
-        <Image avatar src={profileUrl} /> Hello. Sign In
+        <Image avatar src={profileUrl} />
+        {' '}
+        Hello. Sign In
       </span>
     );
     options = [
@@ -126,10 +128,11 @@ const ProfileHeader = props => {
       <div className="profile-header">
         <a
           // href="/landingpage"
-          href={auth0.getCohort() != null? auth0.getCohort():"/landingpage"}
+          href={auth0.getCohort() != null ? auth0.getCohort() : "/landingpage"}
           style={{ verticalAlign: "middle", paddingRight: "30px" }}
         >
-          <Icon>home</Icon>{" "}
+          <Icon>home</Icon>
+          {" "}
         </a>
         <Dropdown
           trigger={trigger}
@@ -142,11 +145,9 @@ const ProfileHeader = props => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
+});
 
 const mapStateToProps = state => ({
   player: state.authDetail.authDetail,
@@ -155,5 +156,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(ProfileHeader));

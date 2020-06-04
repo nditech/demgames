@@ -28,7 +28,7 @@ class RemoveQuestion extends Component {
       },
     };
 
-    // this.getInitialState=this.getInitialState.bind(this);                  
+    // this.getInitialState=this.getInitialState.bind(this);
     //       this.handleReset=this.handleReset.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
@@ -45,7 +45,7 @@ class RemoveQuestion extends Component {
       headers: {
         authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state.question),
       mode: 'cors',
@@ -77,13 +77,12 @@ class RemoveQuestion extends Component {
   }
 
   handleSearch() {
-
     fetch(`${config.baseUrl}/selectQuestionforDel`, {
       method: 'post',
       headers: {
         authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state.search),
     })
@@ -91,8 +90,7 @@ class RemoveQuestion extends Component {
       .then((data) => {
         if (data.message === 'Not found') {
           alert("Question with specified Id is not found");
-        }
-        else {
+        } else {
           this.setState({
             question: {
               gameid: data[0].gameid,
@@ -121,8 +119,11 @@ class RemoveQuestion extends Component {
     return (
       <div>
         <form className="searchPlayer">
-          <label>Choice id
-                                <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} /> <br />
+          <label>
+            Choice id
+            <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} />
+            {' '}
+            <br />
           </label>
           <label>
             <input type="button" name="Search" onClick={this.handleSearch} value="Search" />
@@ -131,27 +132,46 @@ class RemoveQuestion extends Component {
         </form>
         <div>
           <form className="questionForm" onSubmit={this.handleSubmit}>
-            <label>Question id
-                            <input type="text" name="gameid" value={this.state.question.gameid} /> <br />
-            </label>
-            <label>Game id
-                            <input type="text" name="gameid" value={this.state.question.gameid} /> <br />
-            </label>
-            <label>Question statement
-                            <input type="text" name="question_statement" value={this.state.question.question_statement} /> <br />
-            </label>
-            <label>Question explanation
-                            <textarea type="text" name="explanation" value={this.state.question.explanation} />
+            <label>
+              Question id
+              <input type="text" name="gameid" value={this.state.question.gameid} />
+              {' '}
               <br />
             </label>
-            <label>Difficulty level
-                            <input type="text" name="difficulty_level" value={this.state.question.difficulty_level} /> <br />
+            <label>
+              Game id
+              <input type="text" name="gameid" value={this.state.question.gameid} />
+              {' '}
+              <br />
             </label>
-            <label>Weight
-                            <input type="text" name="weight" value={this.state.question.weight} /> <br />
+            <label>
+              Question statement
+              <input type="text" name="question_statement" value={this.state.question.question_statement} />
+              {' '}
+              <br />
             </label>
-            <label>is it media
-                            <input type="text" name="answer" value={this.state.question.isitmedia} /> <br />
+            <label>
+              Question explanation
+              <textarea type="text" name="explanation" value={this.state.question.explanation} />
+              <br />
+            </label>
+            <label>
+              Difficulty level
+              <input type="text" name="difficulty_level" value={this.state.question.difficulty_level} />
+              {' '}
+              <br />
+            </label>
+            <label>
+              Weight
+              <input type="text" name="weight" value={this.state.question.weight} />
+              {' '}
+              <br />
+            </label>
+            <label>
+              is it media
+              <input type="text" name="answer" value={this.state.question.isitmedia} />
+              {' '}
+              <br />
             </label>
             <button type="submit">Delete Choice</button>
           </form>
@@ -175,14 +195,12 @@ const mapStateToProps = (state) => ({
 });
 
 // Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => {
-  return {
-    //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-    //		getScores: (scores) => dispatch(fetchScores(scores)),
-    setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-    clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+  //		getScores: (scores) => dispatch(fetchScores(scores)),
+  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
+  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
+});
 
 RemoveQuestion.propTypes = {
   //	getGameData: PropTypes.func,

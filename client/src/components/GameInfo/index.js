@@ -95,8 +95,8 @@ class GameInfo extends Component {
 }
 
 GameInfo.propTypes = {
-  open: PropTypes.bool,
-  handleClose: PropTypes.func,
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default GameInfo;

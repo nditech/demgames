@@ -119,7 +119,6 @@ export class ScenarioQuesAns extends React.Component {
       return false;
     }
     return true;
-
   };
 
   componentDidMount() {
@@ -181,10 +180,10 @@ export class ScenarioQuesAns extends React.Component {
                     expression: parScoreStatus ? `Hurray!` : `Oh!`,
                     messageOne: parScoreStatus
                       ? `You have scored  ${
-                      currentScore > 0 ? currentScore : currentScore
+                        currentScore > 0 ? currentScore : currentScore
                       }/${totalScore}.`
                       : `You have scored only  ${
-                      currentScore > 0 ? currentScore : 0
+                        currentScore > 0 ? currentScore : 0
                       }/${totalScore}.`,
                     messageTwo: parScoreStatus
                       ? `You are in top 100 in the rank.`
@@ -209,24 +208,20 @@ export class ScenarioQuesAns extends React.Component {
                 </div>
                 <div className="answer-container">
                   <div className="options-card-container">
-                    {this.state.options &&
-                      this.state.options.map(option => {
-                        return (
-                          <Card
-                            key={option.id}
-                            option={option.choicestatement}
-                            selectedCard={selectedCard === option.id}
-                            handleClick={() =>
-                              this.handleAnswerClick(
-                                option.linked_question,
-                                option.id,
-                                option.weight
-                              )
-                            }
-                            moduleColor={color}
-                          />
-                        );
-                      })}
+                    {this.state.options
+                      && this.state.options.map(option => (
+                        <Card
+                          key={option.id}
+                          option={option.choicestatement}
+                          selectedCard={selectedCard === option.id}
+                          handleClick={() => this.handleAnswerClick(
+                            option.linked_question,
+                            option.id,
+                            option.weight,
+                          )}
+                          moduleColor={color}
+                        />
+                      ))}
 
                     {/* ))} */}
                   </div>
@@ -248,15 +243,11 @@ export class ScenarioQuesAns extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return { gameData: state.gameData };
-};
+const mapStateToProps = state => ({ gameData: state.gameData });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    getScores: scores => dispatch(fetchScores(scores)),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  getScores: scores => dispatch(fetchScores(scores)),
+});
 
 ScenarioQuesAns.propTypes = {
   gameData: PropTypes.object,
@@ -265,5 +256,5 @@ ScenarioQuesAns.propTypes = {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ScenarioQuesAns);

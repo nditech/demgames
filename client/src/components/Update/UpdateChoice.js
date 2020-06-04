@@ -66,8 +66,7 @@ class UpdateChoice extends Component {
             ...prevState.choice,
             choicestatement: sc,
           },
-        })
-        );
+        }));
         break;
       case "choicedescription":
         this.setState(prevState => ({
@@ -75,8 +74,7 @@ class UpdateChoice extends Component {
             ...prevState.choice,
             choicedescription: sc,
           },
-        })
-        );
+        }));
         break;
       case "weight":
         this.setState(prevState => ({
@@ -84,8 +82,7 @@ class UpdateChoice extends Component {
             ...prevState.choice,
             weight: sc,
           },
-        })
-        );
+        }));
         break;
       case "isanswer":
         this.setState(prevState => ({
@@ -93,8 +90,7 @@ class UpdateChoice extends Component {
             ...prevState.choice,
             isanswer: sc,
           },
-        })
-        );
+        }));
         break;
       case "questionid":
         this.setState(prevState => ({
@@ -102,8 +98,7 @@ class UpdateChoice extends Component {
             ...prevState.choice,
             questionid: sc,
           },
-        })
-        );
+        }));
         break;
     }
   }
@@ -114,7 +109,7 @@ class UpdateChoice extends Component {
       headers: {
         authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state.search),
     })
@@ -122,8 +117,7 @@ class UpdateChoice extends Component {
       .then((data) => {
         if (data.message === 'Not found') {
           alert("Choice with specified id is not found");
-        }
-        else {
+        } else {
           this.setState({
             choice: {
               choicestatement: data[0].choicestatement,
@@ -147,7 +141,7 @@ class UpdateChoice extends Component {
       headers: {
         authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state.choice),
       mode: 'cors',
@@ -165,8 +159,11 @@ class UpdateChoice extends Component {
     return (
       <div>
         <form className="searchChoice">
-          <label>Choice id
-                                <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} /> <br />
+          <label>
+            Choice id
+            <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} />
+            {' '}
+            <br />
           </label>
           <label>
             <input type="button" name="Search" onClick={this.handleSearch} value="Search" />
@@ -175,21 +172,34 @@ class UpdateChoice extends Component {
         </form>
         <div>
           <form className="choiceForm" onSubmit={this.handleSubmit}>
-            <label>Question id
-                            <input type="text" name="questionid" value={this.state.choice.questionid} onChange={this.handleChange} /> <br />
-            </label>
-            <label>Choice statement
-                            <input type="text" name="choicestatement" value={this.state.choice.choicestatement} onChange={this.handleChange} /> <br />
-            </label>
-            <label>Choice description
-                            <textarea type="text" name="choicedescription" value={this.state.choice.choicedescription} onChange={this.handleChange} />
+            <label>
+              Question id
+              <input type="text" name="questionid" value={this.state.choice.questionid} onChange={this.handleChange} />
+              {' '}
               <br />
             </label>
-            <label>Weight
-                            <input type="text" name="weight" value={this.state.choice.weight} onChange={this.handleChange} /> <br />
+            <label>
+              Choice statement
+              <input type="text" name="choicestatement" value={this.state.choice.choicestatement} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
-            <label>is it answer
-                            <input type="text" name="answer" value={this.state.choice.isanswer} onChange={this.handleChange} /> <br />
+            <label>
+              Choice description
+              <textarea type="text" name="choicedescription" value={this.state.choice.choicedescription} onChange={this.handleChange} />
+              <br />
+            </label>
+            <label>
+              Weight
+              <input type="text" name="weight" value={this.state.choice.weight} onChange={this.handleChange} />
+              {' '}
+              <br />
+            </label>
+            <label>
+              is it answer
+              <input type="text" name="answer" value={this.state.choice.isanswer} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
             <button type="submit">Update Choice</button>
           </form>
@@ -207,19 +217,17 @@ const mapStateToProps = (state) => ({
       player_username:state.authDetail.authDetail.player_username,
       player_gender:state.authDetail.authDetail.player_gender,
       player_dateOfBirth:state.authDetail.authDetail.player_dateOfBirth
-  //	gameData: state.gameData 
+  //	gameData: state.gameData
   */
 });
 
 // Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => {
-  return {
-    //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-    //		getScores: (scores) => dispatch(fetchScores(scores)),
-    setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-    clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+  //		getScores: (scores) => dispatch(fetchScores(scores)),
+  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
+  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
+});
 
 UpdateChoice.propTypes = {
   //	getGameData: PropTypes.func,

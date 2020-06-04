@@ -102,9 +102,9 @@ class UpdateQuestion extends Component {
     fetch(`${config.baseUrl}/selectQuestionforDel`, {
       method: 'post',
       headers: {
-        "authorization": `Bearer ${auth0.getAccessToken()}`,
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state.search),
     })
@@ -112,8 +112,7 @@ class UpdateQuestion extends Component {
       .then((data) => {
         if (data.message === 'Not found') {
           alert("Question with specified Id is not found");
-        }
-        else {
+        } else {
           this.setState({
             question: {
               id: data[0].id,
@@ -137,9 +136,9 @@ class UpdateQuestion extends Component {
     fetch(url, {
       method: 'POST',
       headers: {
-        "authorization": `Bearer ${auth0.getAccessToken()}`,
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state.question),
       mode: 'cors',
@@ -157,8 +156,11 @@ class UpdateQuestion extends Component {
     return (
       <div>
         <form className="searchQuestion">
-          <label>Question id
-                                <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} /> <br />
+          <label>
+            Question id
+            <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} />
+            {' '}
+            <br />
           </label>
           <label>
             <input type="button" name="Search" onClick={this.handleSearch} value="Search" />
@@ -167,27 +169,46 @@ class UpdateQuestion extends Component {
         </form>
         <div>
           <form className="questionForm" onSubmit={this.handleSubmit}>
-            <label>Question id
-                            <input type="text" name="gameid" value={this.state.question.id} /> <br />
-            </label>
-            <label>Game id
-                            <input type="text" name="gameid" value={this.state.question.gameid} /> <br />
-            </label>
-            <label>Question statement
-                            <input type="text" name="question_statement" value={this.state.question.question_statement} /> <br />
-            </label>
-            <label>Question explanation
-                            <textarea type="text" name="explanation" value={this.state.question.explanation} />
+            <label>
+              Question id
+              <input type="text" name="gameid" value={this.state.question.id} />
+              {' '}
               <br />
             </label>
-            <label>Difficulty level
-                            <input type="text" name="difficulty_level" value={this.state.question.difficulty_level} /> <br />
+            <label>
+              Game id
+              <input type="text" name="gameid" value={this.state.question.gameid} />
+              {' '}
+              <br />
             </label>
-            <label>Weight
-                            <input type="text" name="weight" value={this.state.question.weight} /> <br />
+            <label>
+              Question statement
+              <input type="text" name="question_statement" value={this.state.question.question_statement} />
+              {' '}
+              <br />
             </label>
-            <label>is it media
-                            <input type="text" name="answer" value={this.state.question.isitmedia} /> <br />
+            <label>
+              Question explanation
+              <textarea type="text" name="explanation" value={this.state.question.explanation} />
+              <br />
+            </label>
+            <label>
+              Difficulty level
+              <input type="text" name="difficulty_level" value={this.state.question.difficulty_level} />
+              {' '}
+              <br />
+            </label>
+            <label>
+              Weight
+              <input type="text" name="weight" value={this.state.question.weight} />
+              {' '}
+              <br />
+            </label>
+            <label>
+              is it media
+              <input type="text" name="answer" value={this.state.question.isitmedia} />
+              {' '}
+              <br />
             </label>
             <button type="submit">Update Question</button>
           </form>
@@ -205,19 +226,17 @@ const mapStateToProps = (state) => ({
       player_username:state.authDetail.authDetail.player_username,
       player_gender:state.authDetail.authDetail.player_gender,
       player_dateOfBirth:state.authDetail.authDetail.player_dateOfBirth
-  //	gameData: state.gameData 
+  //	gameData: state.gameData
   */
 });
 
 // Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => {
-  return {
-    //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-    //		getScores: (scores) => dispatch(fetchScores(scores)),
-    setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-    clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+  //		getScores: (scores) => dispatch(fetchScores(scores)),
+  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
+  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
+});
 
 UpdateQuestion.propTypes = {
   //	getGameData: PropTypes.func,

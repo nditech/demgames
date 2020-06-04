@@ -27,7 +27,7 @@ class RemoveChoice extends Component {
       },
     };
 
-    // this.getInitialState=this.getInitialState.bind(this);                  
+    // this.getInitialState=this.getInitialState.bind(this);
     //       this.handleReset=this.handleReset.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -57,9 +57,9 @@ class RemoveChoice extends Component {
     fetch(url, {
       method: 'POST',
       headers: {
-        "authorization": `Bearer ${auth0.getAccessToken()}`,
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state.choice),
       mode: 'cors',
@@ -90,13 +90,12 @@ class RemoveChoice extends Component {
   }
 
   handleSearch() {
-
     fetch(`${config.baseUrl}/selectChoiceforDel`, {
       method: 'post',
       headers: {
         authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state.search),
     })
@@ -104,8 +103,7 @@ class RemoveChoice extends Component {
       .then((data) => {
         if (data.message === 'Not found') {
           alert("Question with specified Id is not found");
-        }
-        else {
+        } else {
           this.setState({
             choice: {
               id: data[0].id,
@@ -133,8 +131,11 @@ class RemoveChoice extends Component {
     return (
       <div>
         <form className="searchPlayer">
-          <label>Choice id
-                                <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} /> <br />
+          <label>
+            Choice id
+            <input type="text" name="id" value={this.state.search.id} onChange={this.handleSearchChange} />
+            {' '}
+            <br />
           </label>
           <label>
             <input type="button" name="Search" onClick={this.handleSearch} value="Search" />
@@ -143,21 +144,34 @@ class RemoveChoice extends Component {
         </form>
         <div>
           <form className="questionForm" onSubmit={this.handleSubmit}>
-            <label>Question id
-                            <input type="text" name="questionid" value={this.state.choice.questionid} onChange={this.handleChange} /> <br />
-            </label>
-            <label>Choice statement
-                            <input type="text" name="choicestatement" value={this.state.choice.choicestatement} onChange={this.handleChange} /> <br />
-            </label>
-            <label>Choice description
-                            <textarea type="text" name="choicedescription" value={this.state.choice.choicedescription} onChange={this.handleChange} />
+            <label>
+              Question id
+              <input type="text" name="questionid" value={this.state.choice.questionid} onChange={this.handleChange} />
+              {' '}
               <br />
             </label>
-            <label>Weight
-                            <input type="text" name="weight" value={this.state.choice.weight} onChange={this.handleChange} /> <br />
+            <label>
+              Choice statement
+              <input type="text" name="choicestatement" value={this.state.choice.choicestatement} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
-            <label>is it answer
-                            <input type="text" name="answer" value={this.state.choice.isanswer} onChange={this.handleChange} /> <br />
+            <label>
+              Choice description
+              <textarea type="text" name="choicedescription" value={this.state.choice.choicedescription} onChange={this.handleChange} />
+              <br />
+            </label>
+            <label>
+              Weight
+              <input type="text" name="weight" value={this.state.choice.weight} onChange={this.handleChange} />
+              {' '}
+              <br />
+            </label>
+            <label>
+              is it answer
+              <input type="text" name="answer" value={this.state.choice.isanswer} onChange={this.handleChange} />
+              {' '}
+              <br />
             </label>
             <button type="submit">Delete Choice</button>
           </form>
@@ -181,14 +195,12 @@ const mapStateToProps = (state) => ({
 });
 
 // Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => {
-  return {
-    //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-    //		getScores: (scores) => dispatch(fetchScores(scores)),
-    setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-    clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
+  //		getScores: (scores) => dispatch(fetchScores(scores)),
+  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
+  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
+});
 
 RemoveChoice.propTypes = {
   //	getGameData: PropTypes.func,

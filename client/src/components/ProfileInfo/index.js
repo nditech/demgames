@@ -18,14 +18,16 @@ const ProfileInfo = props => {
     cohorts: [],
   });
 
-  const { progressData, cohortRank, globalRank, cohorts } = profileData;
+  const {
+    progressData, cohortRank, globalRank, cohorts,
+  } = profileData;
 
   const getPlayerProfile = async (email, callbackFunction) => {
-    const url = `${config.baseUrl  }/user/get_profile/${email}`;
+    const url = `${config.baseUrl}/user/get_profile/${email}`;
     await fetch(url, {
       method: "get",
       headers: {
-        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
         Accept: "application/json",
       },
@@ -52,11 +54,11 @@ const ProfileInfo = props => {
   //   };
 
   const getCohort = async userEmail => {
-    const url = `${config.baseUrl  }/listCohort`;
+    const url = `${config.baseUrl}/listCohort`;
     await fetch(url, {
       method: "get",
       headers: {
-        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
         Accept: "application/json",
       },
@@ -71,15 +73,13 @@ const ProfileInfo = props => {
   const setRank = (rankObject, cohorts, changeCohort = false) => {
     let filteredData = progressData;
     if (!changeCohort) {
-      filteredData = profileProgressData.map(item => {
-        return {
-          gameName: item["Game.caption"],
-          score: item.score,
-          cohort: item["Cohort.name"],
-          cohort_id: item["Cohort.id"],
-          playdate: item.playstartdate,
-        };
-      });
+      filteredData = profileProgressData.map(item => ({
+        gameName: item["Game.caption"],
+        score: item.score,
+        cohort: item["Cohort.name"],
+        cohort_id: item["Cohort.id"],
+        playdate: item.playstartdate,
+      }));
     }
     setProfileData({
       ...profileData,
@@ -91,11 +91,11 @@ const ProfileInfo = props => {
   };
 
   const getRank = (cohortId, cohorts, changeCohort = false) => {
-    const url = `${config.baseUrl  }/get_cohort_rank/${userEmail}/${cohortId}`;
+    const url = `${config.baseUrl}/get_cohort_rank/${userEmail}/${cohortId}`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
         Accept: "application/json",
       },
@@ -129,9 +129,11 @@ const ProfileInfo = props => {
                   src={`${props.player.player_picture || profileUrl}`}
                 />
                 <div className="card-body">
-                  <h4 className="card-title text-primary">{`${props.player
-                    .player_given_name || ""} ${props.player
-                    .player_family_name || ""}`}</h4>
+                  <h4 className="card-title text-primary">
+                    {`${props.player
+                      .player_given_name || ""} ${props.player
+                      .player_family_name || ""}`}
+                  </h4>
                   <p className="card-text mb-1 mt-3 text-secondary">
                     {"Email : "}
                     {props.player.player_email || ""}
@@ -159,13 +161,11 @@ const ProfileInfo = props => {
                     className="custom-select mt-3"
                     onChange={e => handleCohortChange(e)}
                   >
-                    {cohorts.map((item, index) => {
-                      return (
-                        <option key={index} value={item.id}>
-                          {item.name}
-                        </option>
-                      );
-                    })}
+                    {cohorts.map((item, index) => (
+                      <option key={index} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
                   </select>
                   <div className="card-body text-center">
                     <h2>Cohort Rank</h2>
@@ -201,21 +201,19 @@ const ProfileInfo = props => {
                           </tr>
                         </thead>
                         <tbody>
-                          {progressData &&
-                            progressData.map((item, index) => {
-                              return (
-                                <tr key={index}>
-                                  <td>{item.gameName}</td>
-                                  <td>{item.score}</td>
-                                  <td>{item.cohort}</td>
-                                  <td>
-                                    {moment(item.playdate).format(
-                                      "Do MMM YYYY, h:mm:ss a"
-                                    )}
-                                  </td>
-                                </tr>
-                              );
-                            })}
+                          {progressData
+                            && progressData.map((item, index) => (
+                              <tr key={index}>
+                                <td>{item.gameName}</td>
+                                <td>{item.score}</td>
+                                <td>{item.cohort}</td>
+                                <td>
+                                  {moment(item.playdate).format(
+                                    "Do MMM YYYY, h:mm:ss a",
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
                         </tbody>
                       </table>
                     </div>
@@ -237,5 +235,5 @@ const mapStateToProps = state => ({
 // export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo);
 export default connect(
   mapStateToProps,
-  null
+  null,
 )(ProfileInfo);

@@ -5,13 +5,13 @@ import { config } from "../../settings";
 export const getChoices = async (
   questionId,
   selectedQuestion = null,
-  callbackFunction
+  callbackFunction,
 ) => {
-  const url = `${config.baseUrl  }/choices/${questionId}`;
+  const url = `${config.baseUrl}/choices/${questionId}`;
   await fetch(url, {
     method: "get",
     headers: {
-      authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+      authorization: `Bearer ${localStorage.getItem("access_token")}`,
       "Content-Type": "Application/json",
       Accept: "application/json",
     },
@@ -25,11 +25,11 @@ export const getChoices = async (
 
 // Get the choices referencing(linking) a Quesion
 export const getChoiceLinkingQuestion = (questionId, callbackFunction) => {
-  const url = `${config.baseUrl  }/choiceLinkingQuestion/${questionId}`;
+  const url = `${config.baseUrl}/choiceLinkingQuestion/${questionId}`;
   fetch(url, {
     method: "get",
     headers: {
-      authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+      authorization: `Bearer ${localStorage.getItem("access_token")}`,
       "Content-Type": "Application/json",
       Accept: "application/json",
     },
@@ -43,11 +43,11 @@ export const getChoiceLinkingQuestion = (questionId, callbackFunction) => {
 
 // Get all the questions related to a game
 export const getQuestions = (gameId, callbackFunction) => {
-  const url = `${config.baseUrl  }/listquestions/${gameId}`;
+  const url = `${config.baseUrl}/listquestions/${gameId}`;
   fetch(url, {
     method: "get",
     headers: {
-      authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+      authorization: `Bearer ${localStorage.getItem("access_token")}`,
       "Content-Type": "Application/json",
       Accept: "application/json",
     },
@@ -61,11 +61,11 @@ export const getQuestions = (gameId, callbackFunction) => {
 
 // Add a New Question
 export const addQuestion = (data, callbackFunction) => {
-  const url = `${config.baseUrl  }/addquestion/`;
+  const url = `${config.baseUrl}/addquestion/`;
   fetch(url, {
     method: "POST",
     headers: {
-      authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+      authorization: `Bearer ${localStorage.getItem("access_token")}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
@@ -78,18 +78,18 @@ export const addQuestion = (data, callbackFunction) => {
       });
       callbackFunction();
     })
-    .catch(err=>toast.error("Sorry...some technical issue !", {
+    .catch(err => toast.error("Sorry...some technical issue !", {
       position: toast.POSITION.TOP_CENTER,
     }));
 };
 
 // Update Question
 export const updateQuestion = (data = "", id, callbackFunction) => {
-  const url = `${config.baseUrl  }/updatequestion/`;
+  const url = `${config.baseUrl}/updatequestion/`;
   fetch(url, {
     method: "POST",
     headers: {
-      authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+      authorization: `Bearer ${localStorage.getItem("access_token")}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
@@ -110,11 +110,11 @@ export const updateQuestion = (data = "", id, callbackFunction) => {
 // Delete a question based on ID
 export const deleteQuestion = (questionId, callbackFunction) => {
   if (window.confirm("Are you sure you want to delete the question")) {
-    const url = `${config.baseUrl  }/questions/${  questionId}`;
+    const url = `${config.baseUrl}/questions/${questionId}`;
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -135,18 +135,18 @@ export const deleteQuestion = (questionId, callbackFunction) => {
 
 // Add a New Cohort
 export const addCohort = (data, callbackFunction) => {
-  const url = `${config.baseUrl  }/AddCohort/`;
+  const url = `${config.baseUrl}/AddCohort/`;
   fetch(url, {
     method: "POST",
     headers: {
-      authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+      authorization: `Bearer ${localStorage.getItem("access_token")}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ name: data.name }),
   })
     .then(res => {
-      if(res.status == 400){
+      if (res.status == 400) {
         throw new Error();
       }
       return res.json();
@@ -163,11 +163,11 @@ export const addCohort = (data, callbackFunction) => {
 
 // Delete a cohort based on ID
 export const deleteCohort = (cohort_id, callbackFunction) => {
-  const url = `${config.baseUrl  }/DeleteCohort/`;
+  const url = `${config.baseUrl}/DeleteCohort/`;
   fetch(url, {
     method: "POST",
     headers: {
-      authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+      authorization: `Bearer ${localStorage.getItem("access_token")}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
@@ -175,8 +175,7 @@ export const deleteCohort = (cohort_id, callbackFunction) => {
   })
     .then(res => res.json())
     .then(data => {
-      
-      if(JSON.stringify(data.message) === JSON.stringify("Server Error")) {
+      if (JSON.stringify(data.message) === JSON.stringify("Server Error")) {
         toast.error("Sorry...some technical issue !", {
           position: toast.POSITION.TOP_CENTER,
         });
@@ -184,7 +183,7 @@ export const deleteCohort = (cohort_id, callbackFunction) => {
         toast.info("Deleted Successfully !", {
           position: toast.POSITION.TOP_CENTER,
         });
-     }
+      }
       callbackFunction();
     })
     .catch(error => toast.error("Sorry...some technical issue !", {
@@ -194,11 +193,11 @@ export const deleteCohort = (cohort_id, callbackFunction) => {
 
 // Update Cohort
 export const updateCohort = (name = "", id, callbackFunction) => {
-  const url = `${config.baseUrl  }/updatecohort/`;
+  const url = `${config.baseUrl}/updatecohort/`;
   fetch(url, {
     method: "POST",
     headers: {
-      authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+      authorization: `Bearer ${localStorage.getItem("access_token")}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
@@ -218,19 +217,19 @@ export const updateCohort = (name = "", id, callbackFunction) => {
 
 // Update Player
 export const updatePlayer = (data, id, callbackFunction) => {
-  const url = `${config.baseUrl  }/updateUser/`;
+  const url = `${config.baseUrl}/updateUser/`;
   fetch(url, {
     method: "POST",
     headers: {
-      authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+      authorization: `Bearer ${localStorage.getItem("access_token")}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ 
-      program: data.program, 
+    body: JSON.stringify({
+      program: data.program,
       id,
-      gender : data.gender,
-      country : data.country,
+      gender: data.gender,
+      country: data.country,
     }),
   })
     .then(res => res.json())
@@ -247,11 +246,11 @@ export const updatePlayer = (data, id, callbackFunction) => {
 
 // Delete player
 export const deletePlayer = (id, callbackFunction) => {
-  const url = `${config.baseUrl  }/DeleteUser/`;
+  const url = `${config.baseUrl}/DeleteUser/`;
   fetch(url, {
     method: "POST",
     headers: {
-      authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+      authorization: `Bearer ${localStorage.getItem("access_token")}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
@@ -259,8 +258,7 @@ export const deletePlayer = (id, callbackFunction) => {
   })
     .then(res => res.json())
     .then(data => {
-      
-      if(JSON.stringify(data.message) === JSON.stringify("Server Error")) {
+      if (JSON.stringify(data.message) === JSON.stringify("Server Error")) {
         toast.error("Sorry...some technical issue !", {
           position: toast.POSITION.TOP_CENTER,
         });
@@ -268,7 +266,7 @@ export const deletePlayer = (id, callbackFunction) => {
         toast.info("Deleted Successfully !", {
           position: toast.POSITION.TOP_CENTER,
         });
-     }
+      }
       callbackFunction();
     })
     .catch(error => toast.error("Sorry...some technical issue !", {

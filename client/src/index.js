@@ -59,12 +59,16 @@ const Routes = () => (
         <Route path="/callback" exact component={Callback} />
         <Route path="/info" exact component={CorrectAnswerInfo} />
         <Route path="/profile" exact component={ProfileInfo} />
-        <Route path="/admin" exact component={ 
-           auth0.getProfile() &&
-           auth0.getProfile()["http://demGames.net/roles"] &&
-           auth0.getProfile()["http://demGames.net/roles"][0] === "admin" ? admin:LandingPage
-          
-        } />
+        <Route
+          path="/admin"
+          exact
+          component={
+           auth0.getProfile()
+           && auth0.getProfile()["http://demGames.net/roles"]
+           && auth0.getProfile()["http://demGames.net/roles"][0] === "admin" ? admin : LandingPage
+
+        }
+        />
         <Route path="/UpdatePlayer" exact component={UpdatePlayer} />
         <Route path="/registerplayer" exact component={Register} />
         <Route path="/addgame" exact component={AddGame} />
@@ -85,7 +89,7 @@ ReactDOM.render(
     <Routes />
   </Provider>,
 
-  document.getElementById("root")
+  document.getElementById("root"),
 );
 
 // If you want your app to work offline and load faster, you can change

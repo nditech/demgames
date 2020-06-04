@@ -1,23 +1,22 @@
-import { AUTH0_LOGIN, AUTH0_LOGOUT } from './constants'; // , 
+import { AUTH0_LOGIN, AUTH0_LOGOUT } from './constants'; // ,
 
 const initialState = {
-	authDetail: {},
+  authDetail: {},
 };
 
 const reducerLevelAuth = (state = {}, action) => {
-	switch (action.type) {
+  switch (action.type) {
+    case AUTH0_LOGIN:
 
-		case AUTH0_LOGIN:
+      ({ ...state, authDetail: action.val });
+      return state;
+    case AUTH0_LOGOUT:
 
-			({ ...state, authDetail: action.val });
-			return state;
-		case AUTH0_LOGOUT:
-
-			({ ...state, authDetail: action.val });
-			return state;
-		default:
-			return state;
-	}
+      ({ ...state, authDetail: action.val });
+      return state;
+    default:
+      return state;
+  }
 };
 
 export default reducerLevelAuth;

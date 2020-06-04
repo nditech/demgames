@@ -40,7 +40,7 @@ class LevelsPage extends React.Component {
 
   // Get list of all modules.
   getModuleNames = () => {
-    const {gameData} = this.props.gameData;
+    const { gameData } = this.props.gameData;
     const moduleNames = [];
     gameData.map(modules => {
       moduleNames.push(modules.name);
@@ -108,11 +108,14 @@ class LevelsPage extends React.Component {
     return (
       <div className="landing-page-wrapper">
         <div className="landing-page-container">
-          <p className="game-title"> {moduleName}</p>
+          <p className="game-title">
+            {' '}
+            {moduleName}
+          </p>
           <div className="game-type-card-container">
-            {levels &&
-              levels.length > 0 &&
-              levels.map((data, key) => (
+            {levels
+              && levels.length > 0
+              && levels.map((data, key) => (
                 <LevelCard
                   key={key}
                   level={data.id}
@@ -142,22 +145,18 @@ class LevelsPage extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    player_given_name: state.authDetail.authDetail.player_given_name,
-    player_picture: state.authDetail.authDetail.player_picture,
-    player_email: state.authDetail.authDetail.player_email,
-    gameData: state.gameData,
-  };
-};
+const mapStateToProps = state => ({
+  player_given_name: state.authDetail.authDetail.player_given_name,
+  player_picture: state.authDetail.authDetail.player_picture,
+  player_email: state.authDetail.authDetail.player_email,
+  gameData: state.gameData,
+});
 
 // Dispatch action to fetch game data and scores.
-const mapDispatchToProps = dispatch => {
-  return {
-    setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
-    clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  setAuth: authDetail => dispatch(fetchAuthDetails(authDetail)),
+  clearAuth: authDetail => dispatch(clearAuthDetails(authDetail)),
+});
 
 LevelsPage.propTypes = {
   gameData: PropTypes.object,
@@ -166,7 +165,7 @@ LevelsPage.propTypes = {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(LevelsPage);
 
 // export default LevelsPage;

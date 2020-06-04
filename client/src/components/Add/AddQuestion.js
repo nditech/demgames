@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import Auth from "../../Auth";
 import { config } from "../../settings";
 
@@ -21,7 +20,6 @@ const AddQuestion = () => {
   const [formData, setFormData] = useState(initialState);
 
   const {
-    gameid,
     gametype,
     difficulty_level,
     question_statement,
@@ -30,7 +28,7 @@ const AddQuestion = () => {
     isitmedia,
   } = formData;
 
-  const reset = event => {
+  const reset = () => {
     setFormData(initialState);
   };
 
@@ -54,23 +52,22 @@ const AddQuestion = () => {
     } else {
       setFormData({ ...formData, [fieldName]: val });
     }
-
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    fetch(`${config.baseUrl  }/addquestion`, {
+    fetch(`${config.baseUrl}/addquestion`, {
       method: "POST",
       headers: {
-        authorization: `Bearer ${  auth0.getAccessToken()}`,
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     })
       .then(res => res.json())
-      .then(data => {
+      .then(() => {
         alert("Question was successfully added");
       })
       .catch(error => console.log(error)); // eslint-disable-line
@@ -127,7 +124,8 @@ const AddQuestion = () => {
               name="question_statement"
               value={question_statement}
               onChange={e => handleChange(e)}
-            />{" "}
+            />
+            {" "}
             <br />
             <input
               className="form-control mb-1"
@@ -136,7 +134,8 @@ const AddQuestion = () => {
               name="weight"
               value={weight}
               onChange={e => handleChange(e)}
-            />{" "}
+            />
+            {" "}
             <br />
             <textarea
               className="form-control mb-1"
@@ -145,7 +144,7 @@ const AddQuestion = () => {
               name="explanation"
               value={explanation}
               onChange={e => handleChange(e)}
-             />
+            />
             <br />
             <input
               className="form-control mb-1"
@@ -154,12 +153,15 @@ const AddQuestion = () => {
               name="isitmedia"
               value={isitmedia}
               onChange={e => handleChange(e)}
-            />{" "}
+            />
+            {" "}
             <br />
             <button className="btn btn-info" type="submit">
               Save
-            </button>{" "}
-            |{" "}
+            </button>
+            {" "}
+            |
+            {" "}
             <button
               className="btn btn-warning"
               type="button"
@@ -177,5 +179,5 @@ const AddQuestion = () => {
 
 export default connect(
   null,
-  {}
+  {},
 )(AddQuestion);

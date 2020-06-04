@@ -1,21 +1,16 @@
-import React, { Component, Fragment } from "react";
-import { Route, Switch, Link, BrowserRouter as Router } from "react-router-dom";
+import React, { Component } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import {
   TabContent,
   TabPane,
   Nav,
   NavItem,
   NavLink,
-  Card,
-  Button,
-  CardTitle,
-  CardText,
   Row,
   Col,
 } from "reactstrap";
 import classnames from "classnames";
 import ListPlayers from "../List/ListPlayers";
-import UpdatePlayer from "../Update/UpdateProfile";
 import Register from "../Add/Register";
 import AddGame from "../Add/AddGame";
 import AddChoices from "../Add/AddChoices";
@@ -23,20 +18,10 @@ import AddQuestion from "../Add/AddQuestion";
 import ListQuestions from "../List/ListQuestions";
 import ListChoices from "../List/ListChoices";
 import ListGames from "../List/ListGames";
-import RemovePlayer from "../Remove/RemovePlayer";
-import removequestion from "../Remove/RemoveQuestion";
-import RemoveChoice from "../Remove/RemoveChoice";
-import UpdateGame from "../Update/UpdateGame";
-import UpdateQuestion from "../Update/UpdateQuestion";
-import UpdateChoice from "../Update/UpdateChoice";
-// Bootstrap
-// import NotFound from '../../pages/Landin';
 
 import Auth from "../../Auth";
-// import notfound from './NotFound';
-import Callback from "../../pages/LandingPage/callback";
 
-const auth = new Auth();
+const auth0 = new Auth();
 
 class Admin extends Component {
   constructor(props) {
@@ -65,7 +50,6 @@ class Admin extends Component {
 
   componentDidMount() {
     if (this.props.email !== null) {
-      const encodedValue = encodeURIComponent(this.state.email);
       fetch(`http://localhost:9000/selectPlayerProfile`, {
         method: "post",
         headers: {
@@ -238,7 +222,8 @@ class Admin extends Component {
                           }}
                         >
                           {" "}
-                          List Games{" "}
+                          List Games
+                          {" "}
                         </NavLink>
                       </NavItem>
                       <NavItem>
@@ -251,7 +236,8 @@ class Admin extends Component {
                           }}
                         >
                           {" "}
-                          Add New Game{" "}
+                          Add New Game
+                          {" "}
                         </NavLink>
                       </NavItem>
                     </Nav>
@@ -288,7 +274,8 @@ class Admin extends Component {
                           }}
                         >
                           {" "}
-                          List Players{" "}
+                          List Players
+                          {" "}
                         </NavLink>
                       </NavItem>
                       <NavItem>
@@ -301,7 +288,8 @@ class Admin extends Component {
                           }}
                         >
                           {" "}
-                          Add New Player{" "}
+                          Add New Player
+                          {" "}
                         </NavLink>
                       </NavItem>
                     </Nav>
@@ -338,7 +326,8 @@ class Admin extends Component {
                           }}
                         >
                           {" "}
-                          List Questions{" "}
+                          List Questions
+                          {" "}
                         </NavLink>
                       </NavItem>
                       <NavItem>
@@ -351,7 +340,8 @@ class Admin extends Component {
                           }}
                         >
                           {" "}
-                          Add New Question{" "}
+                          Add New Question
+                          {" "}
                         </NavLink>
                       </NavItem>
                     </Nav>
@@ -388,7 +378,8 @@ class Admin extends Component {
                           }}
                         >
                           {" "}
-                          List Choices{" "}
+                          List Choices
+                          {" "}
                         </NavLink>
                       </NavItem>
                       <NavItem>
@@ -401,7 +392,8 @@ class Admin extends Component {
                           }}
                         >
                           {" "}
-                          Add New Choice{" "}
+                          Add New Choice
+                          {" "}
                         </NavLink>
                       </NavItem>
                     </Nav>
@@ -425,43 +417,6 @@ class Admin extends Component {
                 </Row>
               </TabPane>
             </TabContent>
-
-            {/* <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
-                            <ul className="navbar-nav">
-                                <li className="nav-item"><Link className="nav-link" to="/list">List players</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/listgames">List games</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/listquestions">List questions</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/listchoices">List choices</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/UpdatePlayer">Update player</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/registerplayer">Register new player</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/addgame">Add game</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/addchoices">Add choices</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/addquestion">Add question</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/removeplayer">Remove player</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/removechoice">Remove choice</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/removequestion">Remove question</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/updategame">Update game</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/updatequestion">Update question</Link> </li>
-                                <li className="nav-item"><Link className="nav-link" to="/updatechoice">Update choice</Link> </li>
-                            </ul>
-                        </nav>
-                        <Switch>
-                            <Route path="/list" component={ListPlayers} />
-                            <Route path="/UpdatePlayer" component={UpdatePlayer} />
-                            <Route path="/registerplayer" component={Register} />
-                            <Route path="/addgame" component={AddGame} />
-                            <Route path="/addchoices" component={AddChoices} />
-                            <Route path="/addquestion" component={AddQuestion} />
-                            <Route path="/listquestions" component={ListQuestions} />
-                            <Route path="/listchoices" component={ListChoices} />
-                            <Route path="/listgames" component={ListGames} />
-                            <Route path="/removeplayer" component={RemovePlayer} />
-                            <Route path="/removechoice" component={RemoveChoice} />
-                            <Route path="/removequestion" component={removequestion} />
-                            <Route path="/updategame" component={UpdateGame} />
-                            <Route path="/updatequestion" component={UpdateQuestion} />
-                            <Route path="/updatechoice" component={UpdateChoice} />
-                        </Switch> */}
           </div>
         </>
       </Router>

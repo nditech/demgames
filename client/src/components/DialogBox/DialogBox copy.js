@@ -34,7 +34,7 @@ class DialogBox extends Component {
     const { data, edit, create } = props;
 
     const values = create ? data : data.values;
-      const {id} = data;
+    const { id } = data;
     let confirmButtonDisable = false;
     if (create) {
       confirmButtonDisable = true;
@@ -48,7 +48,9 @@ class DialogBox extends Component {
         editable: true,
       });
     }
-    this.setState({ data: values, edit, id, confirmButtonDisable });
+    this.setState({
+      data: values, edit, id, confirmButtonDisable,
+    });
   };
 
   componentDidMount = () => {
@@ -59,9 +61,7 @@ class DialogBox extends Component {
     this.initialState(props);
   };
 
-  convertChoice = value => {
-    return String.fromCharCode(value + 65);
-  };
+  convertChoice = value => String.fromCharCode(value + 65);
 
   onConfirm = () => {
     const { edit, create, onConfirm } = this.props;
@@ -98,23 +98,23 @@ class DialogBox extends Component {
 
   render() {
     const {
-        bsSize,
-        cancelButtonType,
-        cancelButtonValue,
-        confirmButtonValue,
-        isConfirmation,
-        messageDescription,
-        messageNote,
-        messageTitle,
-        onCancel,
-        showMessage,
-        title,
-        messageBox,
-        create,
-        onDelete,
-        removeMessage,
-      } = this.props;
-      const { data, edit, confirmButtonDisable } = this.state;
+      bsSize,
+      cancelButtonType,
+      cancelButtonValue,
+      confirmButtonValue,
+      isConfirmation,
+      messageDescription,
+      messageNote,
+      messageTitle,
+      onCancel,
+      showMessage,
+      title,
+      messageBox,
+      create,
+      onDelete,
+      removeMessage,
+    } = this.props;
+    const { data, edit, confirmButtonDisable } = this.state;
     return (
       <div data-test="component-message-dialog">
         <Modal
@@ -125,7 +125,13 @@ class DialogBox extends Component {
         >
           <Modal.Header className="dialog-header">
             <div>{title}</div>
-            <div onClick={onCancel}>X</div>
+            <div
+              role="button"
+              tabIndex={0}
+              yonClick={onCancel}
+            >
+              X
+            </div>
           </Modal.Header>
           <Modal.Body className="dialog-body">
             {messageBox ? (
@@ -140,8 +146,8 @@ class DialogBox extends Component {
               </div>
             ) : (
               <div>
-                {!isEmpty(data) &&
-                  data.map((object, index) => {
+                {!isEmpty(data)
+                  && data.map((object, index) => {
                     switch (object.type) {
                       case "options":
                         return (
@@ -153,29 +159,27 @@ class DialogBox extends Component {
                               <div>Choice/Option</div>
                             </div>
                             <div>
-                              {object.value.map((option, option_index) => {
-                                return (
-                                  <div key={option_index}>
-                                    {this.convertChoice(option_index)} :
-                                    {create || edit ? (
-                                      <input
-                                        type="text"
-                                        name=""
-                                        value={option}
-                                        onChange={e =>
-                                          this.valueChange(
-                                            e.target.value,
-                                            object.title,
-                                            option_index
-                                          )
-                                        }
-                                      />
-                                    ) : (
-                                      <div>{option}</div>
-                                    )}
-                                  </div>
-                                );
-                              })}
+                              {object.value.map((option, option_index) => (
+                                <div key={option}>
+                                  {this.convertChoice(option_index)}
+                                  {' '}
+                                  :
+                                  {create || edit ? (
+                                    <input
+                                      type="text"
+                                      name=""
+                                      value={option}
+                                      onChange={e => this.valueChange(
+                                        e.target.value,
+                                        object.title,
+                                        option_index,
+                                      )}
+                                    />
+                                  ) : (
+                                    <div>{option}</div>
+                                  )}
+                                </div>
+                              ))}
                             </div>
                           </div>
                         );
@@ -183,57 +187,59 @@ class DialogBox extends Component {
                         return (
                           <div key={index}>
                             <div className="dialog-content">
-                              {object.title} :
+                              {object.title}
+                              {' '}
+                              :
                               <div className="choices">
                                 <div
+                                  role="button"
+                                  tabIndex={0}
                                   className={
                                     object.value === "A"
                                       ? "selected"
                                       : "unselected"
                                   }
-                                  onClick={() =>
-                                    object.editable &&
-                                    this.valueChange("A", object.title)
-                                  }
+                                  onClick={() => object.editable
+                                    && this.valueChange("A", object.title)}
                                 >
                                   A
                                 </div>
                                 <div
+                                  role="button"
+                                  tabIndex={0}
                                   className={
                                     object.value === "B"
                                       ? "selected"
                                       : "unselected"
                                   }
-                                  onClick={() =>
-                                    object.editable &&
-                                    this.valueChange("B", object.title)
-                                  }
+                                  onClick={() => object.editable
+                                    && this.valueChange("B", object.title)}
                                 >
                                   B
                                 </div>
                                 <div
+                                  role="button"
+                                  tabIndex={0}
                                   className={
                                     object.value === "C"
                                       ? "selected"
                                       : "unselected"
                                   }
-                                  onClick={() =>
-                                    object.editable &&
-                                    this.valueChange("C", object.title)
-                                  }
+                                  onClick={() => object.editable
+                                    && this.valueChange("C", object.title)}
                                 >
                                   C
                                 </div>
                                 <div
+                                  role="button"
+                                  tabIndex={0}
                                   className={
                                     object.value === "D"
                                       ? "selected"
                                       : "unselected"
                                   }
-                                  onClick={() =>
-                                    object.editable &&
-                                    this.valueChange("D", object.title)
-                                  }
+                                  onClick={() => object.editable
+                                    && this.valueChange("D", object.title)}
                                 >
                                   D
                                 </div>
@@ -244,30 +250,31 @@ class DialogBox extends Component {
                       case "text":
                         return (edit || create) && object.editable ? (
                           <div key={index} className="dialog-content">
-                            {object.title} :
+                            {object.title}
+                            {' '}
+                            :
                             {object.multiline ? (
                               <textarea
                                 name={object.title}
                                 className="dialog-multiline-text"
                                 value={object.value}
-                                onChange={e =>
-                                  this.valueChange(e.target.value, object.title)
-                                }
+                                onChange={e => this.valueChange(e.target.value, object.title)}
                               />
                             ) : (
                               <input
                                 type="text"
                                 name="object.title"
                                 value={object.value}
-                                onChange={e =>
-                                  this.valueChange(e.target.value, object.title)
-                                }
+                                onChange={e => this.valueChange(e.target.value, object.title)}
                               />
                             )}
                           </div>
                         ) : (
                           <div key={index} className="dialog-content">
-                            {object.title} : {object.value}
+                            {object.title}
+                            {' '}
+                            :
+                            {object.value}
                           </div>
                         );
                       default:
@@ -310,18 +317,24 @@ class DialogBox extends Component {
 
 DialogBox.propTypes = {
   bsSize: PropTypes.string,
-  data: PropTypes.object,
+  data: PropTypes.shape({}),
   cancelButtonType: PropTypes.string,
   cancelButtonValue: PropTypes.string,
-  confirmButtonValue: PropTypes.string.isRequired,
+  confirmButtonValue: PropTypes.string,
   isConfirmation: PropTypes.bool,
   messageDescription: PropTypes.string,
   messageHeader: PropTypes.string,
   messageNote: PropTypes.string,
   messageTitle: PropTypes.string,
-  onCancel: PropTypes.func,
-  onConfirm: PropTypes.func,
+  onCancel: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired,
   showMessage: PropTypes.bool,
+  messageBox: PropTypes.bool,
+  create: PropTypes.bool,
+  removeMessage: PropTypes.bool,
+  edit: PropTypes.bool.isRequired,
+  onDelete: PropTypes.func,
+  title: PropTypes.string.isRequired,
 };
 
 DialogBox.defaultProps = {
@@ -336,6 +349,10 @@ DialogBox.defaultProps = {
   messageNote: "",
   messageTitle: "",
   showMessage: false,
+  messageBox: false,
+  removeMessage: false,
+  create: false,
+  onDelete: null,
 };
 
 export default DialogBox;

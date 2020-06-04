@@ -1,9 +1,6 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import DialogBox from "../DialogBox/DialogBox";
-import Auth from '../../Auth';
 import { config } from "../../settings";
-
-const auth0=new Auth();
 
 const EditQuestion = ({
   id,
@@ -14,6 +11,40 @@ const EditQuestion = ({
   getQuestions,
 }) => {
   const [questionsData, setQuestionsData] = useState(componentData);
+  const convertChoice = value => String.fromCharCode(value + 65);
+
+  const editQuestion = (questionData = "", questionIdToEdit) => {
+    const answers = [];
+    if (questionData) {
+      questionData.answers.map((item, index) => {
+        answers.push({ option: convertChoice(index), value: item });
+      });
+    }
+    const dataWithAnswers = {
+      ...questionData,
+      answers,
+    };
+    const url = `${config.baseUrl}/updatequestion/`;
+    fetch(url, {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: dataWithAnswers, id: questionIdToEdit }),
+    })
+      .then(res => res.json())
+      .then(responseData => {
+        alert(JSON.stringify(responseData));
+        onCancel();
+        setPopupState({ ...popupState, showMessage: false });
+
+        getQuestions();
+      })
+      .catch(error => console.log(error)); // eslint-disable-line
+  };
+
   const [popupState, setPopupState] = useState({
     showMessage: false,
     confirmButtonValue: "Update",
@@ -31,49 +62,11 @@ const EditQuestion = ({
 
   const {
     questions,
-    gameId,
     questionDetail,
-    choices,
     correctChoice,
     choicesNameArray,
     questionId,
   } = questionsData;
-
-  const convertChoice = value => {
-    return String.fromCharCode(value + 65);
-  };
-  
-  const editQuestion = (data = "", questionIdToEdit) => {
-    const answers = [];
-    if (data) {
-      data.answers.map((item, index) => {
-        answers.push({ option: convertChoice(index), value: item });
-      });
-    }
-    const dataWithAnswers = {
-      ...data,
-      answers,
-    };
-    const url = `${config.baseUrl  }/updatequestion/`;
-    fetch(url, {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ data: dataWithAnswers, id: questionIdToEdit }),
-    })
-      .then(res => res.json())
-      .then(responseData => {
-        alert(JSON.stringify(responseData));
-        onCancel();
-        setPopupState({ ...popupState, showMessage: false });
-
-        getQuestions();
-      })
-      .catch(error => console.log(error)); // eslint-disable-line
-  };
 
   const {
     showMessage,
@@ -139,11 +132,11 @@ const EditQuestion = ({
   };
 
   const getChoices = (questionIdToGet, selectedQuestion) => {
-    const url = `${config.baseUrl  }/choices/${questionIdToGet}`;
+    const url = `${config.baseUrl}/choices/${questionIdToGet}`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
         Accept: "application/json",
       },
@@ -173,9 +166,7 @@ const EditQuestion = ({
   };
 
   const editHandle = questionIdToHandle => {
-    const selectedQuestion = questions.find(item => {
-      return item.id === questionIdToHandle;
-    });
+    const selectedQuestion = questions.find(item => item.id === questionIdToHandle);
     getChoices(id, selectedQuestion);
     setPopupState({ ...popupState, showMessage: showQuestionEdit });
   };

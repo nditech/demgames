@@ -9,8 +9,8 @@ import {
   TabPane,
 } from "reactstrap";
 import { connect } from "react-redux";
-import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
-import React, { Component, Fragment } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import React, { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import classnames from "classnames";
@@ -28,9 +28,6 @@ import { config } from "../../settings";
 
 const auth0 = new Auth();
 
-// import NotFound from '../../pages/Landin';
-
-const auth = new Auth();
 const headerTabs = ["games", "players", "cohort"];
 class Admin extends Component {
   constructor(props) {
@@ -64,10 +61,10 @@ class Admin extends Component {
   componentDidMount() {
     if (this.props.email !== null) {
       const encodedValue = encodeURIComponent(this.state.email);
-      fetch(`${config.baseUrl  }/selectPlayerProfile`, {
+      fetch(`${config.baseUrl}/selectPlayerProfile`, {
         method: "post",
         headers: {
-          authorization: `Bearer ${  auth0.getAccessToken()}`,
+          authorization: `Bearer ${auth0.getAccessToken()}`,
           "Content-Type": "Application/json",
           Accept: "application/json",
         },
@@ -94,40 +91,8 @@ class Admin extends Component {
         .catch(error => console.log(error)); // eslint-disable-line
     }
     const data = {
-        id: "1",
-        values: [
-          {
-            type: "text",
-            title: "Game",
-            value: "Desiging a argument",
-          },
-          {
-            type: "text",
-            title: "Level",
-            value: "1",
-          },
-          {
-            type: "text",
-            title: "Question",
-            value:
-              "text question ihsihds ajsijacif njhkf i jhf sjjah hhi dwkhbci  hiuhi onhsiubdhi h ih huho",
-            multiline: true,
-            editable: true,
-          },
-          {
-            type: "options",
-            title: "answers",
-            value: ["test1", "test2", "test3", "test4"],
-          },
-          {
-            type: "choice",
-            title: "Current choice",
-            value: "B",
-            key: "answers",
-          },
-        ],
-      };
-      const fields = [
+      id: "1",
+      values: [
         {
           type: "text",
           title: "Game",
@@ -141,23 +106,55 @@ class Admin extends Component {
         {
           type: "text",
           title: "Question",
+          value:
+            "text question ihsihds ajsijacif njhkf i jhf sjjah hhi dwkhbci  hiuhi onhsiubdhi h ih huho",
           multiline: true,
           editable: true,
-          value: "",
         },
         {
           type: "options",
           title: "answers",
-          value: ["", "", "", ""],
+          value: ["test1", "test2", "test3", "test4"],
         },
         {
           type: "choice",
-          title: "Correct choice",
-          value: "",
-          editable: true,
+          title: "Current choice",
+          value: "B",
           key: "answers",
         },
-      ];
+      ],
+    };
+    const fields = [
+      {
+        type: "text",
+        title: "Game",
+        value: "Desiging a argument",
+      },
+      {
+        type: "text",
+        title: "Level",
+        value: "1",
+      },
+      {
+        type: "text",
+        title: "Question",
+        multiline: true,
+        editable: true,
+        value: "",
+      },
+      {
+        type: "options",
+        title: "answers",
+        value: ["", "", "", ""],
+      },
+      {
+        type: "choice",
+        title: "Correct choice",
+        value: "",
+        editable: true,
+        key: "answers",
+      },
+    ];
     this.setState({ data, fields });
   }
 
@@ -176,11 +173,11 @@ class Admin extends Component {
       total: Number(this.state.score) + Number(this.state.total),
     });
 
-    const url = `${config.baseUrl  }/updateplayerscore`;
+    const url = `${config.baseUrl}/updateplayerscore`;
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: `Bearer ${  auth0.getAccessToken()}`,
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
         Accept: "application/json",
       },
@@ -241,7 +238,7 @@ class Admin extends Component {
       type: "dropdown",
       title: "Style",
       options: [
-	{ id: "", title: "Select Game Color" },
+        { id: "", title: "Select Game Color" },
         { id: "green", title: "Green" },
         { id: "blue", title: "Blue" },
         { id: "orange", title: "Orange" },
@@ -261,21 +258,21 @@ class Admin extends Component {
 
   toggleGame(tab) {
     if (this.state.activeGameTab !== tab) {
-      const url = `${config.baseUrl  }/listCohort/`;
+      const url = `${config.baseUrl}/listCohort/`;
       fetch(url, {
         method: "get",
         headers: {
-          authorization: `Bearer ${  localStorage.getItem("access_token")}`,
+          authorization: `Bearer ${localStorage.getItem("access_token")}`,
           "Content-Type": "Application/json",
           Accept: "application/json",
         },
       })
         .then(res => res.json())
-        .then(data => {
+        .then((data) => {
           for (let i = 0; i < this.addGameFields.length; i++) {
             if (this.addGameFields[i].key === "cohort_id") {
               const newGameCohorts = [{ id: "", title: "Select Cohort" }];
-              data.map(item => {
+              data.map((item) => {
                 newGameCohorts.push({
                   id: item.id,
                   title: item.name,
@@ -286,7 +283,6 @@ class Admin extends Component {
           }
           this.setState({
             fields: this.addGameFields,
-            // showMessage:true,
             confirmButtonValue: "ADD",
             messageTitle: "",
             messageDescription: "",
@@ -315,11 +311,11 @@ class Admin extends Component {
       style: data.style,
       par_score: data.par_score,
     };
-    const url = `${config.baseUrl  }/registergame`;
+    const url = `${config.baseUrl}/registergame`;
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: `Bearer ${  auth0.getAccessToken()}`,
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -338,11 +334,9 @@ class Admin extends Component {
           position: toast.POSITION.TOP_CENTER,
         });
       })
-      .catch(() =>
-        toast.error("Sorry..there is some technical issue", {
-          position: toast.POSITION.TOP_CENTER,
-        })
-      );
+      .catch(() => toast.error("Sorry..there is some technical issue", {
+        position: toast.POSITION.TOP_CENTER,
+      }));
   };
 
   editGame = (game, id) => {
@@ -384,25 +378,23 @@ class Admin extends Component {
       },
       () => {
         this.setState({
-          // activeGameTab:tab
           showMessage: true,
         });
-      }
+      },
     );
   };
 
   editGameCb = (data, id) => {
-    // debugger;
     const editGameForm = {
       id,
       caption: data.Title,
       gamedescription: data.Description,
     };
-    const url = `${config.baseUrl  }/Updategame`;
+    const url = `${config.baseUrl}/Updategame`;
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: `Bearer ${  auth0.getAccessToken()}`,
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -439,7 +431,7 @@ class Admin extends Component {
     }
   }
 
-  editQuestion = (data = "", id) => ({data, id});
+  editQuestion = (data = "", id) => ({ data, id });
 
   editPopup = () => {
     this.setState({
@@ -691,7 +683,8 @@ class Admin extends Component {
                             }}
                           >
                             {" "}
-                            List Choices{" "}
+                            List Choices
+                            {" "}
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -704,7 +697,8 @@ class Admin extends Component {
                             }}
                           >
                             {" "}
-                            Add New Choice{" "}
+                            Add New Choice
+                            {" "}
                           </NavLink>
                         </NavItem>
                       </Nav>
