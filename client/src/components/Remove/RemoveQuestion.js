@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import "react-datepicker/dist/react-datepicker.css";
 import Auth from '../../Auth';
@@ -51,7 +50,7 @@ class RemoveQuestion extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message) {
-          alert(data.message);
+          alert(data.message); // eslint-disable-line
         }
       })
       .catch((error) => console.log(error)); // eslint-disable-line
@@ -87,7 +86,7 @@ class RemoveQuestion extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'Not found') {
-          alert("Question with specified Id is not found");
+          alert("Question with specified Id is not found"); // eslint-disable-line
         } else {
           this.setState({
             question: {
@@ -179,16 +178,8 @@ class RemoveQuestion extends Component {
   }
 }
 
-// Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => ({
-  //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-  //		getScores: (scores) => dispatch(fetchScores(scores)),
-  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-});
-
 RemoveQuestion.propTypes = {
   authDetail: PropTypes.shape({}).isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(RemoveQuestion);
+export default RemoveQuestion;

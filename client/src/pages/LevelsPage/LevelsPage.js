@@ -146,12 +146,6 @@ const mapStateToProps = state => ({
   gameData: state.gameData,
 });
 
-// Dispatch action to fetch game data and scores.
-const mapDispatchToProps = dispatch => ({
-  setAuth: () => dispatch(fetchAuthDetails(authDetail)),
-  clearAuth: () => dispatch(clearAuthDetails(authDetail)),
-});
-
 LevelsPage.propTypes = {
   gameData: PropTypes.shape({
     gameData: PropTypes.arrayOf(PropTypes.shape({
@@ -178,9 +172,4 @@ LevelsPage.defaultProps = {
   player_email: null,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(LevelsPage);
-
-// export default LevelsPage;
+export default connect(mapStateToProps)(LevelsPage);

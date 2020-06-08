@@ -108,7 +108,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   }
 
   const deleteHandle = choiceId => {
-    const r = window.confirm("Are you sure you want to delete the Question ?");
+    const r = window.confirm("Are you sure you want to delete the Question ?"); // eslint-disable-line
     if (r === true) {
       deleteQuestion(choiceId, refreshQuestionList);
     } else {

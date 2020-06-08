@@ -49,10 +49,10 @@ const AddChoices = () => {
     })
       .then(res => res.json())
       .then(() => {
-        alert('The choice was successfully added');
+        alert('The choice was successfully added'); // eslint-disable-line 
         handleReset();
       })
-            .catch((error) => console.log(error));       // eslint-disable-line   
+            .catch((error) => console.log(error)); // eslint-disable-line   
   };
 
   const optionItems = formData.questions.map((question) => <option key={question.id} value={question.id}>{question.question_statement}</option>);
@@ -65,15 +65,18 @@ const AddChoices = () => {
           <form className="text-center border border-light p-5" onSubmit={e => handleSubmit(e)}>
             <div className="row">
               <div className="form-group col-md-12">
-                <label className="form-label">Question statement </label>
-                <select
-                  className="form-control custom-select custom-select-sm"
-                  name="questionid"
-                  value={questionid}
-                  onChange={e => handleChange(e)}
-                >
-                  {optionItems}
-                </select>
+                <label htmlFor="question-select" className="form-label">
+                  <span>Question statement</span>
+                  <select
+                    id="question-select"
+                    className="form-control custom-select custom-select-sm"
+                    name="questionid"
+                    value={questionid}
+                    onChange={e => handleChange(e)}
+                  >
+                    {optionItems}
+                  </select>
+                </label>
               </div>
             </div>
 

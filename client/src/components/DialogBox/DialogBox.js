@@ -331,7 +331,7 @@ class DialogBox extends Component {
                       case "dropdown":
                         return (
                           <div
-                            key={`dropdown_${index}`}
+                            key={`dropdown_${index.toString()}`}
                             className="dialog-content"
                           >
                             <div className="item-title">{object.title}</div>
@@ -369,7 +369,7 @@ class DialogBox extends Component {
                       case "options":
                         return (
                           <div
-                            key={`options_${index}`}
+                            key={`options_${index.toString()}`}
                             className="dialog-content dialog-options"
                           >
                             <div>
@@ -377,7 +377,7 @@ class DialogBox extends Component {
                             </div>
                             <div>
                               {object.value.map((option, option_index) => (
-                                <div key={`options_content_${option_index}`}>
+                                <div key={`options_content_${option_index.toString()}`}>
                                   <div className="item-title option-title">
                                     {this.convertChoice(option_index)}
                                   </div>
@@ -403,7 +403,7 @@ class DialogBox extends Component {
                                     </div>
                                   ) : (
                                     <div
-                                      key={`options_content_${option_index}`}
+                                      key={`options_content_${option_index.toString()}`}
                                       className="item-value"
                                     >
                                       {option}
@@ -416,7 +416,7 @@ class DialogBox extends Component {
                         );
                       case "choice":
                         return (
-                          <div key={`choices_${index}`}>
+                          <div key={`choices_${index.toString()}`}>
                             <div className="dialog-content">
                               <div className="item-title">{object.title}</div>
                               <div className="item-separator">:</div>
@@ -427,7 +427,7 @@ class DialogBox extends Component {
                                       <div
                                         role="button"
                                         tabIndex={0}
-                                        key={`choice_content-${chice_index}${choice}`}
+                                        key={`choice_content-${chice_index.toString()}${choice}`}
                                         className={
                                           object.value
                                             === this.convertChoice(chice_index)
@@ -450,7 +450,7 @@ class DialogBox extends Component {
                         );
                       case "text":
                         return (edit || create) && object.editable ? (
-                          <div key={`text_${index}`} className="dialog-content">
+                          <div key={`text_${index.toString()}`} className="dialog-content">
                             <div className="item-title">{object.title}</div>
                             <div className="item-separator">:</div>
                             {object.multiline ? (
@@ -472,7 +472,7 @@ class DialogBox extends Component {
                               </div>
                             ) : (
                               <div
-                                key={`textbox_${index}`}
+                                key={`textbox_${index.toString()}`}
                                 className="item-value"
                               >
                                 <input
@@ -490,7 +490,7 @@ class DialogBox extends Component {
                           </div>
                         ) : (
                           <div
-                            key={`content_view_${index}`}
+                            key={`content_view_${index.toString()}`}
                             className="dialog-content"
                           >
                             <div className="item-title">{object.title}</div>
@@ -499,7 +499,7 @@ class DialogBox extends Component {
                           </div>
                         );
                       default:
-                        return <div key={`default_${index}`} />;
+                        return <div key={`default_${index.toString()}`} />;
                     }
                   })}
                 {removeMessage && (

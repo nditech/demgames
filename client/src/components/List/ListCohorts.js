@@ -106,7 +106,7 @@ const ListCohorts = () => {
   }, []);
 
   const deleteHandle = cohortId => {
-    const r = window.confirm(
+    const r = window.confirm( // eslint-disable-line
       `Are you sure you want to delete cohort with id=${cohortId}`,
     );
     if (r === true) {

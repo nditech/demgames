@@ -37,7 +37,7 @@ const EditQuestion = ({
     })
       .then(res => res.json())
       .then(responseData => {
-        alert(JSON.stringify(responseData));
+        alert(JSON.stringify(responseData)); // eslint-disable-line
         onCancel();
         setPopupState({ ...popupState, showMessage: false });
 

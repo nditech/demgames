@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Auth from "../../Auth";
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -122,7 +121,7 @@ class RemovePlayer extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data === 200) {
-          alert("Successful");
+          alert("Successful"); // eslint-disable-line
         }
       })
       .catch((error) => console.log(error));  // eslint-disable-line
@@ -176,7 +175,7 @@ class RemovePlayer extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'Not found') {
-          alert("player with specified Id/Email/Username not found");
+          alert("player with specified Id/Email/Username not found"); // eslint-disable-line
         } else {
           this.setState({
             player: {
@@ -279,6 +278,7 @@ class RemovePlayer extends Component {
               {' '}
               <br />
             </label>
+            {/* eslint-disable-next-line */}
             <label>
               Date of Birth
               <DatePicker
@@ -515,15 +515,9 @@ class RemovePlayer extends Component {
   }
 }
 
-// Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => ({
-  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-});
-
 RemovePlayer.propTypes = {
   authDetail: PropTypes.shape({}).isRequired,
   given_name: PropTypes.string.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(RemovePlayer);
+export default RemovePlayer;

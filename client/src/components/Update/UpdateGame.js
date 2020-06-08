@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import "react-datepicker/dist/react-datepicker.css";
 import Auth from '../../Auth';
@@ -106,7 +105,7 @@ class UpdateGame extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'Not found') {
-          alert("Game with specified Id is not found");
+          alert("Game with specified Id is not found"); // eslint-disable-line
         } else {
           this.setState({
             game: {
@@ -137,7 +136,7 @@ class UpdateGame extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'updated successfully') {
-          alert("Successfully Updated the game detail");
+          alert("Successfully Updated the game detail"); // eslint-disable-line
         }
       })
       .catch((error) => console.log(error)); // eslint-disable-line
@@ -185,14 +184,8 @@ class UpdateGame extends Component {
   }
 }
 
-// Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => ({
-  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-});
-
 UpdateGame.propTypes = {
   authDetail: PropTypes.shape({}).isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(UpdateGame);
+export default UpdateGame;

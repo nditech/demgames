@@ -255,7 +255,7 @@ const ListPlayers = () => {
   };
 
   const deleteHandle = playerId => {
-    const r = window.confirm(
+    const r = window.confirm( // eslint-disable-line
       `Are you sure you want to delete player with id = ${playerId}`,
     );
     if (r === true) {

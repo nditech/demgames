@@ -90,7 +90,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   }
 
   const deleteHandle = choiceId => {
-    if (window.confirm("Are you sure you want to delete the question")) {
+    if (window.confirm("Are you sure you want to delete the question")) { // eslint-disable-line
       const url = `${config.baseUrl}/questions/${choiceId}`;
       fetch(url, {
         method: "POST",
@@ -103,7 +103,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       })
         .then(res => res.json())
         .then(data => {
-          alert(JSON.stringify(data));
+          alert(JSON.stringify(data)); // eslint-disable-line
           getQuestions();
         })
         .catch(error => console.log(error)); // eslint-disable-line
@@ -132,7 +132,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     })
       .then(res => res.json())
       .then(responseData => {
-        alert(JSON.stringify(responseData));
+        alert(JSON.stringify(responseData)); // eslint-disable-line
         setPopupState({ ...popupState, showMessage: false });
         getQuestions();
       })

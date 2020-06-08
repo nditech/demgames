@@ -150,7 +150,7 @@ class UpdateProfile extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data === 200) {
-          alert("Successful");
+          alert("Successful"); // eslint-disable-line
         }
       })
       .catch((error) => console.log(error)); // eslint-disable-line
@@ -258,6 +258,7 @@ class UpdateProfile extends Component {
             {' '}
             <br />
           </label>
+          {/* eslint-disable-next-line */}
           <label>
             Date of Birth
             <DatePicker
@@ -505,12 +506,6 @@ const mapStateToProps = (state) => ({
   player_dateOfBirth: state.authDetail.authDetail.player_dateOfBirth,
 });
 
-// Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => ({
-  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-});
-
 UpdateProfile.propTypes = {
   authDetail: PropTypes.shape({}).isRequired,
   player_email: PropTypes.string,
@@ -542,4 +537,4 @@ UpdateProfile.defaultProps = {
   given_name: null,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateProfile);
+export default connect(mapStateToProps)(UpdateProfile);

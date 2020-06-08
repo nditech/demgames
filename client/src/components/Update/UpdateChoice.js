@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import "react-datepicker/dist/react-datepicker.css";
 import Auth from '../../Auth';
@@ -114,7 +113,7 @@ class UpdateChoice extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'Not found') {
-          alert("Choice with specified id is not found");
+          alert("Choice with specified id is not found"); // eslint-disable-line
         } else {
           this.setState({
             choice: {
@@ -147,7 +146,7 @@ class UpdateChoice extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'updated successfully') {
-          alert("Successfully Updated the choice detail");
+          alert("Successfully Updated the choice detail"); // eslint-disable-line
         }
       })
       .catch((error) => console.log(error)); // eslint-disable-line
@@ -207,16 +206,8 @@ class UpdateChoice extends Component {
   }
 }
 
-// Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => ({
-  //		getGameData: (gameData) => dispatch(fetchGameData(gameData)),
-  //		getScores: (scores) => dispatch(fetchScores(scores)),
-  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-});
-
 UpdateChoice.propTypes = {
   authDetail: PropTypes.shape({}).isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(UpdateChoice);
+export default UpdateChoice;

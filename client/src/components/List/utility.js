@@ -109,7 +109,7 @@ export const updateQuestion = (data = "", id, callbackFunction) => {
 
 // Delete a question based on ID
 export const deleteQuestion = (questionId, callbackFunction) => {
-  if (window.confirm("Are you sure you want to delete the question")) {
+  if (window.confirm("Are you sure you want to delete the question")) { // eslint-disable-line
     const url = `${config.baseUrl}/questions/${questionId}`;
     fetch(url, {
       method: "POST",

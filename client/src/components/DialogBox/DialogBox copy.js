@@ -152,7 +152,7 @@ class DialogBox extends Component {
                       case "options":
                         return (
                           <div
-                            key={index}
+                            key={`option${index.toString()}`}
                             className="dialog-content dialog-options"
                           >
                             <div>
@@ -185,7 +185,7 @@ class DialogBox extends Component {
                         );
                       case "choice":
                         return (
-                          <div key={index}>
+                          <div key={`choice${index.toString()}`}>
                             <div className="dialog-content">
                               {object.title}
                               {' '}
@@ -249,7 +249,7 @@ class DialogBox extends Component {
                         );
                       case "text":
                         return (edit || create) && object.editable ? (
-                          <div key={index} className="dialog-content">
+                          <div key={`text${index.toString()}`} className="dialog-content">
                             {object.title}
                             {' '}
                             :
@@ -270,7 +270,7 @@ class DialogBox extends Component {
                             )}
                           </div>
                         ) : (
-                          <div key={index} className="dialog-content">
+                          <div key={`text${index.toString()}`} className="dialog-content">
                             {object.title}
                             {' '}
                             :

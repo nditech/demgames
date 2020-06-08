@@ -57,7 +57,7 @@ const Register = () => {
         body: JSON.stringify(formData),
       })
         .then((res) => (res.json()))
-        .then((data) => { alert(data.message); })
+        .then((data) => { alert(data.message); }) // eslint-disable-line
         .catch((error) => console.log(error)); // eslint-disable-line
     };
     submitData();
@@ -82,12 +82,14 @@ const Register = () => {
 
             <div className="row">
               <div className="form-group col-md-12">
-                <label className="form-label">Gender:</label>
-                <select className="custom-select custom-select-sm" name="gender" value={gender} onChange={e => handleChange(e)}>
-                  <option value="Female">Female</option>
-                  <option value="Male">Male</option>
-                  <option value="Other">Other</option>
-                </select>
+                <label htmlFor="gender-select" className="form-label">
+                  <span>Gender: </span>
+                  <select id="gender-select" className="custom-select custom-select-sm" name="gender" value={gender} onChange={e => handleChange(e)}>
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </label>
               </div>
             </div>
 
@@ -102,10 +104,12 @@ const Register = () => {
 
             <div className="row">
               <div className="form-group col-md-12">
-                <label className="form-label">Country</label>
-                <select className="form-control custom-select custom-select-sm" name="country" value={country} onChange={e => handleChange(e)}>
-                  {countryList.map(countryItem => <option value={countryItem.replace(' ', '')}>{country}</option>)}
-                </select>
+                <label htmlFor="country-select" className="form-label">
+                  <span>Country</span>
+                  <select id="country-select" className="form-control custom-select custom-select-sm" name="country" value={country} onChange={e => handleChange(e)}>
+                    {countryList.map(countryItem => <option value={countryItem.replace(' ', '')}>{country}</option>)}
+                  </select>
+                </label>
               </div>
             </div>
 
@@ -114,13 +118,15 @@ const Register = () => {
 
             <div className="row">
               <div className="form-group col-md-12">
-                <label className="form-label">Program</label>
-                <select className="custom-select custom-select-sm" name="program" value={program} onChange={e => handleChange(e)}>
-                  <option value="M&E">Monitoring & Evaluation</option>
-                  <option value="Elections">Elections</option>
-                  <option value="Governance">Governance</option>
-                  <option value="GWD">Gender, Women & Democracy</option>
-                </select>
+                <label htmlFor="program-select" className="form-label">
+                  <span>Program</span>
+                  <select id="program-select" className="custom-select custom-select-sm" name="program" value={program} onChange={e => handleChange(e)}>
+                    <option value="M&E">Monitoring & Evaluation</option>
+                    <option value="Elections">Elections</option>
+                    <option value="Governance">Governance</option>
+                    <option value="GWD">Gender, Women & Democracy</option>
+                  </select>
+                </label>
               </div>
             </div>
 

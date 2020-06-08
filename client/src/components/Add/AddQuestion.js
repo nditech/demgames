@@ -68,7 +68,7 @@ const AddQuestion = () => {
     })
       .then(res => res.json())
       .then(() => {
-        alert("Question was successfully added");
+        alert("Question was successfully added"); // eslint-disable-line
       })
       .catch(error => console.log(error)); // eslint-disable-line
   };
@@ -100,9 +100,10 @@ const AddQuestion = () => {
               </select>
               <br />
             </label>
-            <label>
+            <label htmlFor="difficulty-select">
               Difficulty Level
               <select
+                id="difficulty-select"
                 className="custom-select custom-select-sm"
                 name="difficulty_level"
                 value={difficulty_level}

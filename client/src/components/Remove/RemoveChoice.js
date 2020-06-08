@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import "react-datepicker/dist/react-datepicker.css";
 import Auth from '../../Auth';
@@ -63,7 +62,7 @@ class RemoveChoice extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message) {
-          alert(data.message);
+          alert(data.message); // eslint-disable-line
         }
       })
       .catch((error) => console.log(error));  // eslint-disable-line
@@ -98,7 +97,7 @@ class RemoveChoice extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'Not found') {
-          alert("Question with specified Id is not found");
+          alert("Question with specified Id is not found"); // eslint-disable-line
         } else {
           this.setState({
             choice: {
@@ -177,15 +176,8 @@ class RemoveChoice extends Component {
   }
 }
 
-
-// Dispatch action to fetch game data and scores.
-const mapDispatchToProps = (dispatch) => ({
-  setAuth: (authDetail) => dispatch(fetchAuthDetails(authDetail)),
-  clearAuth: (authDetail) => dispatch(clearAuthDetails(authDetail)),
-});
-
 RemoveChoice.propTypes = {
   authDetail: PropTypes.shape({}).isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(RemoveChoice);
+export default RemoveChoice;

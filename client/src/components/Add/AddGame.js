@@ -69,18 +69,21 @@ const AddGame = () => {
             />
             <div className="row">
               <div className="form-group col-md-12">
-                <label className="form-label">Game type</label>
-                <select
-                  className="form-control custom-select custom-select-sm"
-                  name="gametype"
-                  value={gametype}
-                  onChange={e => handleChange(e)}
-                >
-                  <option value="multiplechoice">Multiple choice</option>
-                  <option value="matching">Matching</option>
-                  <option value="truefalse">True or False</option>
-                  <option value="fillin">Fill in</option>
-                </select>
+                <label htmlFor="gametype-select" className="form-label">
+                  <span>Game type </span>
+                  <select
+                    id="gametype-select"
+                    className="form-control custom-select custom-select-sm"
+                    name="gametype"
+                    value={gametype}
+                    onChange={e => handleChange(e)}
+                  >
+                    <option value="multiplechoice">Multiple choice</option>
+                    <option value="matching">Matching</option>
+                    <option value="truefalse">True or False</option>
+                    <option value="fillin">Fill in</option>
+                  </select>
+                </label>
               </div>
             </div>
             <div className="text-center mt-12">

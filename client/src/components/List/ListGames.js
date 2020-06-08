@@ -83,7 +83,7 @@ class ListGames extends Component {
     this.pool(true);
   }
 
-  shouldComponentUpdate(nextProp, nextState) {
+  shouldComponentUpdate(nextProp) {
     if (nextProp.gameAdded) {
       nextProp.handleGameStatus();
       this.pool(false);
@@ -355,7 +355,6 @@ class ListGames extends Component {
               className={`tab ${this.state.activeTab === 2 ? "active" : ""}`}
               onClick={() => this.setState({
                 activeTab: 2,
-                // loadQuestionsComponent: true
               })}
             >
               Questions

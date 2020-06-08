@@ -67,8 +67,8 @@ export default class Auth {
         username: null,
       },
       (err) => {
-        if (err) return alert(`Something went wrong: ${err.message}`);
-        return alert("success signup without login!");
+        if (err) return alert(`Something went wrong: ${err.message}`); // eslint-disable-line 
+        return alert("success signup without login!"); // eslint-disable-line 
       },
     );
   }
