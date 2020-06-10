@@ -181,7 +181,7 @@ const ProfileInfo = props => {
                         <tbody>
                           {progressData
                             && progressData.map((item) => (
-                              <tr key={item.gameName}>
+                              <tr key={item.playdate}>
                                 <td>{item.gameName}</td>
                                 <td>{item.score}</td>
                                 <td>{item.cohort}</td>

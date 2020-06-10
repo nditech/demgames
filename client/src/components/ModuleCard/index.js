@@ -32,5 +32,5 @@ ModuleCard.propTypes = {
   moduleName: PropTypes.string.isRequired,
   style: PropTypes.string.isRequired,
   moduleType: PropTypes.string.isRequired,
-  gameId: PropTypes.string.isRequired,
+  gameId: PropTypes.number.isRequired,
 };

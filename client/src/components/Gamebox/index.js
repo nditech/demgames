@@ -21,7 +21,7 @@ export const Gamebox = ({
       <Slider {...settings}>
         {games.length > 0 ? (
           games.map(({ caption, id }, index) => (
-            <div className={`gamebox-wrapper ${activeGame === id ? "active" : ""}`}>
+            <div key={`${id}${index.toString()}`} className={`gamebox-wrapper ${activeGame === id ? "active" : ""}`}>
               <div
                 role="button"
                 tabIndex={0}
@@ -44,7 +44,11 @@ export const Gamebox = ({
 
 Gamebox.propTypes = {
   games: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  activeGame: PropTypes.number.isRequired,
+  activeGame: PropTypes.number,
   handleGameBoxClick: PropTypes.func.isRequired,
   deleteGame: PropTypes.func.isRequired,
+};
+
+Gamebox.defaultProps = {
+  activeGame: null,
 };

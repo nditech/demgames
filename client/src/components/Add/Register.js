@@ -107,7 +107,7 @@ const Register = () => {
                 <label htmlFor="country-select" className="form-label">
                   <span>Country</span>
                   <select id="country-select" className="form-control custom-select custom-select-sm" name="country" value={country} onChange={e => handleChange(e)}>
-                    {countryList.map(countryItem => <option value={countryItem.replace(' ', '')}>{country}</option>)}
+                    {countryList.map((countryItem, index) => <option key={`${country}${index.toString()}`} value={countryItem.replace(' ', '')}>{country}</option>)}
                   </select>
                 </label>
               </div>

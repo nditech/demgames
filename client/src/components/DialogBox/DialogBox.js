@@ -186,12 +186,14 @@ class DialogBox extends Component {
 
   onConfirm = () => {
     const { edit, create, onConfirm } = this.props;
+    console.log(edit, create, onConfirm);
     const { data, id } = this.state;
     if (edit || create) {
       const value = {};
       data.map(item => {
         value[item.key] = item.value;
       });
+      console.log(value, id);
       onConfirm(value, id);
     } else {
       onConfirm();
@@ -553,7 +555,7 @@ DialogBox.propTypes = {
   messageBox: PropTypes.bool,
   edit: PropTypes.bool,
   create: PropTypes.bool,
-  removeMessage: PropTypes.string,
+  removeMessage: PropTypes.bool,
   isRemove: PropTypes.bool,
 };
 
@@ -570,7 +572,7 @@ DialogBox.defaultProps = {
   messageBox: false,
   edit: false,
   create: false,
-  removeMessage: "",
+  removeMessage: false,
   isRemove: false,
 };
 

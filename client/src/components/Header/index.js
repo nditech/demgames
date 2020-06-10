@@ -11,6 +11,7 @@ export const Header = ({
         <div className="header-buttons">
           {headerTabs.map(data => (
             <button
+              key={data}
               type="submit"
               className={`header-button ${
                 activeTab.toLowerCase() === data.toLowerCase() ? "active" : ""

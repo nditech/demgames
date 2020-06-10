@@ -117,12 +117,12 @@ const ListTable = ({
 
 ListTable.propTypes = {
   tableData: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    columns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    hasActionBtns: PropTypes.bool.isRequired,
-    deleteHandle: PropTypes.func.isRequired,
-    editHandle: PropTypes.func.isRequired,
+    title: PropTypes.string,
+    columns: PropTypes.arrayOf(PropTypes.shape({})),
+    data: PropTypes.arrayOf(PropTypes.shape({})),
+    hasActionBtns: PropTypes.bool,
+    deleteHandle: PropTypes.func,
+    editHandle: PropTypes.func,
   }).isRequired,
   row: PropTypes.shape({
     id: PropTypes.string,

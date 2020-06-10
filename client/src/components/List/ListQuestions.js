@@ -619,7 +619,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
 };
 
 ListQuestions.propTypes = {
-  activeGame: PropTypes.string,
+  activeGame: PropTypes.number,
   activeGameDetails: PropTypes.arrayOf(
     PropTypes.shape({}),
   ),
