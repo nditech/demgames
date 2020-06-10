@@ -5,8 +5,7 @@ import './styles.scss';
 export const Details = ({ data }) => (
   <div className="details-container">
     {data && data.map((d) => (
-      <div className="details-box">
-
+      <div key={d.key} className="details-box">
         <div className="details-key">
           {d.key}
         </div>

@@ -540,7 +540,7 @@ class DialogBox extends Component {
 DialogBox.propTypes = {
   data: PropTypes.shape({}),
   cancelButtonValue: PropTypes.string,
-  confirmButtonValue: PropTypes.string.isRequired,
+  confirmButtonValue: PropTypes.string,
   isConfirmation: PropTypes.bool,
   messageDescription: PropTypes.string,
   messageNote: PropTypes.string,
@@ -558,6 +558,7 @@ DialogBox.propTypes = {
 };
 
 DialogBox.defaultProps = {
+  confirmButtonValue: null,
   cancelButtonValue: "CANCEL",
   data: {},
   isConfirmation: false,

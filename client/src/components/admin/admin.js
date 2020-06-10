@@ -730,17 +730,23 @@ const mapStateToProps = state => ({
 
 Admin.propTypes = {
   email: PropTypes.string,
-  given_name: PropTypes.string.isRequired,
-  family_name: PropTypes.string.isRequired,
-  picture: PropTypes.string.isRequired,
-  gender: PropTypes.string.isRequired,
-  player_given_name: PropTypes.string.isRequired,
-  player_picture: PropTypes.string.isRequired,
+  given_name: PropTypes.string,
+  family_name: PropTypes.string,
+  picture: PropTypes.string,
+  gender: PropTypes.string,
+  player_given_name: PropTypes.string,
+  player_picture: PropTypes.string,
 };
 
 
 Admin.defaultProps = {
   email: null,
+  given_name: null,
+  family_name: null,
+  picture: null,
+  gender: null,
+  player_given_name: null,
+  player_picture: null,
 };
 
 export default connect(mapStateToProps)(Admin);

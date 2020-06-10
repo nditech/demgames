@@ -368,19 +368,20 @@ class ListGames extends Component {
                   position="top center"
                   closeOnDocumentClick
                 >
-                  <div>
-                    <span>Select the cohort where you want to copy the game</span>
-                  </div>
+                  <>
+                    <div>
+                      <span>Select the cohort where you want to copy the game</span>
+                    </div>
 
-                  <div>
-                    <select className="buttonA" name="cohorts" ref={(input) => { this.menu = input; }}>
-                      {this.state.cohorts.map((object) => <option value={object.id} key={object.id}>{object.name}</option>)}
-                    </select>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <Button className="button" color="primary" onClick={() => this.copyGameCb(this.state.activeGame)}> Copy </Button>
-                  </div>
+                    <div>
+                      <select className="buttonA" name="cohorts" ref={(input) => { this.menu = input; }}>
+                        {this.state.cohorts.map((object) => <option value={object.id} key={`${object.id}${object.name}`}>{object.name}</option>)}
+                      </select>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <Button className="button" color="primary" onClick={() => this.copyGameCb(this.state.activeGame)}> Copy </Button>
+                    </div>
+                  </>
                 </Popup>
-
               </span>
               <Icon color="primary" onClick={() => this.editGame(this.state.activeGameDetails, this.state.activeGame)} style={{ color: "#0d9eea", cursor: 'pointer' }}>edit</Icon>
               <span className="tab-icons-details">Edit Game details</span>
