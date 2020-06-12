@@ -133,19 +133,19 @@ const mapStateToProps = (state) => ({
 });
 
 ResultPage.propTypes = {
-  getScores: PropTypes.func.isRequired,
+  getScores: PropTypes.func,
   location: PropTypes.shape({
     state: PropTypes.shape({
-      level: PropTypes.string,
-      moduleId: PropTypes.string,
-      gameId: PropTypes.string,
+      level: PropTypes.number,
+      moduleId: PropTypes.number,
+      gameId: PropTypes.number,
       image: PropTypes.string,
       moduleName: PropTypes.string,
       messageOne: PropTypes.string,
       messageTwo: PropTypes.string,
       messageThree: PropTypes.string,
       moduleScenario: PropTypes.string,
-      parScoreStatus: PropTypes.string,
+      parScoreStatus: PropTypes.bool,
       expression: PropTypes.string,
       finishedScore: PropTypes.number,
     }),
@@ -153,13 +153,15 @@ ResultPage.propTypes = {
   gameData: PropTypes.shape({
     gameData: PropTypes.arrayOf(
       PropTypes.shape({
-        levels: PropTypes.arrayOf(
-          PropTypes.arrayOf(PropTypes.shape),
-        ),
+        levels: PropTypes.arrayOf(PropTypes.shape),
       }),
     ),
   }).isRequired,
   player_email: PropTypes.string.isRequired,
+};
+
+ResultPage.defaultProps = {
+  getScores: null,
 };
 
 export default connect(mapStateToProps, null)(ResultPage);

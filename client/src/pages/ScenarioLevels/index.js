@@ -62,11 +62,10 @@ class ScenarioLevels extends React.Component {
   }
 }
 
-
 ScenarioLevels.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      moduleId: PropTypes.number,
+      moduleId: PropTypes.string,
     }),
   }).isRequired,
 };

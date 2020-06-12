@@ -79,7 +79,7 @@ CorrectAnswerInfo.propTypes = {
   questionId: PropTypes.number.isRequired,
   moduleId: PropTypes.number.isRequired,
   totalQuestion: PropTypes.number.isRequired,
-  correctAns: PropTypes.arrayOf.isRequired,
+  correctAns: PropTypes.func,
   selectedAnswer: PropTypes.arrayOf(
     PropTypes.string,
   ).isRequired,
@@ -100,4 +100,8 @@ CorrectAnswerInfo.propTypes = {
       }),
     ),
   }).isRequired,
+};
+
+CorrectAnswerInfo.defaultProps = {
+  correctAns: null,
 };

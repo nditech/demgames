@@ -7,8 +7,6 @@ const initialState = {
 
 const myReducer = (state = initialState, action) => {
   const newState = { ...state };
-
-
   switch (action.type) {
     case FETCH_GAME_DATA: state = { ...state, gameData: action.val };
       return state;

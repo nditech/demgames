@@ -290,7 +290,7 @@ class Admin extends Component {
             messageBox: false,
             edit: false,
             create: true,
-            onDelete: null,
+            onDelete: () => {},
             removeMessage: false,
             cohorts: data,
             showMessage: true,
@@ -326,7 +326,6 @@ class Admin extends Component {
         return res.json();
       })
       .then(() => {
-        // alert("paused admin");
         this.setState({ showMessage: false, gameAdded: true });
         toast.info("Successfully Added !", {
           position: toast.POSITION.TOP_CENTER,
@@ -737,7 +736,6 @@ Admin.propTypes = {
   player_given_name: PropTypes.string,
   player_picture: PropTypes.string,
 };
-
 
 Admin.defaultProps = {
   email: null,

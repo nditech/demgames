@@ -8,7 +8,6 @@ import { config } from "../../settings";
 
 const auth0 = new Auth();
 
-
 class RemovePlayer extends Component {
   constructor(props) {
     super(props);
@@ -160,7 +159,6 @@ class RemovePlayer extends Component {
       default:
     }
   }
-
 
   handleSearch() {
     fetch(`${config.baseUrl}/selectProfileforDel`, {

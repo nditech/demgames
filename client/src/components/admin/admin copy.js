@@ -433,7 +433,6 @@ Admin.propTypes = {
   gender: PropTypes.string.isRequired,
 };
 
-
 Admin.defaultProps = {
   email: null,
 };

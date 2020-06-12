@@ -257,7 +257,7 @@ ScenarioQuesAns.propTypes = {
   }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      moduleId: PropTypes.number,
+      moduleId: PropTypes.string,
       levelId: PropTypes.number,
     }),
   }).isRequired,

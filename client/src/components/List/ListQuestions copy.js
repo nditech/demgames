@@ -50,7 +50,6 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     questionId,
   } = questionsData;
 
-
   const getQuestions = () => {
     const url = `${config.baseUrl}/listquestions/${activeGame}`;
     fetch(url, {
@@ -152,7 +151,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     messageBox: false,
     edit: true,
     create: false,
-    onDelete: null,
+    onDelete: () => {},
     removeMessage: false,
   });
   const {

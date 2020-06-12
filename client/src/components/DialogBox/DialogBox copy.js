@@ -57,7 +57,7 @@ class DialogBox extends Component {
     this.initialState(this.props);
   };
 
-  componentWillReceiveProps = props => {
+  UNSAFE_componentWillReceiveProps = props => {
     this.initialState(props);
   };
 

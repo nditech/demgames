@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Auth from '../../Auth';
 
-
 class Callback extends Component {
   componentDidMount() {
     // console.log(this.props.auth.getProfile());

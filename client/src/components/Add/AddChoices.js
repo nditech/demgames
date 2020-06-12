@@ -5,7 +5,6 @@ import { config } from "../../settings";
 
 const auth0 = new Auth();
 
-
 const AddChoices = () => {
   const initialState = {
     choicestatement: '',

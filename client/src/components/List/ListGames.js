@@ -212,7 +212,7 @@ class ListGames extends Component {
       messageBox: false,
       edit: true,
       create: false,
-      onDelete: null,
+      onDelete: () => {},
       removeMessage: false,
     }, () => {
       this.setState({

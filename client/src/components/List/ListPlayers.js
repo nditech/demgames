@@ -10,13 +10,13 @@ const ListPlayers = () => {
     confirmButtonValue: "Update",
     messageTitle: "",
     messageDescription: "",
-    onConfirm: "",
+    onConfirm: () => {},
     isConfirmation: true,
     title: "Player detail",
     messageBox: false,
     edit: false,
     create: false,
-    onDelete: null,
+    onDelete: () => {},
     removeMessage: false,
   });
 
@@ -189,7 +189,7 @@ const ListPlayers = () => {
   };
 
   useEffect(() => {
-    // getPlayers();
+    getPlayers();
     getCohort();
   }, []);
   const handleLeaderShip = (type, id) => {
@@ -334,7 +334,6 @@ const ListPlayers = () => {
         onCancel={onCancel}
         title={title}
         data={editPlayerFields}
-
         messageBox={messageBox}
         edit={edit}
         create={create}

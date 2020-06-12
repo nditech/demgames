@@ -175,7 +175,7 @@ class DialogBox extends Component {
     this.initialState(this.props);
   };
 
-  componentWillReceiveProps = props => {
+  UNSAFE_componentWillReceiveProps = props => {
     this.initialState(props);
   };
 
@@ -186,14 +186,12 @@ class DialogBox extends Component {
 
   onConfirm = () => {
     const { edit, create, onConfirm } = this.props;
-    console.log(edit, create, onConfirm);
     const { data, id } = this.state;
     if (edit || create) {
       const value = {};
       data.map(item => {
         value[item.key] = item.value;
       });
-      console.log(value, id);
       onConfirm(value, id);
     } else {
       onConfirm();
@@ -548,9 +546,9 @@ DialogBox.propTypes = {
   messageNote: PropTypes.string,
   messageTitle: PropTypes.string,
   onCancel: PropTypes.func.isRequired,
-  onConfirm: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func,
   showMessage: PropTypes.bool,
-  onDelete: PropTypes.func.isRequired,
+  onDelete: PropTypes.func,
   title: PropTypes.string,
   messageBox: PropTypes.bool,
   edit: PropTypes.bool,
@@ -560,6 +558,8 @@ DialogBox.propTypes = {
 };
 
 DialogBox.defaultProps = {
+  onDelete: null,
+  onConfirm: null,
   confirmButtonValue: null,
   cancelButtonValue: "CANCEL",
   data: {},

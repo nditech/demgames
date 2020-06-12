@@ -79,7 +79,6 @@ const Register = () => {
             <input type="text" name="lastName" value={lastName} onChange={e => handleChange(e)} className="form-control mb-1" placeholder="Last Name" />
             <input type="text" name="userName" value={userName} onChange={e => handleChange(e)} className="form-control mb-1" placeholder="Username" />
             <input type="text" name="email" value={email} onChange={e => handleChange(e)} className="form-control mb-1" placeholder="Email" />
-
             <div className="row">
               <div className="form-group col-md-12">
                 <label htmlFor="gender-select" className="form-label">
@@ -92,7 +91,6 @@ const Register = () => {
                 </label>
               </div>
             </div>
-
             <div className="row">
               <div className="form-group col-md-12">
                 <div>Date of Birth:</div>
@@ -101,7 +99,6 @@ const Register = () => {
                 <br />
               </div>
             </div>
-
             <div className="row">
               <div className="form-group col-md-12">
                 <label htmlFor="country-select" className="form-label">
@@ -112,10 +109,7 @@ const Register = () => {
                 </label>
               </div>
             </div>
-
             <input type="text" name="city" value={city} onChange={e => handleChange(e)} className="form-control mb-1" placeholder="City" />
-
-
             <div className="row">
               <div className="form-group col-md-12">
                 <label htmlFor="program-select" className="form-label">

@@ -84,13 +84,13 @@ class LevelCard extends Component {
 
 LevelCard.propTypes = {
   level: PropTypes.number.isRequired,
-  currentScore: PropTypes.number.isRequired,
-  parScore: PropTypes.number.isRequired,
-  linkedLevel: PropTypes.number.isRequired,
-  description: PropTypes.string.isRequired,
-  totalScore: PropTypes.number.isRequired,
-  moduleId: PropTypes.number.isRequired,
-  prevLevelScore: PropTypes.number.isRequired,
+  currentScore: PropTypes.number,
+  parScore: PropTypes.number,
+  linkedLevel: PropTypes.number,
+  description: PropTypes.string,
+  totalScore: PropTypes.number,
+  moduleId: PropTypes.string.isRequired,
+  prevLevelScore: PropTypes.number,
   moduleColor: PropTypes.string.isRequired,
   moduleType: PropTypes.string.isRequired,
   showScore: PropTypes.bool,
@@ -98,6 +98,12 @@ LevelCard.propTypes = {
 
 LevelCard.defaultProps = {
   showScore: true,
+  currentScore: null,
+  parScore: null,
+  linkedLevel: null,
+  description: null,
+  totalScore: null,
+  prevLevelScore: null,
 };
 
 export default LevelCard;

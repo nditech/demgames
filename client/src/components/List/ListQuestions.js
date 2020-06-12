@@ -145,7 +145,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     messageBox: false,
     edit: false,
     create: false,
-    onDelete: null,
+    onDelete: () => {},
     removeMessage: false,
   });
   const {

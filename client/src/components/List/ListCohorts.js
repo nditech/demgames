@@ -35,13 +35,13 @@ const ListCohorts = () => {
     confirmButtonValue: "Update",
     messageTitle: "",
     messageDescription: "",
-    onConfirm: "",
+    onConfirm: () => {},
     isConfirmation: true,
     title: "Cohort detail",
     messageBox: false,
     edit: false,
     create: false,
-    onDelete: null,
+    onDelete: () => {},
     removeMessage: false,
   });
 
@@ -163,7 +163,7 @@ const ListCohorts = () => {
       messageBox: false,
       edit: false,
       create: true,
-      onDelete: null,
+      onDelete: () => {},
       removeMessage: false,
       isRemove: false,
     });

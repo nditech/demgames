@@ -65,11 +65,11 @@ const ListTable = ({
   // Table Search
   const rowdata = JSON.parse(JSON.stringify(data));
   const handleSearch = e => {
-    const text = e.target.value;
+    const searchText = e.target.value; // eslint-disable-line no-shadow
     const filterdata = [];
     setListState({
       ...listState,
-      searchText: text,
+      searchText,
     });
 
     window.filterDelay && clearTimeout(window.filterDelay);

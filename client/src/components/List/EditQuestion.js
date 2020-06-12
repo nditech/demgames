@@ -57,7 +57,7 @@ const EditQuestion = ({
     messageBox: false,
     edit: true,
     create: false,
-    onDelete: null,
+    onDelete: () => {},
     removeMessage: false,
   });
 
@@ -174,7 +174,6 @@ const EditQuestion = ({
 
   useEffect(() => {
     editHandle(id);
-    // setPopupState({ ...popupState, showMessage: showQuestionEdit });
   }, []);
 
   return (

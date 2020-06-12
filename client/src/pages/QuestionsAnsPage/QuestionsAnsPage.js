@@ -327,7 +327,6 @@ export class QuestionsAnsPage extends React.Component {
       level - 1
     ].total_score;
     const isLevelLocked = this.checkLevelUnlock();
-
     return (
       <>
         <div className="question-main-container">
@@ -507,13 +506,19 @@ QuestionsAnsPage.propTypes = {
     }),
   }),
   gameData: PropTypes.shape({
-    scores: PropTypes.arrayOf(PropTypes.number),
+    scores: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
     gameData: PropTypes.arrayOf(
       PropTypes.shape({
         style: PropTypes.string,
-        game_id: PropTypes.string,
+        game_id: PropTypes.number,
         levels: PropTypes.arrayOf(
-          PropTypes.arrayOf(PropTypes.shape),
+          PropTypes.shape({
+            par_score: PropTypes.number,
+            total_score: PropTypes.string,
+            questions: PropTypes.arrayOf({
+              correct_answer: PropTypes.string,
+            }),
+          }),
         ),
       }),
     ),

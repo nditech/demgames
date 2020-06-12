@@ -33,7 +33,6 @@ class RemoveQuestion extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-
   handleSubmit(e) {
     e.preventDefault();
     const url = "/deletequestion";
@@ -55,7 +54,6 @@ class RemoveQuestion extends Component {
       })
       .catch((error) => console.log(error)); // eslint-disable-line
   }
-
 
   handleSearchChange(event) {
     event.preventDefault();

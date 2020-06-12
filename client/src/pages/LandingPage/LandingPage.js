@@ -54,7 +54,7 @@ class LandingPage extends React.Component {
   }
 
   // Fetch complete game data.
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     let cohort = 'default';
     if (this.props.match) {
       cohort = this.props.match.params.cohortName ? this.props.match.params.cohortName : 'default';
