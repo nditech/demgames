@@ -108,11 +108,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   }
 
   const deleteHandle = choiceId => {
-    const r = window.confirm("Are you sure you want to delete the Question ?"); // eslint-disable-line
+    const r = window.confirm("Are you sure you want to delete the Question?"); // eslint-disable-line
     if (r === true) {
       deleteQuestion(choiceId, refreshQuestionList);
-    } else {
-
     }
   };
 
@@ -564,7 +562,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         return scenarioFields;
       }
       return fields;
-    } if (edit) {
+    }
+    if (edit) {
       if (activeGameType === "scenario") {
         hasChoices = false;
         // return scenarioEditFields;

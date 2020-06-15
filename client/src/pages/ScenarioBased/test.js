@@ -1,13 +1,11 @@
 import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-// import configureStore from 'redux-mock-store';
 
 import { ScenarioQuesAns } from './ScenarioQuesAns';
 import { gameData } from '../QuestionsAnsPage/data';
 
 Enzyme.configure({ adapter: new Adapter() });
-// let store;
 
 const defaultProps = {
   gameData: { gameData },

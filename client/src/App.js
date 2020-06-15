@@ -7,9 +7,7 @@ import store from "./store";
 
 const App = () => (
   <Provider store={store}>
-    <>
-      <LandingPage />
-    </>
+    <LandingPage />
   </Provider>
 );
 

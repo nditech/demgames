@@ -538,7 +538,7 @@ class DialogBox extends Component {
 }
 
 DialogBox.propTypes = {
-  data: PropTypes.shape({}),
+  data: PropTypes.arrayOf(PropTypes.shape({})),
   cancelButtonValue: PropTypes.string,
   confirmButtonValue: PropTypes.string,
   isConfirmation: PropTypes.bool,
