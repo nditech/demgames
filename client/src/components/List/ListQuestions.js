@@ -121,6 +121,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         answers.push({ option: convertChoice(index), value: item });
       });
     }
+    if (data.answers === '') {
+      return alert('You must enter the correct answer');
+    }
     data.options = answers;
     updateQuestion(data, id, () => {
       setPopupState({ ...popupState, showMessage: false });
@@ -320,6 +323,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     }
     gameData.options = answers;
     gameData.game_id = activeGame;
+    if (gameData.answers === '') {
+      return alert('You must enter the correct answer');
+    }
     addQuestion(gameData, () => {
       setPopupState({ ...popupState, showMessage: false });
       refreshQuestionList();
