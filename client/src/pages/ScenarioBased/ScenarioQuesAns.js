@@ -91,7 +91,16 @@ export class ScenarioQuesAns extends React.Component {
           "Content-Type": "application/json",
         },
       })
-        .then(res => res.json())
+        .then(async res => {
+          if (res.status === 404) {
+            await this.setState({
+              redirect: true,
+              currentScore: this.state.currentScore + this.state.currentQuestionScore,
+            });
+            return null;
+          }
+          res.json();
+        })
         .then(data => {
           this.setState({
             questionStatement: data.question_statement,
@@ -99,7 +108,9 @@ export class ScenarioQuesAns extends React.Component {
             currentScore: this.state.currentScore + this.state.currentQuestionScore,
           });
         })
-        .catch(error => console.log(error)); // eslint-disable-line
+        .catch(async error => {
+          console.log(error, this.state); // eslint-disable-line
+        });
     }
   };
 
@@ -213,8 +224,6 @@ export class ScenarioQuesAns extends React.Component {
                           moduleColor={color}
                         />
                       ))}
-
-                    {/* ))} */}
                   </div>
                 </div>
                 {answerClick && (
@@ -258,7 +267,7 @@ ScenarioQuesAns.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       moduleId: PropTypes.string,
-      levelId: PropTypes.number,
+      levelId: PropTypes.string,
     }),
   }).isRequired,
 };
