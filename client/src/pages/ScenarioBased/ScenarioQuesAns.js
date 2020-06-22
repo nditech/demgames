@@ -91,26 +91,26 @@ export class ScenarioQuesAns extends React.Component {
           "Content-Type": "application/json",
         },
       })
-        .then(async res => {
+        .then(res => {
           if (res.status === 404) {
-            await this.setState({
+            this.setState({
               redirect: true,
               currentScore: this.state.currentScore + this.state.currentQuestionScore,
             });
             return null;
           }
-          res.json();
+          return res.json();
         })
         .then(data => {
-          this.setState({
-            questionStatement: data.question_statement,
-            options: data.options,
-            currentScore: this.state.currentScore + this.state.currentQuestionScore,
-          });
+          if (data) {
+            this.setState({
+              questionStatement: data.question_statement,
+              options: data.options,
+              currentScore: this.state.currentScore + this.state.currentQuestionScore,
+            });
+          }
         })
-        .catch(async error => {
-          console.log(error, this.state); // eslint-disable-line
-        });
+        .catch(error => console.log(error)); // eslint-disable-line
     }
   };
 
@@ -224,6 +224,8 @@ export class ScenarioQuesAns extends React.Component {
                           moduleColor={color}
                         />
                       ))}
+
+                    {/* ))} */}
                   </div>
                 </div>
                 {answerClick && (
