@@ -10,6 +10,7 @@ import {
   addQuestion,
   getChoiceLinkingQuestion,
 } from "./utility";
+import confirmation from "../Confirm/Confirm";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
   // Question Table Headers
@@ -108,10 +109,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   }
 
   const deleteHandle = choiceId => {
-    const r = window.confirm("Are you sure you want to delete the Question?"); // eslint-disable-line
-    if (r === true) {
-      deleteQuestion(choiceId, refreshQuestionList);
-    }
+    confirmation('DemGames', 'Are you sure you want to delete the Question?', () => deleteQuestion(choiceId, refreshQuestionList));
   };
 
   const updateHandle = (data = "", id) => {

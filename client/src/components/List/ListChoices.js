@@ -2,15 +2,12 @@ import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import DataTable from "react-data-table-component";
 import { config } from "../../settings";
+import confirmation from "../Confirm/Confirm";
 
 const ListChoices = () => {
   const deleteClickHandle = choiceId => {
     console.log("choice id ------------> ", choiceId); // eslint-disable-line
-    if (window.confirm("Are you sure you want to delete the choice")) { // eslint-disable-line
-      console.log("question will be deleted"); // eslint-disable-line
-    } else {
-      console.log("will not be deleted"); // eslint-disable-line
-    }
+    confirmation('DemGames', 'Are you sure you want to delete the choice?', () => console.log(("question will be deleted"))); // eslint-disable-line
   };
   const editClickHandle = () => { };
 

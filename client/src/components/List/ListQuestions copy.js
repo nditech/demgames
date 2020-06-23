@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 import { config } from "../../settings";
+import confirmation from "../Confirm/Confirm";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
   // Set data table columns
@@ -88,9 +89,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     getQuestions();
   }
 
-  const deleteHandle = choiceId => {
-    if (window.confirm("Are you sure you want to delete the question")) { // eslint-disable-line
-      const url = `${config.baseUrl}/questions/${choiceId}`;
+  const deleteHandle = (choiceId) => {
+    const deleteFunction = (choiceToDelete) => {
+      const url = `${config.baseUrl}/questions/${choiceToDelete}`;
       fetch(url, {
         method: "POST",
         headers: {
@@ -98,7 +99,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ choiceId }),
+        body: JSON.stringify({ choiceToDelete }),
       })
         .then(res => res.json())
         .then(data => {
@@ -106,7 +107,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           getQuestions();
         })
         .catch(error => console.log(error)); // eslint-disable-line
-    }
+
+    };
+    confirmation('DemGames', 'Are you sure you want to delete the Question?', () => deleteFunction(choiceId));
   };
 
   const convertChoice = value => String.fromCharCode(value + 65);
@@ -151,7 +154,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     messageBox: false,
     edit: true,
     create: false,
-    onDelete: () => {},
+    onDelete: () => { },
     removeMessage: false,
   });
   const {

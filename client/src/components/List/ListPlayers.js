@@ -3,6 +3,7 @@ import ListTable from "../ListTable";
 import { config } from "../../settings";
 import DialogBox from "../DialogBox/DialogBox";
 import { updatePlayer, deletePlayer } from "./utility";
+import confirmation from "../Confirm/Confirm";
 
 const ListPlayers = () => {
   const [popupState, setPopupState] = useState({
@@ -255,16 +256,7 @@ const ListPlayers = () => {
   };
 
   const deleteHandle = playerId => {
-    const r = window.confirm( // eslint-disable-line
-      `Are you sure you want to delete player with id = ${playerId}`,
-    );
-    if (r === true) {
-      deletePlayer(playerId, () => {
-        getPlayers();
-      });
-    } else {
-
-    }
+    confirmation('DemGames', `Are you sure you want to delete player with id = ${playerId}?`, () => deletePlayer(playerId, () => { getPlayers(); }));
   };
 
   const editHandle = id => {
