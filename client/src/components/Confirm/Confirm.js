@@ -1,7 +1,7 @@
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-export default (title, message, handleDelete) => {
+export const confirmation = (title, message, handleDelete) => {
   confirmAlert({
     title,
     message,
@@ -12,6 +12,18 @@ export default (title, message, handleDelete) => {
       {
         label: 'OK',
         onClick: () => handleDelete(),
+      },
+    ],
+  });
+};
+
+export const alert = (message) => {
+  confirmAlert({
+    title: 'DemGames',
+    message,
+    buttons: [
+      {
+        label: 'OK',
       },
     ],
   });

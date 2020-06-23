@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import DialogBox from "../DialogBox/DialogBox";
 import { config } from "../../settings";
+import { alert } from "../Confirm/Confirm";
 
 const EditQuestion = ({
   id,

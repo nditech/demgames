@@ -3,7 +3,7 @@ import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 import { addCohort, deleteCohort, updateCohort } from "./utility";
 import { config } from "../../settings";
-import confirmation from "../Confirm/Confirm";
+import { confirmation } from "../Confirm/Confirm";
 
 const ListCohorts = () => {
   const columns = [

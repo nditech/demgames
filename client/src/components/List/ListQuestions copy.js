@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 import { config } from "../../settings";
-import confirmation from "../Confirm/Confirm";
+import { confirmation, alert } from "../Confirm/Confirm";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
   // Set data table columns

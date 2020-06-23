@@ -3,6 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "react-redux";
 import Auth from "../../Auth";
 import { config } from "../../settings";
+import { alert } from "../Confirm/Confirm";
 
 const auth0 = new Auth();
 

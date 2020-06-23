@@ -5,6 +5,7 @@ import { setAlert } from '../../actions/alert';
 import { countryList } from './countryList';
 import { config } from "../../settings";
 import Auth from '../../Auth';
+import { alert } from "../Confirm/Confirm";
 
 const auth0 = new Auth();
 

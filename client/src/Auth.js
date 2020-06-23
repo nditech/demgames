@@ -2,6 +2,7 @@
 
 import auth0 from "auth0-js";
 import jwtDecode from "jwt-decode";
+import { alert } from "./components/Confirm/Confirm";
 
 const LOGIN_SUCCESS_PAGE = "/landingpage";
 const LOGIN_FAILURE_PAGE = "/";

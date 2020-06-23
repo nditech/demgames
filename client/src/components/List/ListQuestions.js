@@ -10,7 +10,7 @@ import {
   addQuestion,
   getChoiceLinkingQuestion,
 } from "./utility";
-import confirmation from "../Confirm/Confirm";
+import { confirmation, alert } from "../Confirm/Confirm";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
   // Question Table Headers

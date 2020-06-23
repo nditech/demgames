@@ -3,7 +3,7 @@ import ListTable from "../ListTable";
 import { config } from "../../settings";
 import DialogBox from "../DialogBox/DialogBox";
 import { updatePlayer, deletePlayer } from "./utility";
-import confirmation from "../Confirm/Confirm";
+import { confirmation } from "../Confirm/Confirm";
 
 const ListPlayers = () => {
   const [popupState, setPopupState] = useState({
@@ -260,8 +260,6 @@ const ListPlayers = () => {
   };
 
   const editHandle = id => {
-    // alert("inside edit handle and the player id is -- " + id);
-
     const selected_player = user.find(item => item.id === id);
 
     setPlayerData({ ...playerData, selectedPlayer: selected_player });
