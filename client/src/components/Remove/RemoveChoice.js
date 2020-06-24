@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import "react-datepicker/dist/react-datepicker.css";
 import Auth from '../../Auth';
 import { config } from "../../settings";
+import { customAlert } from "../Confirm/Confirm";
 
 const auth0 = new Auth();
 
@@ -62,7 +63,7 @@ class RemoveChoice extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message) {
-          alert(data.message); // eslint-disable-line
+          customAlert(data.message);
         }
       })
       .catch((error) => console.log(error));  // eslint-disable-line
@@ -97,7 +98,7 @@ class RemoveChoice extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'Not found') {
-          alert("Question with specified Id is not found"); // eslint-disable-line
+          customAlert("Question with specified Id is not found");
         } else {
           this.setState({
             choice: {

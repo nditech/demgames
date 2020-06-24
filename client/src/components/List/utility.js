@@ -109,28 +109,26 @@ export const updateQuestion = (data = "", id, callbackFunction) => {
 
 // Delete a question based on ID
 export const deleteQuestion = (questionId, callbackFunction) => {
-  if (window.confirm("Are you sure you want to delete the question")) { // eslint-disable-line
-    const url = `${config.baseUrl}/questions/${questionId}`;
-    fetch(url, {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ questionId }),
-    })
-      .then(res => res.json())
-      .then(() => {
-        toast.info("Deleted Successfully !", {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        callbackFunction();
-      })
-      .catch(() => toast.error("Sorry...some technical issue !", {
+  const url = `${config.baseUrl}/questions/${questionId}`;
+  fetch(url, {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ questionId }),
+  })
+    .then(res => res.json())
+    .then(() => {
+      toast.info("Deleted Successfully !", {
         position: toast.POSITION.TOP_CENTER,
-      }));
-  }
+      });
+      callbackFunction();
+    })
+    .catch(() => toast.error("Sorry...some technical issue !", {
+      position: toast.POSITION.TOP_CENTER,
+    }));
 };
 
 // Add a New Cohort

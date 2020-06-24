@@ -2,6 +2,7 @@
 
 import auth0 from "auth0-js";
 import jwtDecode from "jwt-decode";
+import { customAlert } from "./components/Confirm/Confirm";
 
 const LOGIN_SUCCESS_PAGE = "/landingpage";
 const LOGIN_FAILURE_PAGE = "/";
@@ -67,8 +68,8 @@ export default class Auth {
         username: null,
       },
       (err) => {
-        if (err) return alert(`Something went wrong: ${err.message}`); // eslint-disable-line 
-        return alert("success signup without login!"); // eslint-disable-line 
+        if (err) return customAlert(`Something went wrong: ${err.message}`);
+        return customAlert("success signup without login!");
       },
     );
   }

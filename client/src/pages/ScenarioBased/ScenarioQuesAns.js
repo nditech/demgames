@@ -91,13 +91,24 @@ export class ScenarioQuesAns extends React.Component {
           "Content-Type": "application/json",
         },
       })
-        .then(res => res.json())
+        .then(res => {
+          if (res.status === 404) {
+            this.setState({
+              redirect: true,
+              currentScore: this.state.currentScore + this.state.currentQuestionScore,
+            });
+            return null;
+          }
+          return res.json();
+        })
         .then(data => {
-          this.setState({
-            questionStatement: data.question_statement,
-            options: data.options,
-            currentScore: this.state.currentScore + this.state.currentQuestionScore,
-          });
+          if (data) {
+            this.setState({
+              questionStatement: data.question_statement,
+              options: data.options,
+              currentScore: this.state.currentScore + this.state.currentQuestionScore,
+            });
+          }
         })
         .catch(error => console.log(error)); // eslint-disable-line
     }
@@ -258,7 +269,7 @@ ScenarioQuesAns.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       moduleId: PropTypes.string,
-      levelId: PropTypes.number,
+      levelId: PropTypes.string,
     }),
   }).isRequired,
 };

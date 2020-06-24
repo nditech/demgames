@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
-
 import { addCohort, deleteCohort, updateCohort } from "./utility";
 import { config } from "../../settings";
+import { confirmation } from "../Confirm/Confirm";
 
 const ListCohorts = () => {
   const columns = [
@@ -106,14 +105,7 @@ const ListCohorts = () => {
   }, []);
 
   const deleteHandle = cohortId => {
-    const r = window.confirm( // eslint-disable-line
-      `Are you sure you want to delete cohort with id=${cohortId}`,
-    );
-    if (r === true) {
-      deleteCohort(cohortId, () => {
-        getCohort();
-      });
-    }
+    confirmation('DemGames', `Are you sure you want to delete cohort with id=${cohortId}?`, () => deleteCohort(cohortId, () => { getCohort(); }));
   };
 
   const editCohort = (data = "", id) => {

@@ -5,6 +5,7 @@ import { setAlert } from '../../actions/alert';
 import { countryList } from './countryList';
 import { config } from "../../settings";
 import Auth from '../../Auth';
+import { customAlert } from "../Confirm/Confirm";
 
 const auth0 = new Auth();
 
@@ -57,7 +58,7 @@ const Register = () => {
         body: JSON.stringify(formData),
       })
         .then((res) => (res.json()))
-        .then((data) => { alert(data.message); }) // eslint-disable-line
+        .then((data) => { customAlert(data.message); })
         .catch((error) => console.log(error)); // eslint-disable-line
     };
     submitData();

@@ -3,6 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "react-redux";
 import Auth from "../../Auth";
 import { config } from "../../settings";
+import { customAlert } from "../Confirm/Confirm";
 
 const auth0 = new Auth();
 
@@ -68,7 +69,7 @@ const AddQuestion = () => {
     })
       .then(res => res.json())
       .then(() => {
-        alert("Question was successfully added"); // eslint-disable-line
+        customAlert("Question was successfully added");
       })
       .catch(error => console.log(error)); // eslint-disable-line
   };

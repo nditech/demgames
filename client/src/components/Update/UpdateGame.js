@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import "react-datepicker/dist/react-datepicker.css";
 import Auth from '../../Auth';
 import { config } from "../../settings";
+import { customAlert } from "../Confirm/Confirm";
 
 const auth0 = new Auth();
 
@@ -105,7 +106,7 @@ class UpdateGame extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'Not found') {
-          alert("Game with specified Id is not found"); // eslint-disable-line
+          customAlert("Game with specified Id is not found");
         } else {
           this.setState({
             game: {
@@ -136,7 +137,7 @@ class UpdateGame extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'updated successfully') {
-          alert("Successfully Updated the game detail"); // eslint-disable-line
+          customAlert("Successfully Updated the game detail");
         }
       })
       .catch((error) => console.log(error)); // eslint-disable-line

@@ -10,6 +10,7 @@ import {
   addQuestion,
   getChoiceLinkingQuestion,
 } from "./utility";
+import { confirmation, customAlert } from "../Confirm/Confirm";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
   // Question Table Headers
@@ -108,10 +109,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   }
 
   const deleteHandle = choiceId => {
-    const r = window.confirm("Are you sure you want to delete the Question?"); // eslint-disable-line
-    if (r === true) {
-      deleteQuestion(choiceId, refreshQuestionList);
-    }
+    confirmation('DemGames', 'Are you sure you want to delete the Question?', () => deleteQuestion(choiceId, refreshQuestionList));
   };
 
   const updateHandle = (data = "", id) => {
@@ -120,6 +118,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       data.options.map((item, index) => {
         answers.push({ option: convertChoice(index), value: item });
       });
+    }
+    if (data.answers === '') {
+      return customAlert('You must enter the correct answer');
     }
     data.options = answers;
     updateQuestion(data, id, () => {
@@ -320,6 +321,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     }
     gameData.options = answers;
     gameData.game_id = activeGame;
+    if (gameData.answers === '') {
+      return customAlert('You must enter the correct answer');
+    }
     addQuestion(gameData, () => {
       setPopupState({ ...popupState, showMessage: false });
       refreshQuestionList();

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import DialogBox from "../DialogBox/DialogBox";
 import { config } from "../../settings";
+import { customAlert } from "../Confirm/Confirm";
 
 const EditQuestion = ({
   id,
@@ -37,7 +38,7 @@ const EditQuestion = ({
     })
       .then(res => res.json())
       .then(responseData => {
-        alert(JSON.stringify(responseData)); // eslint-disable-line
+        customAlert(JSON.stringify(responseData));
         onCancel();
         setPopupState({ ...popupState, showMessage: false });
 
