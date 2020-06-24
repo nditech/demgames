@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import { config } from "../../settings";
-import { alert } from "../Confirm/Confirm";
+import { customAlert } from "../Confirm/Confirm";
 
 const auth0 = new Auth();
 
@@ -121,7 +121,7 @@ class RemovePlayer extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data === 200) {
-          alert("Successful"); // eslint-disable-line
+          customAlert("Successful");
         }
       })
       .catch((error) => console.log(error));  // eslint-disable-line
@@ -174,7 +174,7 @@ class RemovePlayer extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'Not found') {
-          alert("player with specified Id/Email/Username not found"); // eslint-disable-line
+          customAlert("player with specified Id/Email/Username not found");
         } else {
           this.setState({
             player: {

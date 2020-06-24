@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 import { config } from "../../settings";
-import { confirmation, alert } from "../Confirm/Confirm";
+import { confirmation, customAlert } from "../Confirm/Confirm";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
   // Set data table columns
@@ -103,7 +103,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       })
         .then(res => res.json())
         .then(data => {
-          alert(JSON.stringify(data)); // eslint-disable-line
+          customAlert(JSON.stringify(data));
           getQuestions();
         })
         .catch(error => console.log(error)); // eslint-disable-line
@@ -134,7 +134,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     })
       .then(res => res.json())
       .then(responseData => {
-        alert(JSON.stringify(responseData)); // eslint-disable-line
+        customAlert(JSON.stringify(responseData));
         setPopupState({ ...popupState, showMessage: false });
         getQuestions();
       })
@@ -154,7 +154,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     messageBox: false,
     edit: true,
     create: false,
-    onDelete: () => { },
+    onDelete: () => {},
     removeMessage: false,
   });
   const {

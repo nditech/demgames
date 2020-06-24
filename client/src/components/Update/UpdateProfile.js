@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import Auth from '../../Auth';
 import { config } from "../../settings";
-import { alert } from "../Confirm/Confirm";
+import { customAlert } from "../Confirm/Confirm";
 
 const auth0 = new Auth();
 
@@ -151,7 +151,7 @@ class UpdateProfile extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data === 200) {
-          alert("Successful"); // eslint-disable-line
+          customAlert("Successful");
         }
       })
       .catch((error) => console.log(error)); // eslint-disable-line

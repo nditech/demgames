@@ -10,7 +10,7 @@ import {
   addQuestion,
   getChoiceLinkingQuestion,
 } from "./utility";
-import { confirmation, alert } from "../Confirm/Confirm";
+import { confirmation, customAlert } from "../Confirm/Confirm";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
   // Question Table Headers
@@ -120,7 +120,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       });
     }
     if (data.answers === '') {
-      return alert('You must enter the correct answer');
+      return customAlert('You must enter the correct answer');
     }
     data.options = answers;
     updateQuestion(data, id, () => {
@@ -322,7 +322,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     gameData.options = answers;
     gameData.game_id = activeGame;
     if (gameData.answers === '') {
-      return alert('You must enter the correct answer');
+      return customAlert('You must enter the correct answer');
     }
     addQuestion(gameData, () => {
       setPopupState({ ...popupState, showMessage: false });

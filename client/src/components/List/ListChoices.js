@@ -9,7 +9,7 @@ const ListChoices = () => {
     console.log("choice id ------------> ", choiceId); // eslint-disable-line
     confirmation('DemGames', 'Are you sure you want to delete the choice?', () => console.log(("question will be deleted"))); // eslint-disable-line
   };
-  const editClickHandle = () => { };
+  const editClickHandle = () => {};
 
   const EditButton = (props) => (
     <button

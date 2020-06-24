@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Auth from '../../Auth';
 import { config } from "../../settings";
-import { alert } from "../Confirm/Confirm";
+import { customAlert } from "../Confirm/Confirm";
 
 const auth0 = new Auth();
 
@@ -49,7 +49,7 @@ const AddChoices = () => {
     })
       .then(res => res.json())
       .then(() => {
-        alert('The choice was successfully added'); // eslint-disable-line 
+        customAlert('The choice was successfully added');
         handleReset();
       })
             .catch((error) => console.log(error)); // eslint-disable-line   

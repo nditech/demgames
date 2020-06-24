@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import "react-datepicker/dist/react-datepicker.css";
 import Auth from '../../Auth';
 import { config } from "../../settings";
-import { alert } from "../Confirm/Confirm";
+import { customAlert } from "../Confirm/Confirm";
 
 const auth0 = new Auth();
 
@@ -114,7 +114,7 @@ class UpdateChoice extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'Not found') {
-          alert("Choice with specified id is not found"); // eslint-disable-line
+          customAlert("Choice with specified id is not found");
         } else {
           this.setState({
             choice: {
@@ -147,7 +147,7 @@ class UpdateChoice extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === 'updated successfully') {
-          alert("Successfully Updated the choice detail"); // eslint-disable-line
+          customAlert("Successfully Updated the choice detail");
         }
       })
       .catch((error) => console.log(error)); // eslint-disable-line
