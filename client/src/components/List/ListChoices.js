@@ -1,41 +1,38 @@
-import React, { Fragment, useState, useEffect } from "react";
-
+import React, { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 import DataTable from "react-data-table-component";
 import { config } from "../../settings";
+import { confirmation } from "../Confirm/Confirm";
 
 const ListChoices = () => {
   const deleteClickHandle = choiceId => {
-    console.log("choice id ------------> ", choiceId);
-    if (window.confirm("Are you sure you want to delete the choice")) {
-      console.log("question will be deleted");
-    } else {
-      console.log("will not be deleted");
-    }
+    console.log("choice id ------------> ", choiceId); // eslint-disable-line
+    confirmation('DemGames', 'Are you sure you want to delete the choice?', () => console.log(("question will be deleted"))); // eslint-disable-line
   };
-  const editClickHandle = choiceId => {};
+  const editClickHandle = () => {};
 
-  const EditButton = props => (
+  const EditButton = (props) => (
     <button
       type="button"
-      onClick={e => editClickHandle(props.row.id)}
+      onClick={() => editClickHandle(props.row.id)}
       data-id={props.row.id}
       data-question-id={props.row.questionid}
       data-row={JSON.stringify(props)}
       className="dt-btn btn btn-info mr-1"
     >
-      <i className="fa fa-edit"></i>
+      <i className="fa fa-edit" />
     </button>
   );
 
   const DeleteButton = props => (
     <button
       type="button"
-      onClick={e => deleteClickHandle(props.row.id)}
+      onClick={() => deleteClickHandle(props.row.id)}
       data-id={props.row.id}
       data-question-id={props.row.questionid}
       className="dt-btn btn btn-danger"
     >
-      <i className="fa fa-trash"></i>
+      <i className="fa fa-trash" />
     </button>
   );
 
@@ -43,43 +40,45 @@ const ListChoices = () => {
     {
       name: "Id",
       selector: "id",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Question Id",
       selector: "questionid",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Choice Statement",
       selector: "choicestatement",
       sortable: true,
-      searchable: true
+      searchable: true,
     },
     {
       name: "Choice Description",
       selector: "choicedescription",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Weight",
       selector: "weight",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Answer",
       selector: "answer",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Actions",
       button: true,
       cell: row => (
-        <Fragment>
-          <EditButton row={row} /> <DeleteButton row={row} />
-        </Fragment>
-      )
-    }
+        <>
+          <EditButton row={row} />
+          {' '}
+          <DeleteButton row={row} />
+        </>
+      ),
+    },
   ];
 
   const [choicesData, setChoicesData] = useState({ choices: [{}] });
@@ -87,47 +86,66 @@ const ListChoices = () => {
   const { choices } = choicesData;
 
   const getChoices = () => {
-    const url = config.basUrl + "/listchoices";
+    const url = `${config.basUrl}/listchoices`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("api data -->", JSON.stringify(data));
-        data.map(choice =>
-          choice.answer === 1 ? (choice.answer = "yes") : (choice.answer = "no")
-        );
-        setChoicesData({ choices: data });
+        const newChoices = [];
+        data.map(choice => (
+          choice.answer === 1
+            ? (
+              newChoices.push({
+                ...choice,
+                answer: "yes",
+              })
+            ) : (
+              newChoices.push({
+                ...choice,
+                answer: "no",
+              })
+            )
+        ));
+        setChoicesData({ choices: newChoices });
       })
-      .catch(err => console.log(err));
-    console.log(choices);
+      .catch(err => console.log(err)); // eslint-disable-line
   };
 
   useEffect(() => {
     getChoices();
   }, []);
 
-  const simpleTable = () => {
-    return (
-      <DataTable
-        title="List of Choices"
-        columns={columns}
-        data={choices}
-        pagination
-      />
-    );
-  };
+  const simpleTable = () => (
+    <DataTable
+      title="List of Choices"
+      columns={columns}
+      data={choices}
+      pagination
+    />
+  );
 
   return (
     <div className="App">
       <div>{simpleTable()}</div>
     </div>
   );
+};
+
+ListChoices.propTypes = {
+  row: PropTypes.shape({
+    questionid: PropTypes.string,
+    id: PropTypes.string,
+  }),
+};
+
+ListChoices.defaultProps = {
+  row: null,
 };
 
 export default ListChoices;

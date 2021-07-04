@@ -1,4 +1,5 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
+import PropTypes from 'prop-types';
 import DataTable from "react-data-table-component";
 
 const ListTable = ({
@@ -9,12 +10,11 @@ const ListTable = ({
     hasActionBtns,
     deleteHandle,
     editHandle,
-    minSearchLength = 3
-  }
+  },
 }) => {
   const [listState, setListState] = useState({
     filteredData: "",
-    searchText: ""
+    searchText: "",
   });
 
   const { filteredData, searchText } = listState;
@@ -22,61 +22,62 @@ const ListTable = ({
   const deleteClickHandle = choiceId => {
     deleteHandle(choiceId);
   };
-  const editClickHandle = choiceId => {};
 
   const EditButton = props => (
     <button
       type="button"
-      onClick={e => editHandle(props.row.id)}
+      onClick={() => editHandle(props.row.id)}
       data-id={props.row.id}
       data-question-id={props.row.questionid}
       data-row={JSON.stringify(props)}
       className="dt-btn btn btn-info mr-1"
     >
-      <i className="fa fa-edit"></i>
+      <i className="fa fa-edit" />
     </button>
   );
 
   const DeleteButton = props => (
     <button
       type="button"
-      onClick={e => deleteClickHandle(props.row.id)}
+      onClick={() => deleteClickHandle(props.row.id)}
       data-id={props.row.id}
       data-question-id={props.row.questionid}
       className="dt-btn btn btn-danger"
     >
-      <i className="fa fa-trash"></i>
+      <i className="fa fa-trash" />
     </button>
   );
 
   if (hasActionBtns) {
-    columns.push({
+    columns.push({ // eslint-disable-line
       name: "Actions",
       button: true,
       cell: row => (
-        <Fragment>
-          <EditButton row={row} /> <DeleteButton row={row} />
-        </Fragment>
-      )
+        <>
+          <EditButton row={row} />
+          {' '}
+          <DeleteButton row={row} />
+        </>
+      ),
     });
   }
 
   // Table Search
-  let rowdata = JSON.parse(JSON.stringify(data));
+  const rowdata = JSON.parse(JSON.stringify(data));
   const handleSearch = e => {
-    let searchText = e.target.value;
-    let filterdata = [];
+    const searchText = e.target.value; // eslint-disable-line no-shadow
+    const filterdata = [];
     setListState({
       ...listState,
-      searchText: searchText
+      searchText,
     });
 
     window.filterDelay && clearTimeout(window.filterDelay);
     window.filterDelay = setTimeout(() => {
       rowdata.forEach(element => {
         let valueString = "";
-        for (let lindex in element) {
-          valueString += " " + element[lindex];
+        for (const lindex in element) {
+          valueString += ` ${element[lindex]}`;
         }
         if (
           valueString.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
@@ -88,10 +89,9 @@ const ListTable = ({
       setListState({
         ...listState,
         filteredData: filterdata,
-        searchText: searchText
+        searchText,
       });
     }, 300);
-    // clearTimeout(filterDelay);
   };
 
   return (
@@ -107,12 +107,31 @@ const ListTable = ({
         <DataTable
           title={title}
           columns={columns}
-          data={filteredData ? filteredData : data}
+          data={filteredData || data}
           pagination
         />
       </div>
     </div>
   );
+};
+
+ListTable.propTypes = {
+  tableData: PropTypes.shape({
+    title: PropTypes.string,
+    columns: PropTypes.arrayOf(PropTypes.shape({})),
+    data: PropTypes.arrayOf(PropTypes.shape({})),
+    hasActionBtns: PropTypes.bool,
+    deleteHandle: PropTypes.func,
+    editHandle: PropTypes.func,
+  }).isRequired,
+  row: PropTypes.shape({
+    id: PropTypes.string,
+    questionid: PropTypes.string,
+  }),
+};
+
+ListTable.defaultProps = {
+  row: null,
 };
 
 export default ListTable;

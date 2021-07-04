@@ -1,43 +1,33 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 import { config } from "../../settings";
+import { confirmation, customAlert } from "../Confirm/Confirm";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
   // Set data table columns
   const columns = [
-    // {
-    //   name: "Id",
-    //   selector: "id",
-    //   sortable: true
-    // },
-
     {
       name: "Question",
       selector: "question_statement",
-      sortable: true
+      sortable: true,
     },
-    // {
-    //   name: "Game Id",
-    //   selector: "game_id",
-    //   sortable: true
-    // },
-
     {
       name: "Difficulty Level",
       selector: "difficulty_level",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Weight",
       selector: "weight",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Explanation",
       selector: "explanation",
-      sortable: true
-    }
+      sortable: true,
+    },
   ];
 
   const [questionsData, setQuestionsData] = useState({
@@ -46,51 +36,50 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     questionId: null,
     questionDetail: {
       difficulty_level: "",
-      question_statement: ""
+      question_statement: "",
     },
     choices: [],
     choicesNameArray: [],
-    correctChoice: ""
+    correctChoice: "",
   });
   const {
     questions,
     gameId,
     questionDetail,
-    choices,
     correctChoice,
     choicesNameArray,
-    questionId
+    questionId,
   } = questionsData;
 
-  console.log(
-    "question =----------------------------------------------------------detail....",
-    questionDetail
-  );
-
   const getQuestions = () => {
-    const url = config.baseUrl + `/listquestions/${activeGame}`;
+    const url = `${config.baseUrl}/listquestions/${activeGame}`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("api data -->", JSON.stringify(data));
-        data.map(obj =>
-          obj.isitmedia === 1 ? (obj.isitmedia = "yes") : (obj.isitmedia = "no")
-        );
+        const modifiedQuestions = [];
+        data.map(obj => (obj.isitmedia === 1
+          ? modifiedQuestions.push({
+            ...obj,
+            isitmedia: 'yes',
+          })
+          : modifiedQuestions.push({
+            ...obj,
+            isitmedia: 'no',
+          })));
         setQuestionsData({
           ...questionsData,
-          questions: data,
-          gameId: activeGame
+          questions: modifiedQuestions,
+          gameId: activeGame,
         });
       })
-      .catch(err => console.log(err));
-    console.log(questions);
+      .catch(err => console.log(err)); // eslint-disable-line
   };
   useEffect(() => {
     getQuestions();
@@ -100,59 +89,56 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     getQuestions();
   }
 
-  const deleteHandle = questionId => {
-    console.log("choice id ------------> ", questionId);
-    if (window.confirm("Are you sure you want to delete the question")) {
-      let url = config.baseUrl + "/questions/" + questionId;
+  const deleteHandle = (choiceId) => {
+    const deleteFunction = (choiceToDelete) => {
+      const url = `${config.baseUrl}/questions/${choiceToDelete}`;
       fetch(url, {
         method: "POST",
         headers: {
-          authorization: "Bearer " + localStorage.getItem("access_token"),
+          authorization: `Bearer ${localStorage.getItem("access_token")}`,
           Accept: "application/json",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ questionId: questionId })
+        body: JSON.stringify({ choiceToDelete }),
       })
         .then(res => res.json())
         .then(data => {
-          alert(JSON.stringify(data));
+          customAlert(JSON.stringify(data));
           getQuestions();
         })
-        .catch(error => console.log(error));
-    }
+        .catch(error => console.log(error)); // eslint-disable-line
+
+    };
+    confirmation('DemGames', 'Are you sure you want to delete the Question?', () => deleteFunction(choiceId));
   };
 
-  const convertChoice = value => {
-    return String.fromCharCode(value + 65);
-  };
+  const convertChoice = value => String.fromCharCode(value + 65);
 
   const editQuestion = (data = "", id) => {
-    console.log(data);
-    let answers = [];
+    const answers = [];
     if (data) {
       data.answers.map((item, index) => {
         answers.push({ option: convertChoice(index), value: item });
       });
     }
     data.answers = answers;
-    console.log("options data -----> ", data);
-    let url = config.baseUrl + "/updatequestion/";
+    const url = `${config.baseUrl}/updatequestion/`;
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ data: data, id: id })
+      body: JSON.stringify({ data, id }),
     })
       .then(res => res.json())
-      .then(data => {
-        alert(JSON.stringify(data));
+      .then(responseData => {
+        customAlert(JSON.stringify(responseData));
         setPopupState({ ...popupState, showMessage: false });
         getQuestions();
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error)); // eslint-disable-line
   };
 
   //   Questions and choices
@@ -168,8 +154,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     messageBox: false,
     edit: true,
     create: false,
-    onDelete: null,
-    removeMessage: false
+    onDelete: () => {},
+    removeMessage: false,
   });
   const {
     showMessage,
@@ -183,7 +169,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     edit,
     create,
     onDelete,
-    removeMessage
+    removeMessage,
   } = popupState;
 
   let activeGameName;
@@ -201,13 +187,13 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         key: "game",
         type: "text",
         title: "Game",
-        value: activeGameName
+        value: activeGameName,
       },
       {
         key: "level",
         type: "text",
         title: "Level",
-        value: questionDetail.difficulty_level
+        value: questionDetail.difficulty_level,
       },
       {
         key: "question",
@@ -215,56 +201,55 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         title: "Question",
         value: questionDetail.question_statement,
         multiline: true,
-        editable: true
+        editable: true,
       },
       {
         key: "answers",
         type: "options",
         title: "answers",
-        value: choicesNameArray
+        value: choicesNameArray,
       },
       {
         key: "current_choice",
         type: "choice",
         title: "Current choice",
-        value: correctChoice
-      }
-    ]
+        value: correctChoice,
+      },
+    ],
   };
 
-  const getChoices = (questionId, selectedQuestion) => {
-    const url = config.baseUrl + `/choices/${questionId}`;
+  const getChoices = (questionIdToGetChoice, selectedQuestion) => {
+    const url = `${config.baseUrl}/choices/${questionIdToGetChoice}`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
-      .then(data => {
-        console.log("choices data -->", JSON.stringify(data));
-        let choicesName = [];
-        let correctChoice = "";
-        data.map((item, index) => {
+      .then(responseData => {
+        const choicesName = [];
+        let correctChoiceToSet = "";
+        responseData.map((item, index) => {
           item.option = convertChoice(index);
           choicesName.push(item.choicestatement);
           if (item.answer === 1) {
-            correctChoice = convertChoice(index);
+            correctChoiceToSet = convertChoice(index);
           }
         });
 
         setQuestionsData({
           ...questionsData,
-          choices: data,
+          choices: responseData,
           choicesNameArray: choicesName,
           questionDetail: selectedQuestion,
           questionId: selectedQuestion.id,
-          correctChoice: correctChoice
+          correctChoice: correctChoiceToSet,
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // eslint-disable-line
   };
 
   const onCancel = () => {
@@ -272,17 +257,13 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   };
 
   const editHandle = id => {
-    // console.log("id --- ", id);
-    const selectedQuestion = questions.find(item => {
-      return item.id === id;
-    });
+    const selectedQuestion = questions.find(item => item.id === id);
     getChoices(id, selectedQuestion);
-    // console.log("question detail selected", questionDetail);
     setPopupState({ ...popupState, showMessage: true });
   };
 
   return (
-    <Fragment>
+    <>
       <DialogBox
         confirmButtonValue={confirmButtonValue}
         showMessage={showMessage}
@@ -301,16 +282,28 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       />
       <ListTable
         tableData={{
-          columns: columns,
+          columns,
           title: "List of Questions",
           hasActionBtns: true,
           rowdata: questions,
-          deleteHandle: deleteHandle,
-          editHandle: editHandle
+          deleteHandle,
+          editHandle,
         }}
       />
-    </Fragment>
+    </>
   );
+};
+
+ListQuestions.propTypes = {
+  activeGame: PropTypes.string,
+  activeGameDetails: PropTypes.arrayOf(
+    PropTypes.shape({}),
+  ),
+};
+
+ListQuestions.defaultProps = {
+  activeGameDetails: null,
+  activeGame: null,
 };
 
 export default ListQuestions;

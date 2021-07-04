@@ -1,13 +1,13 @@
 import React from "react";
-// import { Redirect } from "react-router-dom";
-import NdiLogoUrl from "../../images/ndiLogo.png";
+import PropTypes from 'prop-types';
 import { withRouter } from "react-router";
 import { Dropdown, Image } from "semantic-ui-react";
-import profileUrl from "../../images/profile.png";
 import { connect } from "react-redux";
+import Icon from "@material-ui/core/Icon";
+import profileUrl from "../../images/profile.png";
 import { clearAuthDetails } from "../../pages/LandingPage/actions";
 import Auth from "../../Auth";
-import Icon from "@material-ui/core/Icon";
+
 const auth0 = new Auth();
 
 const authDetail = {
@@ -16,24 +16,24 @@ const authDetail = {
   player_email: "",
   player_username: "",
   player_picture: "",
-  player_gender: ""
+  player_gender: "",
 };
 
 const ProfileHeader = props => {
   let trigger;
   let options = [];
-  if(props.location.pathname.includes("/landingpage") && props.location.pathname.length >= 14){ 
+  if (props.location.pathname.includes("/landingpage") && props.location.pathname.length >= 14) {
     auth0.setCohort(props.location.pathname);
   }
 
-  //handle Login in action
+  // handle Login in action
   const handleLogIn = () => {
     if (!auth0.isAuthenticated()) {
       auth0.login();
     }
   };
 
-  //handle Logout in action
+  // handle Logout in action
   const handleLogOut = () => {
     if (auth0.isAuthenticated()) {
       authDetail.player_given_name = "";
@@ -42,37 +42,35 @@ const ProfileHeader = props => {
       authDetail.player_username = "";
       authDetail.player_picture = "";
       authDetail.player_gender = "";
-      console.log(authDetail);
       props.clearAuth(authDetail);
       auth0.logout();
     }
   };
 
-  const getLogoPath = () =>{
+  const getLogoPath = () => {
     try {
-      let cohort_name = auth0.getCohort().split("/landingpage")[0];
-      if(cohort_name) {
-        return "/client/images" + cohort_name +".png";
-      } else {
-        return "/client/images/default.png";
+      const cohort_name = auth0.getCohort().split("/landingpage")[0];
+      if (cohort_name) {
+        return `/client/images${cohort_name}.png`;
       }
-    } catch(err){
+      return "/client/images/default.png";
+    } catch (err) {
       return "/client/images/default.png";
     }
-  }
+  };
 
   const handleAdmin = () => {
     props.history.push("/admin");
   };
 
   const handleProfile = () => {
-    console.log("profile clicked");
     props.history.push("/profile");
   };
   if (auth0.isAuthenticated()) {
     trigger = (
       <span>
-        <Image avatar src={`${props.player.player_picture || profileUrl}`} />{" "}
+        <Image avatar src={`${props.player.player_picture || profileUrl}`} />
+        {" "}
         {`${props.player.player_given_name || ""} ${props.player
           .player_family_name || ""}`}
       </span>
@@ -82,32 +80,34 @@ const ProfileHeader = props => {
         key: "profile",
         text: "Profile",
         icon: "user",
-        onClick: handleProfile
+        onClick: handleProfile,
       },
       {
         key: "sign-out",
         text: "Sign Out",
         icon: "sign out",
-        onClick: handleLogOut
-      }
+        onClick: handleLogOut,
+      },
     ];
 
     if (
-      auth0.getProfile() &&
-      auth0.getProfile()["http://demGames.net/roles"] &&
-      auth0.getProfile()["http://demGames.net/roles"][0] === "admin"
+      auth0.getProfile()
+      && auth0.getProfile()["http://demGames.net/roles"]
+      && auth0.getProfile()["http://demGames.net/roles"][0] === "admin"
     ) {
       options.unshift({
         key: "adminPage",
         text: "Admin Page",
         icon: "settings",
-        onClick: handleAdmin
+        onClick: handleAdmin,
       });
     }
   } else {
     trigger = (
       <span>
-        <Image avatar src={profileUrl} /> {`Hello. Sign In`}
+        <Image avatar src={profileUrl} />
+        {' '}
+        Hello. Sign In
       </span>
     );
     options = [
@@ -115,8 +115,8 @@ const ProfileHeader = props => {
         key: "login",
         text: "Login / Sign Up",
         icon: "user",
-        onClick: handleLogIn
-      }
+        onClick: handleLogIn,
+      },
     ];
   }
   return (
@@ -126,11 +126,11 @@ const ProfileHeader = props => {
       </div>
       <div className="profile-header">
         <a
-          // href="/landingpage"
-          href={auth0.getCohort() != null? auth0.getCohort():"/landingpage"}
+          href={auth0.getCohort() != null ? auth0.getCohort() : "/landingpage"}
           style={{ verticalAlign: "middle", paddingRight: "30px" }}
         >
-          <Icon>home</Icon>{" "}
+          <Icon>home</Icon>
+          {" "}
         </a>
         <Dropdown
           trigger={trigger}
@@ -143,18 +143,35 @@ const ProfileHeader = props => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    clearAuth: authDetail => dispatch(clearAuthDetails(authDetail))
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  clearAuth: () => dispatch(clearAuthDetails(authDetail)),
+});
 
 const mapStateToProps = state => ({
   player: state.authDetail.authDetail,
-  gameData: state.gameData
+  gameData: state.gameData,
 });
+
+ProfileHeader.propTypes = {
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }).isRequired,
+  clearAuth: PropTypes.func.isRequired,
+  player: PropTypes.shape({
+    player_given_name: PropTypes.string,
+    player_family_name: PropTypes.string,
+    player_picture: PropTypes.string,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
+
+ProfileHeader.defaultProps = {
+
+};
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(ProfileHeader));

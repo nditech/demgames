@@ -2,10 +2,14 @@ const _ = require("underscore");
 const gameData = require("../data/Module/moduleData.json");
 // const gameData = require('../data/Module/tempData.json');
 const express = require("express");
-const app = express();
-const { check, validationResult } = require("express-validator");
-// models
+const cors = require("cors");
+const bodyParser = require("body-parser");
 const models = require("./models");
+const { check, validationResult } = require("express-validator");
+
+const app = express();
+app.use(cors());
+// models
 const players = models.Players;
 const questions = models.Questions;
 const games = models.Games;
@@ -22,7 +26,6 @@ const jwtDecode = require("jwt-decode");
 
 const db = require("./models/index");
 
-var bodyParser = require("body-parser");
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({

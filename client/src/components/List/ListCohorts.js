@@ -1,23 +1,22 @@
-import React, { Fragment, useState, useEffect } from "react";
-
+import React, { useState, useEffect } from "react";
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
-
 import { addCohort, deleteCohort, updateCohort } from "./utility";
 import { config } from "../../settings";
+import { confirmation } from "../Confirm/Confirm";
 
 const ListCohorts = () => {
   const columns = [
     {
       name: "Id",
       selector: "id",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Name",
       selector: "name",
-      sortable: true
-    }
+      sortable: true,
+    },
   ];
 
   const addCohortFields = [
@@ -26,28 +25,29 @@ const ListCohorts = () => {
       type: "text",
       title: "Title",
       value: "",
-      editable: true
-    }
+      editable: true,
+    },
   ];
-
-  const onCancel = () => {
-    setPopupState({ ...popupState, showMessage: false });
-  };
 
   const [popupState, setPopupState] = useState({
     showMessage: false,
     confirmButtonValue: "Update",
     messageTitle: "",
     messageDescription: "",
-    onConfirm: "",
+    onConfirm: () => {},
     isConfirmation: true,
     title: "Cohort detail",
     messageBox: false,
     edit: false,
     create: false,
-    onDelete: null,
-    removeMessage: false
+    onDelete: () => {},
+    removeMessage: false,
   });
+
+  const onCancel = () => {
+    setPopupState({ ...popupState, showMessage: false });
+  };
+
   const {
     showMessage,
     confirmButtonValue,
@@ -60,12 +60,12 @@ const ListCohorts = () => {
     edit,
     create,
     onDelete,
-    removeMessage
+    removeMessage,
   } = popupState;
 
   const [cohortData, setCohortData] = useState({
     cohort: [{}],
-    selectedCohort: { id: "", name: "" }
+    selectedCohort: { id: "", name: "" },
   });
 
   const { cohort, selectedCohort } = cohortData;
@@ -78,27 +78,26 @@ const ListCohorts = () => {
         type: "text",
         title: "Title",
         value: selectedCohort.name,
-        editable: true
-      }
-    ]
+        editable: true,
+      },
+    ],
   };
 
   const getCohort = () => {
-    const url = config.baseUrl + "/listCohort";
+    const url = `${config.baseUrl}/listCohort`;
     fetch(url, {
       method: "get",
       headers: {
-        authorization: "Bearer " + localStorage.getItem("access_token"),
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
-        console.log("cohort api data -->", JSON.stringify(data));
         setCohortData({ ...cohortData, cohort: data });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err)); // eslint-disable-line
   };
 
   useEffect(() => {
@@ -106,33 +105,20 @@ const ListCohorts = () => {
   }, []);
 
   const deleteHandle = cohortId => {
-    console.log("cohort id: ", cohortId);
-    var r = window.confirm(
-      "Are you sure you want to delete cohort with id=" + cohortId
-    );
-    if (r === true) {
-      deleteCohort(cohortId, function() {
-        getCohort();
-      });
-    } else {
-      return;
-    }
+    confirmation('DemGames', `Are you sure you want to delete cohort with id=${cohortId}?`, () => deleteCohort(cohortId, () => { getCohort(); }));
   };
 
   const editCohort = (data = "", id) => {
-    console.log("dialogbox data", id, data);
     // return;
-    updateCohort(data.name, id, function() {
+    updateCohort(data.name, id, () => {
       setPopupState({ ...popupState, showMessage: false });
       getCohort();
     });
   };
   const editHandle = id => {
     // debugger;
-    const selected_cohort = cohort.find(item => {
-      return item.id === id;
-    });
-    setCohortData({ ...cohortData, selectedCohort: selected_cohort });
+    const selectedCohortToSet = cohort.find(item => item.id === id);
+    setCohortData({ ...cohortData, selectedCohort: selectedCohortToSet });
     setPopupState({
       showMessage: true,
       confirmButtonValue: "Update",
@@ -145,14 +131,13 @@ const ListCohorts = () => {
       edit: true,
       create: false,
       onDelete: null,
-      removeMessage: false
+      removeMessage: false,
     });
   };
 
   const saveCohort = (data = "") => {
-    console.log("final data: ", data);
     // return;
-    addCohort(data, function() {
+    addCohort(data, () => {
       setPopupState({ ...popupState, showMessage: false });
       getCohort();
     });
@@ -170,9 +155,9 @@ const ListCohorts = () => {
       messageBox: false,
       edit: false,
       create: true,
-      onDelete: null,
+      onDelete: () => {},
       removeMessage: false,
-      isRemove: false
+      isRemove: false,
     });
   };
 
@@ -181,7 +166,7 @@ const ListCohorts = () => {
   };
 
   return (
-    <Fragment>
+    <>
       <DialogBox
         confirmButtonValue={confirmButtonValue}
         showMessage={showMessage}
@@ -192,7 +177,6 @@ const ListCohorts = () => {
         onCancel={onCancel}
         title={title}
         data={create ? addCohortFields : editCohortFields}
-        // data={create ? scenarioFields : data}
         messageBox={messageBox}
         edit={edit}
         create={create}
@@ -200,23 +184,28 @@ const ListCohorts = () => {
         removeMessage={removeMessage}
         hasChoices={false}
       />
-      <div className="float-right" onClick={e => addCohortHandle(e)}>
-        <button className="btn btn-info btn-sm">
-          <i className="fa fa-plus"></i>
+      <div
+        className="float-right"
+        onClick={e => addCohortHandle(e)}
+        role="button"
+        tabIndex={0}
+      >
+        <button type="submit" className="btn btn-info btn-sm">
+          <i className="fa fa-plus" />
         </button>
         <span> Add Cohort</span>
       </div>
       <ListTable
         tableData={{
           title: "List of Cohort",
-          columns: columns,
+          columns,
           hasActionBtns: true,
           data: cohort,
-          deleteHandle: deleteHandle,
-          editHandle: editHandle
+          deleteHandle,
+          editHandle,
         }}
       />
-    </Fragment>
+    </>
   );
 };
 

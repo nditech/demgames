@@ -1,12 +1,10 @@
-// src/Auth/Auth.js
 /* eslint no-restricted-globals: */
+
 import auth0 from "auth0-js";
-//import jwtDecode from "jwt-decode";
 import jwtDecode from "jwt-decode";
+import { customAlert } from "./components/Confirm/Confirm";
 
-// jwtDecode =require(jwt-decode);
-
-let LOGIN_SUCCESS_PAGE = "/landingpage";
+const LOGIN_SUCCESS_PAGE = "/landingpage";
 const LOGIN_FAILURE_PAGE = "/";
 
 export default class Auth {
@@ -16,55 +14,42 @@ export default class Auth {
     redirectUri: "http://localhost:8080/callback",
     audience: "https://demgamestest.auth0.com/api/v2/",
     responseType: "token id_token",
-    scope: "openid profile email address"
+    scope: "openid profile email address",
   });
 
-  // auth0 = new auth0.WebAuth({
-  //   domain: 'pankaj-hashedin.auth0.com',
-  //  clientID: '8APzGywrBbRrfx5BEx5iHFV6Zq3GWQai',
-  //  redirectUri: 'http://localhost:8080/callback',
-  //  audience:'https://pankaj-hashedin.auth0.com/api/v2/',
-  //  responseType: 'token id_token',
-  //  scope: 'openid profile email address'
-  // });
-
-  constructor() {
-    this.login = this.login.bind(this);
-  }
-
-  login() {
+  login = () => {
     this.auth0.authorize({
-      prompt: "login"
+      prompt: "login",
     });
   }
 
-  setCohort(cohort) {
-    if(localStorage.getItem("cohort_address") !== "/landingpage") {
+  setCohort = (cohort) => {
+    if (localStorage.getItem("cohort_address") !== "/landingpage") {
       localStorage.setItem("cohort_address", cohort);
     }
   }
 
-  getCohort(){
+  getCohort = () => {
     if (localStorage.getItem("cohort_address")) {
       return localStorage.getItem("cohort_address");
     }
+    return null;
   }
 
-  setStyle(style){
-    if(style !== null) {
+  setStyle = (style) => {
+    if (style !== null) {
       localStorage.setItem("style", style);
     }
   }
 
-  getStyle(){
+  getStyle = () => {
     if (localStorage.getItem("style")) {
       return localStorage.getItem("style");
-    } else {
-      return "orange";
     }
+    return "orange";
   }
 
-  logout() {
+  logout = () => {
     // Remove tokens and expiry time
     localStorage.removeItem("access_token");
     localStorage.removeItem("id_token");
@@ -80,45 +65,45 @@ export default class Auth {
         connection: "demgamesDB",
         email: null,
         password: null,
-        username: null
+        username: null,
       },
-      function(err) {
-        if (err) return alert("Something went wrong: " + err.message);
-        return alert("success signup without login!");
-      }
+      (err) => {
+        if (err) return customAlert(`Something went wrong: ${err.message}`);
+        return customAlert("success signup without login!");
+      },
     );
   }
 
   handleAuthentication() {
     this.auth0.parseHash((error, authResults) => {
       if (authResults && authResults.accessToken && authResults.idToken) {
-        let expiresAt = JSON.stringify(
-          authResults.expiresIn * 1000 + new Date().getTime()
+        const expiresAt = JSON.stringify(
+          authResults.expiresIn * 1000 + new Date().getTime(),
         );
         localStorage.setItem("access_token", authResults.accessToken);
         localStorage.setItem("id_token", authResults.idToken);
         localStorage.setItem("expires_at", expiresAt);
         location.hash = "";
-        location.pathname =localStorage.getItem("cohort_address") ? localStorage.getItem("cohort_address") : LOGIN_SUCCESS_PAGE;
+        location.pathname = localStorage.getItem("cohort_address") ? localStorage.getItem("cohort_address") : LOGIN_SUCCESS_PAGE;
       } else if (error) {
         location.pathname = LOGIN_FAILURE_PAGE;
-        console.log(error);
+        console.log(error); // eslint-disable-line
       }
     });
   }
 
-  isAuthenticated() {
-    let expiresAt = JSON.parse(localStorage.getItem("expires_at"));
+  isAuthenticated = () => {
+    const expiresAt = JSON.parse(localStorage.getItem("expires_at"));
     return new Date().getTime() < expiresAt;
   }
 
-  getProfile() {
+  getProfile = () => {
     if (localStorage.getItem("id_token")) {
       return jwtDecode(localStorage.getItem("id_token"));
     }
   }
 
-  getAccessToken() {
+  getAccessToken = () => {
     if (localStorage.getItem("access_token")) {
       return localStorage.getItem("access_token");
     }

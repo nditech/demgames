@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import Auth from "../../Auth";
-import { config } from "../../settings"
+import { config } from "../../settings";
+import { customAlert } from "../Confirm/Confirm";
 
 const auth0 = new Auth();
 
@@ -15,22 +15,21 @@ const AddQuestion = () => {
     question_statement: "",
     weight: "",
     explanation: "",
-    isitmedia: ""
+    isitmedia: "",
   };
 
   const [formData, setFormData] = useState(initialState);
 
   const {
-    gameid,
     gametype,
     difficulty_level,
     question_statement,
     weight,
     explanation,
-    isitmedia
+    isitmedia,
   } = formData;
 
-  const reset = event => {
+  const reset = () => {
     setFormData(initialState);
   };
 
@@ -54,40 +53,40 @@ const AddQuestion = () => {
     } else {
       setFormData({ ...formData, [fieldName]: val });
     }
-
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    fetch(config.baseUrl + "/addquestion", {
+    fetch(`${config.baseUrl}/addquestion`, {
       method: "POST",
       headers: {
-        authorization: "Bearer " + auth0.getAccessToken(),
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formData),
     })
       .then(res => res.json())
-      .then(data => {
-        alert("Question was successfully added");
+      .then(() => {
+        customAlert("Question was successfully added");
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error)); // eslint-disable-line
   };
 
   return (
     <div className="container App">
       <div className="row">
-        <div className="col-md-2"></div>
+        <div className="col-md-2" />
         <div className="col-md-8">
           <form
             className="text-center border border-light p-5"
             onSubmit={e => handleSubmit(e)}
           >
-            <label className="mr-3">
+            <label htmlFor="mr-3" className="mr-3">
               Game type
               <select
+                id="mr-3"
                 className="custom-select custom-select-sm"
                 name="gametype"
                 value={gametype}
@@ -102,9 +101,10 @@ const AddQuestion = () => {
               </select>
               <br />
             </label>
-            <label>
+            <label htmlFor="difficulty-select">
               Difficulty Level
               <select
+                id="difficulty-select"
                 className="custom-select custom-select-sm"
                 name="difficulty_level"
                 value={difficulty_level}
@@ -127,7 +127,8 @@ const AddQuestion = () => {
               name="question_statement"
               value={question_statement}
               onChange={e => handleChange(e)}
-            />{" "}
+            />
+            {" "}
             <br />
             <input
               className="form-control mb-1"
@@ -136,7 +137,8 @@ const AddQuestion = () => {
               name="weight"
               value={weight}
               onChange={e => handleChange(e)}
-            />{" "}
+            />
+            {" "}
             <br />
             <textarea
               className="form-control mb-1"
@@ -145,7 +147,7 @@ const AddQuestion = () => {
               name="explanation"
               value={explanation}
               onChange={e => handleChange(e)}
-            ></textarea>
+            />
             <br />
             <input
               className="form-control mb-1"
@@ -154,12 +156,15 @@ const AddQuestion = () => {
               name="isitmedia"
               value={isitmedia}
               onChange={e => handleChange(e)}
-            />{" "}
+            />
+            {" "}
             <br />
             <button className="btn btn-info" type="submit">
               Save
-            </button>{" "}
-            |{" "}
+            </button>
+            {" "}
+            |
+            {" "}
             <button
               className="btn btn-warning"
               type="button"
@@ -169,7 +174,7 @@ const AddQuestion = () => {
             </button>
           </form>
         </div>
-        <div className="col-md-2"></div>
+        <div className="col-md-2" />
       </div>
     </div>
   );
@@ -177,5 +182,5 @@ const AddQuestion = () => {
 
 export default connect(
   null,
-  {}
+  {},
 )(AddQuestion);

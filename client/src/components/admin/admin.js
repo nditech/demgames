@@ -1,4 +1,3 @@
-// Bootstrap
 import {
   Col,
   Nav,
@@ -6,31 +5,28 @@ import {
   NavLink,
   Row,
   TabContent,
-  TabPane
+  TabPane,
 } from "reactstrap";
 import { connect } from "react-redux";
-import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
-import React, { Component, Fragment } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import classnames from "classnames";
+import Icon from "@material-ui/core/Icon";
 import AddChoices from "../Add/AddChoices";
 import Auth from "../../Auth";
-//import notfound from './NotFound';
 import DialogBox from "../DialogBox/DialogBox";
 import { Header } from "../Header";
 import ListGames from "../List/ListGames";
 import ListPlayers from "../List/ListPlayers";
 import ListCohorts from "../List/ListCohorts";
 import Register from "../Add/Register";
-import classnames from "classnames";
-import Icon from "@material-ui/core/Icon";
 import { config } from "../../settings";
 
 const auth0 = new Auth();
 
-//import NotFound from '../../pages/Landin';
-
-const auth = new Auth();
 const headerTabs = ["games", "players", "cohort"];
 class Admin extends Component {
   constructor(props) {
@@ -54,7 +50,7 @@ class Admin extends Component {
       activePlayerTab: "list",
       activeQuestionTab: "list",
       activeChoiceTab: "list",
-      cohorts: [{ id: "", title: "Select Cohort" }]
+      cohorts: [{ id: "", title: "Select Cohort" }],
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -63,20 +59,17 @@ class Admin extends Component {
 
   componentDidMount() {
     if (this.props.email !== null) {
-      const encodedValue = encodeURIComponent(this.state.email);
-      console.log("auth ------------------", auth0.getAccessToken());
-      fetch(config.baseUrl + `/selectPlayerProfile`, {
+      fetch(`${config.baseUrl}/selectPlayerProfile`, {
         method: "post",
         headers: {
-          authorization: "Bearer " + auth0.getAccessToken(),
+          authorization: `Bearer ${auth0.getAccessToken()}`,
           "Content-Type": "Application/json",
-          Accept: "application/json"
+          Accept: "application/json",
         },
-        body: JSON.stringify(this.state)
+        body: JSON.stringify(this.state),
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
           this.setState({
             play_id: data[0].play_id,
             player_id: data[0].player_id,
@@ -90,76 +83,76 @@ class Admin extends Component {
             program: data[0].program,
             program_rank: data[0].program_rank,
             total_rank: data[0].total_rank,
-            email: data[0].email
+            email: data[0].email,
           });
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log(error)); // eslint-disable-line
     }
     const data = {
-        id: "1",
-        values: [
-          {
-            type: "text",
-            title: "Game",
-            value: "Desiging a argument"
-          },
-          {
-            type: "text",
-            title: "Level",
-            value: "1"
-          },
-          {
-            type: "text",
-            title: "Question",
-            value:
-              "text question ihsihds ajsijacif njhkf i jhf sjjah hhi dwkhbci  hiuhi onhsiubdhi h ih huho",
-            multiline: true,
-            editable: true
-          },
-          {
-            type: "options",
-            title: "answers",
-            value: ["test1", "test2", "test3", "test4"]
-          },
-          {
-            type: "choice",
-            title: "Current choice",
-            value: "B",
-            key: "answers"
-          }
-        ]
-      },
-      fields = [
+      id: "1",
+      values: [
         {
           type: "text",
           title: "Game",
-          value: "Desiging a argument"
+          value: "Desiging a argument",
         },
         {
           type: "text",
           title: "Level",
-          value: "1"
+          value: "1",
         },
         {
           type: "text",
           title: "Question",
+          value:
+            "text question ihsihds ajsijacif njhkf i jhf sjjah hhi dwkhbci  hiuhi onhsiubdhi h ih huho",
           multiline: true,
           editable: true,
-          value: ""
         },
         {
           type: "options",
           title: "answers",
-          value: ["", "", "", ""]
+          value: ["test1", "test2", "test3", "test4"],
         },
         {
           type: "choice",
-          title: "Correct choice",
-          value: "",
-          editable: true,
-          key: "answers"
-        }
-      ];
+          title: "Current choice",
+          value: "B",
+          key: "answers",
+        },
+      ],
+    };
+    const fields = [
+      {
+        type: "text",
+        title: "Game",
+        value: "Desiging a argument",
+      },
+      {
+        type: "text",
+        title: "Level",
+        value: "1",
+      },
+      {
+        type: "text",
+        title: "Question",
+        multiline: true,
+        editable: true,
+        value: "",
+      },
+      {
+        type: "options",
+        title: "answers",
+        value: ["", "", "", ""],
+      },
+      {
+        type: "choice",
+        title: "Correct choice",
+        value: "",
+        editable: true,
+        key: "answers",
+      },
+    ];
     this.setState({ data, fields });
   }
 
@@ -167,7 +160,7 @@ class Admin extends Component {
     e.preventDefault();
     const sc = e.target.value;
     this.setState({
-      score: sc
+      score: sc,
     });
   }
 
@@ -175,31 +168,29 @@ class Admin extends Component {
     e.preventDefault();
 
     this.setState({
-      total: Number(this.state.score) + Number(this.state.total)
+      total: Number(this.state.score) + Number(this.state.total),
     });
 
-    const url = config.baseUrl + "/updateplayerscore";
+    const url = `${config.baseUrl}/updateplayerscore`;
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer " + auth0.getAccessToken(),
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         "Content-Type": "Application/json",
-        Accept: "application/json"
+        Accept: "application/json",
       },
       body: JSON.stringify(this.state),
-      mode: "cors"
+      mode: "cors",
     })
       .then(res => res.json())
-      .then(data => {
-        console.log(data);
-      })
-      .catch(error => console.log(error));
+      .then(data => (data))
+      .catch(error => console.log(error)); // eslint-disable-line
   }
 
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
-        activeTab: tab
+        activeTab: tab,
       });
     }
   }
@@ -210,7 +201,7 @@ class Admin extends Component {
       type: "text",
       title: "Title",
       value: "",
-      editable: true
+      editable: true,
     },
     {
       key: "Description",
@@ -218,7 +209,7 @@ class Admin extends Component {
       title: "Description",
       value: "",
       multiline: true,
-      editable: true
+      editable: true,
     },
     {
       key: "cohort_id",
@@ -226,7 +217,7 @@ class Admin extends Component {
       title: "Cohort",
       options: [{ id: "", title: "Select Cohort" }],
       value: "",
-      editable: true
+      editable: true,
     },
     {
       key: "gametype",
@@ -235,23 +226,23 @@ class Admin extends Component {
       options: [
         { id: "", title: "Select Game Type" },
         { id: "multiplechoice", title: "Multiple Choice" },
-        { id: "scenario", title: "Scenario" }
+        { id: "scenario", title: "Scenario" },
       ],
       value: "",
-      editable: true
+      editable: true,
     },
     {
       key: "style",
       type: "dropdown",
       title: "Style",
       options: [
-	{ id: "", title: "Select Game Color" },
+        { id: "", title: "Select Game Color" },
         { id: "green", title: "Green" },
         { id: "blue", title: "Blue" },
-        { id: "orange", title: "Orange" }
+        { id: "orange", title: "Orange" },
       ],
       value: "",
-      editable: true
+      editable: true,
     },
     {
       key: "par_score",
@@ -259,39 +250,37 @@ class Admin extends Component {
       title: "par_score",
       value: "",
       multiline: true,
-      editable: true
-    }
+      editable: true,
+    },
   ];
 
   toggleGame(tab) {
     if (this.state.activeGameTab !== tab) {
-      const url = config.baseUrl + `/listCohort/`;
+      const url = `${config.baseUrl}/listCohort/`;
       fetch(url, {
         method: "get",
         headers: {
-          authorization: "Bearer " + localStorage.getItem("access_token"),
+          authorization: `Bearer ${localStorage.getItem("access_token")}`,
           "Content-Type": "Application/json",
-          Accept: "application/json"
-        }
+          Accept: "application/json",
+        },
       })
         .then(res => res.json())
-        .then(data => {
+        .then((data) => {
           for (let i = 0; i < this.addGameFields.length; i++) {
             if (this.addGameFields[i].key === "cohort_id") {
-              let newGameCohorts = [{ id: "", title: "Select Cohort" }];
-              data.map(item => {
+              const newGameCohorts = [{ id: "", title: "Select Cohort" }];
+              data.map((item) => {
                 newGameCohorts.push({
                   id: item.id,
-                  title: item.name
+                  title: item.name,
                 });
               });
               this.addGameFields[i].options = newGameCohorts;
             }
           }
-          console.log("cohorts data -->", JSON.stringify());
           this.setState({
             fields: this.addGameFields,
-            // showMessage:true,
             confirmButtonValue: "ADD",
             messageTitle: "",
             messageDescription: "",
@@ -301,15 +290,16 @@ class Admin extends Component {
             messageBox: false,
             edit: false,
             create: true,
-            onDelete: null,
+            onDelete: () => {},
             removeMessage: false,
             cohorts: data,
-            showMessage: true
+            showMessage: true,
           });
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err)); // eslint-disable-line
     }
   }
+
   addGameCb = (data = "") => {
     const addGameForm = {
       caption: data.Title,
@@ -317,19 +307,17 @@ class Admin extends Component {
       gametype: data.gametype,
       cohort_id: data.cohort_id,
       style: data.style,
-      par_score: data.par_score
+      par_score: data.par_score,
     };
-    console.log(addGameForm);
-    console.log("game added. ", data);
-    const url = config.baseUrl + "/registergame";
+    const url = `${config.baseUrl}/registergame`;
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer " + auth0.getAccessToken(),
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(addGameForm)
+      body: JSON.stringify(addGameForm),
     })
       .then(res => {
         if (res.status == 400) {
@@ -337,21 +325,18 @@ class Admin extends Component {
         }
         return res.json();
       })
-      .then(data => {
-        // alert("paused admin");
+      .then(() => {
         this.setState({ showMessage: false, gameAdded: true });
         toast.info("Successfully Added !", {
-          position: toast.POSITION.TOP_CENTER
+          position: toast.POSITION.TOP_CENTER,
         });
       })
-      .catch(error =>
-        toast.error("Sorry..there is some technical issue", {
-          position: toast.POSITION.TOP_CENTER
-        })
-      );
+      .catch(() => toast.error("Sorry..there is some technical issue", {
+        position: toast.POSITION.TOP_CENTER,
+      }));
   };
+
   editGame = (game, id) => {
-    console.log(game, id);
     const data = {
       id,
       values: [
@@ -360,7 +345,7 @@ class Admin extends Component {
           type: "text",
           title: "Title",
           value: game[0].value,
-          editable: true
+          editable: true,
         },
         {
           key: "Description",
@@ -368,9 +353,9 @@ class Admin extends Component {
           title: "Description",
           value: game[1].value,
           multiline: true,
-          editable: true
-        }
-      ]
+          editable: true,
+        },
+      ],
     };
     this.setState(
       {
@@ -386,68 +371,65 @@ class Admin extends Component {
         edit: true,
         create: false,
         onDelete: null,
-        removeMessage: false
+        removeMessage: false,
       },
       () => {
         this.setState({
-          // activeGameTab:tab
-          showMessage: true
+          showMessage: true,
         });
-      }
+      },
     );
   };
+
   editGameCb = (data, id) => {
-    // debugger;
     const editGameForm = {
       id,
       caption: data.Title,
-      gamedescription: data.Description
+      gamedescription: data.Description,
     };
-    console.log(editGameForm);
-    console.log("game edited. ", data);
-    const url = config.baseUrl + "/Updategame";
+    const url = `${config.baseUrl}/Updategame`;
     fetch(url, {
       method: "POST",
       headers: {
-        authorization: "Bearer " + auth0.getAccessToken(),
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(editGameForm)
+      body: JSON.stringify(editGameForm),
     })
       .then(res => res.json())
-      .then(data => {
+      .then(() => {
         this.setState({ showMessage: false, editedDetals: editGameForm });
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error)); // eslint-disable-line
   };
 
   togglePlayer(tab) {
     if (this.state.activePlayerTab !== tab) {
       this.setState({
-        activePlayerTab: tab
-      });
-    }
-  }
-  toggleQuestion(tab) {
-    if (this.state.activeQuestionTab !== tab) {
-      this.setState({
-        activeQuestionTab: tab
-      });
-    }
-  }
-  toggleChoice(tab) {
-    if (this.state.activeChoiceTab !== tab) {
-      this.setState({
-        activeChoiceTab: tab
+        activePlayerTab: tab,
       });
     }
   }
 
-  editQuestion = (data = "", id) => {
-    console.log(data);
-    console.log("Question saved successfully. " + data + " " + id);
-  };
+  toggleQuestion(tab) {
+    if (this.state.activeQuestionTab !== tab) {
+      this.setState({
+        activeQuestionTab: tab,
+      });
+    }
+  }
+
+  toggleChoice(tab) {
+    if (this.state.activeChoiceTab !== tab) {
+      this.setState({
+        activeChoiceTab: tab,
+      });
+    }
+  }
+
+  editQuestion = (data = "", id) => ({ data, id });
+
   editPopup = () => {
     this.setState({
       showMessage: true,
@@ -462,13 +444,12 @@ class Admin extends Component {
       create: false,
       onDelete: null,
       removeMessage: false,
-      isRemove: false
+      isRemove: false,
     });
   };
-  saveQuestion = (data = "") => {
-    console.log(data);
-    console.log("Question saved successfully. " + data);
-  };
+
+  saveQuestion = (data = "") => (data);
+
   addItemPopup = () => {
     this.setState({
       showMessage: true,
@@ -483,9 +464,10 @@ class Admin extends Component {
       create: true,
       onDelete: null,
       removeMessage: false,
-      isRemove: false
+      isRemove: false,
     });
   };
+
   viewPopup = () => {
     this.setState({
       showMessage: true,
@@ -500,9 +482,10 @@ class Admin extends Component {
       create: false,
       onDelete: this.onDelete,
       removeMessage: false,
-      isRemove: false
+      isRemove: false,
     });
   };
+
   onDelete = () => {
     this.setState({
       showMessage: true,
@@ -517,13 +500,10 @@ class Admin extends Component {
       create: false,
       removeMessage:
         "Are you sure you want to delete question Q1 from level 1?",
-      isRemove: true
+      isRemove: true,
     });
   };
-  remove = () => {
-    const { id } = this.state.data;
-    console.log("Remove data " + id);
-  };
+
   onCancel = () => {
     this.setState({ showMessage: false });
   };
@@ -533,7 +513,6 @@ class Admin extends Component {
   };
 
   render() {
-    console.log(this.props, "PROPS");
     const {
       showMessage,
       confirmButtonValue,
@@ -549,11 +528,11 @@ class Admin extends Component {
       fields,
       onDelete,
       removeMessage,
-      isRemove
+      isRemove,
     } = this.state;
     return (
       <Router>
-        <Fragment>
+        <>
           <ToastContainer enableMultiContainer />
           <DialogBox
             confirmButtonValue={confirmButtonValue}
@@ -582,7 +561,7 @@ class Admin extends Component {
           <div
             style={{
               backgroundColor: "#f7f7f7",
-              padding: "20px 50px 50px 50px"
+              padding: "20px 50px 50px 50px",
             }}
           >
             <div className="containers">
@@ -600,7 +579,7 @@ class Admin extends Component {
                         lineHeight: 1.33,
                         letterSpacing: "normal",
                         textAlign: "left",
-                        color: "#707070"
+                        color: "#707070",
                       }}
                     >
                       All Games
@@ -625,7 +604,7 @@ class Admin extends Component {
                           lineHeight: 1.38,
                           letterSpacing: "normal",
                           textAlign: "right",
-                          color: "#707070"
+                          color: "#707070",
                         }}
                       >
                         Add Game
@@ -690,27 +669,29 @@ class Admin extends Component {
                         <NavItem>
                           <NavLink
                             className={classnames({
-                              active: this.state.activeChoiceTab === "list"
+                              active: this.state.activeChoiceTab === "list",
                             })}
                             onClick={() => {
                               this.toggleChoice("list");
                             }}
                           >
                             {" "}
-                            List Choices{" "}
+                            List Choices
+                            {" "}
                           </NavLink>
                         </NavItem>
                         <NavItem>
                           <NavLink
                             className={classnames({
-                              active: this.state.activeChoiceTab === "addNew"
+                              active: this.state.activeChoiceTab === "addNew",
                             })}
                             onClick={() => {
                               this.toggleChoice("addNew");
                             }}
                           >
                             {" "}
-                            Add New Choice{" "}
+                            Add New Choice
+                            {" "}
                           </NavLink>
                         </NavItem>
                       </Nav>
@@ -734,7 +715,7 @@ class Admin extends Component {
               </TabContent>
             </div>
           </div>
-        </Fragment>
+        </>
       </Router>
     );
   }
@@ -743,7 +724,27 @@ class Admin extends Component {
 const mapStateToProps = state => ({
   player_given_name: state.authDetail.authDetail.player_given_name,
   player_picture: state.authDetail.authDetail.player_picture,
-  gameData: state.gameData
+  gameData: state.gameData,
 });
+
+Admin.propTypes = {
+  email: PropTypes.string,
+  given_name: PropTypes.string,
+  family_name: PropTypes.string,
+  picture: PropTypes.string,
+  gender: PropTypes.string,
+  player_given_name: PropTypes.string,
+  player_picture: PropTypes.string,
+};
+
+Admin.defaultProps = {
+  email: null,
+  given_name: null,
+  family_name: null,
+  picture: null,
+  gender: null,
+  player_given_name: null,
+  player_picture: null,
+};
 
 export default connect(mapStateToProps)(Admin);

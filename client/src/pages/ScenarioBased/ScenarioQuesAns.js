@@ -1,18 +1,12 @@
-import React, { Fragment } from "react";
-import { Redirect, Link } from "react-router-dom";
+import React from "react";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { Card } from "../../components/Card";
-import arrowBackUrl from "../../images/back.png";
-import correctAnsUrl from "../../images/correct.png";
-import infoUrl from "../../images/info.png";
 import oopsUrl from "../../images/oops.png";
 import hurreyUrl from "../../images/hurrey.png";
-import ProgressBar from "../../components/ProgressBar";
-import { connect } from "react-redux";
 import { fetchScores } from "../LandingPage/actions";
 import "./styles.scss";
-import GameInfo from "../../components/GameInfo";
-import PropTypes from "prop-types";
-import AnswerInfoPopup from "../../components/AnswerInfoPopup";
 import Auth from "../../Auth";
 import { config } from "../../settings";
 
@@ -47,115 +41,110 @@ export class ScenarioQuesAns extends React.Component {
       redirect: false,
       gameId: this.props.match.params.moduleId,
       levelId: this.props.match.params.levelId,
-      moduleId: null
+      moduleId: null,
     };
   }
 
   getModuleId = () => {
     let moduleId = null;
-    let gameId = this.props.match.params.moduleId;
-    let gameDataArray = this.props.gameData.gameData;
+    const gameId = this.props.match.params.moduleId;
+    const gameDataArray = this.props.gameData.gameData;
     for (const module of gameDataArray) {
-      if (module.game_id == gameId)
-      {
-	moduleId = parseInt(module.id);
+      if (module.game_id == gameId) {
+        moduleId = parseInt(module.id, 10);
       }
     }
-    console.log(moduleId);
-    return(moduleId);
+    return (moduleId);
   }
 
-  //Get list of parScores for a module.
+  // Get list of parScores for a module.
   getParScores = () => {
-    let moduleId = this.getModuleId();
-    let level = this.props.match.params.levelId;
-    let currentLevel = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
+    const moduleId = this.getModuleId();
+    const level = this.props.match.params.levelId;
+    const currentLevel = this.props.gameData.gameData[moduleId - 1].levels[level - 1];
     const parScores = currentLevel.par_score > 0 ? currentLevel.par_score : 0;
     return parScores;
   };
 
   handleAnswerClick = (linkedQuestion, optionId, score) => {
-    this.setState(prevState => ({
+    this.setState(() => ({
       selectedCard: optionId,
-      linkedQuestion: linkedQuestion,
+      linkedQuestion,
       currentQuestionScore: score,
-      answerClick: true
+      answerClick: true,
     }));
-    console.log("linked quest : ", linkedQuestion);
   };
 
   handleScenarioProceed = () => {
     if (this.state.linkedQuestion === null) {
       this.setState({
         redirect: true,
-        currentScore: this.state.currentScore + this.state.currentQuestionScore
+        currentScore: this.state.currentScore + this.state.currentQuestionScore,
       });
     } else {
-      const url = config.baseUrl + `/scenario_question/${this.state.linkedQuestion}`;
+      const url = `${config.baseUrl}/scenario_question/${this.state.linkedQuestion}`;
       fetch(url, {
         method: "GET",
         headers: {
-          authorization: "Bearer " + auth0.getAccessToken(),
+          authorization: `Bearer ${auth0.getAccessToken()}`,
           Accept: "application/json",
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       })
-        .then(res => res.json())
-        .then(data => {
-          this.setState({
-            questionStatement: data.question_statement,
-            options: data.options,
-            currentScore: this.state.currentScore + this.state.currentQuestionScore
-          });
-          console.log("linked question data data", data);
+        .then(res => {
+          if (res.status === 404) {
+            this.setState({
+              redirect: true,
+              currentScore: this.state.currentScore + this.state.currentQuestionScore,
+            });
+            return null;
+          }
+          return res.json();
         })
-        .catch(error => console.log(error));
+        .then(data => {
+          if (data) {
+            this.setState({
+              questionStatement: data.question_statement,
+              options: data.options,
+              currentScore: this.state.currentScore + this.state.currentQuestionScore,
+            });
+          }
+        })
+        .catch(error => console.log(error)); // eslint-disable-line
     }
   };
 
   checkParScoreStatus = () => {
-    let moduleId = this.getModuleId();
-    let level = parseInt(this.props.match.params.levelId);
     const { currentScore } = this.state;
     const parScores = this.getParScores();
-    let currentLevelNewScores = this.props.gameData.scores[moduleId - 1];
-    console.log("The par score is " + parScores);
     if (currentScore < parScores) {
       return false;
-    } else {
-      return true;
     }
+    return true;
   };
 
-
-  componentWillMount() {
-    console.log("props -- > ", this.props);
-  }
-
   componentDidMount() {
-    const url = config.baseUrl + `/initial_scenario_question/${this.props.match.params.moduleId}/${this.props.match.params.levelId}`;
+    const url = `${config.baseUrl}/initial_scenario_question/${this.props.match.params.moduleId}/${this.props.match.params.levelId}`;
     fetch(url, {
       method: "GET",
       headers: {
-        authorization: "Bearer " + auth0.getAccessToken(),
+        authorization: `Bearer ${auth0.getAccessToken()}`,
         Accept: "application/json",
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
       .then(res => res.json())
       .then(data => {
         this.setState({
           questionStatement: data.question_statement,
           options: data.options,
-	  par_score: data.par_score
+          par_score: data.par_score,
         });
-        console.log("first question data data", data);
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error)); // eslint-disable-line
   }
 
   render() {
-    console.log("total score: ", this.state.totalScore);
     const {
       answerClick,
       questionId,
@@ -163,48 +152,48 @@ export class ScenarioQuesAns extends React.Component {
       selectedCard,
       redirect,
       currentScore,
-      gameId
+      gameId,
     } = this.state;
 
     const parScoreStatus = this.checkParScoreStatus();
-    let level = parseInt(this.props.match.params.levelId);
+    const level = parseInt(this.props.match.params.levelId, 10);
     const parScore = this.getParScores();
     const moduleId = this.getModuleId();
     const totalScore = this.props.gameData.gameData[moduleId - 1].levels[level - 1].total_score;
     const color = this.props.gameData.gameData[moduleId - 1].style === null ? "blue" : this.props.gameData.gameData[moduleId - 1].style;
     return (
-      <Fragment>
+      <>
         <div className="question-main-container">
-          <Fragment>
+          <>
             {redirect && (
               <Redirect
                 to={{
                   pathname: "/results",
                   state: {
-                    gameId: gameId,
+                    gameId,
                     finishedScore: currentScore,
-		    moduleScenario: true,
-                    totalScore: totalScore,
-		    parScoreStatus: parScoreStatus,
-		    open: true,
-                    level: level,
-		    moduleId: moduleId,
+                    moduleScenario: true,
+                    totalScore,
+                    parScoreStatus,
+                    open: true,
+                    level,
+                    moduleId,
                     image: parScoreStatus ? hurreyUrl : oopsUrl,
                     expression: parScoreStatus ? `Hurray!` : `Oh!`,
                     messageOne: parScoreStatus
                       ? `You have scored  ${
-                          currentScore > 0 ? currentScore : currentScore
-                        }/${totalScore}.`
+                        currentScore > 0 ? currentScore : currentScore
+                      }/${totalScore}.`
                       : `You have scored only  ${
-                          currentScore > 0 ? currentScore : 0
-                        }/${totalScore}.`,
+                        currentScore > 0 ? currentScore : 0
+                      }/${totalScore}.`,
                     messageTwo: parScoreStatus
                       ? `You are in top 100 in the rank.`
                       : `You need to earn ${parScore}/${totalScore} for Level ${level}.`,
                     buttonMessage: !parScoreStatus
                       ? `Retry Level ${level}`
-                      : `Continue Level ${level + 1}`
-                  }
+                      : `Continue Level ${level + 1}`,
+                  },
                 }}
               />
             )}
@@ -212,7 +201,7 @@ export class ScenarioQuesAns extends React.Component {
             {!showCorrectAns && questionId != null && (
               <div>
                 <div className="level-question-detail">
-                  <span>Level {"1"} </span>
+                  <span>Level 1 </span>
                 </div>
                 <div className="questions-container">
                   <p className={`question-label question-label-${color}`}>
@@ -221,30 +210,27 @@ export class ScenarioQuesAns extends React.Component {
                 </div>
                 <div className="answer-container">
                   <div className="options-card-container">
-                    {this.state.options &&
-                      this.state.options.map(option => {
-                        return (
-                          <Card
-                            key={option.id}
-                            option={option.choicestatement}
-                            selectedCard={selectedCard === option.id}
-                            handleClick={() =>
-                              this.handleAnswerClick(
-                                option.linked_question,
-                                option.id,
-                                option.weight
-                              )
-                            }
-                            moduleColor={color}
-                          />
-                        );
-                      })}
+                    {this.state.options
+                      && this.state.options.map(option => (
+                        <Card
+                          key={option.id}
+                          option={option.choicestatement}
+                          selectedCard={selectedCard === option.id}
+                          handleClick={() => this.handleAnswerClick(
+                            option.linked_question,
+                            option.id,
+                            option.weight,
+                          )}
+                          moduleColor={color}
+                        />
+                      ))}
 
                     {/* ))} */}
                   </div>
                 </div>
                 {answerClick && (
                   <button
+                    type="submit"
                     className={`next-page-button next-page-button-${true}`}
                     onClick={this.handleScenarioProceed}
                   >
@@ -253,29 +239,42 @@ export class ScenarioQuesAns extends React.Component {
                 )}
               </div>
             )}
-          </Fragment>
+          </>
         </div>
-      </Fragment>
+      </>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return { gameData: state.gameData };
-};
+const mapStateToProps = state => ({ gameData: state.gameData });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    getScores: scores => dispatch(fetchScores(scores))
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  getScores: scores => dispatch(fetchScores(scores)),
+});
 
 ScenarioQuesAns.propTypes = {
-  gameData: PropTypes.object,
-  match: PropTypes.object
+  gameData: PropTypes.shape({
+    gameData: PropTypes.arrayOf(
+      PropTypes.shape({
+        style: PropTypes.string,
+        levels: PropTypes.arrayOf(
+          PropTypes.shape({
+            total_score: PropTypes.number,
+            par_score: PropTypes.number,
+          }),
+        ),
+      }),
+    ),
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      moduleId: PropTypes.string,
+      levelId: PropTypes.string,
+    }),
+  }).isRequired,
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ScenarioQuesAns);

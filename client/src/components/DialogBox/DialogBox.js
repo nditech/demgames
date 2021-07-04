@@ -10,7 +10,7 @@ import { getChoices } from "../List/utility";
 
 const modalStyles = {
   display: "flex",
-  alignItems: "center"
+  alignItems: "center",
 };
 /**
  * This component contains few features.
@@ -121,27 +121,32 @@ class DialogBox extends Component {
     this.state = {
       confirmButtonDisable: false,
       choices: 1,
-      data: []
+      data: [],
     };
   }
+
   initialState = props => {
-    // debugger;
-    const { data, edit, create, hasChoices = true } = props;
-    let val = data.values ? data.values : [];
-    const values = create ? [...data] : [...val],
-      id = data.id;
+    const {
+      data, edit, create, hasChoices = true,
+    } = props;
+    const val = data.values ? data.values : [];
+    const values = create ? [...data] : [...val];
+    const { id } = data;
     let confirmButtonDisable = false;
     this.clearPrevious(values, create, edit, hasChoices);
     if (create) {
       confirmButtonDisable = true;
     }
 
-    this.setState({ edit, id, confirmButtonDisable, hasChoices });
+    this.setState({
+      edit, id, confirmButtonDisable, hasChoices,
+    });
   };
+
   clearPrevious = (data, createMethod, edit, hasChoices = true) => {
-    let choices = {},
-      choiceLength = 1;
-    let values = data;
+    const choices = {};
+    let choiceLength = 1;
+    const values = data;
     data.map(item => {
       if (item.type === "text" && !item.editable) return;
       if (item.type === "options") {
@@ -154,32 +159,31 @@ class DialogBox extends Component {
             value: "",
             editable: true,
             optional: true,
-            key: item.title
+            key: item.title,
           });
         }
       }
       if (createMethod) {
-        item.value =
-          item.type === "options" ? Array(choiceLength).fill("") : "";
-        item.error =
-          item.type === "options" ? Array(choiceLength).fill(false) : false;
+        item.value = item.type === "options" ? Array(choiceLength).fill("") : "";
+        item.error = item.type === "options" ? Array(choiceLength).fill(false) : false;
       }
     });
     this.setState({ choices, data: values });
   };
+
   componentDidMount = () => {
     this.initialState(this.props);
   };
-  componentWillReceiveProps = props => {
+
+  UNSAFE_componentWillReceiveProps = props => {
     this.initialState(props);
   };
 
   /**
    * Covert index value to alphabets. A B C etc.
    */
-  convertChoice = value => {
-    return String.fromCharCode(value + 65);
-  };
+  convertChoice = value => String.fromCharCode(value + 65);
+
   onConfirm = () => {
     const { edit, create, onConfirm } = this.props;
     const { data, id } = this.state;
@@ -205,9 +209,7 @@ class DialogBox extends Component {
         item.value.map(arr => {
           if (arr.trim() === "") confirmButtonDisable = true;
         });
-      } else {
-        if (item.value.toString().trim() === "") confirmButtonDisable = true;
-      }
+      } else if (item.value.toString().trim() === "") confirmButtonDisable = true;
     });
     return confirmButtonDisable;
   };
@@ -220,10 +222,10 @@ class DialogBox extends Component {
         if (item.type === "options") {
           item.value[index] = value;
           item.error = item.error ? item.error : [false, false, false, false];
-          item.error[index] = isEmpty(value) ? true : false;
+          item.error[index] = !!isEmpty(value);
         } else {
           item.value = value;
-          item["error"] = isEmpty(value) ? true : false;
+          item.error = !!isEmpty(value);
         }
       }
     });
@@ -261,9 +263,7 @@ class DialogBox extends Component {
 
     data.map(item => {
       if (item.key === "previous_question_choice") {
-        item.options = choices.map(choice => {
-          return { id: choice.id, title: choice.choicestatement };
-        });
+        item.options = choices.map(choice => ({ id: choice.id, title: choice.choicestatement }));
         item.options.unshift({ id: "", title: "Select Choice" });
       }
     });
@@ -271,9 +271,9 @@ class DialogBox extends Component {
   };
 
   handleChangeQuestion(e) {
-    let fieldName = e.target.name;
+    const fieldName = e.target.name;
     if (fieldName === "previous_question") {
-      let questionId = e.target.value;
+      const questionId = e.target.value;
       getChoices(questionId, null, this.setChoicesForSelectedQuestion);
     }
   }
@@ -281,22 +281,24 @@ class DialogBox extends Component {
 
   render() {
     const {
-        cancelButtonValue,
-        confirmButtonValue,
-        isConfirmation,
-        messageDescription,
-        messageNote,
-        messageTitle,
-        onCancel,
-        showMessage,
-        title,
-        messageBox,
-        create,
-        onDelete,
-        removeMessage,
-        isRemove
-      } = this.props,
-      { data, edit, confirmButtonDisable, choices } = this.state;
+      cancelButtonValue,
+      confirmButtonValue,
+      isConfirmation,
+      messageDescription,
+      messageNote,
+      messageTitle,
+      onCancel,
+      showMessage,
+      title,
+      messageBox,
+      create,
+      onDelete,
+      removeMessage,
+      isRemove,
+    } = this.props;
+    const {
+      data, edit, choices,
+    } = this.state;
     return (
       <div data-test="component-message-dialog">
         <Modal
@@ -308,7 +310,7 @@ class DialogBox extends Component {
         >
           <Modal.Header className="dialog-header">
             <div>{title}</div>
-            <div onClick={onCancel}>X</div>
+            <div role="button" tabIndex={0} onClick={onCancel}>X</div>
           </Modal.Header>
           <Modal.Body className="dialog-body">
             {messageBox ? (
@@ -323,13 +325,13 @@ class DialogBox extends Component {
               </div>
             ) : (
               <div>
-                {!isEmpty(data) &&
-                  data.map((object, index) => {
+                {!isEmpty(data)
+                  && data.map((object, index) => {
                     switch (object.type) {
                       case "dropdown":
                         return (
                           <div
-                            key={`dropdown_${index}`}
+                            key={`dropdown_${index.toString()}`}
                             className="dialog-content"
                           >
                             <div className="item-title">{object.title}</div>
@@ -343,25 +345,23 @@ class DialogBox extends Component {
                                 }
                                 className="dropdown-list"
                                 onChange={e => {
-                                  (edit || create) &&
-                                    object.editable &&
-                                    this.valueChange(
+                                  (edit || create)
+                                    && object.editable
+                                    && this.valueChange(
                                       e.target.value,
-                                      object.title
+                                      object.title,
                                     );
                                   this.handleChangeQuestion(e);
                                 }}
                               >
-                                {object.options.map((option, option_index) => {
-                                  return (
-                                    <option
-                                      key={option_index + option}
-                                      value={option.id}
-                                    >
-                                      {option.title}
-                                    </option>
-                                  );
-                                })}
+                                {object.options.map((option) => (
+                                  <option
+                                    key={option.id}
+                                    value={option.id}
+                                  >
+                                    {option.title}
+                                  </option>
+                                ))}
                               </select>
                             </div>
                           </div>
@@ -369,86 +369,80 @@ class DialogBox extends Component {
                       case "options":
                         return (
                           <div
-                            key={`options_${index}`}
+                            key={`options_${index.toString()}`}
                             className="dialog-content dialog-options"
                           >
                             <div>
                               <div className="item-title">Choice/Option</div>
                             </div>
                             <div>
-                              {object.value.map((option, option_index) => {
-                                return (
-                                  <div key={`options_content_${option_index}`}>
-                                    <div className="item-title option-title">
-                                      {this.convertChoice(option_index)}
-                                    </div>
-                                    <div className="item-separator">: </div>
-                                    {create || edit ? (
-                                      <div className="item-value option-value">
-                                        <input
-                                          type="text"
-                                          name=""
-                                          className={
-                                            object.error &&
-                                            object.error[option_index]
-                                              ? "error"
-                                              : ""
-                                          }
-                                          value={option}
-                                          onChange={e =>
-                                            this.valueChange(
-                                              e.target.value,
-                                              object.title,
-                                              option_index
-                                            )
-                                          }
-                                        />
-                                      </div>
-                                    ) : (
-                                      <div
-                                        key={`options_content_${option_index}`}
-                                        className="item-value"
-                                      >
-                                        {option}
-                                      </div>
-                                    )}
+                              {object.value.map((option, option_index) => (
+                                <div key={`options_content_${option_index.toString()}`}>
+                                  <div className="item-title option-title">
+                                    {this.convertChoice(option_index)}
                                   </div>
-                                );
-                              })}
+                                  <div className="item-separator">: </div>
+                                  {create || edit ? (
+                                    <div className="item-value option-value">
+                                      <input
+                                        type="text"
+                                        name=""
+                                        className={
+                                          object.error
+                                            && object.error[option_index]
+                                            ? "error"
+                                            : ""
+                                        }
+                                        value={option}
+                                        onChange={e => this.valueChange(
+                                          e.target.value,
+                                          object.title,
+                                          option_index,
+                                        )}
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div
+                                      key={`options_content_${option_index.toString()}`}
+                                      className="item-value"
+                                    >
+                                      {option}
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
                             </div>
                           </div>
                         );
                       case "choice":
                         return (
-                          <div key={`choices_${index}`}>
+                          <div key={`choices_${index.toString()}`}>
                             <div className="dialog-content">
                               <div className="item-title">{object.title}</div>
                               <div className="item-separator">:</div>
                               <div className="choices item-value">
-                                {choices &&
-                                  choices[object.key].map(
-                                    (choice, chice_index) => {
-                                      return (
-                                        <div
-                                          key={`choice_content-${chice_index}${choice}`}
-                                          className={
-                                            object.value ===
-                                            this.convertChoice(chice_index)
-                                              ? "selected"
-                                              : "unselected"
-                                          }
-                                          onClick={() =>
-                                            object.editable &&
-                                            this.valueChange(
-                                              this.convertChoice(chice_index),
-                                              object.title
-                                            )
-                                          }
-                                        >
-                                          {this.convertChoice(chice_index)}
-                                        </div>
-                                      );
-                                    }
+                                {choices
+                                  && choices[object.key].map(
+                                    (choice, chice_index) => (
+                                      <div
+                                        role="button"
+                                        tabIndex={0}
+                                        key={`choice_content-${chice_index.toString()}${choice}`}
+                                        className={
+                                          object.value
+                                            === this.convertChoice(chice_index)
+                                            ? "selected"
+                                            : "unselected"
+                                        }
+                                        onClick={() => object.editable
+                                          && this.valueChange(
+                                            this.convertChoice(chice_index),
+                                            object.title,
+                                          )}
+                                      >
+                                        {this.convertChoice(chice_index)}
+                                      </div>
+                                    ),
                                   )}
                               </div>
                             </div>
@@ -456,7 +450,7 @@ class DialogBox extends Component {
                         );
                       case "text":
                         return (edit || create) && object.editable ? (
-                          <div key={`text_${index}`} className="dialog-content">
+                          <div key={`text_${index.toString()}`} className="dialog-content">
                             <div className="item-title">{object.title}</div>
                             <div className="item-separator">:</div>
                             {object.multiline ? (
@@ -470,17 +464,15 @@ class DialogBox extends Component {
                                       : "dialog-multiline-text"
                                   }
                                   value={object.value}
-                                  onChange={e =>
-                                    this.valueChange(
-                                      e.target.value,
-                                      object.title
-                                    )
-                                  }
+                                  onChange={e => this.valueChange(
+                                    e.target.value,
+                                    object.title,
+                                  )}
                                 />
                               </div>
                             ) : (
                               <div
-                                key={`textbox_${index}`}
+                                key={`textbox_${index.toString()}`}
                                 className="item-value"
                               >
                                 <input
@@ -488,19 +480,17 @@ class DialogBox extends Component {
                                   name="object.title"
                                   value={object.value}
                                   className={object.error ? "error" : ""}
-                                  onChange={e =>
-                                    this.valueChange(
-                                      e.target.value,
-                                      object.title
-                                    )
-                                  }
+                                  onChange={e => this.valueChange(
+                                    e.target.value,
+                                    object.title,
+                                  )}
                                 />
                               </div>
                             )}
                           </div>
                         ) : (
                           <div
-                            key={`content_view_${index}`}
+                            key={`content_view_${index.toString()}`}
                             className="dialog-content"
                           >
                             <div className="item-title">{object.title}</div>
@@ -509,7 +499,7 @@ class DialogBox extends Component {
                           </div>
                         );
                       default:
-                        return <div key={`default_${index}`}></div>;
+                        return <div key={`default_${index.toString()}`} />;
                     }
                   })}
                 {removeMessage && (
@@ -536,7 +526,7 @@ class DialogBox extends Component {
               </Button>
             )}
             {isConfirmation && (
-              <Button className={`dialog-btn cancel`} onClick={onCancel}>
+              <Button className="dialog-btn cancel" onClick={onCancel}>
                 {cancelButtonValue}
               </Button>
             )}
@@ -548,14 +538,17 @@ class DialogBox extends Component {
 }
 
 DialogBox.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.shape({})),
+    PropTypes.shape({}),
+  ]),
   cancelButtonValue: PropTypes.string,
-  confirmButtonValue: PropTypes.string.isRequired,
+  confirmButtonValue: PropTypes.string,
   isConfirmation: PropTypes.bool,
   messageDescription: PropTypes.string,
   messageNote: PropTypes.string,
   messageTitle: PropTypes.string,
-  onCancel: PropTypes.func,
+  onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func,
   showMessage: PropTypes.bool,
   onDelete: PropTypes.func,
@@ -563,14 +556,16 @@ DialogBox.propTypes = {
   messageBox: PropTypes.bool,
   edit: PropTypes.bool,
   create: PropTypes.bool,
-  removeMessage: PropTypes.string,
-  isRemove: PropTypes.bool
+  removeMessage: PropTypes.bool,
+  isRemove: PropTypes.bool,
 };
 
 DialogBox.defaultProps = {
+  onDelete: null,
+  onConfirm: null,
+  confirmButtonValue: null,
   cancelButtonValue: "CANCEL",
   data: {},
-  confirmButtonValue: "",
   isConfirmation: false,
   messageDescription: "",
   messageNote: "",
@@ -580,8 +575,8 @@ DialogBox.defaultProps = {
   messageBox: false,
   edit: false,
   create: false,
-  removeMessage: "",
-  isRemove: false
+  removeMessage: false,
+  isRemove: false,
 };
 
 export default DialogBox;

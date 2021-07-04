@@ -1,15 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Route, BrowserRouter as Router, withRouter } from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
+import { Provider } from "react-redux";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import LandingPage from "../src/pages/LandingPage/LandingPage";
+import LandingPage from "./pages/LandingPage/LandingPage";
 import LevelsPage from "./pages/LevelsPage/LevelsPage";
 import QuestionsAnsPage from "./pages/QuestionsAnsPage/QuestionsAnsPage";
 import ResultPage from "./pages/ResultPage/ResultPage";
 import CorrectAnswerInfo from "./components/CorrectAnswerInfo";
-import { Provider } from "react-redux";
 import ProfileInfo from "./components/ProfileInfo";
 import store from "./store";
 import ScenarioQuesAns from "./pages/ScenarioBased/ScenarioQuesAns";
@@ -23,12 +23,10 @@ import Auth from "./Auth";
 import Callback from "./pages/LandingPage/callback";
 import ScenarioLevels from "./pages/ScenarioLevels";
 import RemovePlayer from "./components/Remove/RemovePlayer";
-import RemoveChoice from "./components/Remove/RemoveChoice";
-import RemoveQuestion from "./components/Remove/RemoveQuestion";
 import UpdateGame from "./components/Update/UpdateGame";
-import UpdateQuestion from "./components/Update/UpdateQuestion";
 import UpdateChoice from "./components/Update/UpdateChoice";
 import ProfileHeader from "./components/ProfileHeader/ProfileHeader";
+
 const auth0 = new Auth();
 const Routes = () => (
   <>
@@ -58,12 +56,16 @@ const Routes = () => (
         <Route path="/callback" exact component={Callback} />
         <Route path="/info" exact component={CorrectAnswerInfo} />
         <Route path="/profile" exact component={ProfileInfo} />
-        <Route path="/admin" exact component={ 
-           auth0.getProfile() &&
-           auth0.getProfile()["http://demGames.net/roles"] &&
-           auth0.getProfile()["http://demGames.net/roles"][0] === "admin" ? admin:LandingPage
-          
-        } />
+        <Route
+          path="/admin"
+          exact
+          component={
+           auth0.getProfile()
+           && auth0.getProfile()["http://demGames.net/roles"]
+           && auth0.getProfile()["http://demGames.net/roles"][0] === "admin" ? admin : LandingPage
+
+        }
+        />
         <Route path="/UpdatePlayer" exact component={UpdatePlayer} />
         <Route path="/registerplayer" exact component={Register} />
         <Route path="/addgame" exact component={AddGame} />
@@ -84,7 +86,7 @@ ReactDOM.render(
     <Routes />
   </Provider>,
 
-  document.getElementById("root")
+  document.getElementById("root"),
 );
 
 // If you want your app to work offline and load faster, you can change

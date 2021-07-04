@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import Auth from '../../Auth'
-
-
+import Auth from '../../Auth';
 
 class Callback extends Component {
- 
-  
-  componentDidMount(){
-   // console.log(this.props.auth.getProfile());
+  componentDidMount() {
+    // console.log(this.props.auth.getProfile());
     const auth = new Auth();
 
     auth.handleAuthentication();
@@ -25,7 +21,7 @@ class Callback extends Component {
       left: 0,
       right: 0,
       backgroundColor: 'white',
-    }
+    };
 
     return (
       <div style={style}>

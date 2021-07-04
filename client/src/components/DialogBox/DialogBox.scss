@@ -6,6 +6,11 @@
     width: $modal-width-message-box;
   }
 }
+
+.modal-backdrop, .message-dialog-data {
+  z-index: 90 !important;
+}
+
 .message-dialog-data {
   .modal-content {
     width: $fixed-width-modal;

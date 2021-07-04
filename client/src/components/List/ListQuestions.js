@@ -1,4 +1,5 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 import ListTable from "../ListTable";
 import DialogBox from "../DialogBox/DialogBox";
 import {
@@ -7,8 +8,9 @@ import {
   deleteQuestion,
   updateQuestion,
   addQuestion,
-  getChoiceLinkingQuestion
+  getChoiceLinkingQuestion,
 } from "./utility";
+import { confirmation, customAlert } from "../Confirm/Confirm";
 
 const ListQuestions = ({ activeGame, activeGameDetails }) => {
   // Question Table Headers
@@ -16,33 +18,33 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     {
       name: "Id",
       selector: "id",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Question",
       selector: "question_statement",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Difficulty Level",
       selector: "difficulty_level",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Weight",
       selector: "weight",
-      sortable: true
+      sortable: true,
     },
     {
       name: "",
       selector: "second_weight",
-      sortable: false
-    }/*,
+      sortable: false,
+    }, /* ,
     {
       name: "Explanation",
       selector: "explanation",
       sortable: true
-    }*/
+    } */
   ];
 
   const [questionsData, setQuestionsData] = useState({
@@ -51,7 +53,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     questionId: null,
     questionDetail: {
       difficulty_level: "",
-      question_statement: ""
+      question_statement: "",
     },
     choices: [],
     choicesNameArray: [],
@@ -61,7 +63,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     previousQuestionText: "",
     previousChoiceText: "",
     weight: "",
-    second_weight: ""
+    second_weight: "",
   });
 
   useEffect(() => {
@@ -71,31 +73,30 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     questions,
     gameId,
     questionDetail,
-    choices,
     correctChoice,
     choicesNameArray,
     questionId,
     scenarioFields,
-    scenarioEditFields,
     previousQuestionText,
     previousChoiceText,
     weight,
-    second_weight
   } = questionsData;
 
-  console.log(
-    "question =----------------------------------------------------------detail....",
-    questions
-  );
-
   const populateQuestions = data => {
-    data.map(obj =>
-      obj.isitmedia === 1 ? (obj.isitmedia = "yes") : (obj.isitmedia = "no")
-    );
+    const modifiedQuestions = [];
+    data.map(obj => (obj.isitmedia === 1
+      ? modifiedQuestions.push({
+        ...obj,
+        isitmedia: 'yes',
+      })
+      : modifiedQuestions.push({
+        ...obj,
+        isitmedia: 'no',
+      })));
     setQuestionsData({
       ...questionsData,
-      questions: data,
-      gameId: activeGame
+      questions: modifiedQuestions,
+      gameId: activeGame,
     });
   };
 
@@ -107,34 +108,28 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     refreshQuestionList();
   }
 
-  const deleteHandle = questionId => {
-    var r = window.confirm("Are you sure you want to delete the Question ?");
-    if (r === true) {
-      deleteQuestion(questionId, refreshQuestionList);
-    } else {
-      return;
-    }
+  const deleteHandle = choiceId => {
+    confirmation('DemGames', 'Are you sure you want to delete the Question?', () => deleteQuestion(choiceId, refreshQuestionList));
   };
 
   const updateHandle = (data = "", id) => {
-    console.log("dialogbox data", id, data);
-    let answers = [];
+    const answers = [];
     if (data) {
       data.options.map((item, index) => {
         answers.push({ option: convertChoice(index), value: item });
       });
     }
+    if (data.answers === '') {
+      return customAlert('You must enter the correct answer');
+    }
     data.options = answers;
-    console.log("options data -----> ", data);
-    updateQuestion(data, id, function() {
+    updateQuestion(data, id, () => {
       setPopupState({ ...popupState, showMessage: false });
       refreshQuestionList();
     });
   };
 
-  const convertChoice = value => {
-    return String.fromCharCode(value + 65);
-  };
+  const convertChoice = value => String.fromCharCode(value + 65);
 
   //   Questions and choices
 
@@ -149,8 +144,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     messageBox: false,
     edit: false,
     create: false,
-    onDelete: null,
-    removeMessage: false
+    onDelete: () => {},
+    removeMessage: false,
   });
   const {
     showMessage,
@@ -164,13 +159,13 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     edit,
     create,
     onDelete,
-    removeMessage
+    removeMessage,
   } = popupState;
 
   let activeGameName;
   let activeGameType;
-  activeGameDetails &&
-    activeGameDetails.map(item => {
+  activeGameDetails
+    && activeGameDetails.map(item => {
       if (item.key === "Name") {
         activeGameName = item.value;
       }
@@ -187,13 +182,13 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         key: "game",
         type: "text",
         title: "Game",
-        value: activeGameName
+        value: activeGameName,
       },
       {
         key: "level",
         type: "text",
         title: "Level",
-        value: questionDetail.difficulty_level
+        value: questionDetail.difficulty_level,
       },
       {
         key: "question",
@@ -201,65 +196,60 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         title: "Question",
         value: questionDetail.question_statement,
         multiline: true,
-        editable: true
+        editable: true,
       },
       {
         key: "options",
         type: "options",
         title: "answers",
-        value: choicesNameArray
+        value: choicesNameArray,
       },
       {
         key: "answers",
         type: "choice",
         title: "Current choice",
-        value: correctChoice
+        value: correctChoice,
       },
       {
         key: "weight",
         type: "text",
         title: "Weight",
         value: weight,
-	editable: false
-      }
-    ]
+        editable: false,
+      },
+    ],
   };
 
   const onCancel = () => {
     setPopupState({ ...popupState, showMessage: false });
   };
 
-  const populateChoices = (data, selectedQuestion) => {
-    let choicesName = [];
-    let correctChoice = "";
-    data.map((item, index) => {
+  const populateChoices = (choicesData, selectedQuestion) => {
+    const choicesName = [];
+    let correctChoiceToPopulate = "";
+    choicesData.map((item, index) => {
       item.option = convertChoice(index);
       choicesName.push(item.choicestatement);
       if (item.answer === 1) {
-        correctChoice = convertChoice(index);
+        correctChoiceToPopulate = convertChoice(index);
       }
     });
 
     setQuestionsData({
       ...questionsData,
-      choices: data,
+      choices: choicesData,
       choicesNameArray: choicesName,
       questionDetail: selectedQuestion,
       questionId: selectedQuestion.id,
-      correctChoice: correctChoice,
+      correctChoice: correctChoiceToPopulate,
       weight: selectedQuestion.weight,
-      second_weight: selectedQuestion.second_weight
+      second_weight: selectedQuestion.second_weight,
     });
   };
 
   const editHandle = id => {
-    debugger;
-    // console.log("id --- ", id);
-    const selectedQuestion = questions.find(item => {
-      return item.id === id;
-    });
+    const selectedQuestion = questions.find(item => item.id === id);
     getChoices(id, selectedQuestion, populateChoices);
-    // console.log("question detail selected", questionDetail);
     setPopupState({
       showMessage: true,
       confirmButtonValue: "Update",
@@ -272,7 +262,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       edit: true,
       create: false,
       onDelete: null,
-      removeMessage: false
+      removeMessage: false,
     });
   };
 
@@ -283,14 +273,14 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       key: "game",
       type: "text",
       title: "Game",
-      value: activeGameName
+      value: activeGameName,
     },
     {
       key: "level",
       type: "text",
       title: "Level",
       editable: true,
-      value: ""
+      value: "",
     },
     {
       key: "question",
@@ -298,81 +288,59 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       title: "Question",
       multiline: true,
       editable: true,
-      value: ""
+      value: "",
     },
     {
       key: "weight",
       type: "text",
       title: "Weight",
       editable: true,
-      value: ""
+      value: "",
     },
     {
       key: "options",
       type: "options",
       title: "answers",
-      value: ["", "", "", ""]
+      value: ["", "", "", ""],
     },
     {
       type: "choice",
       title: "Correct choice",
       value: "",
       editable: true,
-      key: "answers"
-    }
+      key: "answers",
+    },
   ];
 
-  // const setChoicesForSelectedQuestion = choices => {
-  //   for (let i = 0; i < scenarioFields.length; i++) {
-  //     if (scenarioFields[i].key === "previous_question_choice") {
-  //       // Insert choices data
-  //       scenarioFields[i].options = choices.map(choice => {
-  //         return { id: choice.id, title: choice.choicestatement };
-  //       });
-  //     }
-  //   }
-  //   setQuestionsData({ ...questionsData, scenarioFields: scenarioFields });
-  // };
-
-  // const handleChangeQuestion = e => {
-  //   let questionId = e.target.value;
-  //   console.log("questionId", questionId);
-  //   getChoices(questionId, null, setChoicesForSelectedQuestion);
-  // };
-
-  const saveQuestion = (data = "") => {
-    console.log(data);
-    // return;
-    let answers = [];
-    if (data) {
-      data.options.map((item, index) => {
+  const saveQuestion = (gameData = "") => {
+    const answers = [];
+    if (gameData) {
+      gameData.options.map((item, index) => {
         answers.push({ option: convertChoice(index), value: item });
       });
     }
-    data.options = answers;
-    data.game_id = activeGame;
-    console.log("final data: ", data);
-    // return;
-    addQuestion(data, function() {
+    gameData.options = answers;
+    gameData.game_id = activeGame;
+    if (gameData.answers === '') {
+      return customAlert('You must enter the correct answer');
+    }
+    addQuestion(gameData, () => {
       setPopupState({ ...popupState, showMessage: false });
       refreshQuestionList();
     });
-    console.log("options data -----> ", data);
   };
 
-  let previousQuestions = questions.map(item => {
-    return { id: item.id, title: item.question_statement };
-  });
+  const previousQuestions = questions.map(item => ({ id: item.id, title: item.question_statement }));
   previousQuestions.unshift({ id: "", title: "Select Question" });
 
-  const addQuestionHandle = e => {
+  const addQuestionHandle = () => {
     if (activeGameType === "scenario") {
       const scenario_data = [
         {
           key: "game",
           type: "text",
           title: "Game",
-          value: activeGameName
+          value: activeGameName,
         },
         {
           key: "previous_question",
@@ -380,7 +348,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           title: "Select Previous Question",
           options: previousQuestions,
           value: "",
-          editable: true
+          editable: true,
         },
         {
           key: "previous_question_choice",
@@ -388,14 +356,14 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           title: "Select Previous Question Choice",
           options: [{ id: "", title: "Select Previous Question First" }],
           value: "",
-          editable: true
+          editable: true,
         },
         {
           key: "level",
           type: "text",
           title: "Level",
           editable: true,
-          value: ""
+          value: "",
         },
         {
           key: "question",
@@ -403,31 +371,30 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           title: "Question",
           multiline: true,
           editable: true,
-          value: ""
+          value: "",
         },
         {
           key: "options",
           type: "options",
           title: "answers",
-          value: ["", ""]
+          value: ["", ""],
         },
         {
           key: "weight",
           type: "text",
           title: "Weight for Choice A",
           editable: true,
-          value: ""
+          value: "",
         },
         {
           key: "second_weight",
           type: "text",
           title: "Weight for Choice B",
           editable: true,
-          value: ""
-        }
+          value: "",
+        },
       ];
 
-      console.log("add question clicked ");
       setQuestionsData({ ...questionsData, scenarioFields: scenario_data });
     }
 
@@ -444,7 +411,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
       create: true,
       onDelete: null,
       removeMessage: false,
-      isRemove: false
+      isRemove: false,
     });
   };
 
@@ -455,25 +422,25 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         key: "game",
         type: "text",
         title: "Game",
-        value: activeGameName
+        value: activeGameName,
       },
       {
         key: "previous_question",
         type: "text",
         title: "Previous Question",
-        value: previousQuestionText
+        value: previousQuestionText,
       },
       {
         key: "previous_question_choice",
         type: "text",
         title: "Previous Question Choice",
-        value: previousChoiceText
+        value: previousChoiceText,
       },
       {
         key: "level",
         type: "text",
         title: "Level",
-        value: questionDetail.difficulty_level
+        value: questionDetail.difficulty_level,
       },
       {
         key: "question",
@@ -481,29 +448,29 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         title: "Question",
         value: questionDetail.question_statement,
         multiline: true,
-        editable: true
+        editable: true,
       },
       {
         key: "options",
         type: "options",
         title: "answers",
-        value: choicesNameArray
+        value: choicesNameArray,
       },
       {
         key: "weight",
-	type: "text",
-	title: "Weight for Choice A",
-	editable: false,
-	value: questionDetail.weight
+        type: "text",
+        title: "Weight for Choice A",
+        editable: false,
+        value: questionDetail.weight,
       },
       {
         key: "second_weight",
         type: "text",
         title: "Weight for Choice B",
         editable: false,
-        value: questionDetail.second_weight
-      }
-    ]
+        value: questionDetail.second_weight,
+      },
+    ],
   };
 
   let choice_linked;
@@ -512,10 +479,8 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
 
   const getQuestionLinkedToChoice = choice => {
     if (choice.length > 0) {
-      let previousQuestionId = choice[0].QuestionId;
-      let previousQuestion = questions.find(question => {
-        return question.id === previousQuestionId;
-      });
+      const previousQuestionId = choice[0].QuestionId;
+      const previousQuestion = questions.find(question => question.id === previousQuestionId);
 
       setQuestionsData({
         ...questionsData,
@@ -524,9 +489,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         questionDetail: selected_question,
         questionId: selected_question.id,
         previousChoiceText: choice[0].choicestatement,
-        previousQuestionText: previousQuestion.question_statement//,
-	//weight: weight,
-	//second_weight: second_weight
+        previousQuestionText: previousQuestion.question_statement,
       });
     } else {
       setQuestionsData({
@@ -538,7 +501,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         previousChoiceText: "NA",
         previousQuestionText: "No Linked Question Found",
         weight: "",
-	second_weight: ""
+        second_weight: "",
       });
     }
   };
@@ -546,7 +509,7 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   const getChoiceLinkedToQuestion = (
     choices,
     choicesName,
-    selectedQuestion
+    selectedQuestion,
   ) => {
     choice_linked = choices[0];
     choice_name = choicesName;
@@ -554,16 +517,11 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     getChoiceLinkingQuestion(selectedQuestion.id, getQuestionLinkedToChoice);
   };
 
-  const populateScenarioChoices = (data, selectedQuestion) => {
-    // return;
-    let choicesName = [];
-    // let correctChoice = "";
-    data.map((item, index) => {
+  const populateScenarioChoices = (choicesData, selectedQuestion) => {
+    const choicesName = [];
+    choicesData.map((item, index) => {
       item.option = convertChoice(index);
       choicesName.push(item.choicestatement);
-      // if (item.answer === 1) {
-      //   correctChoice = convertChoice(index);
-      // }
     });
 
     getChoiceLinkedToQuestion(data, choicesName, selectedQuestion);
@@ -572,18 +530,14 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
   const editScenarioHandle = id => {
     try {
       if (activeGameType === "scenario") {
-        let previousQuestions = questions.map(item => {
-          return { id: item.id, title: item.question_statement };
-        });
-        previousQuestions.unshift({ id: "", title: "Select Question" });
-        const selectedQuestion = questions.find(item => {
-          return item.id === id;
-        });
+        const previousQuestionsToEdit = questions.map(item => ({ id: item.id, title: item.question_statement }));
+        previousQuestionsToEdit.unshift({ id: "", title: "Select Question" });
+        const selectedQuestion = questions.find(item => item.id === id);
         getChoices(id, selectedQuestion, populateScenarioChoices);
 
         setQuestionsData({
           ...questionsData,
-          scenarioEditFields: scenario_edit_data
+          scenarioEditFields: scenario_edit_data,
         });
       }
       setPopupState({
@@ -598,10 +552,10 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
         edit: true,
         create: false,
         onDelete: null,
-        removeMessage: false
+        removeMessage: false,
       });
     } catch (error) {
-      console.error("Problem", error);
+      console.error("Problem", error); // eslint-disable-line
     }
   };
 
@@ -610,23 +564,22 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
     if (create) {
       if (activeGameType === "scenario") {
         return scenarioFields;
-      } else {
-        return fields;
       }
-    } else if (edit) {
+      return fields;
+    }
+    if (edit) {
       if (activeGameType === "scenario") {
         hasChoices = false;
         // return scenarioEditFields;
         return scenario_edit_data;
-      } else {
-        return data;
       }
+      return data;
     }
     // create ? (activeGameType === "scenario" ? scenarioFields : fields) : data;
   };
 
   return (
-    <Fragment>
+    <>
       {(edit || create) && (
         <DialogBox
           confirmButtonValue={confirmButtonValue}
@@ -647,9 +600,9 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           hasChoices={hasChoices}
         />
       )}
-      <div className="float-right" onClick={e => addQuestionHandle(e)}>
-        <button className="btn btn-info btn-sm">
-          <i className="fa fa-plus"></i>
+      <div role="button" tabIndex={0} className="float-right" onClick={e => addQuestionHandle(e)}>
+        <button type="submit" className="btn btn-info btn-sm">
+          <i className="fa fa-plus" />
         </button>
         <span> Add Question</span>
       </div>
@@ -659,13 +612,25 @@ const ListQuestions = ({ activeGame, activeGameDetails }) => {
           title: "List of Questions",
           hasActionBtns: true,
           data: questions,
-          deleteHandle: deleteHandle,
+          deleteHandle,
           editHandle:
-            activeGameType === "scenario" ? editScenarioHandle : editHandle
+            activeGameType === "scenario" ? editScenarioHandle : editHandle,
         }}
       />
-    </Fragment>
+    </>
   );
+};
+
+ListQuestions.propTypes = {
+  activeGame: PropTypes.number,
+  activeGameDetails: PropTypes.arrayOf(
+    PropTypes.shape({}),
+  ),
+};
+
+ListQuestions.defaultProps = {
+  activeGameDetails: null,
+  activeGame: null,
 };
 
 export default ListQuestions;
