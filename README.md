@@ -3,7 +3,7 @@
   </h1>
   
   <h1 align="center">
-    DemGames - Debate
+    DemGames - Debate (Deprecated)
   </h1>
   
   <p align="center">
